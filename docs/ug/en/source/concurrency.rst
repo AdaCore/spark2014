@@ -759,7 +759,7 @@ the protected object ``P``, and one for normal objects, containing the task
      end P;
 
      task body T is ...
-   end  Synchronous_Abstractions;
+   end Synchronous_Abstractions;
 
 To avoid data races, task bodies, as well as protected subprograms, should only
 access synchronized objects (see :ref:`Preventing Data Races`). State

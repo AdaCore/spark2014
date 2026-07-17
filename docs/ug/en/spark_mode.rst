@@ -20,7 +20,7 @@ Mixing |SPARK| Code and Ada Code
 
 An Ada program unit or other construct is said to be "in |SPARK|"
 if it complies with the restrictions required to permit formal verification
-given  in the |SPARK| Reference Manual.
+given in the |SPARK| Reference Manual.
 Conversely, an Ada program unit or other construct is "not in |SPARK|" if
 it does not meet these requirements, and so is not amenable to formal
 verification.

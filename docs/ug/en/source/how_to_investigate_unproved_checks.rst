@@ -305,7 +305,7 @@ Entries for proof are of the following form::
       "check_tree" : list goal,
       "msg_id"     : int,
       "how_proved" : string,
-      "entity"     : entity;
+      "entity"     : entity,
       "relatedLocations" : SARIF relatedLocations object }
 
 * ("file", "line", "col") describe the source location of the message.

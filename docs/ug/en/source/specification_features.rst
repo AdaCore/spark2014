@@ -1459,7 +1459,7 @@ and second occurrence of ``0`` in the array:
         A = (A'Old with delta
                Find_First_Zero (A'Old) ..
                  Find_First_Zero
-	           (A'Old (Find_First_Zero (A'Old) + 1 .. A'Last)) => 0);
+                   (A'Old (Find_First_Zero (A'Old) + 1 .. A'Last)) => 0);
 
 In the contract of ``Set_Range_To_Zero``, we use :ref:`Delta Aggregates` to
 state that elements of ``A`` located in the range between the first and the
@@ -1482,7 +1482,7 @@ the second bound:
        (declare
           Fst_Zero : constant Positive := Find_First_Zero (A'Old);
           Snd_Zero : constant Positive := Find_First_Zero
-	     (A'Old (Fst_Zero + 1 .. A'Last));
+             (A'Old (Fst_Zero + 1 .. A'Last));
         begin
           A = (A'Old with delta Fst_Zero .. Snd_Zero => 0));
 

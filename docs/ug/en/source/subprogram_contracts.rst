@@ -41,7 +41,7 @@ Subprogram Contracts`.
 |GNATprove| formally verifies that each execution of each |SPARK| subprogram it
 analyzes will either:
 
-* return normally in a state that respects the subprogram’s postcondition,
+* return normally in a state that respects the subprogram's postcondition,
 * raise an exception in a state that respects the subprogram's exceptional
   contract,
 * terminate abnormally as a result of a primary stack, secondary stack, or heap

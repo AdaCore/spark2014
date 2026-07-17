@@ -35,7 +35,7 @@ Updating the Why3 Configuration File
 
 |GNATprove| can call other provers, as long as they are supported by the Why3
 platform (see complete list on `Why3 webpage
-<http://why3.lri.fr/#provers>`_). To use another prover, it must be listed in
+<https://www.why3.org/#provers>`_). To use another prover, it must be listed in
 your Why3 configuration file.
 
 To create or update automatically a Why3 configuration file, call the command

@@ -907,7 +907,7 @@ With this loop invariant, |GNATprove| is able to prove the postcondition of
 modified:
 
 .. literalinclude:: /examples/ug__update_list_zero/test.out
-                    :language: none
+   :language: none
 
 The case of sets and maps is similar to the case of lists.
 
