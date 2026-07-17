@@ -115,12 +115,12 @@ Track record: Apart from SPARK, it is used by `Frama-C <http://frama-c.com/>`_, 
 
 Relationship with AdaCore/Capgemini Engineering: The Inria team around Why3 has strong ties with AdaCore and Capgemini Engineering. A number of research projects have been and are being carried out in collaboration with this team. This includes the `Hi-Lite project <http://www.open-do.org/projects/hi-lite/>`_, which led to the current version of SPARK based on Why3, a follow-up project `SOPRANO <http://soprano-project.fr/>`_, then a joint laboratory `ProofInUse <https://www.adacore.com/proofinuse>`_ which evolved in the `ProofInUse consortium <https://proofinuse.gitlabpages.inria.fr/>`_. In addition, while Why3 is mainly developed at Inria, AdaCore and Capgemini Engineering have made important contributions to the technology, such as the so-called fast-WP, a more efficient implementation of the main algorithm of Why3, and the why3server, a more scalable method of running external tools such as SMT solvers.
 
-* Main developers: `Inria research institute <http://toccata.lri.fr/>`_
+* Main developers: `Inria research institute <https://toccata.gitlabpages.inria.fr/toccata/>`_
 * Main website: https://www.why3.org
 * Version Management: Git
 * License: Open Source, LGPL 2.1
-* Public mailing-list: why3-club@lists.gforge.inria.fr
-* Bug tracking: https://gforge.inria.fr/tracker/?group_id=2990
+* Public mailing-list: why3-club@groupes.renater.fr
+* Bug tracking: https://gitlab.inria.fr/why3/why3/-/work_items
 
 Alt-Ergo
 ^^^^^^^^
@@ -133,7 +133,7 @@ mainly by `OCamlPro <https://alt-ergo.ocamlpro.com/>`_. Since then, OCamlPro
 issues every year a private release and a public release (lagging one year
 behind the private release).  SPARK uses the public release of Alt-Ergo.
 
-Track record: Apart from SPARK, it is used by `Frama-C <http://frama-c.com/>`_ and `Atelier B <http://www.atelierb.eu/en/>`_. In particular, used by Airbus for the qualification DO-178C of an aircraft [10].
+Track record: Apart from SPARK, it is used by `Frama-C <http://frama-c.com/>`_ and `Atelier B <http://www.atelierb.eu/en/>`_. In particular, used by Airbus for the qualification DO-178C of an aircraft.
 
 Relationship with AdaCore/Capgemini Engineering: AdaCore and OCamlPro have collaborated in the
 `SOPRANO <http://soprano-project.fr/>`_ project. AdaCore has contributed some minor
@@ -143,7 +143,6 @@ changes to Alt-Ergo, including a deterministic resource limiting switch.
 * Main website: https://alt-ergo.ocamlpro.com/
 * Version Management: Git
 * License: CeCill-C (GPL compatible)
-* Public mailing-list: alt-ergo-users@lists.gforge.inria.fr
 * Bug tracking: https://github.com/OCamlPro/alt-ergo/issues
 
 Z3
@@ -168,7 +167,7 @@ Relationship with AdaCore/Capgemini Engineering: AdaCore and Capgemini Engineeri
 reports, feature requests and small fixes to the Z3 team, in particular
 related to a deterministic resource limiting switch.
 
-* Main developers: `Microsoft <https://z3.codeplex.com/>`_
+* Main developers: `Microsoft <https://www.microsoft.com/en-us/research/project/z3-3/>`_
 * Main website: https://github.com/Z3Prover/z3
 * Version Management: Git
 * License: MIT License
@@ -202,4 +201,7 @@ Track record: Winner (2018) and Runner-up (2019) in the quantifier-free floating
 Relationship with AdaCore/Capgemini Engineering: AdaCore and CEA collaborate together to improve COLIBRI.
 
 * Main developers: CEA
+* Main website: https://git.frama-c.com/pub/colibri
 * Version Management: Git
+* License: LGPL
+* Bug tracking: https://git.frama-c.com/pub/colibri/-/issues

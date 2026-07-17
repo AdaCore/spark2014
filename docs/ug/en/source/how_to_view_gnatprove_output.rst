@@ -299,8 +299,7 @@ Note that CWE ids are only included in check messages and warnings, never in
 information messages about proved checks. For more information on CWE, see the
 MITRE Corporation's Common Weakness Enumeration (CWE) Compatibility and
 Effectiveness Program (`http://cwe.mitre.org/ <http://cwe.mitre.org/>`_). The
-current version of |GNATprove| is based on CWE version 3.2 released on January
-3, 2019.
+CWE identifiers reported by |GNATprove| are based on the CWE version 4 list.
 
 .. index:: check messages; prover status
 

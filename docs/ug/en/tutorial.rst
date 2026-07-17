@@ -476,14 +476,12 @@ Here, testing does not show any problems:
    > OK: Found existing value at first index
    > OK: Did not find non-existing value
 
-The next easy thing to do is to increase the proof level. Its
-default of 0 is deliberately low, to facilitate interaction with |GNATprove|
+The next easy thing to do is to increase the proof level. The default
+proof effort is deliberately low, to facilitate interaction with |GNATprove|
 during the development of annotations, but it is not sufficient to prove the
 more complex checks. Let's increase it to level 2
 (passing switch ``--level=2`` or equivalently setting the ``Proof
-level`` to 2 in the proof panel), and rerun |GNATprove|:
-
-.. image:: /static/search_10s_timeout.png
+level`` to 2 in the proof panel), and rerun |GNATprove|.
 
 The unproved check remains in the contract cases of ``Linear_Search``. The next
 step is to use the :menuselection:`SPARK --> Prove Line` contextual menu

@@ -450,8 +450,8 @@ subprograms that are unit tested, provided subprogram contracts
 (:ref:`Preconditions` and :ref:`Postconditions`) are exercised during unit
 testing. This can be achieved by compiling the program with assertions for
 testing (for example with switch ``-gnata`` in |GNAT Pro|), or by using
-GNATtest to create the test harness (see section 7.10.12 of |GNAT Pro| User's
-Guide on `Testing with Contracts`).
+GNATtest to create the test harness (see the "Testing with Contracts" section
+of the GNATtest User's Guide).
 
 When combining proof and test on individual subprograms, one should make sure
 that the assumptions made for proof are justified at the boundary between
@@ -784,8 +784,8 @@ Implementation with the Standard"):
   should be documented. An example of implementation defined behavior is the
   size of predefined integer types (like ``Integer``). All implementation
   defined behaviors are listed in Ada RM M.2, and GNAT documents its
-  implementation for each of these points in section 7 "Implementation Defined
-  Characteristics" of the GNAT Reference Manual.
+  implementation for each of these points in the "Implementation Defined
+  Characteristics" section of the GNAT Reference Manual.
 
 * *Unspecified behavior* - The set of possible behaviors is specified in the
   language, but the particular behavior chosen in a compiler need not be
@@ -797,7 +797,7 @@ and unspecified behavior, which may or not have a visible effect. For example,
 changing the order of evaluation of arguments in a subprogram call only has a
 visible effect if the evaluation of arguments itself has some side-effects.
 
-Section 18.4 "Implementation-dependent characteristics" of the GNAT Reference
+The "Implementation-dependent characteristics" section of the GNAT Reference
 Manual gives some advice on how to address implementation defined behavior for
 portability.
 
@@ -824,7 +824,7 @@ floating-point types:
 * The precision of elementary functions (exponential and trigonometric
   functions) is implementation defined (Ada RM G.2.4).
 
-Section 18.1 "Writing Portable Fixed-Point Declarations" of the GNAT Reference
+The "Writing Portable Fixed-Point Declarations" section of the GNAT Reference
 Manual gives some advice on how to reduce implementation defined behavior for
 fixed-point types. Use of IEEE 754 floating-point arithmetic can be enforced in
 GNAT by using the compilation switches "-msse2 -mfpmath=sse", as documented in
@@ -1017,7 +1017,7 @@ data representations, interfacing with assembler code, and similar issues (for
 example, language attribute ``Size``). When changing the compiler and/or the
 target, the program logic should be carefully reviewed for possible dependences
 on the original compiler behavior and/or original target characteristics. See
-also the section 18.4.5 "Target-specific aspects" of the GNAT Reference
+also the "Target-specific aspects" section of the GNAT Reference
 Manual.
 
 In particular, features that bypass the type system of Ada for reinterpreting
@@ -1131,8 +1131,8 @@ fixed-point or floating-point values, using:
    pragma Restrictions (No_Floating_Point);
 
 When fixed-point values are used, the value of the small and size in bits for
-the type should be specified explicitly, as documented in section 18.1 "Writing
-Portable Fixed-Point Declarations" of the GNAT Reference Manual:
+the type should be specified explicitly, as documented in the "Writing
+Portable Fixed-Point Declarations" section of the GNAT Reference Manual:
 
 .. code-block:: ada
 

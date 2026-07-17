@@ -18,9 +18,10 @@ Automatic Unrolling of Simple For-Loops
 * without :ref:`loop invariants` or :ref:`loop variants`,
 * that declare no local variables, or only variables of scalar type.
 
-In addition, |GNATprove| always unrolls loops of the form ``for J in 1 .. 1
-loop`` that don't have a :ref:`loop invariants` or :ref:`loop variants`, even
-when they declare local variables of non-scalar type.
+In addition, |GNATprove| always unrolls single-iteration loops whose range
+spans exactly one value, of the form ``for J in N .. N loop`` (such as ``for J
+in 1 .. 1 loop``), that don't have a :ref:`loop invariants` or :ref:`loop
+variants`, even when they declare local variables of non-scalar type.
 
 As a result of unrolling, |GNATprove| conveys the exact meaning of the loop to
 provers, without requiring a loop invariant. While this is quite powerful, it

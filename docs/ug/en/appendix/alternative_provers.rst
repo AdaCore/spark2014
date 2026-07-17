@@ -22,8 +22,8 @@ be found on their respective websites:
  * cvc5: https://cvc5.github.io/
  * Z3: https://github.com/Z3Prover/z3
 
-Installed with |SPARK| Community
---------------------------------
+Installed with the FSF version of |SPARK|
+-----------------------------------------
 
 The provers Alt-Ergo, cvc5 and Z3 are installed with the |SPARK| tool.
 

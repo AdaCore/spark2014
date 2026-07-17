@@ -174,8 +174,10 @@ set through ``--level``.
 Note that for the above experiments, it is quite convenient to use the
 :menuselection:`SPARK --> Prove Line` or :menuselection:`SPARK --> Prove
 Subprogram` menus in GNAT Studio, as described in :ref:`Running GNATprove from GNAT Studio` and
-:ref:`Running GNATprove from GNATbench`, to get faster results for the desired
-line or subprogram.
+:ref:`Running GNATprove from GNATbench`, or the corresponding :menuselection:`Prove line`
+and :menuselection:`Prove subprogram` tasks in Visual Studio Code (see
+:ref:`Running GNATprove from Visual Studio Code`), to get faster results for the
+desired line or subprogram.
 
 A current limitation of automatic provers is that they don't handle
 floating-point arithmetic very precisely, in particular when there are either a

@@ -111,10 +111,3 @@ from the command line or in your editor after setting the environment for your
 Alire project using::
 
     eval `alr printenv`
-
-The older GNAT Community version
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-There is an older community version of the tools, packaged with GNAT and
-GNAT Studio. You can download it from `AdaCore's website
-<https://www.adacore.com/download>`_.
