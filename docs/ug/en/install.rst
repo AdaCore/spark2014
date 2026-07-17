@@ -76,7 +76,7 @@ Then follow the instructions displayed.
 Then do the same with the SPARK tarball, e.g.::
 
   $ gzip -dc spark-pro-<version>-<platform>-bin.tar.gz | tar xf -
-  $ cd spark-<version>-<platform>-bin
+  $ cd spark-pro-<version>-<platform>-bin
   $ ./doinstall
 
 Note that you need to have sufficient rights for installing the package at the
@@ -94,7 +94,7 @@ You can download a "gnatprove" package from this `github project
 <https://github.com/alire-project/GNAT-FSF-builds/releases>`_. Extracting the
 package and adding the ``bin`` directory to your PATH is enough. You can get
 the GNAT compiler from the same link, and there is a `different
-project <https://github.com/AdaCore/gnatstudio/releases>`_ for GNATStudio, the
+project <https://github.com/AdaCore/gnatstudio/releases>`_ for GNAT Studio, the
 IDE.
 
 Install using alire
@@ -116,5 +116,5 @@ The older GNAT Community version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There is an older community version of the tools, packaged with GNAT and
-GNATStudio. You can download it from `AdaCore's website
+GNAT Studio. You can download it from `AdaCore's website
 <https://www.adacore.com/download>`_.

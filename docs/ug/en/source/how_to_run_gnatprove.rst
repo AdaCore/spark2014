@@ -493,7 +493,7 @@ seen in :ref:`Having Different Switches for Compilation and Verification`:
   end My_Project;
 
 where ``target.atp`` is a file stored here in the same directory as the project
-file ``my_project.gpr``, which contains the target parametrization. The format
+file ``my_project.gpr``, which contains the target parameterization. The format
 of this file is described in the |GNAT Pro| User's Guide as part of the
 ``-gnateT`` switch description.
 

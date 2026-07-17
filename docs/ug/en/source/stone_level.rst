@@ -9,7 +9,7 @@ to GNATprove, which is responsible for checking that the code marked with
 be incorrect in many ways, such as raising run-time exceptions. Being valid
 merely means that the code respects the legality rules that define the SPARK
 subset in the SPARK Reference Manual (see
-http://docs.adacore.com/spark2014-docs/html/lrm/). The number of lines of SPARK
+https://docs.adacore.com/spark2014-docs/html/lrm/). The number of lines of SPARK
 code in a program can be computed (along with other metrics such as the total
 number of lines of code) by the metrics computation tool GNATmetric.
 

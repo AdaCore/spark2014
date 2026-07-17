@@ -57,7 +57,8 @@ particular, such guarantees may be used in a safety case to make reliability
 claims.
 
 .. index:: DO-178C / ED-12C
-.. index:: EN 50128, CENELEC EN 50128
+.. index:: EN 50128
+.. index:: CENELEC EN 50128
 .. index:: IEC 61508
 .. index:: Proof (as alternative to unit testing)
 

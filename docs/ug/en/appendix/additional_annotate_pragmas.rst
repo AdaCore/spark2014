@@ -683,7 +683,7 @@ a reborrow, like the procedure ``Next`` below:
    end Next;
 
 The postcondition describes the value, at the end of the scope of ``X``, of the
-structure designated by ``X`` before the call . It states that it
+structure designated by ``X`` before the call. It states that it
 is necessarily non-null, and that its first element is the value stored in
 ``V``. This is something that can be proved by the tool in the postcondition, as
 the reborrow freezes the first value of ``X'Old``.
@@ -1247,7 +1247,7 @@ package:
 
          type Model_T is ...;
 
-	 function Model (X : T) return Model_T;
+         function Model (X : T) return Model_T;
 
       end Formal_Model;
 
@@ -1269,7 +1269,7 @@ they were declared directly in the enclosing unit.
          Annotate => (GNATprove, Unhide_Info, "Package_Body")
       is
 
-	 function Model (X : T) return Model_T is (...);
+         function Model (X : T) return Model_T is (...);
 
       end Formal_Model;
 
