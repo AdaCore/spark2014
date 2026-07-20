@@ -112,6 +112,18 @@ or internal-use switches:
    Reuse an already-running why3server listening on the given socket instead of
    spawning a new one.
 
+``--why3-stagger-ms``
+   Pace prover launches for a single VC by forwarding the value as
+   ``--stagger-ms`` to gnatwhy3. The tool-wide default is 250 milliseconds;
+   when the switch is omitted, gnatprove forwards this default. An explicit
+   value of 0 is not forwarded, so gnatwhy3 falls back to its own default of 0,
+   which disables time-based staggering.
+
+``--why3-stagger-window``
+   Limit the number of provers launched concurrently for a single VC by
+   forwarding the value as ``--stagger-window`` to gnatwhy3. The value must be
+   positive when the switch is present.
+
 ``--z3-counterexample``
    Use Z3 (``z3_ce``) as the prover for counterexample generation.
 

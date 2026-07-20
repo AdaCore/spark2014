@@ -1,0 +1,10 @@
+===== default staggering =====
+===== explicit zero milliseconds =====
+===== explicit milliseconds =====
+===== positive window =====
+===== negative milliseconds =====
+error: wrong argument for --why3-stagger-ms
+===== negative window =====
+error: wrong argument for --why3-stagger-window
+===== zero window =====
+error: wrong argument for --why3-stagger-window
