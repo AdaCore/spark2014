@@ -45,7 +45,6 @@ with Sinput;                      use Sinput;
 with Snames;                      use Snames;
 with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
-with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with String_Utils;                use String_Utils;
@@ -102,12 +101,6 @@ package body CE_Display is
    --  Build pretty printed JSON array of counterexample elements.
    --  @Variables stores information about values and fields of
    --    variables at a single source code location (line).
-
-   function Reconstruct_Index_Value
-     (Value : Unbounded_String; Quant_Id : Entity_Id) return Unbounded_String;
-   --  Reconstruct a string for the value of the Ada quantified variable
-   --  in a FOR OF quantification from the value for the Why3 quantified
-   --  variable.
 
    generic
       with
@@ -184,7 +177,7 @@ package body CE_Display is
                --  Update the name with the modifier
 
                case Var_Mod is
-                  when None | Index     =>
+                  when None             =>
                      null;
 
                   when Old              =>
@@ -193,6 +186,9 @@ package body CE_Display is
                   when Loop_Entry       =>
                      Append (Name, "'Loop_Entry");
 
+                  when Index            =>
+                     Append (Name, "'Loop_Index");
+
                   when CE_Values.Result =>
                      Append (Name, "'Result");
                end case;
@@ -200,59 +196,21 @@ package body CE_Display is
                if Values (Var_Mod) /= null then
                   Value := Values (Var_Mod).all;
 
-                  --  Special case for the Index modifier. Get the value of
-                  --  the counterexample as a string and reconstruct the
-                  --  Ada quantified value above it.
+                  --  For non null access values, write X.all = Value
+                  --  instead of X = new T'(Value) at top level.
 
-                  if Var_Mod = Index then
-                     declare
-                        Pretty_Value : CNT_Unbounded_String :=
-                          Print_Value (Value);
-
-                     begin
-                        if Pretty_Value /= Dont_Display then
-                           if Is_Json_Format then
-                              Pretty_Line_Cntexmp_Arr.Append
-                                (Cntexample_Elt'
-                                   (K        => Json_Format,
-                                    Kind     => CEE_Variable,
-                                    Name     => Name,
-                                    JSON_Obj => Serialize_Value (Value)));
-                           else
-                              Pretty_Value.Str :=
-                                Reconstruct_Index_Value
-                                  (Pretty_Value.Str, Var);
-
-                              Pretty_Line_Cntexmp_Arr.Append
-                                (Cntexample_Elt'
-                                   (K       => Pretty_Printed,
-                                    Kind    => CEE_Variable,
-                                    Name    => Name,
-                                    Val_Str => Pretty_Value));
-                           end if;
-                        end if;
-                     end;
-
-                  --  General case, add the counterexample value and its
-                  --  attributes.
-
-                  else
-                     --  For non null access values, write X.all = Value
-                     --  instead of X = new T'(Value) at top level.
-
-                     if Value.K = Access_K
-                       and then Value.Designated_Value /= null
-                       and then
-                         (not Value.Is_Null.Present
-                          or else not Value.Is_Null.Content)
-                     then
-                        Append (Name, ".all");
-                        Value := Value.Designated_Value.all;
-                     end if;
-
-                     Print_Value_And_Attributes
-                       (Name, Value, Pretty_Line_Cntexmp_Arr, Is_Json_Format);
+                  if Value.K = Access_K
+                    and then Value.Designated_Value /= null
+                    and then
+                      (not Value.Is_Null.Present
+                       or else not Value.Is_Null.Content)
+                  then
+                     Append (Name, ".all");
+                     Value := Value.Designated_Value.all;
                   end if;
+
+                  Print_Value_And_Attributes
+                    (Name, Value, Pretty_Line_Cntexmp_Arr, Is_Json_Format);
                end if;
             end loop;
          end;
@@ -1267,133 +1225,6 @@ package body CE_Display is
             null;
       end case;
    end Process_Entities_For_One_Liner;
-
-   -----------------------------
-   -- Reconstruct_Index_Value --
-   -----------------------------
-
-   function Reconstruct_Index_Value
-     (Value : Unbounded_String; Quant_Id : Entity_Id) return Unbounded_String
-   is
-      function Refine_Container_Iterator_Value
-        (R_Value        : Unbounded_String;
-         Cont_Typ       : Entity_Id;
-         Container_Name : Unbounded_String) return Unbounded_String;
-      --  Refine value for iterator over types with the Iterable aspect. For
-      --  example, for a type:
-      --
-      --  type T is private with
-      --    Iterable => (First       => My_First,
-      --                 Has_Element => My_Has_Element,
-      --                 Next        => My_Next,
-      --                 Element     => My_Element);
-      --
-      --  It will return My_Element (Container_Name, <value>).
-      --  If the type has an Iterable_For_Proof of a model kind, it will be
-      --  taken into account, for example, if we add:
-      --
-      --  type T2 is private with
-      --    Iterable => (First       => My_First_2,
-      --                 Has_Element => My_Has_Element_2,
-      --                 Next        => My_Next_2,
-      --                 Element     => My_Element_2);
-      --
-      --  function Model (X : T) return T2;
-      --  pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
-      --
-      --  then for of iterators on T will refined against T2's cursor type and
-      --  then printed as My_Element_2 (Model (Container_Name), <value>).
-
-      -------------------------------------
-      -- Refine_Container_Iterator_Value --
-      -------------------------------------
-
-      function Refine_Container_Iterator_Value
-        (R_Value        : Unbounded_String;
-         Cont_Typ       : Entity_Id;
-         Container_Name : Unbounded_String) return Unbounded_String
-      is
-         Found         : Boolean;
-         Iterable_Info : Iterable_Annotation;
-
-      begin
-         --  Construct the expression to be used for the container name
-
-         Retrieve_Iterable_Annotation (Cont_Typ, Found, Iterable_Info);
-
-         if Found then
-
-            --  Iterable annotation should be a Model annotation. Indeed, if a
-            --  Contains iterable annotation is provided, no temporary
-            --  should be introduced for "for of" quantification.
-
-            pragma
-              Assert (Iterable_Info.Kind = SPARK_Definition.Annotate.Model);
-
-            --  Prepend the name of the Model function to the container name
-
-            return
-              Refine_Container_Iterator_Value
-                (R_Value,
-                 Etype (Iterable_Info.Entity),
-                 Raw_Source_Name (Iterable_Info.Entity)
-                 & " ("
-                 & Container_Name
-                 & ")");
-         else
-
-            --  We have found the ultimate model type
-
-            declare
-               Element_E : constant Entity_Id :=
-                 Get_Iterable_Type_Primitive (Cont_Typ, Name_Element);
-               Prim_E    : constant Entity_Id :=
-                 (if Present (Element_E)
-                  then Element_E
-                  else
-                    Get_Iterable_Type_Primitive
-                      (Cont_Typ, Name_Constant_Reference));
-            begin
-               return
-                 Raw_Source_Name (Prim_E)
-                 & " ("
-                 & Container_Name
-                 & ", "
-                 & R_Value
-                 & ")"
-                 & (if Present (Element_E) then "" else ".all");
-            end;
-         end if;
-      end Refine_Container_Iterator_Value;
-
-      function Is_Quantified_Expr (N : Node_Id) return Boolean
-      is (Nkind (N) = N_Quantified_Expression);
-      function Enclosing_Quantified_Expr is new
-        First_Parent_With_Property (Is_Quantified_Expr);
-
-      Container : constant Entity_Id :=
-        Get_Container_In_Iterator_Specification
-          (Iterator_Specification (Enclosing_Quantified_Expr (Quant_Id)));
-      pragma Assert (Present (Container));
-
-      Container_Typ : constant Entity_Id := Retysp (Etype (Container));
-
-   begin
-      --  E = A (<value>)
-
-      if Is_Array_Type (Container_Typ) then
-         return Raw_Source_Name (Container) & " (" & Value & ")";
-
-      --  E = Element (C, <value>)
-
-      else
-         return
-           Refine_Container_Iterator_Value
-             (Value,
-              Container_Typ,
-              To_Unbounded_String (Raw_Source_Name (Container)));
-      end if;
-   end Reconstruct_Index_Value;
 
    --------------------------------
    -- Remove_Irrelevant_Branches --
