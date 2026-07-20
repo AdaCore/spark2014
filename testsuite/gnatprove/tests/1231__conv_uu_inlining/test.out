@@ -4,4 +4,5 @@ test.adb:15:22: warning: "X" is not modified, could be IN
 test.adb:15:22: warning: unused variable "X"
 test.adb:20:17: warning: "X" is not modified, could be IN
 test.adb:20:17: warning: unused variable "X"
+test.adb:22:06: high: operation on unchecked union type will raise Program_Error [possible explanation: source of conversion should have inferrable discriminants]
 test.adb:22:06: info: analyzing call to "Callee" in context
