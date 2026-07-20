@@ -893,11 +893,35 @@ Specifying switches for individual subprograms and packages via Manifest Files
 
 Proof settings such as selected provers, timeout, steps and memory limit can
 be specified on a per-subprogram or per-package basis via so-called manifest
-files. A folder containing such files can be specified using the
-``--proof-manifest-dir`` option. Only files with the ".toml" ending are
-considered by gnatprove.
+files. A folder containing such files is passed to |GNATprove| using the
+``--proof-manifest-dir=<path/to/dir>`` option, for example::
 
-Each such file corresponds to an Ada unit in the project tree. The naming of the
+   gnatprove -P my_project.gpr --proof-manifest-dir=proof/manifest
+
+Only files with the ".toml" ending are considered by |GNATprove|.
+
+Generating Manifest Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The most common way to obtain manifest files is to let |GNATprove| generate
+them automatically, in order to capture the proof settings of a successful proof
+run so that the run can be replayed later. Invoke |GNATprove| with the desired
+proof settings, such as the selected provers, proof level, step limit, or memory
+limit, and add the ``--generate-manifest-dir=<folder>`` option, for example::
+
+   gnatprove -P my_project.gpr --level=3 --generate-manifest-dir=proof/manifest
+
+|GNATprove| then writes manifest files to the given folder with settings to
+reproduce the successful proofs from that run. During generation, it applies
+heuristics to keep the files compact while avoiding excessive increase in proof
+time. This usage of manifest files is intended as an alternative to session
+files (see :ref:`Sharing Proof Results with Others`).
+
+Manifest File Format
+^^^^^^^^^^^^^^^^^^^^^
+
+Manifest files can also be written or edited by hand. Each such file
+corresponds to an Ada unit in the project tree. The naming of the
 file corresponds to the naming of the unit in all lower-case, and where dots are
 replaced by dashes. So a unit Sorting.Sort becomes ``sorting-sort.toml``.
 
@@ -944,15 +968,6 @@ declarations and body statements.
 
 The manifest file takes precedence over options specified in the project file,
 but is overridden by options specified on the command-line.
-
-Manifest files can also be generated automatically to capture proof settings
-for replaying a proof run. Invoke gnatprove with the desired proof settings,
-such as the selected provers, proof level, step limit, or memory limit, and add
---generate-manifest-dir=<folder>. GNATprove writes manifest files to the given
-folder with settings to reproduce the successful proofs from that run. During
-generation, it applies heuristics to keep the files compact while avoiding
-excessive increase in proof time. This usage of manifest files is intended as an
-alternative to session files (see :ref:`Sharing Proof Results with Others`).
 
 GNATprove and Manual Proof
 --------------------------
