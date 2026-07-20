@@ -4,3 +4,17 @@ Require Import BuiltIn.
 Require BuiltIn.
 Require int.Int.
 Require int.Power.
+
+(* Why3 goal *)
+Definition pow2 : Numbers.BinNums.Z -> Numbers.BinNums.Z.
+Proof.
+exact (int.Power.power 2).
+Defined.
+
+(* Why3 goal *)
+Lemma Pow2_def :
+  forall (x:Numbers.BinNums.Z), ((pow2 x) = (int.Power.power 2%Z x)).
+Proof.
+intros x.
+reflexivity.
+Qed.
