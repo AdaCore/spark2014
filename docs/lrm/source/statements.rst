@@ -549,6 +549,73 @@ Attribute Loop_Entry
       end; -- ...]
 
 
+.. index:: Loop_Index
+
+Attribute Loop_Index
+^^^^^^^^^^^^^^^^^^^^
+
+.. container:: heading
+
+   Static Semantics
+
+
+1. For a prefix *X* that denotes the loop parameter of a loop with an array
+   component iterator or a container element iterator based on the Iterable
+   aspect, the following attribute is defined:
+
+   ::
+
+      X'Loop_Index
+
+   If *X* denotes the loop parameter of a loop with an array component iterator,
+   the following attribute is also defined:
+
+   ::
+
+      X'Loop_Index(N)
+
+
+2. If X is the loop parameter of a loop with an array component iterator,
+   X'Loop_Index denotes a constant object of the first index type of the
+   iterable_name.
+   [The value of this constant is the first index of the loop parameter in
+   the current iteration.]
+
+   X'Loop_Index(N) denotes a constant object of the N-th index type of the
+   iterable_name.
+   [The value of this constant is the N-th index of the loop parameter in
+   the current iteration.]
+
+3. If X is the loop parameter of a container element iterator, X'Loop_Index
+   denotes a constant object of the iteration cursor subtype of the
+   iterable_name.
+   [The value of this constant is the cursor corresponding to the current loop
+   iteration.]
+
+
+.. container:: heading
+
+   Legality Rules
+
+4. X'Loop_Index and X'Loop_Index(N) shall not occur in the declaration or body
+   of a subprogram or package declared directly or indirectly inside the
+   corresponding loop.
+
+
+.. container:: heading
+
+   Dynamic Semantics
+
+5. During the execution of the body of a loop statement with an array component
+   iterator, X'Loop_Index stands for the first index of
+   the array component designated by X and X'Loop_Index(N)
+   stands for the N-th index of the array component designated by X.
+
+6. During the execution of the body of a loop with a container element
+   iterator, X'Loop_Index stands for the cursor variable introduced in the
+   canonical expansion of loops based on the Iterable aspect.
+
+
 Block Statements
 ----------------
 
