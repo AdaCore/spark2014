@@ -1821,10 +1821,23 @@ Note that a function with side effects is also a volatile function (see section
 3. [Redundant: A function with side effects may have a ``mode_selector`` of
    Output or In_Out in its Global aspect.]
 
-4. A call to a function with side effects may only occur as the [right-hand
-   side] expression of an assignment statement or of a local object declaration
-   witout a block. [Redundant: In particular,
-   functions with side effects cannot be called inside assertions.]
+4. A call to a function with side effects may only occur as one of
+
+   * the [right-hand side] expression of an assignment statement
+
+   * the initialization expression of a local object declaration
+     without a block, or of an ``extended_return_object_declaration``
+
+   * the expression of a ``return_statement``
+
+   * The condition of a ``if_statement``
+
+   * The selecting expression of a ``case_statement``
+
+   * The condition of an ``exit_statement`` or ``continue_statement``
+
+   [Redundant: In particular, functions with side effects cannot be called
+    inside assertions.]
 
 5. A function with side effects shall not have a Pure_Function aspect or
    pragma.

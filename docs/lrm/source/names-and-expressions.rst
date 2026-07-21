@@ -468,8 +468,11 @@ Expressions
 .. index:: side effects
 
 An expression is said to be *side-effect free* if the evaluation of the
-expression does not update any object.  The evaluation of an expression
-free from side effects only retrieves or computes a value.
+expression does not update any object, and completes normally. The evaluation
+of an expression free from side effects only retrieves or computes a value.
+[Side effects in expression only come from calls to functions with
+side effects. In particular, raise expressions are considered to be
+side-effect free due to verification rules ensuring they are unreachable]
 
 .. container:: heading
 
@@ -480,8 +483,8 @@ free from side effects only retrieves or computes a value.
    with side effects (see section :ref:`Functions With Side Effects`).
    [Strictly speaking, this "rule" is a consequence of other rules, most
    notably the rule that a function without side effects cannot have outputs
-   other than its result, and that calls to function with side effectss are not
-   subexpressions.]
+   other than its result, and that calls to function with side effects are not
+   subexpressions]
 
 .. index:: expression with a variable input; disallowed contexts
 

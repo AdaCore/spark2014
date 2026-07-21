@@ -19,8 +19,8 @@ simplifications to Ada. The most notable simplifications are:
 
 * All expressions (including function calls) are free of side effects, with the
   exception of calls to so-called functions with side effects (see :ref:`Aspect
-  Side_Effects`) which can only appear as the right-hand side of
-  assignments. Allowing functions with side effects everywhere could lead to
+  Side_Effects`) which can only appear at the toplevel expressions in restricted
+  locations. Allowing functions with side effects everywhere could lead to
   non-deterministic evaluation due to conflicting side effects in
   sub-expressions of an enclosing expression. Allowing all functions to have
   side effects would conflict with the need to treat functions mathematically
