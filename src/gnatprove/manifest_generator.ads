@@ -32,7 +32,7 @@ package Manifest_Generator is
    --  unit's .spark file and skipping the units whose file does not exist.
    --  The manifests are written into Output_Dir. Each generated file is named
    --  after the Ada name of the unit (and entities are attributed to it)
-   --  rather than after the source file, so generation works under a
+   --  rather than after the source file, so generation works also under a
    --  non-default naming scheme.
 
 end Manifest_Generator;

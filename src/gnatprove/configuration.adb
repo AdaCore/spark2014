@@ -1505,11 +1505,11 @@ package body Configuration is
    is
       Opt_File : constant String :=
         Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
-          (Phase          => Phase,
-           Obj_Dir        => Obj_Dir,
-           Why3_Dir       => Why3_Dir,
-           Unit_Name      => File_Specific_Key (Unit),
-           Proof_Manifest => Proof_Manifest_For_Unit (String (Unit.Name)));
+          (Phase           => Phase,
+           Obj_Dir         => Obj_Dir,
+           Why3_Dir        => Why3_Dir,
+           Source_Path_Key => File_Specific_Key (Unit),
+           Proof_Manifest  => Proof_Manifest_For_Unit (String (Unit.Name)));
    begin
       Opt_File_Set.Include (Opt_File);
       return Opt_File;
@@ -1523,19 +1523,19 @@ package body Configuration is
      (Unit  : GPR2.Build.Compilation_Unit.Object;
       Phase : Gnat2Why_Opts.Writing.Gnat2Why_Phase) return String
    is
-      Unit_Name : constant String := File_Specific_Key (Unit);
-      Obj_Dir   : constant String :=
+      Source_Path_Key : constant String := File_Specific_Key (Unit);
+      Obj_Dir         : constant String :=
         String (Unit.Owning_View.Object_Directory.Value);
-      Why3_Dir  : constant String :=
+      Why3_Dir        : constant String :=
         (if Phase = Gnat2Why_Opts.Writing.Translation then Obj_Dir else "");
    begin
       return
         Gnat2Why_Opts.Writing.Opt_File_Name
-          (Phase          => Phase,
-           Obj_Dir        => Obj_Dir,
-           Why3_Dir       => Why3_Dir,
-           Unit_Name      => Unit_Name,
-           Proof_Manifest => Proof_Manifest_For_Unit (String (Unit.Name)));
+          (Phase           => Phase,
+           Obj_Dir         => Obj_Dir,
+           Why3_Dir        => Why3_Dir,
+           Source_Path_Key => Source_Path_Key,
+           Proof_Manifest  => Proof_Manifest_For_Unit (String (Unit.Name)));
    end Extra_Args_File_Name_For_Unit;
 
    -----------------

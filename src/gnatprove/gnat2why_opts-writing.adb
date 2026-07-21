@@ -40,11 +40,11 @@ package body Gnat2Why_Opts.Writing is
    -------------------
 
    function Opt_File_Name
-     (Phase          : Gnat2Why_Phase;
-      Obj_Dir        : String;
-      Why3_Dir       : String;
-      Unit_Name      : String;
-      Proof_Manifest : Manifest_Subprogram_Vectors.Vector) return String
+     (Phase           : Gnat2Why_Phase;
+      Obj_Dir         : String;
+      Why3_Dir        : String;
+      Source_Path_Key : String;
+      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector) return String
    is
       Hash_Context : Blake3_Context;
       File_Name    : String (1 .. 12);
@@ -151,7 +151,7 @@ package body Gnat2Why_Opts.Writing is
 
       declare
          FS : Configuration.File_Specific renames
-           Configuration.File_Specific_Map (Unit_Name);
+           Configuration.File_Specific_Map (Source_Path_Key);
       begin
          Hash
            (Check_Counterexamples_Name,
@@ -187,11 +187,11 @@ package body Gnat2Why_Opts.Writing is
    ------------------------------------
 
    function Pass_Extra_Options_To_Gnat2why
-     (Phase          : Gnat2Why_Phase;
-      Obj_Dir        : String;
-      Why3_Dir       : String;
-      Unit_Name      : String;
-      Proof_Manifest : Manifest_Subprogram_Vectors.Vector) return String
+     (Phase           : Gnat2Why_Phase;
+      Obj_Dir         : String;
+      Why3_Dir        : String;
+      Source_Path_Key : String;
+      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector) return String
    is
       function To_JSON (SL : String_Lists.List) return JSON_Array;
       function To_JSON
@@ -263,7 +263,8 @@ package body Gnat2Why_Opts.Writing is
       end To_JSON;
 
       Result : constant String :=
-        Opt_File_Name (Phase, Obj_Dir, Why3_Dir, Unit_Name, Proof_Manifest);
+        Opt_File_Name
+          (Phase, Obj_Dir, Why3_Dir, Source_Path_Key, Proof_Manifest);
 
    begin
       --  Skip writing if a file with the same content hash already exists
@@ -347,7 +348,7 @@ package body Gnat2Why_Opts.Writing is
 
          declare
             FS : Configuration.File_Specific renames
-              Configuration.File_Specific_Map (Unit_Name);
+              Configuration.File_Specific_Map (Source_Path_Key);
          begin
             Set_Field
               (Obj, Check_Counterexamples_Name, FS.Check_Counterexamples);

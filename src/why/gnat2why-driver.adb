@@ -400,7 +400,7 @@ package body Gnat2Why.Driver is
       FD        : Ada.Text_IO.File_Type;
       File_Name : constant String :=
         Ada.Directories.Compose
-          (Name => Unit_Name, Extension => VC_Kinds.SPARK_Suffix);
+          (Name => Unit_File_Name, Extension => VC_Kinds.SPARK_Suffix);
       Full      : constant JSON_Value := Create_Object;
    begin
       Set_Field (Full, "spark", Get_SPARK_JSON);
@@ -440,7 +440,7 @@ package body Gnat2Why.Driver is
       FD        : Ada.Text_IO.File_Type;
       File_Name : constant String :=
         Ada.Directories.Compose
-          (Name => Unit_Name, Extension => VC_Kinds.SPARK_Error_Suffix);
+          (Name => Unit_File_Name, Extension => VC_Kinds.SPARK_Error_Suffix);
       Full      : constant JSON_Value := Create_Object;
    begin
       Set_Field (Full, "warn_error", Create (Warnings_Errors));
@@ -1147,7 +1147,7 @@ package body Gnat2Why.Driver is
          Value =>
            Ada.Directories.Compose
              (Name      =>
-                Unit_Name
+                Unit_File_Name
                 & (if Gnat2Why_Args.Global_Gen_Mode
                    then "_phase1"
                    else "_phase2")
@@ -1158,7 +1158,7 @@ package body Gnat2Why.Driver is
          Value =>
            Ada.Directories.Compose
              (Name      =>
-                Unit_Name
+                Unit_File_Name
                 & (if Gnat2Why_Args.Global_Gen_Mode
                    then "_phase1"
                    else "_phase2"),
