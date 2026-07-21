@@ -187,14 +187,36 @@ the reading and writing of that file.
 The switch ``Global_Gen_Mode`` dictates if gnat2why is in global-generation
 mode or in analysis mode.
 
+Proof manifests are named after, and matched to, the unit they describe by that
+unit's *manifest stem*: its dot-separated Ada name, lower-cased, with the dots
+written as dashes (so ``Foo.Bar`` becomes ``foo-bar``). The Ada unit name is
+taken from the driver rather than recovered from the source file name, so the
+stem is stable under a non-default naming scheme, where a unit's name and the
+name of the file it lives in differ.
+
+The per-unit ``.spark`` artifact is instead named after its source file base
+name, so the ``.spark`` file and the manifest of the same unit share a stem
+only under the default naming scheme. The two rules differ on purpose, because
+the artifacts are consumed differently. A ``.spark`` file is tool-to-tool:
+``gnat2why`` writes it and ``gnatprove`` reads it back, and both derive the name
+from the same physical source file, so no human ever has to predict it and the
+two ends cannot disagree. A manifest is user-facing: ``--proof-manifest-dir``
+reads hand-written, version-controlled files, so the name has to be one the
+author can pick from the unit alone. The Ada unit name is that stable, semantic
+identity (the name that appears in ``with`` clauses), independent of which file
+the unit lives in, of the spec/body/main-part split, and of multi-unit sources
+that would otherwise force a source-file index suffix. Naming manifests after
+the source file would leak these build-layout details into an artifact a person
+maintains by hand, which is why manifests use the unit name even though
+``.spark`` files do not.
+
 The ``--proof-manifest-dir`` switch is parsed by ``gnatprove`` as an invocation
-option. It designates a directory containing versioned TOML files named after
-the units they describe, using the same stem convention as ``.spark``
-artifacts. Each file is checked before analysis actions are launched, and the
-proof-manifest rules relevant to each unit are serialized into that
-unit's ``-gnates`` JSON options file for analysis-mode ``gnat2why``
-invocations, together with the manifest source file path and best available
-entry location.
+option. It designates a directory containing versioned TOML files, one per
+unit, named by the unit's manifest stem. Each file is checked before analysis
+actions are launched, and the proof-manifest rules relevant to each unit are
+serialized into that unit's ``-gnates`` JSON options file for analysis-mode
+``gnat2why`` invocations, together with the manifest source file path and best
+available entry location.
 Manifest parsing, schema checks, and semantic sanity checks performed before
 analysis are fatal and are implemented in ``gnatprove``. Before serialization,
 entries are sorted by their matching identity so that directory traversal order
@@ -227,15 +249,15 @@ default options. Later pipeline stages consume already-normalized policy data;
 
 The ``--generate-manifest-dir=DIR`` switch is a separate explicit write mode. It
 does not try to discover stale ``.spark`` files by scanning the object tree.
-Instead, after a successful analysis run, ``gnatprove`` passes the exact list
-of ``.spark`` files produced or reused by the action graph to the manifest
-generator. The generator writes one TOML file per existing ``.spark`` file in
-``DIR``, using the same stem convention as ``--proof-manifest-dir``. Generation is
-based on the proof attempts and manifest identity metadata stored in each
-``.spark`` file, and applies documented compactness heuristics such as a
-per-unit default prover, rounded step buckets, and explicit rules only when
-the unit default is not precise enough. Generated rule paths use Ada-style
-source casing even though the TOML file names follow the ``.spark`` file stem.
+Instead, after a successful analysis run, ``gnatprove`` passes the set of units
+analyzed by the action graph to the manifest generator. The generator derives
+each unit's ``.spark`` file and writes one TOML file per existing ``.spark``
+file in ``DIR``, named by the unit's manifest stem and with entities attributed
+to that unit. Generation is based on the proof attempts and manifest identity
+metadata stored in each ``.spark`` file, and applies documented compactness
+heuristics such as a per-unit default prover, rounded step buckets, and explicit
+rules only when the unit default is not precise enough. Generated rule paths use
+Ada-style source casing.
 The unit's own entity (its package or top-level subprogram) shares the bare unit
 path used by the default rule; when it needs its own options it is emitted as a
 non-hierarchical entry carrying its kind, so it overrides the default for that

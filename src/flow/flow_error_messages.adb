@@ -1055,7 +1055,7 @@ package body Flow_Error_Messages is
 
    function Fresh_Trace_File return String is
       Result : constant String :=
-        Unit_Name & "__flow__" & Image (File_Counter, 1) & ".trace";
+        Unit_File_Name & "__flow__" & Image (File_Counter, 1) & ".trace";
    begin
       File_Counter := File_Counter + 1;
       return Result;

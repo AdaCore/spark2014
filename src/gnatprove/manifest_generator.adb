@@ -1242,14 +1242,22 @@ package body Manifest_Generator is
    function Output_File
      (Data : Unit_Proof_Data; Output_Dir : String) return String
    is
-      Base : constant String :=
-        Ada.Directories.Base_Name (To_String (Data.SPARK_File));
-      Stem : constant String :=
-        (if Base'Length > 6
-           and then Base (Base'Last - 5 .. Base'Last) = ".spark"
-         then Base (Base'First .. Base'Last - 6)
-         else Base);
+      --  Name the file after the Ada unit, using the stem convention shared
+      --  with the manifest reader: the lower-case dot-separated unit name with
+      --  dots written as dashes. Deriving the stem from the unit name rather
+      --  than from the source file name keeps generation correct under a
+      --  non-default naming scheme, where the two differ. The lower-casing is
+      --  applied here so the stem is canonical regardless of the case of the
+      --  unit name reaching this point.
+      Stem : String :=
+        Ada.Characters.Handling.To_Lower (To_String (Data.Unit_Path));
    begin
+      for C of Stem loop
+         if C = '.' then
+            C := '-';
+         end if;
+      end loop;
+
       return Ada.Directories.Compose (Output_Dir, Stem, "toml");
    end Output_File;
 

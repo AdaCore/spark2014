@@ -1220,10 +1220,14 @@ package SPARK_Util is
    --  If the current file contains multiple units, add a suffix to S that
    --  corresponds to the currently analyzed unit.
 
-   function Unit_Name return String
+   function Unit_File_Name return String
    is (Append_Multiple_Index
          (Ada.Directories.Base_Name
             (Get_Name_String (Unit_File_Name (Main_Unit)))));
+   --  Base name of the source file of the unit being analyzed (with a
+   --  multiple-units index suffix where relevant). This is a file name, not
+   --  the Ada unit name, so it follows the source file under a non-default
+   --  naming scheme.
 
    function File_Name (Loc : Source_Ptr) return String
    is (Get_Name_String (File_Name (Get_Source_File_Index (Loc))));

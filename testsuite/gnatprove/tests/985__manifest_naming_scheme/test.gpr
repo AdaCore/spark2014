@@ -1,0 +1,16 @@
+project Test is
+
+   --  Map the unit Pkg to source files whose names bear no relation to the
+   --  unit name, so that proof manifests (which encode the unit name) can only
+   --  be resolved from the unit, not from the source file name.
+
+   package Naming is
+      for Spec ("Pkg") use "unit_spec.ada";
+      for Body ("Pkg") use "unit_body.ada";
+   end Naming;
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnatws", "-gnat2022");
+   end Compiler;
+
+end Test;

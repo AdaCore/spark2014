@@ -1,0 +1,18 @@
+project Test is
+
+   --  Map the child unit Pkg.Child to source files whose names bear no
+   --  relation to the unit name, so that a proof manifest (which encodes the
+   --  unit name) can only be resolved from the unit, not from the source file
+   --  name.
+
+   package Naming is
+      for Spec ("Pkg")       use "parent_spec.ada";
+      for Spec ("Pkg.Child") use "child_spec.ada";
+      for Body ("Pkg.Child") use "child_impl.ada";
+   end Naming;
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnatws", "-gnat2022");
+   end Compiler;
+
+end Test;

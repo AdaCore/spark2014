@@ -264,7 +264,7 @@ package body Flow is
    procedure Write_Flow_GG_To_JSON_File (Arr : JSON_Array) is
       FD        : Ada.Text_IO.File_Type;
       File_Name : constant String :=
-        Ada.Directories.Compose (Name => Unit_Name, Extension => "gg");
+        Ada.Directories.Compose (Name => Unit_File_Name, Extension => "gg");
       Full      : constant JSON_Value := Create_Object;
 
    begin
