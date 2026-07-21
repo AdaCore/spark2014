@@ -1764,7 +1764,7 @@ red_black_trees.adb:167:24: medium: loop invariant might not be preserved by an 
 red_black_trees.adb:167:29: info: index check proved (CVC5: 4 VC)
 red_black_trees.adb:177:26: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:179:26: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:185:56: medium: range check might fail, cannot prove lower bound for Count_L.Count + 1 [reason for check: result of addition must fit in the target type of the assignment]
+red_black_trees.adb:185:56: info: range check proved (CVC5: 2 VC)
 red_black_trees.adb:200:22: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:201:27: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:214:45: info: precondition proved (CVC5: 1 VC)
@@ -1792,17 +1792,17 @@ red_black_trees.adb:249:29: medium: assertion might fail, cannot prove Nb_Blacks
 red_black_trees.adb:249:44: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:250:26: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:250:45: info: precondition proved (CVC5: 4 VC)
+red_black_trees.adb:253:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+red_black_trees.adb:253:16: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:254:22: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:255:30: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:256:35: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:257:24: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:257:24: medium: loop invariant might fail in first iteration, cannot prove Nb_Blacks (T) (I).Count = Nb_Blacks (T_Old) (I).Count
-red_black_trees.adb:257:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Nb_Blacks (T) (I).Count = Nb_Blacks (T_Old) (I).Count
 red_black_trees.adb:257:50: info: precondition proved (CVC5: 2 VC)
+red_black_trees.adb:259:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:260:22: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:261:30: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:262:24: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:262:24: medium: loop invariant might fail in first iteration, cannot prove Nb_Blacks (T) (I).Status
 red_black_trees.adb:262:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Nb_Blacks (T) (I).Status
 red_black_trees.adb:276:45: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:279:18: info: precondition proved (CVC5: 1 VC)
@@ -1817,7 +1817,7 @@ red_black_trees.adb:290:34: info: index check proved (CVC5: 2 VC)
 red_black_trees.adb:290:34: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:293:33: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:294:33: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:296:14: medium: postcondition might fail
+red_black_trees.adb:296:14: info: postcondition proved (CVC5: 1 VC)
 red_black_trees.adb:307:19: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:308:25: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:310:27: info: precondition proved (CVC5: 4 VC)
@@ -1852,18 +1852,18 @@ red_black_trees.adb:348:15: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:349:08: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:349:28: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:349:28: info: range check proved (CVC5: 2 VC)
-red_black_trees.adb:350:15: medium: precondition might fail, cannot prove Model (T) (I).K
+red_black_trees.adb:350:15: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:350:31: info: range check proved (CVC5: 2 VC)
 red_black_trees.adb:350:57: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:351:23: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:352:15: medium: precondition might fail, cannot prove Model (T) (I).K
+red_black_trees.adb:352:15: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:352:31: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:352:31: info: range check proved (CVC5: 2 VC)
 red_black_trees.adb:357:66: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:358:28: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:359:22: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:360:22: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:360:46: medium: precondition might fail, cannot prove Model (T) (I).K
+red_black_trees.adb:360:46: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:363:14: medium: postcondition might fail
 red_black_trees.adb:365:34: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:365:34: info: range check proved (CVC5: 2 VC)
@@ -1918,25 +1918,25 @@ red_black_trees.adb:429:43: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:431:28: info: index check proved (CVC5: 2 VC)
 red_black_trees.adb:431:28: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:432:28: info: index check proved (CVC5: 2 VC)
-red_black_trees.adb:432:28: medium: precondition might fail, cannot prove Model (T) (I).K
+red_black_trees.adb:432:28: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:432:48: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:432:48: info: range check proved (CVC5: 2 VC)
 red_black_trees.adb:433:15: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:434:08: medium: precondition might fail, cannot prove Model (T) (I).K
+red_black_trees.adb:434:08: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:434:28: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:434:28: info: range check proved (CVC5: 2 VC)
-red_black_trees.adb:436:21: medium: precondition might fail, cannot prove Model (T) (I).K
+red_black_trees.adb:436:21: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:436:37: info: range check proved (CVC5: 2 VC)
 red_black_trees.adb:436:63: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:437:21: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:438:15: medium: precondition might fail, cannot prove Model (T) (I).K
+red_black_trees.adb:438:15: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:438:31: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:438:31: info: range check proved (CVC5: 2 VC)
 red_black_trees.adb:443:66: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:444:28: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:445:22: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:446:22: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:446:46: medium: precondition might fail, cannot prove Model (T) (I).K
+red_black_trees.adb:446:46: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:448:24: info: index check proved (CVC5: 2 VC)
 red_black_trees.adb:448:24: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:451:28: info: precondition proved (CVC5: 2 VC)
@@ -1987,7 +1987,7 @@ red_black_trees.adb:510:10: info: initialization of "Y" proved
 red_black_trees.adb:512:28: info: for "T" before the call at red_black_trees.ads:21
 red_black_trees.adb:512:28: info: invariant check proved (CVC5: 1 VC)
 red_black_trees.adb:515:07: info: precondition proved (CVC5: 1 VC)
-red_black_trees.adb:517:10: medium: precondition might fail, cannot prove Model (T.Struct) (I).K [possible fix: call at line 515 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:517:10: medium: precondition might fail, cannot prove Peek (T_Old.Struct, I, D) = Peek (T.Struct, I, D) or else (Peek (T_Old.Struct, I, D) = Empty and then not Model (T_Old.Struct) (Peek (T.Struct, I, D)).K) [possible fix: call at line 515 should mention T (for argument T) in a postcondition]
 red_black_trees.adb:520:16: info: index check proved (CVC5: 2 VC)
 red_black_trees.adb:521:22: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:521:22: medium: assertion might fail [possible fix: call at line 515 should mention T (for argument T) and I (for argument X) in a postcondition]
@@ -2009,7 +2009,7 @@ red_black_trees.adb:539:33: info: loop invariant initialization proved (CVC5: 1 
 red_black_trees.adb:539:33: medium: loop invariant might not be preserved by an arbitrary iteration
 red_black_trees.adb:539:33: medium: precondition might fail
 red_black_trees.adb:539:51: info: index check proved (CVC5: 4 VC)
-red_black_trees.adb:540:33: medium: loop invariant might fail in first iteration
+red_black_trees.adb:540:33: info: loop invariant initialization proved (CVC5: 1 VC)
 red_black_trees.adb:540:33: medium: loop invariant might not be preserved by an arbitrary iteration
 red_black_trees.adb:541:33: medium: loop invariant might fail in first iteration
 red_black_trees.adb:541:33: medium: loop invariant might not be preserved by an arbitrary iteration
@@ -2022,9 +2022,9 @@ red_black_trees.adb:549:33: medium: loop invariant might not be preserved by an 
 red_black_trees.adb:550:33: info: loop invariant initialization proved (CVC5: 1 VC)
 red_black_trees.adb:550:33: medium: loop invariant might not be preserved by an arbitrary iteration
 red_black_trees.adb:553:13: medium: precondition might fail
-red_black_trees.adb:553:33: medium: range check might fail, cannot prove lower bound for Parent (T.Struct, X) [reason for check: input value must fit in parameter type]
-red_black_trees.adb:553:51: medium: range check might fail, cannot prove lower bound for X [reason for check: input value must fit in parameter type]
-red_black_trees.adb:557:18: medium: precondition might fail, cannot prove Size (T) /= 0
+red_black_trees.adb:553:33: info: range check proved (CVC5: 2 VC)
+red_black_trees.adb:553:51: info: range check proved (CVC5: 2 VC)
+red_black_trees.adb:557:18: medium: precondition might fail, cannot prove Model (T) (I).K
 red_black_trees.adb:557:34: medium: range check might fail, cannot prove lower bound for Parent (T.Struct, Parent (T.Struct, X)) [reason for check: input value must fit in parameter type]
 red_black_trees.adb:557:52: info: range check proved (CVC5: 2 VC)
 red_black_trees.adb:557:70: info: range check proved (CVC5: 2 VC)
@@ -2071,7 +2071,7 @@ red_black_trees.adb:605:42: medium: array index check might fail [reason for che
 red_black_trees.adb:606:27: medium: assertion might fail, cannot prove T.Color (I) = Black
 red_black_trees.adb:607:31: medium: assertion might fail, cannot prove not Contains (S1, E) [possible fix: precondition of subprogram at red_black_trees.ads:27 should mention V]
 red_black_trees.adb:607:31: medium: in inlined expression function body at tree_model.ads:85
-red_black_trees.adb:613:18: medium: precondition might fail, cannot prove Size (T) /= 0
+red_black_trees.adb:613:18: medium: precondition might fail, cannot prove Model (T) (I).K
 red_black_trees.adb:613:34: medium: range check might fail, cannot prove lower bound for Parent (T.Struct, Parent (T.Struct, X)) [reason for check: input value must fit in parameter type]
 red_black_trees.adb:613:52: info: range check proved (CVC5: 2 VC)
 red_black_trees.adb:613:70: info: range check proved (CVC5: 2 VC)

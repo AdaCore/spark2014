@@ -18,12 +18,12 @@ dns_table_pkg.adb:37:14: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:38:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 dns_table_pkg.adb:44:16: info: implicit aspect Always_Terminates on "Same" has been proved, subprogram will terminate
 dns_table_pkg.adb:45:62: info: index check proved (CVC5: 2 VC)
-dns_table_pkg.adb:45:70: medium: array index check might fail [reason for check: value must be a valid index into the array]
+dns_table_pkg.adb:45:70: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:47:16: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
+dns_table_pkg.adb:57:16: info: loop invariant initialization proved (CVC5: 3 VC)
 dns_table_pkg.adb:57:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Val <= (I - 1)*Character'Pos (Character'Last)
-dns_table_pkg.adb:59:19: medium: loop invariant might fail in first iteration, cannot prove Character'Pos (DomainName (Q)) <= 255 [possible fix: subprogram at line 47 should mention DomainName in a precondition]
-dns_table_pkg.adb:61:24: medium: overflow check might fail, cannot prove lower bound for Val + Character'Pos (DomainName (I)) [reason for check: result of addition must fit in a 32-bits machine integer]
-dns_table_pkg.adb:61:35: medium: range check might fail, cannot prove lower bound for Character'Pos (DomainName (I)) [possible fix: subprogram at line 47 should mention DomainName in a precondition]
+dns_table_pkg.adb:61:24: medium: overflow check might fail, cannot prove upper bound for Val + Character'Pos (DomainName (I)) [reason for check: result of addition must fit in a 32-bits machine integer]
+dns_table_pkg.adb:61:35: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:63:22: info: division check proved (CVC5: 1 VC)
 dns_table_pkg.adb:72:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:73:10: info: initialization of "Lower_DomainName" proved
@@ -982,7 +982,7 @@ zone_file_parser.adb:737:80: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:737:86: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:737:90: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:748:16: info: loop invariant initialization proved (CVC5: 7 VC)
-zone_file_parser.adb:755:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove BlockLengthMap(J) >= Rr_Type.Nsec_Record_Type.blockLengthValue'first
+zone_file_parser.adb:748:16: info: loop invariant preservation proved (CVC5: 7 VC)
 zone_file_parser.adb:760:29: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:766:46: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:769:59: info: range check proved (CVC5: 2 VC)
@@ -993,13 +993,13 @@ zone_file_parser.adb:773:68: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:782:86: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:782:92: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:782:96: info: division check proved (CVC5: 1 VC)
-zone_file_parser.adb:802:16: medium: assertion might fail, cannot prove BlockLengthMap (J) >= RR_Type.Nsec_Record_Type.blockLengthValue'First
+zone_file_parser.adb:800:13: info: assertion proved (CVC5: 5 VC)
 zone_file_parser.adb:812:16: info: loop invariant initialization proved (CVC5: 6 VC)
-zone_file_parser.adb:812:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove NumberOfBlocks >= 1
+zone_file_parser.adb:812:16: info: loop invariant preservation proved (CVC5: 6 VC)
 zone_file_parser.adb:824:49: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:825:30: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:826:30: info: index check proved (CVC5: 2 VC)
-zone_file_parser.adb:843:13: medium: assertion might fail, cannot prove NumberOfBlocks >= 1
+zone_file_parser.adb:840:13: info: assertion proved (CVC5: 4 VC)
 zone_file_parser.adb:851:14: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:855:16: info: loop invariant initialization proved (CVC5: 4 VC)
 zone_file_parser.adb:855:16: info: loop invariant preservation proved (CVC5: 4 VC)
@@ -1122,9 +1122,9 @@ zone_file_parser.adb:1348:44: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1352:46: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:1352:46: info: loop invariant preservation proved (CVC5: 3 VC)
 zone_file_parser.adb:1356:43: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-zone_file_parser.adb:1356:61: medium: overflow check might fail, cannot prove lower bound for (I + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
-zone_file_parser.adb:1356:66: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
-zone_file_parser.adb:1356:66: medium: overflow check might fail, cannot prove lower bound for (I + 1) - BegIdx [reason for check: result of subtraction must fit in a 32-bits machine integer]
+zone_file_parser.adb:1356:61: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1356:66: info: index check proved (CVC5: 2 VC)
+zone_file_parser.adb:1356:66: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1359:44: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1363:66: info: loop invariant initialization proved (CVC5: 1 VC)
 zone_file_parser.adb:1363:66: info: loop invariant preservation proved (CVC5: 1 VC)
