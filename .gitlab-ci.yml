@@ -415,9 +415,11 @@ pre-commit:
     - ln -s $ACI_SUBPROJECTS_ROOT/gnat gnat2why/gnat_src
     - make -C gnat2why setup
 
-# Run the commit-msg pre-commit hooks against every commit in the merge
-# request. These hooks are not exercised by the regular "pre-commit" job,
-# which only runs the default-stage hooks over the file diff.
+# Run the commit-message checks against every commit in the merge request.
+# These checks are not exercised by the regular "pre-commit" job, which only
+# runs the default-stage hooks over the file diff. The Issue-trailer check is
+# intentionally CI-only (it is not registered as a local git hook), so it is
+# invoked directly here rather than through pre-commit.
 commit-level-checks:
   interruptible: true
   services:
@@ -446,7 +448,5 @@ commit-level-checks:
             --hook-stage commit-msg \
             --commit-msg-filename .gitlab_commit_msg
 
-        pre-commit run check-issue-trailer \
-          --hook-stage commit-msg \
-          --commit-msg-filename .gitlab_commit_msg
+        python scripts/check_issue_trailer.py .gitlab_commit_msg
       done

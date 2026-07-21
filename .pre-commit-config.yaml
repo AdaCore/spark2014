@@ -44,11 +44,10 @@ repos:
     - id: black
   - repo: local
     hooks:
-      - id: check-issue-trailer
-        name: Check for Issue trailer in commit message
-        language: system
-        entry: python scripts/check_issue_trailer.py
-        stages: [commit-msg]
+      # The Issue-trailer check is deliberately not registered as a git hook
+      # here so that it does not block local commits. It is enforced in CI
+      # only, where scripts/check_issue_trailer.py is invoked directly against
+      # each commit message.
       - id: check-opt-syntax
         name: Check opt file syntax
         files: '\.opt$'
