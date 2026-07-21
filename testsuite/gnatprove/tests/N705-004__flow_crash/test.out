@@ -250,7 +250,7 @@ very_longs.adb:480:26: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:480:30: info: index check proved (CVC5: 2 VC)
 very_longs.adb:480:75: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:480:79: info: index check proved (CVC5: 2 VC)
-very_longs.adb:480:112: medium: range check might fail [reason for check: result of operation must be convertible to the target type of the conversion] [possible fix: loop at line 459 should mention Current_Borrow and Carry and U in a loop invariant]
+very_longs.adb:480:112: info: range check proved (CVC5: 2 VC)
 very_longs.adb:486:11: info: data dependencies proved
 very_longs.adb:487:11: info: flow dependencies proved
 very_longs.adb:489:10: info: initialization of "Carry" proved
@@ -283,7 +283,7 @@ very_longs.adb:516:25: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:516:66: info: index check proved (CVC5: 2 VC)
 very_longs.adb:517:07: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:518:12: info: discriminant check proved (CVC5: 1 VC)
-very_longs.adb:536:17: medium: range check might fail, cannot prove lower bound for J - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 524 should mention J in a loop invariant]
+very_longs.adb:536:17: info: range check proved (CVC5: 2 VC)
 very_longs.adb:540:11: info: range check proved (CVC5: 2 VC)
 very_longs.adb:540:58: info: cannot unroll loop (dynamic loop bounds) [unrolling-inlining-failures]
 very_longs.adb:541:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
