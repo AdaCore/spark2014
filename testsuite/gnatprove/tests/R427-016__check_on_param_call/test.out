@@ -114,6 +114,7 @@ formals_arr_split.adb:20:15: info: range check proved (CVC5: 2 VC), in call inli
 formals_arr_split.adb:23:14: info: add a contract to analyze it separately from calling contexts
 formals_arr_split.adb:23:14: info: local subprogram "P3" only analyzed in the context of calls [info-unrolling-inlining]
 formals_arr_split.adb:23:18: info: initialization of "A" proved
+formals_arr_split.adb:26:07: info: length check proved (CVC5: 3 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:26:07: medium: length check might fail, in call inlined at formals_arr_split.adb:54 [reason for check: array must be of the appropriate length]
 formals_arr_split.adb:26:09: info: length check proved (CVC5: 3 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:26:12: info: length check proved (CVC5: 3 VC), in call inlined at formals_arr_split.adb:54
@@ -133,7 +134,7 @@ formals_arr_split.adb:48:14: medium: length check might fail [reason for check: 
 formals_arr_split.adb:52:10: info: precondition proved (Trivial: 1 VC)
 formals_arr_split.adb:52:13: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type]
 formals_arr_split.adb:54:10: info: analyzing call to "P3" in context
-formals_arr_split.adb:54:24: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: call at line 42 should mention A (for argument V) in a postcondition]
+formals_arr_split.adb:54:14: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: call at line 42 should mention A (for argument V) in a postcondition]
 formals_arr_split_pred.adb:5:31: info: index check proved (CVC5: 2 VC)
 formals_arr_split_pred.adb:8:33: info: index check proved (CVC5: 2 VC)
 formals_arr_split_pred.adb:14:07: info: for inherited predicate at formals_arr_split_pred.adb:3
@@ -230,7 +231,7 @@ formals_rec_split.adb:49:14: medium: discriminant check might fail [possible fix
 formals_rec_split.adb:53:10: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:53:13: high: discriminant check might fail (e.g. when U = (D => False))
 formals_rec_split.adb:55:10: info: analyzing call to "P3" in context
-formals_rec_split.adb:55:19: medium: discriminant check might fail [possible fix: call at line 43 should mention A (for argument V) in a postcondition]
+formals_rec_split.adb:55:14: medium: discriminant check might fail [possible fix: call at line 43 should mention A (for argument V) in a postcondition]
 formals_rec_split_pred.adb:13:31: info: range check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:14:29: info: discriminant check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:16:34: info: range check proved (CVC5: 1 VC)
@@ -273,11 +274,13 @@ formals_rec_split_pred.adb:49:21: info: discriminant check proved (CVC5: 1 VC), 
 formals_rec_split_pred.adb:52:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split_pred.adb:52:14: info: local subprogram "P4" only analyzed in the context of calls [info-unrolling-inlining]
 formals_rec_split_pred.adb:54:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:83
+formals_rec_split_pred.adb:55:10: info: predicate check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:83
 formals_rec_split_pred.adb:55:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:83
 formals_rec_split_pred.adb:55:11: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:83
 formals_rec_split_pred.adb:59:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split_pred.adb:59:14: info: local subprogram "P5" only analyzed in the context of calls [info-unrolling-inlining]
 formals_rec_split_pred.adb:61:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:87
+formals_rec_split_pred.adb:62:10: info: predicate check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:87
 formals_rec_split_pred.adb:62:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:87
 formals_rec_split_pred.adb:62:11: medium: predicate check might fail, in call inlined at formals_rec_split_pred.adb:87
 formals_rec_split_pred.adb:67:22: info: discriminant check proved (CVC5: 1 VC)

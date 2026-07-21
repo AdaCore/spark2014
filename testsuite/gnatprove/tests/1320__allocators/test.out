@@ -54,8 +54,8 @@ allocator-base.adb:78:41: info: overflow check proved (CVC5: 2 VC), in instantia
 allocator-base.adb:78:56: info: index check proved (CVC5: 2 VC), in instantiation at test_base.ads:37
 allocator-base.adb:78:56: info: index check proved (CVC5: 2 VC), in instantiation at test_base.ads:62
 allocator-base.adb:78:56: info: range check proved (CVC5: 1 VC), in instantiation at test_base.ads:69
-allocator-base.adb:85:43: info: precondition proved (Z3: 1 VC), in instantiation at test_base.ads:37
-allocator-base.adb:85:43: info: precondition proved (Z3: 1 VC), in instantiation at test_base.ads:62
+allocator-base.adb:85:43: info: precondition proved (CVC5: 1 VC), in instantiation at test_base.ads:37
+allocator-base.adb:85:43: info: precondition proved (CVC5: 1 VC), in instantiation at test_base.ads:62
 allocator-base.adb:85:43: info: range check proved (CVC5: 1 VC), in instantiation at test_base.ads:69
 allocator-base.adb:85:49: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
 allocator-base.adb:85:49: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
@@ -77,10 +77,10 @@ allocator-base.adb:90:44: info: predicate check proved (CVC5: 1 VC), in instanti
 allocator-base.adb:90:44: info: range check proved (CVC5: 1 VC), in instantiation at test_base.ads:37
 allocator-base.adb:90:44: info: range check proved (CVC5: 1 VC), in instantiation at test_base.ads:62
 allocator-base.adb:90:44: info: range check proved (CVC5: 1 VC), in instantiation at test_base.ads:69
-allocator-base.adb:95:27: info: precondition proved (CVC5: 4 VC; Z3: 1 VC; altergo: 1 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:37
 allocator-base.adb:95:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
 allocator-base.adb:95:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
-allocator-base.adb:95:27: medium: precondition might fail, cannot prove Next (M1 (I)) = Next (M2 (I)), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:62
+allocator-base.adb:95:27: info: precondition proved (CVC5: 5 VC; altergo: 1 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:37
+allocator-base.adb:95:27: info: precondition proved (CVC5: 5 VC; altergo: 1 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:62
 allocator-base.adb:96:19: info: predicate check proved (Z3: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
 allocator-base.adb:96:19: info: predicate check proved (Z3: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
 allocator-base.adb:96:19: info: predicate check proved (Z3: 1 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:37
@@ -97,8 +97,8 @@ allocator-base.adb:96:31: info: range check proved (CVC5: 1 VC), in call inlined
 allocator-base.adb:96:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
 allocator-base.adb:96:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:37
 allocator-base.adb:96:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:62
-allocator-base.adb:97:27: info: precondition proved (CVC5: 2 VC; Z3: 4 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
-allocator-base.adb:97:27: info: precondition proved (CVC5: 2 VC; Z3: 4 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
+allocator-base.adb:97:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
+allocator-base.adb:97:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
 allocator-base.adb:97:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:37
 allocator-base.adb:97:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:62
 allocator-base.adb:98:19: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
@@ -117,9 +117,9 @@ allocator-base.adb:98:31: info: range check proved (CVC5: 1 VC), in call inlined
 allocator-base.adb:98:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
 allocator-base.adb:98:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:37
 allocator-base.adb:98:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:62
-allocator-base.adb:99:27: info: precondition proved (CVC5: 2 VC; Z3: 4 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
-allocator-base.adb:99:27: info: precondition proved (CVC5: 2 VC; Z3: 4 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:37
-allocator-base.adb:99:27: info: precondition proved (CVC5: 2 VC; Z3: 4 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:62
+allocator-base.adb:99:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
+allocator-base.adb:99:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:37
+allocator-base.adb:99:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:62
 allocator-base.adb:99:27: medium: precondition might fail, cannot prove Next (M1 (I)) = Next (M2 (I)), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
 allocator-base.adb:99:57: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
 allocator-base.adb:99:57: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
@@ -138,8 +138,8 @@ allocator-base.adb:99:69: info: range check proved (CVC5: 1 VC), in call inlined
 allocator-base.adb:99:69: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:37
 allocator-base.adb:99:69: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:285, in instantiation at test_base.ads:62
 allocator-base.adb:106:09: info: refined post proved (CVC5: 10 VC), in instantiation at test_base.ads:69
-allocator-base.adb:106:09: info: refined post proved (CVC5: 5 VC; Z3: 3 VC; altergo: 2 VC), in instantiation at test_base.ads:37
-allocator-base.adb:106:09: info: refined post proved (CVC5: 5 VC; Z3: 3 VC; altergo: 2 VC), in instantiation at test_base.ads:62
+allocator-base.adb:106:09: info: refined post proved (CVC5: 6 VC; Z3: 3 VC; altergo: 1 VC), in instantiation at test_base.ads:37
+allocator-base.adb:106:09: info: refined post proved (CVC5: 6 VC; Z3: 3 VC; altergo: 1 VC), in instantiation at test_base.ads:62
 allocator-base.adb:106:22: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
 allocator-base.adb:106:22: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
 allocator-base.adb:106:22: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
@@ -147,14 +147,14 @@ allocator-base.adb:108:32: info: predicate check proved (Trivial: 1 VC), in inst
 allocator-base.adb:108:32: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:62
 allocator-base.adb:108:32: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:69
 allocator-base.adb:108:41: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
-allocator-base.adb:108:41: info: precondition proved (CVC5: 4 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.adb:108:41: info: precondition proved (CVC5: 4 VC; altergo: 1 VC), in instantiation at test_base.ads:62
+allocator-base.adb:108:41: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.adb:108:41: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.adb:109:29: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:37
 allocator-base.adb:109:29: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:62
 allocator-base.adb:109:29: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:69
 allocator-base.adb:116:23: info: overflow check proved (CVC5: 2 VC), in instantiation at test_base.ads:69
-allocator-base.adb:120:40: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at test_base.ads:37
-allocator-base.adb:120:40: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at test_base.ads:62
+allocator-base.adb:120:40: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:37
+allocator-base.adb:120:40: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:62
 allocator-base.adb:120:40: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
 allocator-base.adb:120:58: info: predicate check proved (CVC5: 1 VC), in instantiation at test_base.ads:37
 allocator-base.adb:120:58: info: predicate check proved (CVC5: 1 VC), in instantiation at test_base.ads:62
@@ -179,8 +179,8 @@ allocator-base.adb:135:75: info: initialization check proved (CVC5: 2 VC), in in
 allocator-base.adb:135:75: info: initialization check proved (CVC5: 2 VC), in instantiation at test_base.ads:62
 allocator-base.adb:138:21: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_base.ads:37
 allocator-base.adb:138:21: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_base.ads:62
-allocator-base.adb:138:21: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_base.ads:37
-allocator-base.adb:138:21: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at test_base.ads:62
+allocator-base.adb:138:21: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_base.ads:37
+allocator-base.adb:138:21: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_base.ads:62
 allocator-base.adb:138:76: info: range check proved (CVC5: 4 VC), in instantiation at test_base.ads:37
 allocator-base.adb:138:76: info: range check proved (CVC5: 4 VC), in instantiation at test_base.ads:62
 allocator-base.adb:139:39: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at test_base.ads:37
@@ -254,8 +254,8 @@ allocator-base.adb:175:68: info: range check proved (CVC5: 4 VC), in instantiati
 allocator-base.adb:175:68: info: range check proved (CVC5: 4 VC), in instantiation at test_base.ads:62
 allocator-base.adb:176:61: info: range check proved (CVC5: 4 VC), in instantiation at test_base.ads:37
 allocator-base.adb:176:61: info: range check proved (CVC5: 4 VC), in instantiation at test_base.ads:62
-allocator-base.adb:179:24: info: loop invariant initialization proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at test_base.ads:37
-allocator-base.adb:179:24: info: loop invariant initialization proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at test_base.ads:62
+allocator-base.adb:179:24: info: loop invariant initialization proved (CVC5: 3 VC), in instantiation at test_base.ads:37
+allocator-base.adb:179:24: info: loop invariant initialization proved (CVC5: 3 VC), in instantiation at test_base.ads:62
 allocator-base.adb:179:24: info: loop invariant initialization proved (CVC5: 3 VC), in instantiation at test_base.ads:69
 allocator-base.adb:179:24: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at test_base.ads:37
 allocator-base.adb:179:24: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at test_base.ads:62
@@ -271,9 +271,9 @@ allocator-base.adb:185:43: info: precondition proved (CVC5: 2 VC), in instantiat
 allocator-base.adb:186:47: info: range check proved (CVC5: 2 VC), in instantiation at test_base.ads:69
 allocator-base.adb:186:49: info: initialization check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_base.ads:37
 allocator-base.adb:186:49: info: initialization check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at test_base.ads:62
+allocator-base.adb:189:24: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_base.ads:37
+allocator-base.adb:189:24: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_base.ads:62
 allocator-base.adb:189:24: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at test_base.ads:69
-allocator-base.adb:189:24: info: loop invariant initialization proved (Z3: 1 VC), in instantiation at test_base.ads:37
-allocator-base.adb:189:24: info: loop invariant initialization proved (Z3: 1 VC), in instantiation at test_base.ads:62
 allocator-base.adb:189:24: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_base.ads:37
 allocator-base.adb:189:24: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_base.ads:62
 allocator-base.adb:189:24: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at test_base.ads:69
@@ -283,8 +283,8 @@ allocator-base.adb:189:41: info: predicate check proved (Trivial: 2 VC), in inst
 allocator-base.adb:190:48: info: predicate check proved (Trivial: 2 VC), in instantiation at test_base.ads:37
 allocator-base.adb:190:48: info: predicate check proved (Trivial: 2 VC), in instantiation at test_base.ads:62
 allocator-base.adb:190:48: info: predicate check proved (Trivial: 2 VC), in instantiation at test_base.ads:69
-allocator-base.adb:191:46: info: precondition proved (CVC5: 4 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.adb:191:46: info: precondition proved (CVC5: 4 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at test_base.ads:62
+allocator-base.adb:191:46: info: precondition proved (CVC5: 6 VC), in instantiation at test_base.ads:37
+allocator-base.adb:191:46: info: precondition proved (CVC5: 6 VC), in instantiation at test_base.ads:62
 allocator-base.adb:191:46: info: precondition proved (CVC5: 6 VC), in instantiation at test_base.ads:69
 allocator-base.adb:191:60: info: predicate check proved (CVC5: 2 VC), in instantiation at test_base.ads:37
 allocator-base.adb:191:60: info: predicate check proved (CVC5: 2 VC), in instantiation at test_base.ads:62
@@ -341,8 +341,8 @@ allocator-base.adb:232:36: info: loop invariant initialization proved (Z3: 1 VC)
 allocator-base.adb:232:36: info: loop invariant initialization proved (Z3: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
 allocator-base.adb:232:36: medium: loop invariant might not be preserved by an arbitrary iteration, in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
 allocator-base.adb:232:36: medium: loop invariant might not be preserved by an arbitrary iteration, in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
-allocator-base.adb:232:53: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
-allocator-base.adb:232:53: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
+allocator-base.adb:232:53: info: precondition proved (CVC5: 4 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
+allocator-base.adb:232:53: info: precondition proved (CVC5: 4 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
 allocator-base.adb:232:69: info: predicate check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
 allocator-base.adb:232:69: info: predicate check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
 allocator-base.adb:232:69: info: range check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
@@ -372,13 +372,11 @@ allocator-base.adb:240:59: info: predicate check proved (CVC5: 2 VC), in call in
 allocator-base.adb:240:59: info: range check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
 allocator-base.adb:240:59: info: range check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
 allocator-base.adb:248:09: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
-allocator-base.adb:248:09: info: precondition proved (CVC5: 4 VC; Z3: 1 VC), in instantiation at test_base.ads:37
-allocator-base.adb:248:09: medium: in inlined expression function body at allocator-base.adb:76, in instantiation at test_base.ads:62
-allocator-base.adb:248:09: medium: precondition might fail, cannot prove C'Initialized, in instantiation at test_base.ads:62 [possible fix: subprogram at line 229 should mention Free and Memory in a precondition]
+allocator-base.adb:248:09: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.adb:248:09: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.adb:250:63: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
-allocator-base.adb:250:63: info: precondition proved (CVC5: 4 VC; Z3: 1 VC), in instantiation at test_base.ads:37
-allocator-base.adb:250:63: medium: in inlined expression function body at allocator-base.adb:76, in instantiation at test_base.ads:62
-allocator-base.adb:250:63: medium: precondition might fail, cannot prove C'Initialized, in instantiation at test_base.ads:62 [possible fix: subprogram at line 229 should mention Free and Memory in a precondition]
+allocator-base.adb:250:63: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.adb:250:63: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.adb:253:27: info: overflow check proved (CVC5: 2 VC), in instantiation at test_base.ads:69
 allocator-base.adb:253:33: info: overflow check proved (CVC5: 2 VC), in instantiation at test_base.ads:69
 allocator-base.adb:254:23: info: overflow check proved (CVC5: 2 VC), in instantiation at test_base.ads:69
@@ -395,20 +393,20 @@ allocator-base.adb:269:31: info: index check proved (CVC5: 4 VC), in instantiati
 allocator-base.adb:269:31: info: index check proved (CVC5: 4 VC), in instantiation at test_base.ads:62
 allocator-base.adb:269:58: info: index check proved (CVC5: 4 VC), in instantiation at test_base.ads:37
 allocator-base.adb:269:58: info: index check proved (CVC5: 4 VC), in instantiation at test_base.ads:62
-allocator-base.adb:269:62: info: initialization check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at test_base.ads:37
-allocator-base.adb:269:62: info: initialization check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at test_base.ads:62
+allocator-base.adb:269:62: info: initialization check proved (CVC5: 2 VC), in instantiation at test_base.ads:37
+allocator-base.adb:269:62: info: initialization check proved (CVC5: 2 VC), in instantiation at test_base.ads:62
 allocator-base.adb:269:72: info: overflow check proved (CVC5: 4 VC), in instantiation at test_base.ads:37
 allocator-base.adb:269:72: info: overflow check proved (CVC5: 4 VC), in instantiation at test_base.ads:62
 allocator-base.adb:273:28: info: assertion proved (CVC5: 5 VC), in instantiation at test_base.ads:37
 allocator-base.adb:273:28: info: assertion proved (CVC5: 5 VC), in instantiation at test_base.ads:62
-allocator-base.adb:276:18: info: assertion proved (CVC5: 1 VC; Z3: 4 VC), in instantiation at test_base.ads:37
+allocator-base.adb:276:18: info: assertion proved (CVC5: 3 VC; Z3: 2 VC), in instantiation at test_base.ads:37
+allocator-base.adb:276:18: info: assertion proved (CVC5: 3 VC; Z3: 2 VC), in instantiation at test_base.ads:62
 allocator-base.adb:277:22: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
 allocator-base.adb:277:22: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.adb:278:22: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
 allocator-base.adb:278:22: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
-allocator-base.adb:280:23: medium: assertion might fail, cannot prove (not Node_Reachability.Reachable (Free, Memory, I)), in instantiation at test_base.ads:62
-allocator-base.adb:280:44: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at test_base.ads:37
-allocator-base.adb:280:44: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at test_base.ads:62
+allocator-base.adb:280:44: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:37
+allocator-base.adb:280:44: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:62
 allocator-base.adb:280:62: info: predicate check proved (CVC5: 1 VC), in instantiation at test_base.ads:37
 allocator-base.adb:280:62: info: predicate check proved (CVC5: 1 VC), in instantiation at test_base.ads:62
 allocator-base.adb:280:62: info: range check proved (CVC5: 1 VC), in instantiation at test_base.ads:37
@@ -503,19 +501,18 @@ allocator-base.ads:105:57: info: predicate check proved (Trivial: 1 VC), in inst
 allocator-base.ads:105:57: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:69
 allocator-base.ads:107:08: medium: postcondition might fail, cannot prove Invariant, in instantiation at test_base.ads:62
 allocator-base.ads:108:17: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
-allocator-base.ads:108:17: info: precondition proved (CVC5: 4 VC; Z3: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:108:17: medium: in inlined expression function body at allocator-base.adb:76, in instantiation at test_base.ads:62
-allocator-base.ads:108:17: medium: precondition might fail, cannot prove C'Initialized, in instantiation at test_base.ads:62 [possible explanation: enclosing 'Old attribute reference is unconditionally evaluated on subprogram entry]
-allocator-base.ads:108:40: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:108:40: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:62
+allocator-base.ads:108:17: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.ads:108:17: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
+allocator-base.ads:108:40: info: precondition proved (CVC5: 3 VC; Z3: 2 VC), in instantiation at test_base.ads:37
+allocator-base.ads:108:40: info: precondition proved (CVC5: 3 VC; Z3: 2 VC), in instantiation at test_base.ads:62
 allocator-base.ads:111:13: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:37
 allocator-base.ads:111:13: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:62
 allocator-base.ads:111:30: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
-allocator-base.ads:111:30: info: precondition proved (CVC5: 4 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:111:30: info: precondition proved (CVC5: 4 VC; altergo: 1 VC), in instantiation at test_base.ads:62
+allocator-base.ads:111:30: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.ads:111:30: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.ads:112:30: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
-allocator-base.ads:112:30: info: precondition proved (CVC5: 4 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:112:30: info: precondition proved (CVC5: 4 VC; altergo: 1 VC), in instantiation at test_base.ads:62
+allocator-base.ads:112:30: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.ads:112:30: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.ads:113:26: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:37
 allocator-base.ads:113:26: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:62
 allocator-base.ads:114:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_base.ads:37
@@ -565,29 +562,29 @@ allocator-base.ads:123:44: info: precondition proved (CVC5: 4 VC), in instantiat
 allocator-base.ads:123:44: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
 allocator-base.ads:123:44: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.ads:125:08: info: postcondition proved (CVC5: 8 VC), in instantiation at test_base.ads:69
-allocator-base.ads:126:17: info: precondition proved (CVC5: 3 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:126:17: info: precondition proved (CVC5: 3 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at test_base.ads:62
 allocator-base.ads:126:17: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
+allocator-base.ads:126:17: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.ads:126:17: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.ads:126:17: medium: postcondition might fail, cannot prove Allocated_Cells <= Allocated_Cells'Old, in instantiation at test_base.ads:37
 allocator-base.ads:126:17: medium: postcondition might fail, cannot prove Allocated_Cells <= Allocated_Cells'Old, in instantiation at test_base.ads:62
 allocator-base.ads:126:36: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
-allocator-base.ads:126:36: info: precondition proved (CVC5: 4 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:126:36: info: precondition proved (CVC5: 4 VC; altergo: 1 VC), in instantiation at test_base.ads:62
+allocator-base.ads:126:36: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.ads:126:36: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.ads:127:39: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
-allocator-base.ads:127:39: info: precondition proved (CVC5: 4 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:127:39: info: precondition proved (CVC5: 4 VC; altergo: 1 VC), in instantiation at test_base.ads:62
-allocator-base.ads:127:60: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:127:60: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:62
+allocator-base.ads:127:39: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.ads:127:39: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.ads:127:60: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
-allocator-base.ads:128:30: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:128:30: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:62
+allocator-base.ads:127:60: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.ads:127:60: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.ads:128:30: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
+allocator-base.ads:128:30: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.ads:128:30: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.ads:129:17: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:37
 allocator-base.ads:129:17: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:62
 allocator-base.ads:129:17: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:69
-allocator-base.ads:129:25: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:129:25: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:62
 allocator-base.ads:129:25: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
+allocator-base.ads:129:25: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.ads:129:25: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.ads:129:44: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:37
 allocator-base.ads:129:44: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:62
 allocator-base.ads:129:44: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:69
@@ -600,9 +597,9 @@ allocator-base.ads:129:75: info: predicate check proved (Trivial: 1 VC), in inst
 allocator-base.ads:130:17: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:37
 allocator-base.ads:130:17: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:62
 allocator-base.ads:130:17: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:69
-allocator-base.ads:130:25: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:130:25: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:62
 allocator-base.ads:130:25: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
+allocator-base.ads:130:25: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
+allocator-base.ads:130:25: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
 allocator-base.ads:130:39: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:37
 allocator-base.ads:130:39: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:62
 allocator-base.ads:130:39: info: predicate check proved (Trivial: 1 VC), in instantiation at test_base.ads:69
@@ -615,19 +612,19 @@ allocator-base.ads:130:65: info: predicate check proved (Trivial: 1 VC), in inst
 allocator-base.ads:131:17: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
 allocator-base.ads:131:17: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:37
 allocator-base.ads:131:17: info: precondition proved (CVC5: 5 VC), in instantiation at test_base.ads:62
-allocator-base.ads:131:34: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:37
+allocator-base.ads:131:34: info: precondition proved (CVC5: 3 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at test_base.ads:37
 allocator-base.ads:131:34: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
 allocator-base.ads:131:34: medium: in inlined expression function body at allocator-base.adb:76, in instantiation at test_base.ads:62
 allocator-base.ads:131:34: medium: precondition might fail, cannot prove C'Initialized, in instantiation at test_base.ads:62
 allocator-base.ads:132:21: info: precondition proved (CVC5: 1 VC), in instantiation at test_base.ads:69
 allocator-base.ads:132:21: info: precondition proved (Z3: 1 VC), in instantiation at test_base.ads:37
 allocator-base.ads:132:21: info: precondition proved (Z3: 1 VC), in instantiation at test_base.ads:62
-allocator-base.ads:132:26: info: precondition proved (CVC5: 2 VC; Z3: 3 VC), in instantiation at test_base.ads:37
+allocator-base.ads:132:26: info: precondition proved (CVC5: 3 VC; Z3: 2 VC), in instantiation at test_base.ads:37
 allocator-base.ads:132:26: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
 allocator-base.ads:132:26: medium: in inlined expression function body at allocator-base.adb:76, in instantiation at test_base.ads:62
 allocator-base.ads:132:26: medium: precondition might fail, cannot prove C'Initialized, in instantiation at test_base.ads:62
-allocator-base.ads:132:44: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:37
-allocator-base.ads:132:44: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 1 VC), in instantiation at test_base.ads:62
+allocator-base.ads:132:44: info: precondition proved (CVC5: 3 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at test_base.ads:37
+allocator-base.ads:132:44: info: precondition proved (CVC5: 3 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at test_base.ads:62
 allocator-base.ads:132:44: info: precondition proved (CVC5: 4 VC), in instantiation at test_base.ads:69
 allocator-base.ads:134:13: info: implicit aspect Always_Terminates on "Deref" has been proved, subprogram will terminate, in instantiation at test_base.ads:37
 allocator-base.ads:134:13: info: implicit aspect Always_Terminates on "Deref" has been proved, subprogram will terminate, in instantiation at test_base.ads:62
@@ -833,7 +830,7 @@ allocator-pools-sized_16.ads:91:44: info: predicate check proved (Trivial: 1 VC)
 allocator-pools-sized_16.ads:91:58: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.ads:92:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.ads:92:27: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:67
-allocator-pools-sized_16.ads:94:08: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at test_pools.ads:67
+allocator-pools-sized_16.ads:94:08: info: postcondition proved (CVC5: 3 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.ads:94:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.ads:94:27: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.ads:94:34: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:67
@@ -1178,7 +1175,7 @@ allocator-pools-sized_4.ads:95:82: info: predicate check proved (Trivial: 1 VC),
 allocator-pools-sized_4.ads:95:96: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.ads:96:16: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.ads:96:27: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:45
-allocator-pools-sized_4.ads:98:08: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at test_pools.ads:45
+allocator-pools-sized_4.ads:98:08: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.ads:98:08: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.ads:98:27: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.ads:98:34: info: predicate check proved (Trivial: 1 VC), in instantiation at test_pools.ads:45
