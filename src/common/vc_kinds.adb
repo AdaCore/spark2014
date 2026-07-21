@@ -149,19 +149,19 @@ package body VC_Kinds is
 
            when VC_Division_Check                                   => "369",
 
-           --  CWE-119: Improper Restriction of Operations within the Bounds of
-           --  a Memory Buffer.
+           --  CWE-129: Improper Validation of Array Index
 
-           when VC_Index_Check                                      => "119",
+           when VC_Index_Check                                      => "129",
 
            --  CWE-190: Integer Overflow or Wraparound
 
            when VC_Overflow_Check                                   => "190",
 
-           --  CWE-739: CWE CATEGORY: CERT C Secure Coding Section 05 -
-           --  Floating Point (FLP)
+           --  CWE-682: Incorrect Calculation. CWE has no dedicated
+           --  floating-point overflow weakness, so we map to the closest
+           --  calculation-correctness weakness.
 
-           when VC_FP_Overflow_Check                                => "739",
+           when VC_FP_Overflow_Check                                => "682",
 
            --  CWE-682: Incorrect Calculation
 
@@ -169,9 +169,10 @@ package body VC_Kinds is
               | VC_Predicate_Check
               | VC_Predicate_Check_On_Default_Value                 => "682",
 
-           --  CWE-136: CWE CATEGORY: Type Errors
+           --  CWE-843: Access of Resource Using Incompatible Type ('Type
+           --  Confusion')
 
-           when VC_Discriminant_Check | VC_Tag_Check                => "136",
+           when VC_Discriminant_Check | VC_Tag_Check                => "843",
 
            --  CWE-835: Loop with Unreachable Exit Condition ('Infinite Loop')
 
