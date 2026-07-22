@@ -229,6 +229,10 @@ resolves to an exact anchor entity using its ``path`` and the optional
 the default, the resolved policy also applies to entities whose canonical
 source path is a strict dot-separated extension of the anchor's source path.
 If ``hierarchical`` is false, the policy applies only to the anchor entity.
+The anchor entity itself is matched by identity, not by re-comparing source
+paths, so an entry that names one overload through its ``profile`` applies to
+exactly that overload and does not re-broaden to the other overloads that share
+its dotted path.
 Thus kind/profile disambiguate the named anchor; they do not filter descendant
 entities reached by hierarchical application. When several entries cover the
 same entity, the most specific one wins (longest dot-separated anchor path);
