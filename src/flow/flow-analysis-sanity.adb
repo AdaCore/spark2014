@@ -889,19 +889,23 @@ package body Flow.Analysis.Sanity is
                      --  instance in a predicate, which should not lead to an
                      --  error here.
 
-                     if not (Is_Bound (F)
-                             or else
-                               (Is_Constant_Object (Var)
-                                and then
-                                  (not Is_Access_Variable (Etype (Var))
-                                   or else not Comes_From_Source (Var)))
-                             or else Is_Record_Discriminant (F)
-                             or else
-                               (Ekind (Var) = E_Protected_Type
-                                and then
-                                  (Is_Protected_Discriminant (F)
-                                   or else Is_Within_Protected_Function)))
+                     if Is_Bound (F) then
+                        null;
+                     elsif Is_Constant_Object (Var)
+                       and then
+                         (not Is_Access_Variable (Etype (Var))
+                          or else not Comes_From_Source (Var))
                      then
+                        null;
+                     elsif Is_Record_Discriminant (F) then
+                        null;
+                     elsif Ekind (Var) = E_Protected_Type
+                       and then
+                         (Is_Protected_Discriminant (F)
+                          or else Is_Within_Protected_Function)
+                     then
+                        null;
+                     else
                         Emit_Error (F);
                      end if;
                   end;
