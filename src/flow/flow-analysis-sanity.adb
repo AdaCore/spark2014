@@ -879,23 +879,27 @@ package body Flow.Analysis.Sanity is
                      --  We emit an error if F is considered a variable, in
                      --  particular, when it is not:
                      --  * a bound
-                     --  * a constant object
+                     --  * a current object inside a predicate expression
+                     --    or inside a type invariant expression
+                     --  * a loop parameter
                      --  * a record discriminant
                      --  * a discriminant of a protected type
                      --  * a component or part of a protected type accessed
                      --    from within a protected function.
 
-                     --  The frontend introduces a variable for the current
-                     --  instance in a predicate, which should not lead to an
-                     --  error here.
-
                      if Is_Bound (F) then
                         null;
-                     elsif Is_Constant_Object (Var)
+                     elsif Ekind (Var) = E_In_Parameter
                        and then
-                         (not Is_Access_Variable (Etype (Var))
-                          or else not Comes_From_Source (Var))
+                         (Is_Predicate_Function (Scope (Var))
+                          or else Is_Invariant_Procedure (Scope (Var)))
                      then
+                        null;
+                     elsif Ekind (Var) in E_Constant | E_In_Parameter
+                       and then not Is_Access_Variable (Etype (Var))
+                     then
+                        null;
+                     elsif Ekind (Var) = E_Loop_Parameter then
                         null;
                      elsif Is_Record_Discriminant (F) then
                         null;
