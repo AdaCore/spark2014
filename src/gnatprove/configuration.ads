@@ -296,6 +296,13 @@ package Configuration is
    function Generate_Manifest_Path return String;
    --  The folder designated by --generate-manifest-dir, or the empty string
 
+   function Valid_Manifest_Path (Path : String) return Boolean;
+   --  True if Path is a legal proof-manifest "path" value: a dot-separated
+   --  sequence of segments, each either an Ada identifier or a quoted Ada
+   --  operator symbol such as """&""" or """and""". This is the single source
+   --  of truth shared by the manifest reader and the manifest generator so
+   --  that the two never disagree on which paths are legal.
+
    procedure Read_Command_Line (Tree : out Project.Tree.Object);
 
    function To_String (P : Proof_Mode) return String;

@@ -1,0 +1,17 @@
+===== operator entry resolves cleanly =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg./"&/""
+kind = "function"
+steps = 333
+provers = ["cvc5"]
+--- output ---
+Success: all checks proved (6 checks).
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+[Ada Data_Rep]    pkg.adb
+[Ada Global_Gen]  pkg.adb
+===== malformed operator path is rejected =====
+OK

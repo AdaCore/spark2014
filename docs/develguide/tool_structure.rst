@@ -242,6 +242,18 @@ Two policies that match the same entity at the same specificity are reported
 as an ambiguity warning, as are multiple overloads matched by a single policy
 that lacks sufficient disambiguation.
 
+A ``path`` is a dot-separated sequence of segments. A segment is either an Ada
+identifier or a user-defined operator spelled with its quotes as in Ada source,
+for example ``Pkg."&"`` or ``Pkg."and"`` (in TOML the inner quotes are escaped:
+``path = "Pkg.\"&\""``). This spelling matches the operator's canonical source
+path end to end: the resolver builds it from the operator's decoded name, the
+``.spark`` identity metadata records it, and the generator emits it, so an entry
+can target an operator exactly like any other subprogram. Operators are still
+overloadable, so an entry naming one operator overload disambiguates it with the
+same ``profile`` field used for identifier overloads. The single grammar that
+decides which paths are legal is shared by the manifest reader and the manifest
+generator, so the generator never emits a path the reader would reject.
+
 The resolution step also warns about entries that are stale, selected only for
 contextual analysis, outside the analyzed files, or not selected for proof.
 These warnings are written to the ``manifest_warnings`` section of the unit's

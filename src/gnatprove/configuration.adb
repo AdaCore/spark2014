@@ -1851,6 +1851,120 @@ package body Configuration is
    end Provers_String;
 
    -------------------------
+   -- Valid_Manifest_Path --
+   -------------------------
+
+   function Valid_Manifest_Path (Path : String) return Boolean is
+
+      function Is_Alpha (C : Character) return Boolean
+      is ((C in 'a' .. 'z') or else (C in 'A' .. 'Z'));
+
+      function Is_Alnum (C : Character) return Boolean
+      is (Is_Alpha (C) or else C in '0' .. '9');
+
+      function Is_Identifier (Seg : String) return Boolean;
+      --  True if Seg is a legal Ada identifier
+
+      function Is_Operator (Seg : String) return Boolean;
+      --  True if Seg is a quoted Ada operator symbol, e.g. the three-character
+      --  segment for "&" or the five-character segment for "and". The quotes
+      --  are part of Seg, matching the spelling produced for operators both by
+      --  the resolver's entity path and by the generator.
+
+      -------------------
+      -- Is_Identifier --
+      -------------------
+
+      function Is_Identifier (Seg : String) return Boolean is
+      begin
+         if Seg'Length = 0 or else not Is_Alpha (Seg (Seg'First)) then
+            return False;
+         end if;
+
+         for C of Seg (Seg'First + 1 .. Seg'Last) loop
+            if not (Is_Alnum (C) or else C = '_') then
+               return False;
+            end if;
+         end loop;
+
+         return True;
+      end Is_Identifier;
+
+      -----------------
+      -- Is_Operator --
+      -----------------
+
+      function Is_Operator (Seg : String) return Boolean is
+         Ops : constant array (Positive range <>) of Unbounded_String :=
+           [To_Unbounded_String ("="),
+            To_Unbounded_String ("/="),
+            To_Unbounded_String ("<"),
+            To_Unbounded_String ("<="),
+            To_Unbounded_String (">"),
+            To_Unbounded_String (">="),
+            To_Unbounded_String ("+"),
+            To_Unbounded_String ("-"),
+            To_Unbounded_String ("&"),
+            To_Unbounded_String ("*"),
+            To_Unbounded_String ("/"),
+            To_Unbounded_String ("**"),
+            To_Unbounded_String ("and"),
+            To_Unbounded_String ("or"),
+            To_Unbounded_String ("xor"),
+            To_Unbounded_String ("mod"),
+            To_Unbounded_String ("rem"),
+            To_Unbounded_String ("abs"),
+            To_Unbounded_String ("not")];
+         --  The operator symbols that may designate a user-defined operator,
+         --  enumerated in Ada RM 4.5.
+      begin
+         if Seg'Length < 3
+           or else Seg (Seg'First) /= '"'
+           or else Seg (Seg'Last) /= '"'
+         then
+            return False;
+         end if;
+
+         declare
+            Inner : constant String :=
+              Ada.Characters.Handling.To_Lower
+                (Seg (Seg'First + 1 .. Seg'Last - 1));
+         begin
+            for Op of Ops loop
+               if Inner = To_String (Op) then
+                  return True;
+               end if;
+            end loop;
+            return False;
+         end;
+      end Is_Operator;
+
+      First : Positive := Path'First;
+
+   begin
+      --  A path is a non-empty dot-separated sequence of segments. Operator
+      --  symbols never contain a dot, so splitting on '.' is unambiguous.
+      for I in Path'Range loop
+         if Path (I) = '.' then
+            declare
+               Seg : String renames Path (First .. I - 1);
+            begin
+               if not (Is_Identifier (Seg) or else Is_Operator (Seg)) then
+                  return False;
+               end if;
+            end;
+            First := I + 1;
+         end if;
+      end loop;
+
+      declare
+         Seg : String renames Path (First .. Path'Last);
+      begin
+         return Is_Identifier (Seg) or else Is_Operator (Seg);
+      end;
+   end Valid_Manifest_Path;
+
+   -------------------------
    -- Load_Proof_Manifest --
    -------------------------
 
@@ -1971,33 +2085,8 @@ package body Configuration is
       -----------------------
 
       procedure Check_Path_Syntax (Value : TOML.TOML_Value; Path : String) is
-         function Is_Alpha (C : Character) return Boolean
-         is ((C in 'a' .. 'z') or else (C in 'A' .. 'Z'));
-
-         function Is_Alnum (C : Character) return Boolean
-         is (Is_Alpha (C) or else C in '0' .. '9');
-
-         At_Start : Boolean := True;
       begin
-         for C of Path loop
-            if At_Start then
-               if not Is_Alpha (C) then
-                  Manifest_Error
-                    (Value, "field ""path"" must be a dot-separated Ada name");
-               end if;
-
-               At_Start := False;
-
-            elsif C = '.' then
-               At_Start := True;
-
-            elsif not (Is_Alnum (C) or else C = '_') then
-               Manifest_Error
-                 (Value, "field ""path"" must be a dot-separated Ada name");
-            end if;
-         end loop;
-
-         if At_Start then
+         if not Valid_Manifest_Path (Path) then
             Manifest_Error
               (Value, "field ""path"" must be a dot-separated Ada name");
          end if;
