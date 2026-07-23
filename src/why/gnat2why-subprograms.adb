@@ -9473,7 +9473,7 @@ package body Gnat2Why.Subprograms is
                  (Entire_Object,
                   (if Ekind (Root) = E_Abstract_State
                    then Types.Empty
-                   else Etype (Root)),
+                   else Retysp (Etype (Root))),
                   others => <>),
                Position,
                Inserted);

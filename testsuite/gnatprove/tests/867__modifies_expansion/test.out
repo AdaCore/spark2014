@@ -89,6 +89,8 @@ test_invalid.adb:108:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 test_invalid.adb:109:13: info: validity check proved (CVC5: 1 VC)
 test_invalid.adb:109:21: info: validity check proved (CVC5: 1 VC)
 test_invalid.adb:110:11: info: contract case proved (Trivial: 2 VC)
+test_private.adb:14:09: info: for "X" at test_private.adb:13
+test_private.adb:14:09: info: modifies contract proved (CVC5: 1 VC)
 test_relaxed.adb:11:06: info: for "X" at test_relaxed.adb:8
 test_relaxed.adb:11:06: info: modifies contract proved (CVC5: 1 VC)
 test_relaxed.adb:19:14: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
