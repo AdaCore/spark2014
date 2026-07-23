@@ -158,8 +158,23 @@ package body Gnat2Why.Driver is
    --  @return True iff subprogram E needs to be translated into Why3
 
    function Is_Proof_Generation_Entity (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in Entry_Kind | E_Function | E_Package | E_Procedure;
+   with
+     Pre =>
+       Ekind (E)
+       in Entry_Kind | E_Function | E_Package | E_Procedure | Type_Kind;
    --  @return True iff proof VCs may be generated for E
+
+   function Generates_Concurrent_Type_VCs (E : Entity_Id) return Boolean
+   is (Ekind (E) in E_Protected_Type | E_Task_Type
+       and then Entity_Spec_In_SPARK (E)
+       and then not Is_Derived_Type (E));
+   --  True for a concrete concurrent type whose spec is in SPARK that
+   --  might generate VCs.
+
+   function Generates_Type_VCs (E : Entity_Id) return Boolean
+   is (Entity_Spec_In_SPARK (Enclosing_Unit (E)) and then E = Retysp (E));
+   --  Returns true for other (non-concurrent) types that might generate
+   --  VCs.
 
    procedure Translate_CUnit;
    --  Translates the current compilation unit into Why
@@ -629,10 +644,7 @@ package body Gnat2Why.Driver is
 
          when Type_Kind                             =>
 
-            if Ekind (E) in E_Protected_Type | E_Task_Type
-              and then Entity_Spec_In_SPARK (E)
-              and then not Is_Derived_Type (E)
-            then
+            if Generates_Concurrent_Type_VCs (E) then
                case Ekind (E) is
                   when E_Protected_Type =>
                      Generate_VCs_For_Protected_Type (E);
@@ -643,9 +655,7 @@ package body Gnat2Why.Driver is
                   when others           =>
                      raise Program_Error;
                end case;
-            elsif Entity_Spec_In_SPARK (Enclosing_Unit (E))
-              and then E = Retysp (E)
-            then
+            elsif Generates_Type_VCs (E) then
                Generate_VCs_For_Type (E);
             end if;
 
@@ -1274,6 +1284,10 @@ package body Gnat2Why.Driver is
          when E_Package                             =>
             return Entity_Spec_In_SPARK (E);
 
+         when Type_Kind                             =>
+            return
+              Generates_Concurrent_Type_VCs (E) or else Generates_Type_VCs (E);
+
          when others                                =>
             raise Program_Error;
       end case;
@@ -1631,6 +1645,20 @@ package body Gnat2Why.Driver is
          is (Ekind (E) in E_Entry | E_Function | E_Procedure);
          --  True for entities for which profile disambiguation is meaningful.
 
+         function Is_Manifest_Candidate (E : Entity_Id) return Boolean
+         is (Sloc (E) /= No_Location
+             and then
+               (Ekind (E) in E_Entry | E_Function | E_Procedure | E_Package
+                or else
+                  (Ekind (E) in Type_Kind
+                   and then Is_Proof_Generation_Entity (E))));
+         --  Entities a manifest entry may resolve to: subprograms and
+         --  packages, plus types that generate proof VCs. Types are their own
+         --  proof units, but only their representative is; restricting to
+         --  proof-generating types keeps non-representative views, such as the
+         --  partial and full views of a private type, from anchoring the same
+         --  path twice and colliding into a false ambiguity.
+
          function Same_Manifest_Text (Left, Right : String) return Boolean;
          --  Check whether two manifest texts are the same after normalization
 
@@ -1739,6 +1767,10 @@ package body Gnat2Why.Driver is
 
                when E_Procedure =>
                   return "procedure";
+
+               when Type_Kind   =>
+
+                  return "type";
 
                when others      =>
                   raise Program_Error;
@@ -1955,10 +1987,7 @@ package body Gnat2Why.Driver is
          --  Resolve manifest entries to their exact anchor entities
 
          for Candidate of Entities_To_Translate loop
-            if Ekind (Candidate)
-               in E_Entry | E_Function | E_Procedure | E_Package
-              and then Sloc (Candidate) /= No_Location
-            then
+            if Is_Manifest_Candidate (Candidate) then
                for Index in 1 .. Policy_Count loop
                   declare
                      Policy : Manifest_Subprogram renames
@@ -1977,10 +2006,7 @@ package body Gnat2Why.Driver is
          --  Match translated proof entities to resolved manifest anchors
 
          for Candidate of Entities_To_Translate loop
-            if Ekind (Candidate)
-               in E_Entry | E_Function | E_Procedure | E_Package
-              and then Sloc (Candidate) /= No_Location
-            then
+            if Is_Manifest_Candidate (Candidate) then
                declare
                   Cand_Status : constant Analysis_Status :=
                     Analysis_Requested (Candidate, With_Inlined => False);
