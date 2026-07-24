@@ -40,7 +40,8 @@ package body Gnatprove_Build is
       return GNAT.OS_Lib.Process_Id;
    --  Spawn a process in a non-blocking way
 
-   procedure Write_Why3_Conf_File (Obj_Dir : Path_Name.Object);
+   procedure Write_Why3_Conf_File
+     (Obj_Dir : Path_Name.Object; Lib_Obj_Dir : String);
    --  Write the Why3 conf file to process prover configuration
 
    function Create_Object_Path_File (Tree : Project.Tree.Object) return String;
@@ -463,15 +464,29 @@ package body Gnatprove_Build is
 
       Exec_Opts.Jobs := Configuration.Parallel;
 
-      Write_Why3_Conf_File (Configuration.Artifact_Dir (Tree));
-      for Prj of Tree.Ordered_Views loop
-         if Prj.Kind in With_Object_Dir_Kind
-           and then not Prj.Is_Externally_Built
-         then
-            Ensure_Object_Directory (Prj);
-            Write_Why3_Conf_File (Prj.Object_Directory);
-         end if;
-      end loop;
+      --  The prover support libraries are compiled once, into the root
+      --  project's object directory (see Prepare_Prover_Lib). Every generated
+      --  why3.conf must point the Coq command at that single location,
+      --  regardless of the object directory it is written into. An aggregate
+      --  or abstract root project has no object directory; Coq is unsupported
+      --  for such a tree anyway, so pass the empty string.
+      declare
+         Root        : constant Project.View.Object := Tree.Root_Project;
+         Lib_Obj_Dir : constant String :=
+           (if Root.Kind in With_Object_Dir_Kind
+            then Root.Object_Directory.String_Value
+            else "");
+      begin
+         Write_Why3_Conf_File (Configuration.Artifact_Dir (Tree), Lib_Obj_Dir);
+         for Prj of Tree.Ordered_Views loop
+            if Prj.Kind in With_Object_Dir_Kind
+              and then not Prj.Is_Externally_Built
+            then
+               Ensure_Object_Directory (Prj);
+               Write_Why3_Conf_File (Prj.Object_Directory, Lib_Obj_Dir);
+            end if;
+         end loop;
+      end;
 
       Full_Deps (Tree);
 
@@ -750,8 +765,17 @@ package body Gnatprove_Build is
    -- Write_Why3_Conf_File --
    --------------------------
 
-   procedure Write_Why3_Conf_File (Obj_Dir : Path_Name.Object) is
+   procedure Write_Why3_Conf_File
+     (Obj_Dir : Path_Name.Object; Lib_Obj_Dir : String)
+   is
       use Ada.Text_IO;
+
+      --  [Lib_Obj_Dir] is the directory into which the prover support
+      --  libraries (currently only Coq's) have been compiled, i.e. the root
+      --  project's object directory. The Coq command in "gnatprove.conf" marks
+      --  this location with [Root_Obj_Dir_Marker], which we expand here. It is
+      --  empty when the root project has no object directory, in which case
+      --  the marker is left in place.
 
       --  Here we read the "gnatprove.conf" file and generate from it
       --  the "why3.conf" file. This comment defines the structure of the
@@ -799,11 +823,17 @@ package body Gnatprove_Build is
 
       File : File_Type;
 
+      Root_Obj_Dir_Marker : constant String := "@ROOT_OBJ_DIR@";
+      --  Placeholder used in "gnatprove.conf" for the root object directory.
+      --  Not a Why3 "%" pattern, so that expanding it leaves the patterns of
+      --  other provers untouched.
+
       procedure Start_Section (Name : String);
       --  Start a section in the why3.conf file
 
       procedure Set_Key_Value (Key, Value : String);
-      --  Write a line 'key = "value"' to the why3.conf file
+      --  Write a line 'key = "value"' to the why3.conf file. [Value] is
+      --  escaped, so it may contain double quotes or backslashes.
 
       procedure Set_Key_Value_Int (Key : String; Value : Integer);
       --  Same, but for Integers. We do not use overloading, because in
@@ -827,6 +857,19 @@ package body Gnatprove_Build is
       function Build_Executable (Exec : String) return String;
       --  Build the part of a command that corresponds to the executable. Takes
       --  into account Benchmark mode.
+
+      function Escape_Special (S : String) return String;
+      --  Prefix each double quote and each backslash in [S] with a backslash,
+      --  the escaping convention of both the "why3.conf" string syntax and
+      --  Why3's command-line splitter.
+
+      function Quote_For_Command (Path : String) return String;
+      --  Wrap [Path] in double quotes, escaped for Why3's command-line
+      --  splitter. Why3 splits the command strings written to "why3.conf" back
+      --  into arguments, so a path containing spaces must be quoted to survive
+      --  as a single argument. Backslashes must be escaped too: the splitter
+      --  accepts only a few characters after a backslash, and rejects the
+      --  whole command otherwise.
 
       ----------------------
       -- Build_Executable --
@@ -886,18 +929,58 @@ package body Gnatprove_Build is
            (if Args_Step
             then Get (Get (Prover, "args_steps"))
             else Get (Get (Prover, "args_time")));
+
+         Obj_Dir_Subst : constant String :=
+           (if Lib_Obj_Dir = ""
+            then Root_Obj_Dir_Marker
+            else Quote_For_Command (Lib_Obj_Dir));
       begin
          Append
            (Command,
             Build_Executable (String'(Get (Get (Prover, "executable")))));
          for Index in 1 .. Length (Args_Add) loop
-            Append (Command, " " & String'(Get (Get (Args_Add, Index))));
+            Append
+              (Command,
+               " "
+               & Replace
+                   (String'(Get (Get (Args_Add, Index))),
+                    Root_Obj_Dir_Marker,
+                    Obj_Dir_Subst));
          end loop;
          for Index in 1 .. Length (Args) loop
-            Append (Command, " " & String'(Get (Get (Args, Index))));
+            Append
+              (Command,
+               " "
+               & Replace
+                   (String'(Get (Get (Args, Index))),
+                    Root_Obj_Dir_Marker,
+                    Obj_Dir_Subst));
          end loop;
          return To_String (Command);
       end Build_Prover_Command;
+
+      --------------------
+      -- Escape_Special --
+      --------------------
+
+      function Escape_Special (S : String) return String is
+         Result : Unbounded_String;
+      begin
+         for C of S loop
+            if C in '"' | '\' then
+               Append (Result, '\');
+            end if;
+            Append (Result, C);
+         end loop;
+         return To_String (Result);
+      end Escape_Special;
+
+      -----------------------
+      -- Quote_For_Command --
+      -----------------------
+
+      function Quote_For_Command (Path : String) return String
+      is ('"' & Escape_Special (Path) & '"');
 
       -------------------
       -- Set_Key_Value --
@@ -905,7 +988,7 @@ package body Gnatprove_Build is
 
       procedure Set_Key_Value (Key, Value : String) is
       begin
-         Put_Line (File, Key & " = " & '"' & Value & '"');
+         Put_Line (File, Key & " = " & '"' & Escape_Special (Value) & '"');
       end Set_Key_Value;
 
       ------------------------
