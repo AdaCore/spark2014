@@ -385,24 +385,37 @@ package body Configuration is
    type Switch_Value_Kind is
      (Flag_Value, Integer_Value, String_Value, String_List_Value);
 
+   type Switch_Multiplicity is
+     (Override,        --  Last occurrence wins, silently (the default)
+      Override_Warn,   --  Last wins, but warn when repeated on one source
+      Accumulate);     --  Collect every occurrence
+   --  How a switch behaves when it appears several times within one source
+   --  (one command line, or one project-file attribute). This is a distinct
+   --  axis from precedence across sources (command line beating project file),
+   --  which Merge_Parsed_Switches derives from Value_Kind; this field does not
+   --  imply any cross-source merge semantics.
+
    type String_Ref is access constant String;
 
    type Switch_Metadata is record
-      Short      : String_Ref := null;
-      Long       : String_Ref := null;
-      Value_Kind : Switch_Value_Kind;
-      Layer      : Switch_Layer;
+      Short        : String_Ref := null;
+      Long         : String_Ref := null;
+      Value_Kind   : Switch_Value_Kind;
+      Layer        : Switch_Layer;
+      Multiplicity : Switch_Multiplicity := Override;
    end record;
 
    function Make_Switch_Metadata
-     (Value_Kind : Switch_Value_Kind;
-      Layer      : Switch_Layer;
-      Short      : String_Ref := null;
-      Long       : String_Ref := null) return Switch_Metadata
-   is ((Short      => Short,
-        Long       => Long,
-        Value_Kind => Value_Kind,
-        Layer      => Layer));
+     (Value_Kind   : Switch_Value_Kind;
+      Layer        : Switch_Layer;
+      Short        : String_Ref := null;
+      Long         : String_Ref := null;
+      Multiplicity : Switch_Multiplicity := Override) return Switch_Metadata
+   is ((Short        => Short,
+        Long         => Long,
+        Value_Kind   => Value_Kind,
+        Layer        => Layer,
+        Multiplicity => Multiplicity));
    --  Defining this function with default arguments allows us to drop "others"
    --  field in the below aggregate definition.
 
@@ -461,9 +474,10 @@ package body Configuration is
            Layer      => Invocation_Layer),
       Sw_Exclude_Line                  =>
         Make_Switch_Metadata
-          (Long       => new String'("--exclude-line"),
-           Value_Kind => String_Value,
-           Layer      => Invocation_Layer),
+          (Long         => new String'("--exclude-line"),
+           Value_Kind   => String_Value,
+           Layer        => Invocation_Layer,
+           Multiplicity => Override_Warn),
       Sw_Flow_Debug                    =>
         Make_Switch_Metadata
           (Long       => new String'("--flow-debug"),
@@ -496,29 +510,34 @@ package body Configuration is
            Layer      => Invocation_Layer),
       Sw_Limit_Line                    =>
         Make_Switch_Metadata
-          (Long       => new String'("--limit-line"),
-           Value_Kind => String_Value,
-           Layer      => Invocation_Layer),
+          (Long         => new String'("--limit-line"),
+           Value_Kind   => String_Value,
+           Layer        => Invocation_Layer,
+           Multiplicity => Override_Warn),
       Sw_Limit_Lines                   =>
         Make_Switch_Metadata
-          (Long       => new String'("--limit-lines"),
-           Value_Kind => String_Value,
-           Layer      => Invocation_Layer),
+          (Long         => new String'("--limit-lines"),
+           Value_Kind   => String_Value,
+           Layer        => Invocation_Layer,
+           Multiplicity => Override_Warn),
       Sw_Limit_Name                    =>
         Make_Switch_Metadata
-          (Long       => new String'("--limit-name"),
-           Value_Kind => String_Value,
-           Layer      => Invocation_Layer),
+          (Long         => new String'("--limit-name"),
+           Value_Kind   => String_Value,
+           Layer        => Invocation_Layer,
+           Multiplicity => Override_Warn),
       Sw_Limit_Region                  =>
         Make_Switch_Metadata
-          (Long       => new String'("--limit-region"),
-           Value_Kind => String_Value,
-           Layer      => Invocation_Layer),
+          (Long         => new String'("--limit-region"),
+           Value_Kind   => String_Value,
+           Layer        => Invocation_Layer,
+           Multiplicity => Override_Warn),
       Sw_Limit_Subp                    =>
         Make_Switch_Metadata
-          (Long       => new String'("--limit-subp"),
-           Value_Kind => String_Value,
-           Layer      => Invocation_Layer),
+          (Long         => new String'("--limit-subp"),
+           Value_Kind   => String_Value,
+           Layer        => Invocation_Layer,
+           Multiplicity => Override_Warn),
       Sw_Memcached_Server              =>
         Make_Switch_Metadata
           (Long       => new String'("--memcached-server"),
@@ -633,9 +652,10 @@ package body Configuration is
            Layer      => Invocation_Layer),
       Sw_SARIF_Base_URI                =>
         Make_Switch_Metadata
-          (Long       => new String'("--sarif-base-uri"),
-           Value_Kind => String_List_Value,
-           Layer      => Invocation_Layer),
+          (Long         => new String'("--sarif-base-uri"),
+           Value_Kind   => String_List_Value,
+           Layer        => Invocation_Layer,
+           Multiplicity => Accumulate),
       Sw_Z3_Counterexample             =>
         Make_Switch_Metadata
           (Long       => new String'("--z3-counterexample"),
@@ -770,6 +790,21 @@ package body Configuration is
      Assert
        ((for all Switch in File_Specific_Switch_Id =>
            Switch_Definitions (Switch).Layer = File_Specific_Layer));
+
+   --  Accumulate only makes sense with list storage. Override_Warn only makes
+   --  sense when a repetition actually drops a value, so it never applies to
+   --  flags (which are idempotent) or to accumulating list switches.
+
+   pragma
+     Assert
+       ((for all Switch in Switch_Id =>
+           (case Switch_Definitions (Switch).Multiplicity is
+              when Override      => True,
+              when Override_Warn =>
+                Switch_Definitions (Switch).Value_Kind
+                in Integer_Value | String_Value,
+              when Accumulate    =>
+                Switch_Definitions (Switch).Value_Kind = String_List_Value)));
 
    type Switch_Value (Kind : Switch_Value_Kind := Flag_Value) is record
       case Kind is
@@ -1595,6 +1630,26 @@ package body Configuration is
          if not Found then
             raise Invalid_Switch;
          end if;
+
+         --  Capture whether the switch already occurred in this source before
+         --  marking it present, so that Override_Warn only warns on genuine
+         --  repetitions rather than on the first occurrence.
+
+         declare
+            Was_Present : constant Boolean :=
+              Current_Parsed_Switches.Present (Id);
+         begin
+            if Was_Present
+              and then Switch_Definitions (Id).Multiplicity = Override_Warn
+            then
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  "warning: switch "
+                  & Switch
+                  & " given more than once; "
+                  & "only the last occurrence is used");
+            end if;
+         end;
 
          Current_Parsed_Switches.Present (Id) := True;
 
@@ -3906,30 +3961,32 @@ package body Configuration is
                   Merge_Parsed_Switches (Project_Switches, Root_Attributes);
                end if;
 
-               if Prove_Switches /= null then
+               --  Only non-root views need parsing here. Parsing the root
+               --  attributes a second time would merge them twice and report
+               --  their repeated switches twice.
+
+               if Prove_Switches /= null and then View /= Tree.Root_Project
+               then
                   declare
                      Parsed : Parsed_Switches :=
                        Parse_Switches_Internal
                          (Global_Switches_Only, Prove_Switches.all);
                   begin
-                     if View /= Tree.Root_Project then
-                        Warn_And_Strip_Non_Root_Invocation_Switches
-                          (View, "Switches", Parsed);
-                     end if;
+                     Warn_And_Strip_Non_Root_Invocation_Switches
+                       (View, "Switches", Parsed);
                      Merge_Parsed_Switches (Project_Switches, Parsed);
                   end;
                end if;
 
-               if Proof_Switches_Ada /= null then
+               if Proof_Switches_Ada /= null and then View /= Tree.Root_Project
+               then
                   declare
                      Parsed : Parsed_Switches :=
                        Parse_Switches_Internal
                          (Global_Switches_Only, Proof_Switches_Ada.all);
                   begin
-                     if View /= Tree.Root_Project then
-                        Warn_And_Strip_Non_Root_Invocation_Switches
-                          (View, "Proof_Switches (""Ada"")", Parsed);
-                     end if;
+                     Warn_And_Strip_Non_Root_Invocation_Switches
+                       (View, "Proof_Switches (""Ada"")", Parsed);
                      Merge_Parsed_Switches (Project_Switches, Parsed);
                   end;
                end if;

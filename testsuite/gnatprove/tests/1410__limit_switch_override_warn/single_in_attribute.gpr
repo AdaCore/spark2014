@@ -1,0 +1,9 @@
+--  A single limit switch in the project file, to be combined with another
+--  occurrence on the command line: two distinct sources, so no warning.
+
+project Single_In_Attribute extends "test" is
+   for Object_Dir use "obj_single";
+   package Prove is
+      for Proof_Switches ("Ada") use ("--limit-subp=p.ads:2");
+   end Prove;
+end Single_In_Attribute;

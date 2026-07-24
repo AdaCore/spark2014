@@ -1,0 +1,10 @@
+--  A limit switch repeated inside a single project-file attribute: this is one
+--  source, so the repetition must warn and only Decrement must be analyzed.
+
+project Repeat_In_Attribute extends "test" is
+   for Object_Dir use "obj_repeat";
+   package Prove is
+      for Proof_Switches ("Ada")
+        use ("--limit-subp=p.ads:2", "--limit-subp=p.ads:4");
+   end Prove;
+end Repeat_In_Attribute;
