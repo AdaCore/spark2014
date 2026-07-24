@@ -2091,6 +2091,11 @@ package body Configuration is
       procedure Check_Path_Syntax (Value : TOML.TOML_Value; Path : String);
       --  Check that the "path" field has a meaningful syntax for this field
 
+      procedure Check_Nested_Prefix
+        (Value : TOML.TOML_Value; Child : String; Parent : String);
+      --  Check that a rule nested inside another rule names an entity within
+      --  the parent's entity, i.e. its path extends the enclosing path.
+
       procedure Check_Proof_Option_Present (Table : TOML.TOML_Value);
       --  Raise an error if an entry has no option set at all
 
@@ -2148,12 +2153,48 @@ package body Configuration is
          end if;
       end Check_Path_Syntax;
 
+      -------------------------
+      -- Check_Nested_Prefix --
+      -------------------------
+
+      procedure Check_Nested_Prefix
+        (Value : TOML.TOML_Value; Child : String; Parent : String) is
+      begin
+         --  The child extends the parent when it starts with the parent path
+         --  followed by a dot; this also guarantees it is strictly longer.
+
+         if not Starts_With
+                  (Ada.Characters.Handling.To_Lower (Child),
+                   Ada.Characters.Handling.To_Lower (Parent) & ".")
+         then
+            Manifest_Error
+              (Value,
+               "nested path """
+               & Child
+               & """ must extend the enclosing path """
+               & Parent
+               & """");
+         end if;
+      end Check_Nested_Prefix;
+
       --------------------------------
       -- Check_Proof_Option_Present --
       --------------------------------
 
       procedure Check_Proof_Option_Present (Table : TOML.TOML_Value) is
       begin
+         --  This check rejects rules that have no effect. Rules without proof
+         --  options can still have an effect if they have nested rules: they
+         --  serve to indicate nesting structure of the involved entities. Note
+         --  that while such rules without options are allowed, they override
+         --  the proof options of the entity, that is, proof options of the
+         --  parent are ignored and replaced by the invocation-wide options
+         --  (command-line or project file).
+
+         if Table.Get_Or_Null ("rule").Is_Present then
+            return;
+         end if;
+
          if not (Table.Get_Or_Null ("level").Is_Present
                  or else Table.Get_Or_Null ("memlimit").Is_Present
                  or else Table.Get_Or_Null ("provers").Is_Present
@@ -2200,6 +2241,14 @@ package body Configuration is
                & " or ""function""");
          end if;
 
+         --  Two entries with the same path, kind and profile are still
+         --  distinct rules when nested under different parents: their path
+         --  cannot encode which overloaded ancestor they belong to, so the
+         --  enclosing rule (Nested_In) is part of their identity. Entries with
+         --  equal paths necessarily come from the same manifest file, since a
+         --  path is checked to belong to the file's unit, so comparing the
+         --  per-file Nested_In identity here is meaningful.
+
          for Existing of All_Policies loop
             if Ada.Characters.Handling.To_Lower (To_String (Existing.Path))
               = Ada.Characters.Handling.To_Lower (To_String (Policy.Path))
@@ -2209,6 +2258,7 @@ package body Configuration is
               and then
                 To_String (Existing.Profile) = To_String (Policy.Profile)
               and then Existing.Hierarchical = Policy.Hierarchical
+              and then Existing.Nested_In = Policy.Nested_In
             then
                Manifest_Error (Table, "duplicate manifest entry");
             end if;
@@ -2225,14 +2275,11 @@ package body Configuration is
          Lower_Path : constant String :=
            Ada.Characters.Handling.To_Lower (Path);
       begin
+         --  The path belongs to the unit when it is the unit name itself or a
+         --  child of it, that is, the unit name followed by a dot.
+
          if Lower_Path /= Unit_Name
-           and then
-             (Lower_Path'Length <= Unit_Name'Length
-              or else
-                Lower_Path
-                  (Lower_Path'First .. Lower_Path'First + Unit_Name'Length - 1)
-                /= Unit_Name
-              or else Lower_Path (Lower_Path'First + Unit_Name'Length) /= '.')
+           and then not Starts_With (Lower_Path, Unit_Name & ".")
          then
             Manifest_Error
               (Value,
@@ -2394,8 +2441,15 @@ package body Configuration is
             return Left_Kind < Right_Kind;
          elsif To_String (Left.Kind) /= To_String (Right.Kind) then
             return To_String (Left.Kind) < To_String (Right.Kind);
-         else
+         elsif To_String (Left.Profile) /= To_String (Right.Profile) then
             return To_String (Left.Profile) < To_String (Right.Profile);
+         else
+
+            --  Nested rules can share path, kind and profile while denoting
+            --  entities under different overloaded ancestors; the load-order
+            --  Id keeps the normalized order deterministic.
+
+            return Left.Id < Right.Id;
          end if;
       end Manifest_Less;
 
@@ -2486,6 +2540,7 @@ package body Configuration is
          Allowed.Append ("memlimit");
          Allowed.Append ("level");
          Allowed.Append ("provers");
+         Allowed.Append ("rule");
          Check_Allowed_Keys (Table, Allowed);
          Check_Proof_Option_Present (Table);
 
@@ -2536,7 +2591,9 @@ package body Configuration is
             end;
          end if;
 
-         Check_Policy (Table, Policy);
+         --  Check_Policy is intentionally not called here: it needs the Id and
+         --  Nested_In identity, assigned by the recursive loader once the
+         --  enclosing rule is known.
 
          return Policy;
       end Read_Subprogram;
@@ -2551,6 +2608,60 @@ package body Configuration is
          Allowed   : String_Lists.List;
          Unit_Name : constant String := Manifest_Unit_Name (File);
          Policies  : Manifest_Subprogram_Vectors.Vector;
+         Next_Id   : Natural := 0;
+         --  Per-file counter assigning each rule a unit-unique Id in
+         --  pre-order, so a parent is numbered before its nested children.
+
+         procedure Read_Rule
+           (Table       : TOML.TOML_Value;
+            Parent_Id   : Natural;
+            Parent_Path : String);
+         --  Read a rule table and its nested rules, assigning Id and
+         --  Nested_In, then append them to Policies (and All_Policies).
+
+         ---------------
+         -- Read_Rule --
+         ---------------
+
+         procedure Read_Rule
+           (Table : TOML.TOML_Value; Parent_Id : Natural; Parent_Path : String)
+         is
+            Policy : Manifest_Subprogram := Read_Subprogram (Table, Unit_Name);
+            Nested : constant TOML.TOML_Value := Table.Get_Or_Null ("rule");
+         begin
+            Next_Id := Next_Id + 1;
+            Policy.Id := Next_Id;
+            Policy.Nested_In := Parent_Id;
+
+            --  A nested rule names an entity within the parent's entity, so
+            --  its path must extend the enclosing path.
+
+            if Parent_Id /= 0 then
+               Check_Nested_Prefix
+                 (Table.Get_Or_Null ("path"),
+                  To_String (Policy.Path),
+                  Parent_Path);
+            end if;
+
+            Check_Policy (Table, Policy);
+
+            All_Policies.Append (Policy);
+            Policies.Append (Policy);
+
+            if Nested.Is_Present then
+               if Nested.Kind /= TOML.TOML_Array then
+                  Manifest_Error (Nested, "field ""rule"" must be an array");
+               elsif Nested.Length = 0 then
+                  Manifest_Error (Nested, "field ""rule"" must not be empty");
+               end if;
+
+               for I in 1 .. Nested.Length loop
+                  Read_Rule
+                    (Nested.Item (I), Policy.Id, To_String (Policy.Path));
+               end loop;
+            end if;
+         end Read_Rule;
+
       begin
          Current_File := To_Unbounded_String (File);
 
@@ -2608,13 +2719,7 @@ package body Configuration is
          end if;
 
          for I in 1 .. Subs.Length loop
-            declare
-               Policy : constant Manifest_Subprogram :=
-                 Read_Subprogram (Subs.Item (I), Unit_Name);
-            begin
-               All_Policies.Append (Policy);
-               Policies.Append (Policy);
-            end;
+            Read_Rule (Subs.Item (I), 0, "");
          end loop;
 
          declare

@@ -19,7 +19,7 @@ path = "Pkg.P"
 kind = "procedure"
 timeout = 1
 --- output ---
-ambiguous_manifest_entry/pkg.toml:4:8: warning: invalid proof manifest entry 1 for "Pkg.P" kind "procedure" is ambiguous; add or refine the kind or profile field
+ambiguous_manifest_entry/pkg.toml:4:8: warning: invalid proof manifest entry 1 for "Pkg.P" kind "procedure" is ambiguous; add or refine the kind field, add or refine the profile field, or nest the rule inside a rule for the enclosing entity
 Success: all checks proved (4 checks).
 Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    pkg.adb

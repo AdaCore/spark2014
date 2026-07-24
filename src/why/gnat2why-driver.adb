@@ -1641,6 +1641,10 @@ package body Gnat2Why.Driver is
          --  Number of dot-separated components in Path; higher means more
          --  specific.
 
+         procedure Try_Anchor (Candidate : Entity_Id; Current_Depth : Natural);
+         --  Record Candidate as the anchor of every manifest rule at
+         --  Current_Depth that it is the exact designated entity of.
+
          function Is_Subprogram_Like (E : Entity_Id) return Boolean
          is (Ekind (E) in E_Entry | E_Function | E_Procedure);
          --  True for entities for which profile disambiguation is meaningful.
@@ -1868,25 +1872,21 @@ package body Gnat2Why.Driver is
          function Is_Manifest_Application
            (Policy : Manifest_Subprogram; Anchor, E : Entity_Id) return Boolean
          is
-            Anchor_Name : constant String :=
-              Normalize_Manifest_Text (Entity_Path (Anchor));
-            Name        : constant String :=
-              Normalize_Manifest_Text (Entity_Path (E));
          begin
-            --  The anchor entity was already disambiguated by the kind and
-            --  profile fields, so an entry applies to exactly that entity.
+            --  The anchor entity was already disambiguated by the kind,
+            --  profile and nesting fields, so an entry applies to exactly that
+            --  entity and, when hierarchical, to the entities it encloses.
+            --  Containment is decided by scope rather than by comparing source
+            --  paths, so a policy anchored on one overload never spills onto
+            --  entities enclosed by another overload that shares its dotted
+            --  path.
 
             if E = Anchor then
                return True;
             elsif not Policy.Hierarchical then
                return False;
             else
-               return
-                 Name'Length > Anchor_Name'Length
-                 and then
-                   Name (Name'First .. Name'First + Anchor_Name'Length - 1)
-                   = Anchor_Name
-                 and then Name (Name'First + Anchor_Name'Length) = '.';
+               return Scope_Within (E, Anchor);
             end if;
          end Is_Manifest_Application;
 
@@ -1976,6 +1976,50 @@ package body Gnat2Why.Driver is
          Info    : array (1 .. Policy_Count) of Policy_Info;
          Invalid : array (1 .. Policy_Count) of Boolean := [others => False];
 
+         Index_Of_Id  : array (1 .. Policy_Count) of Natural := [others => 0];
+         Parent_Index : array (1 .. Policy_Count) of Natural := [others => 0];
+         Depth        : array (1 .. Policy_Count) of Natural := [others => 0];
+         Max_Depth    : Natural := 0;
+         --  Nesting structure of the policies. Index_Of_Id maps the identity
+         --  of a rule to its index, Parent_Index maps each policy to the index
+         --  of the rule it is nested in (0 at the top level), Depth is its
+         --  nesting depth, and Max_Depth is the deepest level. A nested policy
+         --  is resolved as an entity enclosed by its parent's anchor.
+
+         function Encloses_Anchor
+           (Parent : Natural; E : Entity_Id) return Boolean
+         is (Parent = 0
+             or else
+               (Info (Parent).Anchor_Count = 1
+                and then Scope_Within (E, Info (Parent).Anchor)));
+         --  True when E is a legal anchor with respect to the enclosing rule
+         --  Parent, i.e. either there is no enclosing rule or that rule
+         --  resolved to a single anchor that encloses E.
+
+         ----------------
+         -- Try_Anchor --
+         ----------------
+
+         procedure Try_Anchor (Candidate : Entity_Id; Current_Depth : Natural)
+         is
+         begin
+            if not Is_Manifest_Candidate (Candidate) then
+               return;
+            end if;
+
+            for Index in 1 .. Policy_Count loop
+               if Depth (Index) = Current_Depth
+                 and then Encloses_Anchor (Parent_Index (Index), Candidate)
+                 and then
+                   Is_Manifest_Anchor
+                     (Gnat2Why_Args.Proof_Manifest (Index), Candidate)
+               then
+                  Info (Index).Anchor_Count := Info (Index).Anchor_Count + 1;
+                  Info (Index).Anchor := Candidate;
+               end if;
+            end loop;
+         end Try_Anchor;
+
       begin
          --  Nothing to resolve without a manifest; skip the per-entity scan so
          --  ordinary runs pay no cost for this feature.
@@ -1984,23 +2028,38 @@ package body Gnat2Why.Driver is
             return;
          end if;
 
-         --  Resolve manifest entries to their exact anchor entities
+         --  Map each rule's Nested_In id to the index of its parent rule, then
+         --  compute nesting depth. The rules of a unit are numbered from one
+         --  in load order, an enclosing rule before the rules it nests, so
+         --  visiting rules by increasing id gives the depth of a parent before
+         --  that of its children and rules out a cyclic nesting.
 
-         for Candidate of Entities_To_Translate loop
-            if Is_Manifest_Candidate (Candidate) then
-               for Index in 1 .. Policy_Count loop
-                  declare
-                     Policy : Manifest_Subprogram renames
-                       Gnat2Why_Args.Proof_Manifest (Index);
-                  begin
-                     if Is_Manifest_Anchor (Policy, Candidate) then
-                        Info (Index).Anchor_Count :=
-                          Info (Index).Anchor_Count + 1;
-                        Info (Index).Anchor := Candidate;
-                     end if;
-                  end;
-               end loop;
-            end if;
+         for Index in 1 .. Policy_Count loop
+            Index_Of_Id (Gnat2Why_Args.Proof_Manifest (Index).Id) := Index;
+         end loop;
+
+         for Id in 1 .. Policy_Count loop
+            declare
+               Index     : constant Natural := Index_Of_Id (Id);
+               Parent_Id : constant Natural :=
+                 Gnat2Why_Args.Proof_Manifest (Index).Nested_In;
+               Parent    : constant Natural :=
+                 (if Parent_Id = 0 then 0 else Index_Of_Id (Parent_Id));
+            begin
+               Parent_Index (Index) := Parent;
+               Depth (Index) := (if Parent = 0 then 0 else Depth (Parent) + 1);
+               Max_Depth := Natural'Max (Max_Depth, Depth (Index));
+            end;
+         end loop;
+
+         --  Resolve manifest entries to their exact anchor entities, shallower
+         --  rules first so that a nested rule can constrain its anchor to an
+         --  entity enclosed by its parent's already-resolved anchor.
+
+         for Current_Depth in 0 .. Max_Depth loop
+            for Candidate of Entities_To_Translate loop
+               Try_Anchor (Candidate, Current_Depth);
+            end loop;
          end loop;
 
          --  Match translated proof entities to resolved manifest anchors
@@ -2097,7 +2156,9 @@ package body Gnat2Why.Driver is
                if I.Anchor_Count > 1 then
                   Manifest_Warning
                     (Index,
-                     "is ambiguous; add or refine the kind or profile field");
+                     "is ambiguous; add or refine the kind field, add or"
+                     & " refine the profile field, or nest the rule inside a"
+                     & " rule for the enclosing entity");
                   Invalid (Index) := True;
                elsif I.Has_Proof_Match then
                   case I.Last_Status is
