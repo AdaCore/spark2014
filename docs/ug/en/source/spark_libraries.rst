@@ -928,9 +928,13 @@ Currently, the higher-order function library provides the following functions:
   ``Is_Acyclic`` returns True if the linked structure starting at a given index
   in an array does not contain cycles. The function ``Reachable_Set`` returns
   the functional set of all the indices in the array that can be reached from
-  a given index by calling ``Next`` repeatedly. Finally, the  function ``Model``
+  a given index by calling ``Next`` repeatedly. Finally, the function ``Model``
   computes a functional sequence that stores the indices reachable from a given
-  index ``X`` in the order in which they occur, starting with ``X`` itself.
+  index ``X`` in the reverse of the order in which they occur: the first
+  element of the sequence is the last index of the structure, the one whose
+  ``Next`` is ``No_Index``, and the last element is ``X`` itself. This reverse
+  order is what makes the model of a cell reachable from ``X`` a prefix of the
+  model of ``X``.
 
 .. note::
 
