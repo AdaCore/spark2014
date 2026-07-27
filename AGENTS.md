@@ -32,6 +32,7 @@ Assume the environment is already set up.
 - `why3/`: Why3 submodule with SPARK-specific changes
 - `testsuite/gnatprove/tests/`: regression tests
 - `docs/`: user and reference documentation
+- `include/`: checkout of SPARKlib
 
 ## Developer Documentation
 

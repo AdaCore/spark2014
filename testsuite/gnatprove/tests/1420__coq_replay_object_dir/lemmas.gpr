@@ -1,0 +1,4 @@
+project Lemmas is
+   for Source_Dirs use ("lemmas_src");
+   for Object_Dir use "obj_lemmas";
+end Lemmas;

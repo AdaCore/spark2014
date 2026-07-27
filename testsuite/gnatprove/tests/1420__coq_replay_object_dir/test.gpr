@@ -1,0 +1,11 @@
+with "lemmas";
+
+project Test is
+   for Source_Dirs use ("dummy");
+   --  The space exercises the quoting of the root object directory in the
+   --  generated "why3.conf" command.
+   for Object_Dir use "obj root";
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+end Test;
