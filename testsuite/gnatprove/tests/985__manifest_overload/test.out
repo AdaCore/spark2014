@@ -1,0 +1,37 @@
+===== per-overload entries resolve cleanly =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg.Set"
+kind = "procedure"
+profile = "(_ : Integer)"
+steps = 111
+provers = ["cvc5"]
+
+[[rule]]
+path = "Pkg.Set"
+kind = "procedure"
+profile = "(_ : Boolean)"
+steps = 222
+provers = ["cvc5"]
+
+[[rule]]
+path = "Pkg.Set.Helper"
+kind = "procedure"
+profile = "(_ : Integer)"
+steps = 333
+provers = ["cvc5"]
+
+[[rule]]
+path = "Pkg.Set.Helper"
+kind = "procedure"
+profile = "(_ : Boolean)"
+steps = 444
+provers = ["cvc5"]
+--- output ---
+Success: all checks proved (4 checks).
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+[Ada Data_Rep]    pkg.adb
+[Ada Global_Gen]  pkg.adb

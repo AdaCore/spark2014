@@ -229,6 +229,10 @@ resolves to an exact anchor entity using its ``path`` and the optional
 the default, the resolved policy also applies to entities whose canonical
 source path is a strict dot-separated extension of the anchor's source path.
 If ``hierarchical`` is false, the policy applies only to the anchor entity.
+The anchor entity itself is matched by identity, not by re-comparing source
+paths, so an entry that names one overload through its ``profile`` applies to
+exactly that overload and does not re-broaden to the other overloads that share
+its dotted path.
 Thus kind/profile disambiguate the named anchor; they do not filter descendant
 entities reached by hierarchical application. When several entries cover the
 same entity, the most specific one wins (longest dot-separated anchor path);
@@ -237,6 +241,18 @@ anchor entity itself. Broader entries are not merged in.
 Two policies that match the same entity at the same specificity are reported
 as an ambiguity warning, as are multiple overloads matched by a single policy
 that lacks sufficient disambiguation.
+
+A ``path`` is a dot-separated sequence of segments. A segment is either an Ada
+identifier or a user-defined operator spelled with its quotes as in Ada source,
+for example ``Pkg."&"`` or ``Pkg."and"`` (in TOML the inner quotes are escaped:
+``path = "Pkg.\"&\""``). This spelling matches the operator's canonical source
+path end to end: the resolver builds it from the operator's decoded name, the
+``.spark`` identity metadata records it, and the generator emits it, so an entry
+can target an operator exactly like any other subprogram. Operators are still
+overloadable, so an entry naming one operator overload disambiguates it with the
+same ``profile`` field used for identifier overloads. The single grammar that
+decides which paths are legal is shared by the manifest reader and the manifest
+generator, so the generator never emits a path the reader would reject.
 
 The resolution step also warns about entries that are stale, selected only for
 contextual analysis, outside the analyzed files, or not selected for proof.

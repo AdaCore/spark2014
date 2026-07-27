@@ -1841,7 +1841,10 @@ package body Gnat2Why.Driver is
             Name        : constant String :=
               Normalize_Manifest_Text (Entity_Path (E));
          begin
-            if Name = Anchor_Name then
+            --  The anchor entity was already disambiguated by the kind and
+            --  profile fields, so an entry applies to exactly that entity.
+
+            if E = Anchor then
                return True;
             elsif not Policy.Hierarchical then
                return False;

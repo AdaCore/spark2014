@@ -241,8 +241,6 @@ package body Manifest_Generator is
 
    function TOML_String (S : String) return String;
 
-   function Valid_Manifest_Path (Path : String) return Boolean;
-
    procedure Write_Manifest
      (Data       : Unit_Proof_Data;
       Output_Dir : String;
@@ -935,10 +933,10 @@ package body Manifest_Generator is
          return False;
       end if;
 
-      --  Skip entities whose path is not a plain dot-separated Ada name,
-      --  such as user-defined operators: the manifest reader rejects such
-      --  paths, so emitting one would make the generated manifest
-      --  unreadable. Their requirements fall back to the unit default.
+      --  Skip entities whose path the manifest reader would reject, so a
+      --  generated manifest is always readable. Identifiers and user-defined
+      --  operators (spelled with their quotes, e.g. Pkg."&") are accepted;
+      --  anything else falls back to the unit default.
       if not Valid_Manifest_Path (To_String (Entity.Identity.Name)) then
          if Emit_Warnings then
             Ada.Text_IO.Put_Line
@@ -1395,37 +1393,5 @@ package body Manifest_Generator is
       Append (Result, '"');
       return To_String (Result);
    end TOML_String;
-
-   -------------------------
-   -- Valid_Manifest_Path --
-   -------------------------
-
-   function Valid_Manifest_Path (Path : String) return Boolean is
-      function Is_Alpha (C : Character) return Boolean
-      is ((C in 'a' .. 'z') or else (C in 'A' .. 'Z'));
-
-      function Is_Alnum (C : Character) return Boolean
-      is (Is_Alpha (C) or else C in '0' .. '9');
-
-      At_Start : Boolean := True;
-   begin
-      --  Mirror the dot-separated Ada name check applied by the manifest
-      --  reader, so the generator never emits an explicit entry whose path
-      --  the reader would reject, such as a user-defined operator.
-      for C of Path loop
-         if At_Start then
-            if not Is_Alpha (C) then
-               return False;
-            end if;
-            At_Start := False;
-         elsif C = '.' then
-            At_Start := True;
-         elsif not (Is_Alnum (C) or else C = '_') then
-            return False;
-         end if;
-      end loop;
-
-      return not At_Start;
-   end Valid_Manifest_Path;
 
 end Manifest_Generator;
