@@ -150,7 +150,9 @@ package body Configuration is
 
    overriding
    procedure Internal_Report
-     (Self : in out Spark_Reporter; Message : GPR2.Message.Object);
+     (Self    : in out Spark_Reporter;
+      Message : GPR2.Message.Object;
+      Binary  : Boolean := False);
 
    procedure Abort_Msg (Msg : String; With_Help : Boolean)
    with No_Return;
@@ -994,9 +996,11 @@ package body Configuration is
 
    overriding
    procedure Internal_Report
-     (Self : in out Spark_Reporter; Message : GPR2.Message.Object) is
+     (Self    : in out Spark_Reporter;
+      Message : GPR2.Message.Object;
+      Binary  : Boolean := False) is
    begin
-      GPR2.Reporter.Console.Object (Self).Internal_Report (Message);
+      GPR2.Reporter.Console.Object (Self).Internal_Report (Message, Binary);
       Check_Duplicate_Bodies (Message);
    end Internal_Report;
 
