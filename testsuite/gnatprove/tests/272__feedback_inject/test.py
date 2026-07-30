@@ -24,8 +24,11 @@ FAKE_PROVERS = ["gaveup", "timeout", "steplimit", "outofmemory"]
 def quote(value):
     # why3 configuration files only accept double-quoted strings. We cannot use
     # repr() (the !r conversion flag) here, as it emits single quotes that the
-    # why3 parser rejects, so build the double-quoted value explicitly.
-    return '"' + value + '"'
+    # why3 parser rejects, so build the double-quoted value explicitly. The
+    # why3 parser also interprets backslash escapes inside strings, so
+    # backslashes are doubled: otherwise native paths on Windows get mangled.
+    escaped = value.replace("\\", "\\\\").replace('"', '\\"')
+    return '"' + escaped + '"'
 
 
 def prover_section(behavior):
