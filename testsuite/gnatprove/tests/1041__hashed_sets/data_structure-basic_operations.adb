@@ -50,7 +50,7 @@ is
       renames Node_Reachability.Lemma_Model_Preserved;
       procedure Lemma_LL_Sequence_Set
         (X, Y : Positive_Count_Type; Z : Count_Type; M1, M2 : Nodes_Type)
-      renames Node_Reachability.Lemma_Model_Set;
+      renames Node_Reachability.Lemma_Model_After_Set;
 
       --  Invariant: The buckets and free lists are acyclic and they do not
       --  overlap.
@@ -1652,13 +1652,13 @@ is
                      Lemma_Is_Acyclic_Def (I, Old_S.Nodes);
                      Lemma_Reachable_Def (I, Old_S.Nodes);
                      Lemma_LL_Sequence_Def (I, Old_S.Nodes);
-                     Lemma_Is_Acyclic_Set
+                     Lemma_Is_Acyclic_After_Set
                        (S.Buckets (B),
                         P,
                         S.Nodes (I).Next,
                         Old_S.Nodes,
                         S.Nodes);
-                     Lemma_Reachable_Set
+                     Lemma_Reachable_After_Set
                        (S.Buckets (B),
                         P,
                         S.Nodes (I).Next,
@@ -1982,9 +1982,9 @@ is
 
             --  I has been removed from S.Buckets (B)
 
-            Lemma_Is_Acyclic_Set
+            Lemma_Is_Acyclic_After_Set
               (S.Buckets (B), C, S.Nodes (I).Next, Old_S.Nodes, S.Nodes);
-            Lemma_Reachable_Set
+            Lemma_Reachable_After_Set
               (S.Buckets (B), C, S.Nodes (I).Next, Old_S.Nodes, S.Nodes);
             Lemma_LL_Sequence_Set
               (S.Buckets (B), C, S.Nodes (I).Next, Old_S.Nodes, S.Nodes);
