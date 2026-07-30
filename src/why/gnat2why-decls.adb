@@ -760,15 +760,36 @@ package body Gnat2Why.Decls is
                Mutable => Var.Mutable);
 
          when Regular                =>
+            declare
+               Elmt : constant Entity_Id :=
+                 (if Present (Loop_Iterator_Parameter (E))
+                    and then Loop_Iterator_Dimension (E) = Uint_1
+                  then Loop_Iterator_Parameter (E)
+                  else Empty);
+               --  If E is the index introduced by the frontend to expand a
+               --  "for ... of" loop over a one-dimensional array, the element
+               --  of the original loop.
+
             begin
                --  Currently only generate values for scalar variables in
                --  counterexamples, which are always of the Regular kind.
+
+               --  If E is an internal array iteration index, it has no
+               --  counterexample labels of its own as it does not come from
+               --  source. Use the name of the element of the original loop
+               --  with a fake 'Index attribute instead, as is done for
+               --  quantified expressions and for loops over containers.
 
                --  generate a global ref
 
                Emit_Global_Ref_Or_Function
                  (Name    => Var.Main.B_Name,
-                  Labels  => Get_Counterexample_Labels (E),
+                  Labels  =>
+                    (if Present (Elmt)
+                     then
+                       Get_Counterexample_Labels
+                         (Elmt, Append_To_Name => "'" & Index_Label)
+                     else Get_Counterexample_Labels (E)),
                   Mutable => True,
                   Def     => Call);
             end;

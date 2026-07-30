@@ -716,6 +716,13 @@ package SPARK_Atree.Entities is
      (Obj : Entity_Id) return Opt_Object_Kind_Id
    renames Sem_Util.Ultimate_Overlaid_Entity;
 
+   function Loop_Iterator_Parameter
+     (Iterator : Entity_Id) return Opt_Object_Kind_Id
+   renames Einfo.Entities.Loop_Iterator_Parameter;
+
+   function Loop_Iterator_Dimension (Iterator : Entity_Id) return Uint
+   renames Einfo.Entities.Loop_Iterator_Dimension;
+
    ----------------------
    --  For Subprograms --
    ----------------------
@@ -800,7 +807,8 @@ package SPARK_Atree.Entities is
        Nkind (Enclosing_Declaration'Result)
        in Sinfo.Nodes.N_Declaration
         | Sinfo.Nodes.N_Later_Decl_Item
-        | Sinfo.Nodes.N_Number_Declaration;
+        | Sinfo.Nodes.N_Number_Declaration
+        | Sinfo.Nodes.N_Renaming_Declaration;
    --  Special case of Sem_Util.Enclosing_Declaration where only one call to
    --  Parent is needed.
 

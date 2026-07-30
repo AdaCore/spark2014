@@ -37,7 +37,44 @@ test_access.adb:27:36: info: overflow check proved (CVC5: 2 VC)
 test_access.adb:29:17: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
 test_access.adb:33:68: info: index check proved (CVC5: 2 VC)
 test_access.adb:38:37: medium: assertion might fail, cannot prove E = 0 (e.g. when E'Loop_Index.all = 5)
+test_loop.adb:14:13: info: during checks for quantification at test_loop.adb:6
+test_loop.adb:14:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_loop.adb:14:13: info: precondition proved (Trivial: 1 VC)
+test_loop.adb:14:20: warning: unused variable "X"
+test_loop.adb:15:13: info: during checks for quantification at test_loop.adb:6
+test_loop.adb:15:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+test_loop.adb:15:13: info: precondition proved (Trivial: 1 VC)
+test_loop.adb:15:19: warning: unused variable "X"
+test_loop.adb:15:80: info: overflow check proved (CVC5: 2 VC)
+test_loop.adb:16:13: info: during checks for quantification at test_loop.adb:6
+test_loop.adb:16:13: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+test_loop.adb:16:13: info: precondition proved (Trivial: 1 VC)
+test_loop.adb:16:26: warning: unused variable "X"
+test_loop.adb:17:13: info: during checks for quantification at test_loop.adb:6
+test_loop.adb:17:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+test_loop.adb:17:13: info: precondition proved (CVC5: 1 VC)
+test_loop.adb:17:66: info: index check proved (CVC5: 2 VC)
+test_loop.adb:23:08: info: precondition proved (CVC5: 1 VC)
+test_loop.adb:23:08: info: precondition proved (Trivial: 1 VC)
+test_loop.adb:24:22: medium: assertion might fail
+test_loop_array.adb:1:11: warning: subprogram "Test_Loop_Array" has no effect
+test_loop_array.adb:12:18: info: unrolling loop [info-unrolling-inlining]
+test_loop_array.adb:13:25: medium: assertion might fail
+test_loop_array.adb:16:24: info: unrolling loop [info-unrolling-inlining]
+test_loop_array.adb:17:25: medium: assertion might fail
 counterexample expected for check at test.adb:23
   trace at test.adb:23 --> E'Loop_Index = 5
 counterexample expected for check at test_access.adb:38
   trace at test_access.adb:38 --> E'Loop_Index.all = 5
+counterexample expected for check at test_loop.adb:24
+  trace at test_loop.adb:23 --> E = 0 and E'Loop_Index = 5
+counterexample expected for check at test_loop_array.adb:13
+  trace at test_loop_array.adb:1 --> B = True
+  trace at test_loop_array.adb:7 --> A = (1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, others => 10)
+  trace at test_loop_array.adb:9 --> A = (5 => 10, others => 0)
+  trace at test_loop_array.adb:12 --> E'Loop_Index = 1
+counterexample expected for check at test_loop_array.adb:17
+  trace at test_loop_array.adb:1 --> B = False
+  trace at test_loop_array.adb:7 --> A = (1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, others => 10)
+  trace at test_loop_array.adb:9 --> A = (5 => 10, others => 0)
+  trace at test_loop_array.adb:16 --> I = 1

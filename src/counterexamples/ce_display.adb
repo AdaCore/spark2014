@@ -48,6 +48,7 @@ with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with String_Utils;                use String_Utils;
+with Uintp;                       use Uintp;
 
 package body CE_Display is
 
@@ -850,7 +851,20 @@ package body CE_Display is
            and then not Is_Discriminal (E)
            and then not Is_Protected_Component_Or_Discr_Or_Part_Of (E)
          then
-            Process_Entity (E, None);
+            declare
+               Elmt : constant Entity_Id :=
+                 (if Present (Loop_Iterator_Parameter (E))
+                    and then Loop_Iterator_Dimension (E) = Uint_1
+                  then Loop_Iterator_Parameter (E)
+                  else Empty);
+
+            begin
+               if Present (Elmt) then
+                  Process_Entity (Elmt, Index);
+               else
+                  Process_Entity (E, None);
+               end if;
+            end;
 
          --  For scalar types, traverse the bounds
 
