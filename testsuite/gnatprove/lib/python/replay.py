@@ -52,6 +52,12 @@ class SessionGenerator:
     def contains_manual_proof(self):
         raise NotImplementedError
 
+    @property
+    def is_manifest_replay(self):
+        """True if the test is replayed from a proof manifest instead of
+        recorded why3 sessions."""
+        return False
+
     def missing_contains_manual_proof_error(self):
         print(
             """test should define variable 'contains_manual_proof'"""
@@ -101,6 +107,10 @@ class YamlGenerator(SessionGenerator):
     def contains_manual_proof(self):
         return self._contains_manual_proof
 
+    @property
+    def is_manifest_replay(self):
+        return self.replay == "manifest"
+
     def recreate_session(self):
         if self.replay == "manifest":
             opt = list(self.args.get("opt", []))
@@ -147,11 +157,16 @@ replayer.recreate_session()
 
 print("-----------")
 print("Cleanup after session regeneration:")
-count = 0
-for shape_file in glob.glob("proof/sessions/*/why3shapes*"):
-    os.remove(shape_file)
-    count += 1
-print(f'  shapefiles: {"deleted" if count > 0 else "not found"}')
+if replayer.is_manifest_replay:
+    # Manifest tests are replayed from the manifest only, so the sessions
+    # generated as a side effect are not part of the test data.
+    delete(os.path.join("proof", "sessions"), isdir=True)
+else:
+    count = 0
+    for shape_file in glob.glob("proof/sessions/*/why3shapes*"):
+        os.remove(shape_file)
+        count += 1
+    print(f'  shapefiles: {"deleted" if count > 0 else "not found"}')
 delete("sparklib.gpr")
 for leftover in ["gnatprove", "sparklib_obj", "obj", "lib", "include"]:
     delete(leftover, isdir=True)
