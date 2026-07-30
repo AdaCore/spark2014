@@ -144,6 +144,40 @@ through the ``GPR2.Build`` infrastructure. Global generation,
 data-representation generation, and analysis are therefore scheduled together,
 and additional work may be discovered while processing dependencies.
 
+Generating the Why3 configuration file
+======================================
+
+``gnatwhy3`` needs a Why3 configuration file that describes the provers and
+editors it may run. Rather than shipping that file directly, the toolset ships
+``share/spark/config/gnatprove.conf``, a JSON description of the same
+information, and ``gnatprove`` translates it into a ``why3.conf`` file. The
+translation is done before the build actions are scheduled, and a copy of
+``why3.conf`` is written into the artifact directory and into the object
+directory of every non-externally-built project of the tree, because
+``gnatwhy3`` is run with the object directory of the analyzed unit as its
+working directory. The JSON schema of ``gnatprove.conf`` is described in a
+comment next to the translation code, and does not need to be repeated here.
+
+Most command strings are copied through unchanged, so the Why3 ``%`` patterns
+they contain (``%f`` for the goal file, ``%l`` for the Why3 library directory,
+and so on) are interpreted by ``gnatwhy3`` at the point where it spawns the
+prover. One piece of information is not available to Why3, however: the
+directory into which the prover support libraries have been compiled. Those
+libraries (currently only Coq's) are built once, into the object directory of
+the root project, and every generated ``why3.conf`` must point at that single
+location regardless of the object directory it is written into.
+
+``gnatprove.conf`` therefore marks that location with the placeholder
+``@ROOT_OBJ_DIR@``, which ``gnatprove`` expands while writing ``why3.conf``.
+The placeholder deliberately does not use the Why3 ``%`` syntax, so that
+expanding it cannot disturb the patterns of other provers. When the root
+project has no object directory — an aggregate or abstract project — the
+placeholder is left in place; Coq is unsupported for such a tree anyway.
+
+Note that a user-supplied configuration file, passed with ``--why3-conf``, is
+read by ``gnatwhy3`` as an additional configuration file and is never rewritten
+by ``gnatprove``. ``@ROOT_OBJ_DIR@`` is consequently not available in it.
+
 Build Actions
 =============
 
