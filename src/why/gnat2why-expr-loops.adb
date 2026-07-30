@@ -1968,7 +1968,7 @@ package body Gnat2Why.Expr.Loops is
                end if;
 
                --  Create new variable for iterator if needed.
-               --  ??? The 'Index label for CE should be used here.
+               --  Use the 'Index label for CE.
 
                if Need_Iter then
                   Entire_Loop :=
@@ -1976,7 +1976,11 @@ package body Gnat2Why.Expr.Loops is
                       (Name    => Nam_For_Iter,
                        Def     => Init_Iter,
                        Context => Entire_Loop,
-                       Typ     => EW_Unit_Type);
+                       Typ     => EW_Unit_Type,
+                       Labels  =>
+                         Get_Counterexample_Labels
+                           (Loop_Param_Ent,
+                            Append_To_Name => "'" & Index_Label));
                end if;
 
                --  Bind the temporary variable used for the container

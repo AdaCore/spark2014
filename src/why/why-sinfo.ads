@@ -486,6 +486,7 @@ package Why.Sinfo is
    --  Def        W_Prog_Id
    --  Context    W_Prog_Id
    --  Typ        W_Type_Id
+   --  Labels     Name_Id_Set
    --
    --  Same as W_Binding, but the new introduced variable is a mutable
    --  variable. Why3 syntax "let x = { typ__content = def } in context".

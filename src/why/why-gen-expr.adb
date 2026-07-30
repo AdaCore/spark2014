@@ -365,7 +365,8 @@ package body Why.Gen.Expr is
                 (Name    => J.Name,
                  Def     => +J.Value,
                  Context => +Res,
-                 Typ     => Get_Type (+Res));
+                 Typ     => Get_Type (+Res),
+                 Labels  => Symbol_Sets.Empty_Set);
          else
             Res :=
               New_Typed_Binding

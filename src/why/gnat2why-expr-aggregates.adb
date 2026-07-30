@@ -458,7 +458,8 @@ package body Gnat2Why.Expr.Aggregates is
                 (Name    => J.Name,
                  Def     => +J.Value,
                  Context => Preserv_Checks,
-                 Typ     => EW_Unit_Type);
+                 Typ     => EW_Unit_Type,
+                 Labels  => Symbol_Sets.Empty_Set);
          end loop;
 
          Preserv_Checks :=

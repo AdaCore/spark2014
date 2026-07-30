@@ -1512,7 +1512,8 @@ package body Gnat2Why.Util is
               Def     =>
                 New_Discrete_Constant (Value => Uint_0, Typ => Get_Type (+V)),
               Context => Result,
-              Typ     => Get_Type (+Prog));
+              Typ     => Get_Type (+Prog),
+              Labels  => Symbol_Sets.Empty_Set);
       end loop;
       return Result;
    end Create_Zero_Binding;

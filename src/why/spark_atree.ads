@@ -173,6 +173,7 @@ package SPARK_Atree is
    N_Integer_Literal                 : Node_Kind renames SN.N_Integer_Literal;
    N_Iterated_Component_Association  : Node_Kind renames
      SN.N_Iterated_Component_Association;
+   N_Iteration_Scheme                : Node_Kind renames SN.N_Iteration_Scheme;
    N_Itype_Reference                 : Node_Kind renames SN.N_Itype_Reference;
    N_Label                           : Node_Kind renames SN.N_Label;
    N_Loop_Statement                  : Node_Kind renames SN.N_Loop_Statement;

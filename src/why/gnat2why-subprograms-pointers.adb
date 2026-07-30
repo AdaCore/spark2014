@@ -454,7 +454,8 @@ package body Gnat2Why.Subprograms.Pointers is
                      (Return_Type => Get_Typ (Binder.B_Name),
                       Labels      => Symbol_Sets.Empty_Set),
                  Context  => Checks,
-                 Typ      => EW_Unit_Type);
+                 Typ      => EW_Unit_Type,
+                 Labels   => Symbol_Sets.Empty_Set);
          else
             Checks :=
               New_Binding
@@ -482,7 +483,8 @@ package body Gnat2Why.Subprograms.Pointers is
                      (Return_Type => Get_Typ (Binder.B_Name),
                       Labels      => Symbol_Sets.Empty_Set),
                  Context  => Checks,
-                 Typ      => EW_Unit_Type);
+                 Typ      => EW_Unit_Type,
+                 Labels   => Symbol_Sets.Empty_Set);
          end if;
       end loop;
 
