@@ -1,0 +1,24 @@
+p.adb:8:16: info: overflow check proved (CVC5: 2 VC)
+p.ads:4:13: info: implicit aspect Always_Terminates on "Decrement" has been proved, subprogram will terminate
+p.ads:5:43: info: postcondition proved (CVC5: 1 VC)
+p.ads:5:64: info: overflow check proved (CVC5: 2 VC)
+warning: switch --limit-subp given more than once; only the last occurrence is used
+====== a single occurrence must not warn ================
+p.adb:4:16: info: overflow check proved (CVC5: 2 VC)
+p.ads:2:13: info: implicit aspect Always_Terminates on "Increment" has been proved, subprogram will terminate
+p.ads:3:42: info: postcondition proved (CVC5: 1 VC)
+p.ads:3:63: info: overflow check proved (CVC5: 2 VC)
+====== the warning applies to the whole limit family ================
+p.adb:4:16: info: overflow check proved (CVC5: 2 VC)
+warning: switch --limit-line given more than once; only the last occurrence is used
+====== repetition inside one project attribute warns ================
+p.adb:8:16: info: overflow check proved (CVC5: 2 VC)
+p.ads:4:13: info: implicit aspect Always_Terminates on "Decrement" has been proved, subprogram will terminate
+p.ads:5:43: info: postcondition proved (CVC5: 1 VC)
+p.ads:5:64: info: overflow check proved (CVC5: 2 VC)
+warning: switch --limit-subp given more than once; only the last occurrence is used
+====== project file plus command line does not warn ================
+p.adb:8:16: info: overflow check proved (CVC5: 2 VC)
+p.ads:4:13: info: implicit aspect Always_Terminates on "Decrement" has been proved, subprogram will terminate
+p.ads:5:43: info: postcondition proved (CVC5: 1 VC)
+p.ads:5:64: info: overflow check proved (CVC5: 2 VC)

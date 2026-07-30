@@ -67,6 +67,28 @@ Then, the switches attributes of the entire project tree are parsed
 into records, and merged according to precedence rules, to establish the
 "file-specific" switches, which can be specified on a per-file basis.
 
+Switch multiplicity
+-------------------
+
+Each switch entry in ``Switch_Definitions`` carries a ``Multiplicity`` field
+describing what happens when the switch appears several times *within a single
+source* (one command line, or one project-file attribute):
+
+- ``Override`` (the default): the last occurrence silently wins. This is the
+  expected behavior for scalar and mode switches.
+- ``Override_Warn``: the last occurrence still wins, but a warning is emitted on
+  every repetition. Used for switches where passing several values looks like a
+  natural user intent but is in fact collapsed to one, such as the
+  ``--limit-*`` family and ``--exclude-line``.
+- ``Accumulate``: every occurrence is collected. This only makes sense with list
+  storage, so it is constrained to ``String_List_Value`` (``--sarif-base-uri``).
+
+The warning for ``Override_Warn`` is emitted in ``Handle_Switch``, which is
+invoked once per source, so it fires only on same-source repetition. It is
+deliberately independent of ``Multiplicity``: precedence *across* sources
+(command line beating project file) is a separate axis derived from
+``Value_Kind`` in ``Merge_Parsed_Switches``, and this field does not change it.
+
 Undocumented switches
 ---------------------
 
