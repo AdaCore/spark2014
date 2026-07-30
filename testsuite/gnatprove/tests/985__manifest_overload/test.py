@@ -91,7 +91,10 @@ def inspect(name, manifest):
 
 
 def gnatwhy3_line_for(lines, file_stem):
-    matches = [line for line in lines if f"/{file_stem}.gnat-json " in line]
+    # The file argument is a native path, so match on a copy of the line with
+    # the directory separators normalized.
+    needle = f"/{file_stem}.gnat-json "
+    matches = [line for line in lines if needle in line.replace("\\", "/")]
     if len(matches) != 1:
         raise AssertionError("\n".join(lines))
     return f" {matches[0]} "
