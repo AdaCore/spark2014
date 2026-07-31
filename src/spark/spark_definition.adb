@@ -4428,97 +4428,144 @@ package body SPARK_Definition is
 
             Mark (Expression (N));
 
-            --  Roots of choices of deep delta aggregates are ill-typed.
-            --  Traverse them specifically.
+            declare
 
-            if Is_Deep_Delta_Aggregate (N) then
-               declare
-                  procedure Mark_Deep_Choice (Choice : Node_Id);
-                  --  Traverse choices of deep delta aggregates to mark them
+               --  Roots of choices of deep delta aggregates are ill-typed.
+               --  Traverse them specifically.
 
-                  ----------------------
-                  -- Mark_Deep_Choice --
-                  ----------------------
+               procedure Mark_Deep_Choice (Choice : Node_Id);
+               --  Traverse choices of deep delta aggregates to mark them
 
-                  procedure Mark_Deep_Choice (Choice : Node_Id) is
-                     Pref_Ty : Type_Kind_Id;
+               ----------------------
+               -- Mark_Deep_Choice --
+               ----------------------
 
-                  begin
-                     --  We have reached the root. The prefix type is
-                     --  necessarily in SPARK. Just mark the choice.
+               procedure Mark_Deep_Choice (Choice : Node_Id) is
+                  Pref_Ty : Type_Kind_Id;
 
-                     if Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice (Choice) then
-                        Mark (Choice);
+               begin
+                  --  We have reached the root. The prefix type is
+                  --  necessarily in SPARK. Just mark the choice.
 
-                     --  Otherwise, make sure that the component is visible in
-                     --  SPARK, mark the choice and the prefix.
+                  if Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice (Choice) then
+                     Mark (Choice);
 
-                     else
-                        Pref_Ty :=
-                          (if Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice
-                                (Prefix (Choice))
-                           then
-                             (if Is_Array_Type (Etype (N))
-                              then Component_Type (Etype (N))
-                              else Etype (Entity (Prefix (Choice))))
-                           else Etype (Prefix (Choice)));
+                  --  Otherwise, make sure that the component is visible in
+                  --  SPARK, mark the choice and the prefix.
 
-                        if not Retysp_In_SPARK (Pref_Ty) then
-                           Mark_Violation (Choice, From => Pref_Ty);
+                  else
+                     Pref_Ty :=
+                       (if Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice
+                             (Prefix (Choice))
+                        then
+                          (if Is_Array_Type (Etype (N))
+                           then Component_Type (Etype (N))
+                           else Etype (Entity (Prefix (Choice))))
+                        else Etype (Prefix (Choice)));
+
+                     if not Retysp_In_SPARK (Pref_Ty) then
+                        Mark_Violation (Choice, From => Pref_Ty);
+                        return;
+                     end if;
+
+                     if Nkind (Choice) = N_Indexed_Component then
+                        if not Most_Underlying_Type_In_SPARK (Pref_Ty) then
+                           Mark_Violation (N, From => Pref_Ty);
                            return;
                         end if;
-
-                        if Nkind (Choice) = N_Indexed_Component then
-                           if not Most_Underlying_Type_In_SPARK (Pref_Ty) then
-                              Mark_Violation (N, From => Pref_Ty);
-                              return;
+                        Mark (First (Expressions (Choice)));
+                        pragma
+                          Assert (No (Next (First (Expressions (Choice)))));
+                     else
+                        if No
+                             (Search_Component_By_Name
+                                (Unique_Entity (Pref_Ty),
+                                 Entity (Selector_Name (Choice))))
+                        then
+                           if SPARK_Pragma_Is (Opt.On) then
+                              Error_Msg_N
+                                (Err_Comp_Not_Present,
+                                 Choice,
+                                 Names         => [Pref_Ty],
+                                 Continuations =>
+                                   ["static expression fails"
+                                    & " Constraint_Check"]);
                            end if;
-                           Mark (First (Expressions (Choice)));
-                           pragma
-                             Assert (No (Next (First (Expressions (Choice)))));
-                        else
-                           if No
-                                (Search_Component_By_Name
-                                   (Unique_Entity (Pref_Ty),
-                                    Entity (Selector_Name (Choice))))
-                           then
-                              if SPARK_Pragma_Is (Opt.On) then
-                                 Error_Msg_N
-                                   (Err_Comp_Not_Present,
-                                    Choice,
-                                    Names         => [Pref_Ty],
-                                    Continuations =>
-                                      ["static expression fails"
-                                       & " Constraint_Check"]);
-                              end if;
 
-                              return;
-                           end if;
-                           Mark (Selector_Name (Choice));
+                           return;
                         end if;
-
-                        Mark_Deep_Choice (Prefix (Choice));
+                        Mark (Selector_Name (Choice));
                      end if;
-                  end Mark_Deep_Choice;
 
-                  Assoc : Node_Id := First (Component_Associations (N));
-               begin
-                  while Present (Assoc) loop
-                     declare
-                        Choice : Node_Id := First (Choices (Assoc));
-                     begin
+                     Mark_Deep_Choice (Prefix (Choice));
+                  end if;
+               end Mark_Deep_Choice;
+
+               Is_Deep_Delta    : Boolean := False;
+               Has_Range_Choice : Boolean := False;
+               Pref_Typ         : constant Node_Id := Etype (Expression (N));
+               Assoc            : Node_Id :=
+                 First (Component_Associations (N));
+               Choice           : Node_Id;
+
+            begin
+               --  GNAT accepts mix of array_component_associations and
+               --  array_subcomponent_associations in delta aggregates, despite
+               --  the documented syntax. We make a first pass through the
+               --  aggregate to detect such mixing, which we do not support.
+
+               while Present (Assoc) loop
+                  case Nkind (Assoc) is
+                     when N_Iterated_Component_Association =>
+                        Has_Range_Choice := True;
+
+                     when N_Component_Association          =>
+                        Choice := First (Choices (Assoc));
                         while Present (Choice) loop
-                           Mark_Deep_Choice (Choice);
+                           case Nkind (Choice) is
+                              when N_Range | N_Subtype_Indication =>
+                                 Has_Range_Choice := True;
+
+                              when N_Others_Choice                =>
+                                 raise Program_Error;
+
+                              when others                         =>
+                                 if Is_Entity_Name (Choice)
+                                   and then Is_Type (Entity (Choice))
+                                 then
+                                    Has_Range_Choice := True;
+                                 elsif Sem_Aggr.Is_Deep_Choice
+                                         (Choice, Pref_Typ)
+                                 then
+                                    Is_Deep_Delta := True;
+                                 end if;
+                           end case;
                            Next (Choice);
                         end loop;
-                     end;
+
+                     when others                           =>
+                        raise Program_Error;
+                  end case;
+                  Next (Assoc);
+               end loop;
+
+               if Has_Range_Choice and then Is_Deep_Delta then
+                  Mark_Unsupported (Lim_Mixed_Array_Deep_Delta_Aggregate, N);
+               elsif Is_Deep_Delta then
+                  Assoc := First (Component_Associations (N));
+                  while Present (Assoc) loop
+                     Choice := First (Choice_List (Assoc));
+                     while Present (Choice) loop
+                        Mark_Deep_Choice (Choice);
+                        Next (Choice);
+                     end loop;
                      Mark_Component_Of_Component_Association (Assoc);
                      Next (Assoc);
                   end loop;
-               end;
-            else
-               Mark_List (Component_Associations (N));
-            end if;
+               else
+                  Mark_List (Component_Associations (N));
+               end if;
+            end;
 
             Check_No_Deep_Duplicates_In_Assoc (N);
             Check_No_Deep_Aliasing_In_Assoc (N);

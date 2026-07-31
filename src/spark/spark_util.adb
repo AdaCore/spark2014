@@ -3820,41 +3820,33 @@ package body SPARK_Util is
    -----------------------------
 
    function Is_Deep_Delta_Aggregate (Exp : Node_Id) return Boolean is
-      Pref  : Node_Id;
-      Assoc : Node_Id;
+      Pref_Typ : Node_Id;
+      Assoc    : Node_Id;
+      Choice   : Node_Id;
    begin
       if Nkind (Exp) /= N_Delta_Aggregate then
          return False;
       end if;
 
-      Pref := Expression (Exp);
+      Pref_Typ := Etype (Expression (Exp));
       Assoc := First (Component_Associations (Exp));
       while Present (Assoc) loop
+         case Nkind (Assoc) is
+            when N_Iterated_Component_Association =>
+               null;
 
-         --  Iterated component associations are not allowed in deep delta
-         --  aggregates.
+            when N_Component_Association          =>
+               Choice := First (Choices (Assoc));
+               while Present (Choice) loop
+                  if Sem_Aggr.Is_Deep_Choice (Choice, Pref_Typ) then
+                     return True;
+                  end if;
+                  Next (Choice);
+               end loop;
 
-         if Nkind (Assoc) = N_Iterated_Component_Association then
-            return False;
-         end if;
-
-         declare
-            Choice : constant Node_Id := First (Choices (Assoc));
-         begin
-            if Sem_Aggr.Is_Deep_Choice (Choice, Etype (Pref)) then
-               return True;
-
-            --  For arrays, deep and shallow associations cannot be mixed
-
-            elsif Is_Array_Type (Etype (Pref)) then
-               return False;
-            end if;
-
-            --  Multiple choices are expanded in record delta aggregates
-
-            pragma Assert (No (Next (Choice)));
-         end;
-
+            when others                           =>
+               raise Program_Error;
+         end case;
          Next (Assoc);
       end loop;
 
