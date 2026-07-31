@@ -985,6 +985,125 @@ the value, hence it can be applied to functions that return a limited
 type. Attribute ``Result`` can also be used inside consequence expressions in
 :ref:`Contract Cases`.
 
+.. index:: Loop_Index
+           loop; and Loop_Index
+
+.. _Attribute Loop_Index:
+
+Attribute ``Loop_Index``
+------------------------
+
+*Specific to SPARK*
+
+When a quantified expression or a loop over an array or a container with the
+aspect ``Iterable`` only refers to the array components or the container's
+element, it is considered good practice in Ada to use an array component
+iterator or a container element iterator (``for .. of``). When using
+|GNATprove| however, loop-invariants often need to refer to the
+array index or the container's cursor even when the loop itself doesn't.
+As an example, consider the following subprogram that uses a loop to go over
+an array and assign all its elements to 0:
+
+.. code-block:: ada
+
+   type Int_Array is array (Positive range <>) of Integer;
+
+   procedure Set_To_Zero (A : in out Int_Array) with
+     Post => (for all E of A => E = 0)
+   is
+   begin
+      for E of A loop
+         E := 0;
+      end loop;
+   end Set_To_Zero;
+
+Proving its postcondition requires adding a loop invariant that states that all
+the elements that have been visited so far are equal to 0. This cannot be done
+whithout referring to the current array index. To alleviate this concern, the
+ghost attribute ``Loop_Index`` is defined on loop parameters of loops with an
+array component iterator. They are refer to the underlying array index.
+It makes it possible to write an invariant for the loop in ``Set_To_Zero``:
+
+.. code-block:: ada
+
+   type Int_Array is array (Positive range <>) of Integer;
+
+   procedure Set_To_Zero (A : in out Int_Array) with
+     Post => (for all E of A => E = 0)
+   is
+   begin
+      for E of A loop
+         E := 0;
+         pragma Loop_Invariant
+           (for all I in A'First .. E'Loop_Index => A (I) = 0);
+      end loop;
+   end Set_To_Zero;
+
+Similarly, the attribute ``Loop_Index`` is defined on loop parameters of loops
+with a container element iterator based on the ``Iterable`` aspect. It is the
+case in particular for containers of the :ref:`SPARK Library`. The attribute
+refers to the underlaying cursor in this case. As an example, the following
+function looks for 0 in a functional sequence. As sequences are indexed by big
+integers, the ``Loop_Index`` attribute can be used to access the number of
+elements traversed so far:
+
+.. code-block:: ada
+
+   package Int_Seqs is new
+     SPARK.Containers.Functional.Infinite_Sequences (Integer);
+   use Int_Seqs;
+
+   function Contains_Zero (S : Sequence) return Boolean with
+     Post => Contains_Zero'Result = (for some E of S => E = 0)
+   is
+   begin
+      for E of S loop
+         if E = 0 then
+            return True;
+         end if;
+         pragma Loop_Invariant
+           (for all I in S => (if I <= E'Loop_Index then Get (S, I) /= 0));
+      end loop;
+      return False;
+   end Contains_Zero;
+
+Note that the ``Loop_Index`` attribute on a parameter of a for loop over
+a container denotes a cursor, as defined by the aspect ``Iterable``, and not
+necessarily the number of past iterations. As an example, here is the same loop
+over a formal doubly linked list. ``E'Loop_Index`` returns a cursor, and we
+need to use the ``Positions`` model to retrieve its position in the list:
+
+.. code-block:: ada
+
+   package Int_Lists is new
+     SPARK.Containers.Formal.Doubly_Linked_Lists (Integer);
+   use Int_Lists;
+
+   function Contains_Zero (L : List) return Boolean with
+     Post => Contains_Zero'Result = (for some E of L => E = 0)
+   is
+   begin
+      for E of L loop
+         if E = 0 then
+            return True;
+         end if;
+         pragma Loop_Invariant
+           (for all I in 1 ..
+	      Formal_Model.P.Get (Formal_Model.Positions (L), E'Loop_Index) =>
+                Formal_Model.M.Get (Formal_Model.Model (L), I) /= 0);
+      end loop;
+      return False;
+   end Contains_Zero;
+
+.. note::
+
+   In loops over the content of multi-dimensional arrays, it is possible to
+   use the ``Loop_Index(N)`` attribute to refer to the index of each dimension,
+   similarly to the attributes ``First(N)``, ``Last(N)``, or ``Length(N)``.
+   However, this is not in general sufficient to make it possible to prove such
+   a loop using |GNATprove|, as this would require also supplying invariants in
+   the implicit enclosing loops over dimensions that are not the last.
+
 .. index:: aggregate
 
 Aggregates
