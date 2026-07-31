@@ -828,6 +828,137 @@ Pragma ``Unevaluated_Use_Of_Old`` applies to uses of attribute ``Old`` both
 inside postconditions and inside contract cases. See |GNAT Pro| RM for a
 detailed description of this pragma.
 
+.. index:: At
+
+.. _Attribute At:
+
+Attribute ``At``
+----------------
+
+*Specific to SPARK*
+
+Complex proof in |SPARK| can require writing intermediate assertions to guide
+the proof, relating values of the program state between multiple steps.
+In these assertions, it is sometimes convenient to refer to the value of
+variables at a previous program point. The attribute At can be used similarly
+to ``Old`` and ``Loop_Entry`` to denote a constant implicitly declared earlier
+in the program whose value is the prefix of the attribute reference.
+It takes a label as an argument to indicate the point where the constant shall
+be declared. Unlike ``Old`` and ``Loop_Entry`` which are only available in
+postcondition expressions and loop invariant respectively, ``At`` can be used
+anywhere in the sequence of statements, even inside regular code.
+Consider the following example:
+
+.. code-block:: ada
+
+  X := 1;
+  <<My_Label>>
+  X := 2;
+  Y := (X-1)'At (My_Label);
+
+It is equivalent to:
+
+.. code-block:: ada
+
+  X := 1;
+  declare
+     Expr_At_My_Label : constant Integer := (X-1);
+  begin
+     X := 2;
+     Y := Expr_At_My_Label;
+  end;
+
+Because of this semantics, it is only possible to refer to the value of an
+expression at a label that occurs earlier in a sequence of statements enclosing
+the attribute reference. For example, the following variant is rejected by the
+tool:
+
+.. code-block:: ada
+
+  X := 0;
+  if B then
+     X := 1;
+     <<My_Label>>
+  end if;
+  X := 2;
+  Y := (X-1)'At (My_Label);
+
+Similarly, the prefix of the attribute ``At`` can only reference entities that
+are defined and visible at the location of the referenced label, so the
+following example is rejected:
+
+.. code-block:: ada
+
+  X := 1;
+  <<My_Label>>
+  declare
+     Y : Integer := X;
+  begin
+     X := 2;
+     pragma Assert ((X-Y)'At (My_Label) = 0);
+  end;
+
+The most common usage of this feature is to replace the declaration of ghost
+constants at the beginning of a subprogram to store the initial values of its
+parameters so they can be reused for intermediate assertions in its body, as
+attribute ``Old`` is only allowed in postconditions:
+
+.. code-block:: ada
+
+  procedure P (X, Y : in out T) with
+    Post => F (X, Y, X'Old, Y'Old);
+
+  procedure P (X, Y : in out T) is
+  begin
+     <<Start>>
+     case ... is
+        when ... =>
+          ...
+	  pragma Assert (F (X, Y, X'At (Start), Y'At (Start)));
+        when ... =>
+          ...
+	  pragma Assert (F (X, Y, X'At (Start), Y'At (Start)));
+     end case;
+  end P;
+
+It can also be handy to store values at the beginning of a loop iteration,
+especially as |GNATprove| rejects non-scalar object declarations occuring
+before a loop invariant:
+
+.. code-block:: ada
+
+  for I in A'Range loop
+     <<Iter_Start>>
+     X := ...;
+     ...
+     pragma Assert (F (X, X'At (Iter_Start)));
+     pragma Loop_Invariant (...);
+  end loop;
+
+In addition to the restrictions listed above, |SPARK| also forbids references
+to the attribute ``At`` that would cause information to cross proof cut points
+introduced by loop invariants and ``Assert_And_Cut`` pragmas. In particular,
+the attribure ``At`` cannot be used in the loop invariant itself, or after
+the invariant, to refer to a label located before the invariant in the loop.
+Indeed, the cut point introduced by the invariant would make the label invisible
+after the invariant. As an example, the variant of the previous example
+referencing ``Iter_Start`` in the invariant would be rejected by the tool:
+
+.. code-block:: ada
+
+  for I in A'Range loop
+     <<Iter_Start>>
+     X := ...;
+     ...
+     pragma Loop_Invariant (F (X, X'At (Iter_Start)));
+  end loop;
+
+.. note::
+
+   Despite its semantics, a reference to the attribute ``At`` is not treated
+   as an object in |SPARK|. In particular, it cannot occur in the data
+   dependencies of a nested subprogram.
+
 .. index:: Result
            postcondition; and Result
            Contract_Cases; and Result
