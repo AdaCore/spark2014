@@ -768,6 +768,7 @@ package VC_Kinds is
       Lim_Loop_With_Iterator_Filter,
       Lim_Max_Array_Dimension,
       Lim_Max_Modulus,
+      Lim_Mixed_Array_Deep_Delta_Aggregate,
       Lim_Move_To_Access_Constant,
       Lim_No_Return_Function,
       Lim_Non_Static_Attribute,
@@ -1374,6 +1375,8 @@ package VC_Kinds is
            "array of dimension greater than" & Max_Array_Dimensions'Img,
          when Lim_Max_Modulus                                             =>
            "modulus greater than 2 '*'* 128",
+         when Lim_Mixed_Array_Deep_Delta_Aggregate                        =>
+           "delta aggregate mixing range and deep updates",
          when Lim_Class_Attr_Of_Constrained_Type                          =>
            "attribute ""Class"" of a constrained type",
          when Lim_Classwide_Representation_Value                          =>

@@ -1178,6 +1178,8 @@ package body VC_Kinds is
            & " dimensions",
          when Lim_Max_Modulus                                             =>
            "a modular type with a modulus greater than 2 ** 128",
+         when Lim_Mixed_Array_Deep_Delta_Aggregate                        =>
+           "a delta aggregate mixing range and deep updates",
          when Lim_Move_To_Access_Constant                                 =>
            "a move operation occuring as part of  an allocator or a conversion"
            & " to an access-to-constant type which does not occur directly"
@@ -3587,6 +3589,8 @@ package body VC_Kinds is
            "max-array-dimension",
          when Lim_Max_Modulus                                             =>
            "max-modulus",
+         when Lim_Mixed_Array_Deep_Delta_Aggregate                        =>
+           "mixed-array-deep-delta-aggr",
          when Lim_Move_To_Access_Constant                                 =>
            "move-to-access-constant",
          when Lim_No_Return_Function                                      =>

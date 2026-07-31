@@ -1,0 +1,6 @@
+main.adb:10:16: error: delta aggregate mixing range and deep updates is not yet supported
+main.adb:11:16: error: delta aggregate mixing range and deep updates is not yet supported
+main.adb:12:16: error: delta aggregate mixing range and deep updates is not yet supported
+main.adb:13:16: error: delta aggregate mixing range and deep updates is not yet supported
+main.adb:14:16: error: delta aggregate mixing range and deep updates is not yet supported
+gnatprove: error during flow analysis and proof
