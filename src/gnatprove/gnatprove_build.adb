@@ -902,9 +902,12 @@ package body Gnatprove_Build is
             if CL_Switches.Memcached_Server /= null
               and then CL_Switches.Memcached_Server.all /= ""
             then
+               --  For file caching the spec holds a directory, so it needs the
+               --  same quoting as any other path in the command.
+
                return
                  "spark_memcached_wrapper %t "
-                 & CL_Switches.Memcached_Server.all
+                 & Quote_For_Command (CL_Switches.Memcached_Server.all)
                  & " "
                  & Cmd;
             else
