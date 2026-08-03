@@ -39,8 +39,11 @@ package GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
    function On_Tree_Insertion
      (Self : Object; Db : in out GPR2.Build.Tree_Db.Object) return Boolean;
 
+   overriding
    procedure Initialize
-     (Self : in out Object; Unit : GPR2.Build.Compilation_Unit.Object);
+     (Self      : in out Object;
+      Unit      : GPR2.Build.Compilation_Unit.Object;
+      Spec_Only : Boolean := False);
    --  Initialize the action for the given compilation unit.
 
    overriding

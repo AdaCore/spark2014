@@ -116,10 +116,13 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
    -- Initialize --
    ----------------
 
+   overriding
    procedure Initialize
-     (Self : in out Object; Unit : GPR2.Build.Compilation_Unit.Object) is
+     (Self      : in out Object;
+      Unit      : GPR2.Build.Compilation_Unit.Object;
+      Spec_Only : Boolean := False) is
    begin
-      Compile.Ada.Object (Self).Initialize (Unit);
+      Compile.Ada.Object (Self).Initialize (Unit, Spec_Only);
    end Initialize;
 
    -----------------------------
