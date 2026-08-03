@@ -48,8 +48,11 @@ package GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
    --  representation file is provided, and the source file contains a single
    --  unit.
 
+   overriding
    procedure Initialize
-     (Self : in out Object; Unit : GPR2.Build.Compilation_Unit.Object);
+     (Self      : in out Object;
+      Unit      : GPR2.Build.Compilation_Unit.Object;
+      Spec_Only : Boolean := False);
    --  Initialize the action for the given compilation unit
 
    function Data_Rep_Files
