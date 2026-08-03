@@ -59,6 +59,10 @@ package body Why.Gen.Hardcoded is
    function Uint_From_String (Str_Value : String) return Uint;
    --  Read an integer value from a string. Might raise Constraint_Error.
 
+   function Is_Big_Integer_Literal (N : Node_Id; Value : Uint) return Boolean;
+   --  Return True if N is a literal of the hardcoded big integers unit
+   --  denoting Value.
+
    type M_Real_Time (Initialized : Boolean := False) is record
       case Initialized is
          when False =>
@@ -350,6 +354,53 @@ package body Why.Gen.Hardcoded is
 
    end Emit_Hardcoded_Type_Declaration;
 
+   ----------------------------
+   -- Is_Big_Integer_Literal --
+   ----------------------------
+
+   function Is_Big_Integer_Literal (N : Node_Id; Value : Uint) return Boolean
+   is
+   begin
+      if Nkind (N) /= N_Function_Call then
+         return False;
+      end if;
+
+      declare
+         Subp : constant Entity_Id := Get_Called_Entity_For_Proof (N);
+      begin
+         if not Is_From_Hardcoded_Unit (Subp, Big_Integers)
+           or else not Is_Literal_Function (Subp)
+         then
+            return False;
+         end if;
+      end;
+
+      --  Literals are encoded as a call taking the string image of the value
+
+      declare
+         Actual : constant Node_Id := First_Actual (N);
+      begin
+         if No (Actual)
+           or else Present (Next_Actual (Actual))
+           or else Nkind (Actual) /= N_String_Literal
+         then
+            return False;
+         end if;
+
+         declare
+            Len   : constant Nat := String_Length (Strval (Actual));
+            Image : String (1 .. Natural (Len));
+         begin
+            String_To_Name_Buffer (Strval (Actual));
+            Image := Name_Buffer (1 .. Natural (Len));
+            return Uint_From_String (Image) = Value;
+         exception
+            when Constraint_Error =>
+               return False;
+         end;
+      end;
+   end Is_Big_Integer_Literal;
+
    -----------------------------
    -- Is_Hardcoded_Comparison --
    -----------------------------
@@ -557,7 +608,25 @@ package body Why.Gen.Hardcoded is
                        Expr     => Args (2),
                        To       => EW_Int_Type)
                   else Args (2));
-               Name      : W_Identifier_Id;
+
+               --  Translate powers of 2 using pow2. It benefits from builtin
+               --  support in cvc5.
+
+               Left_Node : constant Node_Id :=
+                 (if No (Ada_Node)
+                  then Empty
+                  elsif Nkind (Ada_Node) in N_Binary_Op
+                  then Left_Opnd (Ada_Node)
+                  elsif Nkind (Ada_Node) in N_Subprogram_Call
+                  then First_Actual (Ada_Node)
+                  else Empty);
+
+               Use_Pow2 : constant Boolean :=
+                 Chars (Subp) = Name_Op_Expon
+                 and then Present (Left_Node)
+                 and then Is_Big_Integer_Literal (Left_Node, Uint_2);
+
+               Name : W_Identifier_Id;
             begin
 
                --  The following block assigns a value to Name which will be
@@ -593,7 +662,10 @@ package body Why.Gen.Hardcoded is
                         Name := M_Int_Div.Rem_Id;
 
                      when Name_Op_Expon    =>
-                        Name := M_Int_Power.Power;
+                        Name :=
+                          (if Use_Pow2
+                           then M_Int_Power.Power_2
+                           else M_Int_Power.Power);
 
                      when Name_Op_Eq       =>
                         Name :=
@@ -659,11 +731,24 @@ package body Why.Gen.Hardcoded is
                       (Ada_Node   => Ada_Node,
                        Domain     => Domain,
                        Name       => Name,
-                       Args       => (1 => Left_Rep, 2 => Right_Rep),
+                       Args       =>
+                         (if Use_Pow2
+                          then W_Expr_Array'(1 => Right_Rep)
+                          else W_Expr_Array'(1 => Left_Rep, 2 => Right_Rep)),
                        Reason     => Reason,
                        Check_Info => Check_Info,
                        Check      => Check,
                        Typ        => Base);
+
+                  --  The base does not occur in the pow2 call, so evaluate it
+                  --  separately to keep emitting the checks it carries.
+
+                  if Use_Pow2 and then Domain = EW_Prog then
+                     T :=
+                       +Sequence
+                          (Left  => New_Ignore (Prog => +Left_Rep),
+                           Right => +T);
+                  end if;
                end;
             end;
 
