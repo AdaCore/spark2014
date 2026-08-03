@@ -4,7 +4,7 @@ package body Test is
    procedure QE_1 (Table : in out Table_T) is
    begin
       for I in reverse 1 .. 9 loop
-	 Table (10 - I) := I;
+         Table (10 - I) := I;
       end loop;
       pragma Assert (for some X in 1 .. 9 => X = Table (X));
       if (for all X in 1 .. 9 => Table (X) > 0) then
