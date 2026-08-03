@@ -3786,6 +3786,26 @@ package body SPARK_Util is
    is
       Encl : constant Entity_Id := Enclosing_Unit (E);
    begin
+      --  Enclosing_Unit skips wrapper packages, so we can't use it if
+      --  the Scope is a wrapper package. We just use the scope chain
+      --  in that case.
+
+      if Is_Wrapper_Package (Scope) then
+         declare
+            S : Entity_Id := Einfo.Utils.Scope (E);
+         begin
+            --  Only go up through packages, so that entities local to a nested
+            --  subprogram are excluded, as they are for regular packages.
+
+            while Present (S) and then Ekind (S) = E_Package loop
+               if S = Scope then
+                  return True;
+               end if;
+               S := Einfo.Utils.Scope (S);
+            end loop;
+         end;
+      end if;
+
       return
         Is_Declared_Directly_In_Unit (E, Scope)
         or else
