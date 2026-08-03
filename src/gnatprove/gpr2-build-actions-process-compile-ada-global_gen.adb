@@ -75,11 +75,12 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
 
    overriding
    procedure Initialize
-     (Self      : in out Object;
-      Unit      : GPR2.Build.Compilation_Unit.Object;
-      Spec_Only : Boolean := False) is
+     (Self     : in out Object;
+      Unit     : GPR2.Build.Compilation_Unit.Object;
+      Kind     : Unit_Kind := S_Body;
+      Sep_Name : Optional_Name_Type := "") is
    begin
-      Compile.Ada.Object (Self).Initialize (Unit, Spec_Only);
+      Compile.Ada.Object (Self).Initialize (Unit, Kind, Sep_Name);
       --  The ALI file is the expected output of this action
       Self.Obj_File :=
         GPR2.Build.Artifacts.Object_File.Create (Self.Dep_File.Path);
