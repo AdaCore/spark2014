@@ -39,6 +39,7 @@ with Sem_Util;                       use Sem_Util;
 with Sinfo.Utils;                    use Sinfo.Utils;
 with Snames;                         use Snames;
 with SPARK_Xrefs;                    use SPARK_Xrefs;
+with Uintp;                          use Uintp;
 
 package body Flow_Types is
 
@@ -967,6 +968,10 @@ package body Flow_Types is
       function Get_Unmangled_Name (N : Node_Id) return String is
          Buf : Bounded_String;
          Nam : Node_Id := N;
+
+         Append_Loop_Index    : Boolean := False;
+         Loop_Index_Dimension : Upos := Uint_1;
+
       begin
          if Nkind (N) in N_Entity then
             case Ekind (N) is
@@ -982,12 +987,34 @@ package body Flow_Types is
                      Nam := Anonymous_Object (N);
                   end if;
 
+               when E_Loop_Parameter               =>
+                  declare
+                     Param_Id : constant Entity_Id :=
+                       Loop_Iterator_Parameter (N);
+                  begin
+                     if Present (Param_Id) then
+                        Nam := Param_Id;
+                        Append_Loop_Index := True;
+                        Loop_Index_Dimension := Loop_Iterator_Dimension (N);
+                     end if;
+                  end;
+
                when others                         =>
                   null;
             end case;
          end if;
 
          Append (Buf, Chars (Nam));
+
+         if Append_Loop_Index then
+            Append (Buf, ''');
+            Append (Buf, Name_Loop_Index);
+
+            if Loop_Index_Dimension > Uint_1 then
+               Append (Buf, " (" & UI_Image (Loop_Index_Dimension) & ")");
+            end if;
+         end if;
+
          Adjust_Name_Case (Buf, Sloc (Nam));
          return To_String (Buf);
       end Get_Unmangled_Name;
