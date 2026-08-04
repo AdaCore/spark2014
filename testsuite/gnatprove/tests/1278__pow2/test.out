@@ -1,0 +1,3 @@
+p.ads:7:19: info: assertion proved (CVC5: 1 VC)
+p.ads:7:19: info: predicate check proved (Trivial: 1 VC)
+p.ads:7:26: info: predicate check proved (Trivial: 1 VC)
