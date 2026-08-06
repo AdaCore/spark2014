@@ -31,9 +31,26 @@ def quote(value):
     return '"' + escaped + '"'
 
 
+def quote_for_cmdline(value):
+    # Before running a prover, why3 splits the "command" value into a program
+    # and its arguments with Cmdline.cmdline_split. That splitter breaks
+    # arguments apart at unquoted spaces and treats a backslash as an escape
+    # character, so a native Windows path must be both double-quoted (to
+    # survive as a single argument) and backslash-escaped (otherwise the whole
+    # command is rejected with "bad escape sequence"). quote() escapes the
+    # result a second time for the why3 configuration file parser, which is
+    # exactly what gnatprove itself does when it writes prover commands to
+    # why3.conf.
+    escaped = value.replace("\\", "\\\\").replace('"', '\\"')
+    return '"' + escaped + '"'
+
+
 def prover_section(behavior):
     name = "fake_" + behavior
-    command = f"{sys.executable} {fake_prover} {behavior} %f"
+    command = (
+        f"{quote_for_cmdline(sys.executable)} "
+        f"{quote_for_cmdline(fake_prover)} {behavior} %f"
+    )
     return "\n".join(
         [
             "[prover]",
