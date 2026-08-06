@@ -1,6 +1,7 @@
 with Configuration;
 with Gnat2Why_Opts.Writing;
 with GNAT.OS_Lib;
+with GNAT.Strings; use GNAT.Strings;
 
 with GPR2.Build.Actions.Process.Compile.Ada.Analysis;
 with GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
@@ -52,6 +53,22 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
          Cmd_Line.Add_Argument ("-gnates=" & Opt_File);
       end;
       Cmd_Line.Add_Argument ("-gnatis");  --  Suppress all info messages
+
+      --  Compilation switches of the Builder package
+
+      for Arg of Configuration.Global_Compilation_Switches loop
+         Cmd_Line.Add_Argument (Arg);
+      end loop;
+
+      --  Target configuration deduced from the runtime of a cross target. This
+      --  is only set when the user did not specify one in the switches above,
+      --  so the target configuration is never passed twice.
+
+      if Configuration.GnateT_Switch /= null
+        and then Configuration.GnateT_Switch.all /= ""
+      then
+         Cmd_Line.Add_Argument (Configuration.GnateT_Switch.all);
+      end if;
 
       for Arg of Configuration.CL_Switches.Cargs_List loop
          Cmd_Line.Add_Argument (Arg);

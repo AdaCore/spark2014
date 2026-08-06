@@ -17,13 +17,17 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
    is
    begin
       --  ??? We skip multi unit sources for now. Note that this never worked.
+      --
+      --  A target configuration specified by the user describes a target that
+      --  the compiler at hand cannot generate code for, so data representation
+      --  cannot be obtained in that case. This is not a problem when the
+      --  configuration was deduced from the runtime of a cross target, as the
+      --  compiler of that target is then used.
+
       return
         Configuration.Mode not in GPM_Check | GPM_Check_All | GPM_Flow
         and then CU.Main_Part.Index = No_Index
-        and then not Configuration.Has_gnateT_Switch (CU.Owning_View)
-        and then
-          (Configuration.GnateT_Switch = null
-           or else Configuration.GnateT_Switch.all = "");
+        and then not Configuration.Has_gnateT_Switch;
    end Applicable;
 
    ---------------------
@@ -55,6 +59,16 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
       --  an assembly file, which is cheaper. Ideally we would like none of
       --  those.
       Cmd_Line.Add_Argument ("-S");
+
+      --  Compilation switches of the Builder package
+
+      for Arg of Configuration.Global_Compilation_Switches loop
+         Cmd_Line.Add_Argument (Arg);
+      end loop;
+
+      --  Target configuration deduced from the runtime of a cross target. A
+      --  configuration specified by the user cannot show up here, as this
+      --  action is not applicable in that case.
 
       if Configuration.GnateT_Switch /= null
         and then Configuration.GnateT_Switch.all /= ""

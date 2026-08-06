@@ -1,0 +1,21 @@
+project Test is
+
+   package Builder is
+
+      --  Contrary to the other attributes of the Builder package, this one
+      --  holds compilation switches, so GNATprove passes them to all the
+      --  compilations it performs. The switch that makes the code legal is not
+      --  the first one of the list, so that the entire list is exercised.
+
+      for Global_Compilation_Switches ("Ada") use ("-gnatf", "-gnat2022");
+
+      --  These attributes hold switches of the builder itself, which GNATprove
+      --  ignores. Taking them into account would make the compilations fail,
+      --  whatever the order in which the switches are passed.
+
+      for Default_Switches ("Ada") use ("-gnatec=no_such_file.adc");
+      for Switches ("Ada") use ("-gnatec=no_such_file.adc");
+
+   end Builder;
+
+end Test;
