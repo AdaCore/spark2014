@@ -36,7 +36,6 @@ with GPR2.Build.Compilation_Unit;
 with GPR2.Build.Compilation_Unit.Maps;
 with GPR2.Path_Name;
 with GPR2.Project.Tree;
-with GPR2.Project.View;
 use GPR2;
 with Gnat2Why_Opts;    use Gnat2Why_Opts;
 with Gnat2Why_Opts.Writing;
@@ -125,25 +124,32 @@ package Configuration is
    --  Mode - is the maximum analysis mode, taking into account the global
    --         and file-specific modes
 
-   Checks_As_Errors   : Boolean;
-   Debug              : Boolean;
-   Debug_Exec_RAC     : Boolean;
-   GnateT_Switch      : GNAT.Strings.String_Access;
-   Limit_Lines        : String_Lists.List;
-   Mode               : GP_Mode := GPM_Check;
-   Only_Given         : Boolean;
-   Output             : Output_Mode_Type;
-   Parallel           : Integer;
-   Max_Why3_Processes : Positive;
+   Checks_As_Errors            : Boolean;
+   Debug                       : Boolean;
+   Debug_Exec_RAC              : Boolean;
+   Global_Compilation_Switches : String_Lists.List;
+   --  Switches of the Global_Compilation_Switches attribute of the Builder
+   --  package for Ada. They are passed to all Ada compilations that GNATprove
+   --  performs. Contrary to the other attributes of the Builder package, which
+   --  hold switches of the builder itself, this attribute holds compilation
+   --  switches.
+   GnateT_Switch               : GNAT.Strings.String_Access;
+   Limit_Lines                 : String_Lists.List;
+   Mode                        : GP_Mode := GPM_Check;
+   Only_Given                  : Boolean;
+   Output                      : Output_Mode_Type;
+   Parallel                    : Integer;
+   Max_Why3_Processes          : Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
-   Proof_Warnings     : Boolean;
-   Report             : Report_Mode_Type;
-   Use_Semaphores     : Boolean;
-   Warning_Mode       : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
-   Warning_Status     : Warning_Status_Array := VC_Kinds.Warning_Status;
-   Has_Manual_Prover  : Boolean;
-   Has_Coq_Prover     : Boolean;
-   CL_Units           : GPR2.Build.Compilation_Unit.Maps.Map;
+   Proof_Warnings              : Boolean;
+   Report                      : Report_Mode_Type;
+   Use_Semaphores              : Boolean;
+   Warning_Mode                : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
+   Warning_Status              : Warning_Status_Array :=
+     VC_Kinds.Warning_Status;
+   Has_Manual_Prover           : Boolean;
+   Has_Coq_Prover              : Boolean;
+   CL_Units                    : GPR2.Build.Compilation_Unit.Maps.Map;
    --  A "copy" of Cl_Switches.File_List, but units instead of files
 
    All_Projects      : Boolean := False;  --  -U
@@ -332,7 +338,7 @@ package Configuration is
    --  Compute the list of arguments of gnatwhy3. This list is passed first to
    --  gnat2why, which then passes it to gnatwhy3.
 
-   function Has_gnateT_Switch (View : Project.View.Object) return Boolean;
+   function Has_gnateT_Switch return Boolean;
    --  Determine if the project has -gnateT switch specified explicitly in
    --  the Global_Compilation_Switches of the Builder package. This is the
    --  documented way to pass this switch to GNATprove. Other ways to pass

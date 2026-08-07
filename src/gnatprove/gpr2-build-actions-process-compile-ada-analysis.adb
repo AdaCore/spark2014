@@ -1,5 +1,6 @@
 with Configuration; use Configuration;
 with Gnat2Why_Opts.Writing;
+with GNAT.Strings;  use GNAT.Strings;
 with GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
 with GPR2.Build.Artifacts.Source_Files;
 with SPARK_Artifacts;
@@ -48,6 +49,22 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
 
       --  object path file
       Cmd_Line.Add_Argument ("-gnateO=" & To_String (Self.Object_Path_File));
+
+      --  Compilation switches of the Builder package
+
+      for Arg of Configuration.Global_Compilation_Switches loop
+         Cmd_Line.Add_Argument (Arg);
+      end loop;
+
+      --  Target configuration deduced from the runtime of a cross target. This
+      --  is only set when the user did not specify one in the switches above,
+      --  so the target configuration is never passed twice.
+
+      if Configuration.GnateT_Switch /= null
+        and then Configuration.GnateT_Switch.all /= ""
+      then
+         Cmd_Line.Add_Argument (Configuration.GnateT_Switch.all);
+      end if;
 
       for Arg of Configuration.CL_Switches.Cargs_List loop
          Cmd_Line.Add_Argument (Arg);

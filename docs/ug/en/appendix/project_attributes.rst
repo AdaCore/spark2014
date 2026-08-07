@@ -72,3 +72,41 @@ is allowed to contain the following attributes:
   organization of sub-directories. Each of these package directories contains
   manual proof files. Common proof files to be used across various proofs can
   be stored at the toplevel of the prover-specific directory.
+
+.. index:: project file; compilation switches
+
+Compilation Switches
+--------------------
+
+The package ``Prove`` holds switches of |GNATprove| itself. As |GNATprove| also
+compiles the sources that it analyzes, it takes into account the attributes
+that describe how these sources should be compiled:
+
+* the ``Switches`` and ``Default_Switches`` attributes of the ``Compiler``
+  package, for Ada;
+
+* the ``Global_Compilation_Switches`` attribute of the ``Builder`` package, for
+  Ada. This is in particular where the ``-gnateT`` switch is
+  specified, see :ref:`Target Parameterization`. As the name of the attribute
+  indicates, these switches apply globally: they are read from the root project
+  and passed to the compilation of every source of the project tree. A
+  declaration of this attribute in an imported project has no effect, which is
+  also how builders handle it. Use the ``Compiler`` package for switches that
+  should only apply to the sources of one project;
+
+* the configuration pragmas designated by the
+  ``Builder.Global_Configuration_Pragmas`` and
+  ``Compiler.Local_Configuration_Pragmas`` attributes. The global one is read
+  from the root project, like the global switches above;
+
+* the switches given after ``-cargs`` on the command line. These are passed
+  last, so they take precedence over the switches of the project file.
+
+The other attributes of the ``Builder`` package, in particular ``Switches`` and
+``Default_Switches``, are not taken into account. They hold switches of the
+builder itself, which describe how to build an executable, a notion that has no
+equivalent in |GNATprove|. If your project passes compilation switches such as
+``-gnat2022`` through them, move these switches to the ``Compiler`` package, so
+that both the builder and |GNATprove| take them into account. Use a scenario
+variable if the switches should differ between compilation and verification, as
+described in :ref:`Having Different Switches for Compilation and Verification`.

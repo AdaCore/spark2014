@@ -53,6 +53,7 @@ with GPR2.Project.Registry.Attribute.Description;
 with GPR2.Project.Registry.Exchange;
 with GPR2.Project.Registry.Pack;
 with GPR2.Project.Registry.Pack.Description;
+with GPR2.Project.View;
 with GPR2.Reporter.Console;
 
 with Platform;     use Platform;
@@ -258,6 +259,11 @@ package body Configuration is
    --  Try to compute the gnateT switch to be used for gnat2why. If there is
    --  a target and runtime set, but we can't compute the switch, a warning
    --  is issued.
+
+   function Read_Global_Compilation_Switches
+     (View : Project.View.Object) return String_Lists.List;
+   --  Return the switches of the Global_Compilation_Switches attribute of the
+   --  Builder package for Ada.
 
    procedure Check_File_Part_Of_Project
      (View : Project.View.Object; Fn : String);
@@ -1068,7 +1074,7 @@ package body Configuration is
 
       if View.Tree.Is_Cross_Target then
          --  User has already set the attribute, don't try anything smart
-         if Has_gnateT_Switch (View) then
+         if Has_gnateT_Switch then
             return "";
          end if;
 
@@ -1761,20 +1767,11 @@ package body Configuration is
    -- Has_gnateT_Switch --
    -----------------------
 
-   function Has_gnateT_Switch (View : Project.View.Object) return Boolean is
-      Attr : GPR2.Project.Attribute.Object;
+   function Has_gnateT_Switch return Boolean is
    begin
-      if View.Check_Attribute
-           (Project.Registry.Attribute.Builder.Global_Compilation_Switches,
-            Index  => GPR2.Project.Attribute_Index.Create ("Ada"),
-            Result => Attr)
-      then
-         return
-           (for some Switch of Attr.Values =>
-              GNATCOLL.Utils.Starts_With (String (Switch.Text), "-gnateT="));
-      else
-         return False;
-      end if;
+      return
+        (for some Switch of Global_Compilation_Switches =>
+           GNATCOLL.Utils.Starts_With (Switch, "-gnateT="));
    end Has_gnateT_Switch;
 
    --------------------------
@@ -4224,6 +4221,12 @@ package body Configuration is
 
          Process_Limit_Switches (Parsed);
 
+         --  Read the compilation switches of the Builder package before
+         --  computing the target configuration, which depends on whether the
+         --  user specified -gnateT there.
+
+         Global_Compilation_Switches :=
+           Read_Global_Compilation_Switches (Tree.Root_Project);
          GnateT_Switch := new String'(Check_gnateT_Switch (Tree.Root_Project));
          Set_Output_Mode (Parsed);
          Set_Warning_Mode (Parsed);
@@ -5084,6 +5087,28 @@ package body Configuration is
          Tree.Set_Reporter (Reporter);
       end;
    end Read_Command_Line;
+
+   --------------------------------------
+   -- Read_Global_Compilation_Switches --
+   --------------------------------------
+
+   function Read_Global_Compilation_Switches
+     (View : Project.View.Object) return String_Lists.List
+   is
+      Attr   : GPR2.Project.Attribute.Object;
+      Result : String_Lists.List;
+   begin
+      if View.Check_Attribute
+           (Project.Registry.Attribute.Builder.Global_Compilation_Switches,
+            Index  => GPR2.Project.Attribute_Index.Create ("Ada"),
+            Result => Attr)
+      then
+         for Switch of Attr.Values loop
+            Result.Append (String (Switch.Text));
+         end loop;
+      end if;
+      return Result;
+   end Read_Global_Compilation_Switches;
 
    ------------------------
    -- Sanitize_File_List --

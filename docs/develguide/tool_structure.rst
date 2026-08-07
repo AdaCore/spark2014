@@ -149,6 +149,40 @@ or internal-use switches:
 ``--z3-counterexample``
    Use Z3 (``z3_ce``) as the prover for counterexample generation.
 
+Compilation switches reaching gnat2why
+--------------------------------------
+
+The analysis actions call ``gnat2why`` instead of the compiler, so only the
+switch sources that these actions assemble explicitly are seen by the analysis:
+
+* switches of the ``Compiler`` package are added by the GPR2 library itself,
+  when the actions call the inherited ``Compute_Command``;
+* switches following ``-cargs`` are appended by each action from
+  ``CL_Switches.Cargs_List``;
+* switches of the ``Builder.Global_Compilation_Switches`` attribute for Ada
+  are read into ``Configuration.Global_Compilation_Switches`` when the project
+  is loaded, and appended by each Ada action. Despite belonging to the
+  ``Builder`` package, this attribute holds compilation switches, not options
+  of the builder itself;
+* all other switches of the ``Builder`` package are *not* taken into account.
+  These describe how to build an executable rather than the program being
+  analyzed: ``Builder.Switches`` and ``Builder.Default_Switches`` hold options
+  of the builder, which each driver is responsible for interpreting, and their
+  value is even keyed on the executable being built, a notion that has no
+  equivalent in GNATprove.
+
+Note that ``Builder.Global_Configuration_Pragmas`` does reach ``gnat2why``,
+through the ``-gnatec`` switch added by the inherited ``Compute_Command`` of
+the GPR2 library. This is intended, as configuration pragmas describe the
+program to analyze; this is also how the User's Guide documents the way to
+select assertion levels of the SPARK library.
+
+The ``-gnateT`` switch, which describes the target of the analysis, is
+singled out among the compilation switches: when the user specifies it, the
+data-representation action is skipped altogether. That action runs the
+compiler to generate code, which is impossible for a target that the compiler
+at hand does not support.
+
 .. _Generating Globals:
 
 Generating Globals
@@ -229,6 +263,13 @@ The compiler invocation goes through ``spark_data_rep_wrapper``. This wrapper
 suppresses compiler output in normal operation and ensures that the expected
 JSON files are present even if the compiler fails, so later analysis steps can
 still consume well-formed data-representation outputs.
+
+These actions are only applicable when the compiler can generate code for the
+target of the analysis. This is the case for a cross target described by its
+own runtime, as the compiler of that target is then used, but not when the user
+described the target with an explicit ``-gnateT`` switch: the compiler at hand
+then generally cannot generate code for that target, so the actions are
+skipped.
 
 Passing options to gnat2why
 ===========================
