@@ -213,7 +213,7 @@ procedure Table_Generator is
         (File,
          "The following warnings are disabled by default, and "
          & "can be enabled collectively using switch ``--pedantic``, "
-         & " or individually using switch ``-W``.");
+         & "or individually using switch ``-W``.");
       New_Line (File);
       Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
       New_Line (File);
@@ -232,7 +232,7 @@ procedure Table_Generator is
         (File,
          "The following warnings are disabled by default, and "
          & "can be enabled collectively using switch ``--info``, "
-         & " or individually using switch ``-W``.");
+         & "or individually using switch ``-W``.");
       New_Line (File);
       Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
       New_Line (File);
@@ -255,7 +255,7 @@ procedure Table_Generator is
       Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
       New_Line (File);
       Put_Line (File, ".. csv-table::");
-      Put_Line (File, "   :header: ""Warning Tag"", ""Explanation""");
+      Put_Line (File, "   :header: ""Info Tag"", ""Explanation""");
       Put_Line (File, "   :widths: 2, 4");
       New_Line (File);
       for Kind in Info_Msg_Kind loop
@@ -355,6 +355,13 @@ procedure Table_Generator is
       New_Line (File);
       Put_Line (File, "   **Liskov Substitution Principle**");
       for Kind in VC_LSP_Kind loop
+         if Kind not in VC_LSP_Access_Kind then
+            Put_Check_Line (Kind);
+         end if;
+      end loop;
+      New_Line (File);
+      Put_Line (File, "   **contracts of access-to-subprogram types**");
+      for Kind in VC_LSP_Access_Kind loop
          Put_Check_Line (Kind);
       end loop;
       New_Line (File);
@@ -388,7 +395,7 @@ procedure Table_Generator is
         (File,
          "The following constructs are imprecisely supported "
          & "in proof. They can be used safely but might lead to "
-         & "unexpected behavior. Warnings for these constructs can "
+         & "unexpected behavior. Warnings for these constructs can"
          & " be enabled individually using the ``-W`` switch and the "
          & "tag between parentheses, or collectively using the "
          & "``--info`` switch.");
@@ -462,10 +469,31 @@ procedure Table_Generator is
          Put (File, Annotation_Tag (Kind));
          Put (File, """, """);
          Put (File, Pretty_Annotation_Name (Kind));
+         if Kind in Deprecated_Annotations then
+            Put (File, " (deprecated)");
+         end if;
          Put (File, """, """);
          Put (File, Annotation_Description (Kind));
          Put (File, """");
          New_Line (File);
+      end loop;
+
+      New_Line (File);
+      Put_Line (File, ".. note::");
+      Put
+        (File,
+         "    The following annotations are deprecated and ignored "
+         & "by GNATprove: ");
+      for Kind in Deprecated_Annotations loop
+         Put (File, Pretty_Annotation_Name (Kind));
+         if Kind = Deprecated_Annotations'Last then
+            Put_Line (File, ".");
+         elsif Deprecated_Annotations'Succ (Kind) = Deprecated_Annotations'Last
+         then
+            Put (File, " and ");
+         else
+            Put (File, ", ");
+         end if;
       end loop;
 
       Close (File);

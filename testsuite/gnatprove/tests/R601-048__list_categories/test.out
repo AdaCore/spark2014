@@ -1,5 +1,5 @@
 [Flow analysis error categories]
-CRITICAL_GLOBAL_MISSING - critically incomplete Global or Initializes contract - A Global or Initializes contract fails to mention some objects. - MEDIUM
+CRITICAL_GLOBAL_MISSING - critically incomplete Global or Initializes contract - A user-written Global or Initializes contract is inconsistent with the objects computed by flow analysis, in a case which is reported as an error and can therefore not be suppressed or justified. - MEDIUM
 NON_VOLATILE_FUNCTION_WITH_VOLATILE_EFFECTS - volatile function wrongly declared as non-volatile - A volatile function wrongly declared as non-volatile. - MEDIUM
 SIDE_EFFECTS - function with side effects - A function with side effects. - MEDIUM
 [Flow analysis check categories]
@@ -44,17 +44,17 @@ VC_RANGE_CHECK(run-time-check) - range check - Check that the given value is wit
 VC_PREDICATE_CHECK(run-time-check) - predicate check - Check that the given value respects the applicable type predicate. - MEDIUM
 VC_PREDICATE_CHECK_ON_DEFAULT_VALUE(run-time-check) - predicate check on default value - Check that the default value for the type respects the applicable type predicate. - MEDIUM
 VC_NULL_POINTER_DEREFERENCE(run-time-check) - null pointer dereference - Check that the given pointer is not null so that it can be dereferenced. - MEDIUM
-VC_NULL_EXCLUSION(run-time-check) - null exclusion - Check that the subtype_indication of the allocator does not specify a null_exclusion - MEDIUM
+VC_NULL_EXCLUSION(run-time-check) - null exclusion - Check that the subtype_indication of the allocator does not specify a null_exclusion. - MEDIUM
 VC_DYNAMIC_ACCESSIBILITY_CHECK(run-time-check) - dynamic accessibility check - Check that the accessibility level of the result of a traversal function call is not deeper than the accessibility level of its traversed parameter. - MEDIUM
-VC_RESOURCE_LEAK(run-time-check) - resource or memory leak - Check that the assignment does not lead to a resource or memory leak - MEDIUM
-VC_RESOURCE_LEAK_AT_END_OF_SCOPE(run-time-check) - resource or memory leak at end of scope - Check that the declaration does not lead to a resource or memory leak - MEDIUM
-VC_UNCHECKED_UNION_RESTRICTION(run-time-check) - unchecked union restriction - Check restrictions imposed on expressions of an unchecked union type - MEDIUM
+VC_RESOURCE_LEAK(run-time-check) - resource or memory leak - Check that the assignment does not lead to a resource or memory leak. - MEDIUM
+VC_RESOURCE_LEAK_AT_END_OF_SCOPE(run-time-check) - resource or memory leak at end of scope - Check that the declaration does not lead to a resource or memory leak. - MEDIUM
+VC_UNCHECKED_UNION_RESTRICTION(run-time-check) - unchecked union restriction - Check restrictions imposed on expressions of an unchecked union type. - MEDIUM
 VC_LENGTH_CHECK(run-time-check) - length check - Check that the given array is of the length of the expected array subtype. - MEDIUM
 VC_DISCRIMINANT_CHECK(run-time-check) - discriminant check - Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required. - MEDIUM
 VC_TAG_CHECK(run-time-check) - tag check - Check that the tag of the given tagged object has the expected value. - MEDIUM
 VC_CEILING_INTERRUPT(run-time-check) - ceiling priority in Interrupt_Priority - Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority. - MEDIUM
-VC_INITIALIZATION_CHECK(run-time-check) - use of an uninitialized variable - Check that a variable is initialized - MEDIUM
-VC_VALIDITY_CHECK(run-time-check) - validity check - Check that no invalid value is read - MEDIUM
+VC_INITIALIZATION_CHECK(run-time-check) - use of an uninitialized variable - Check that a variable is initialized. - MEDIUM
+VC_VALIDITY_CHECK(run-time-check) - validity check - Check that no invalid value is read. - MEDIUM
 VC_INTERRUPT_RESERVED(run-time-check) - interrupt is reserved - Check that the interrupt specified by Attach_Handler is not reserved. - MEDIUM
 VC_INVARIANT_CHECK(run-time-check) - invariant check - Check that the given value respects the applicable type invariant. - MEDIUM
 VC_INVARIANT_CHECK_ON_DEFAULT_VALUE(run-time-check) - invariant check on default value - Check that the default value for the type respects the applicable type invariant. - MEDIUM
@@ -94,7 +94,7 @@ VC_UC_TARGET(assertion) - unchecked conversion target check - Check that a targe
 VC_UC_SAME_SIZE(assertion) - unchecked conversion size check - Check that the two types in an unchecked conversion instance are of the same size. - MEDIUM
 VC_UC_ALIGN_OVERLAY(assertion) - address alignment check - Check that the address within address clause is a multiple of the object's alignment. - MEDIUM
 VC_UC_ALIGN_UC(assertion) - unchecked conversion alignment check - Check that the alignment of the source of the unchecked conversion is a multiple of the alignment of the target. - MEDIUM
-VC_UC_VOLATILE(assertion) - volatile overlay check - Check that, if an object has an address clause that is not simply the address of another object, it is volatile - MEDIUM
+VC_UC_VOLATILE(assertion) - volatile overlay check - Check that, if an object has an address clause that is not simply the address of another object, it is volatile. - MEDIUM
 VC_WEAKER_PRE(liskov-substitution-principle) - precondition weaker than class-wide precondition - Check that the precondition aspect of the subprogram is weaker than its class-wide precondition. - MEDIUM
 VC_TRIVIAL_WEAKER_PRE(liskov-substitution-principle) - precondition not True while class-wide precondition is True - Check that the precondition aspect of the subprogram is True if its class-wide precondition is True. - MEDIUM
 VC_STRONGER_POST(liskov-substitution-principle) - postcondition stronger than class-wide postcondition - Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition. - MEDIUM
@@ -103,11 +103,11 @@ VC_STRONGER_CLASSWIDE_POST(liskov-substitution-principle) - class-wide postcondi
 VC_WEAKER_PRE_ACCESS(liskov-substitution-principle) - precondition of the source weaker than precondition of the target - Check that the precondition aspect of the access-to-subprogram type used as the target of a conversion implies the precondition of the source. - MEDIUM
 VC_STRONGER_POST_ACCESS(liskov-substitution-principle) - postcondition of the source stronger than postcondition of the target - Check that the postcondition aspect of the access-to-subprogram type used as the target of a conversion is implied by the postcondition of the source. - MEDIUM
 [Proof warnings categories]
-VC_INCONSISTENT_PRE - precondition always False - Warn if precondition is found to be always False - EASY
-VC_INCONSISTENT_POST - postcondition always False - Warn if postcondition is found to be always False - EASY
-VC_INCONSISTENT_ASSUME - pragma Assume always False - Warn if pragma Assume is found to be always False - EASY
-VC_UNREACHABLE_BRANCH - unreachable branch - Warn if branch is found to be unreachable - EASY
-VC_DEAD_CODE - unreachable code - Warn if code is found to be unreachable - EASY
+VC_INCONSISTENT_PRE - precondition always False - Warn if precondition is found to be always False. - EASY
+VC_INCONSISTENT_POST - postcondition always False - Warn if postcondition is found to be always False. - EASY
+VC_INCONSISTENT_ASSUME - pragma Assume always False - Warn if pragma Assume is found to be always False. - EASY
+VC_UNREACHABLE_BRANCH - unreachable branch - Warn if branch is found to be unreachable. - EASY
+VC_DEAD_CODE - unreachable code - Warn if code is found to be unreachable. - EASY
 [Misc warnings categories]
 alias-volatile-atomic-mismatch - alias-volatile-atomic-mismatch - aliased objects should both be volatile or non-volatile, and both be atomic or non-atomic - EASY
 alias-volatile-prop-mismatch - alias-volatile-prop-mismatch - aliased objects should have the same volatile properties - EASY
@@ -144,20 +144,20 @@ imprecise-address-specification - imprecise-address-specification - object with 
 image-attribute-length - image-attribute-length - string attribute has an implementation-defined length - EASY
 operator-reassociation - operator-reassociation - possible operator reassociation due to missing parentheses - EASY
 representation-attribute-value - representation-attribute-value - representation attribute has an implementation-defined value - EASY
-component-relaxed-init - component-relaxed-init - If all components of a given type are annotated with  Relaxed_Initialization, the containing type is treated as if it had the same annotation - EASY
+component-relaxed-init - component-relaxed-init - If all components of a given type are annotated with Relaxed_Initialization, the containing type is treated as if it had the same annotation - EASY
 full-view-visible - full-view-visible - The full view of an incomplete type deferred to the body of a withed unit might be visible by GNATprove - EASY
 alias-array - alias-array - Aliasing checks might be spurious for actual parameters that are array components - EASY
 imprecise-global-generation - imprecise-global-generation - Global generation might wrongly classify an Output item as an In_Out for subprograms that call other subprograms with no Global contract - EASY
-array-initialization - array-initialization - Initialization of arrays inside FOR loops is only recognized when assignments to array element are directly indexed by the loopparameter - EASY
+array-initialization - array-initialization - Initialization of arrays inside FOR loops is only recognized when assignments to array element are directly indexed by the loop parameter - EASY
 multidimensional-array-init - multidimensional-array-init - Initialization of multi-dimensional array inside FOR loops is only recognized when array bounds are static - EASY
 tagged-assignment - tagged-assignment - Assignments to record objects might cause spurious data dependencies in some components of the assigned object - EASY
 contracts-recursive - contracts-recursive - Explicit and implicit postconditions of a recursive subprogram, as well as the definition of a recursive expression function with a numeric (not structural) Subprogram_Variant, might not be available on (mutually) recursive calls occurring inside assertions and contracts, but will still be available in regular code - EASY
 cyclic-dependency - cyclic-dependency - A subprogram is part of a dependency cycle with other entities; the explicit and implicit postconditions of mutually dependent functions as well as their definition for recursive expression functions cannot be used on calls from these entities if they occur inside assertions and contracts - EASY
 dic-ignored - dic-ignored - The Default_Initial_Condition of a type won't be assumed on subcomponents initialized by default inside assertions and contracts, but will still be available in regular code - EASY
-imprecise-address - imprecise-address - The adress of objects is not precisely known if it is not supplied through an address clause - EASY
+imprecise-address - imprecise-address - The address of objects is not precisely known if it is not supplied through an address clause - EASY
 imprecise-align - imprecise-align - The alignment of an object might not be known for proof if it is not supplied through an attribute definition clause - EASY
 imprecise-call - imprecise-call - The behavior of a call might not be known by SPARK and handled in an imprecise way; its precondition might be impossible to prove and nothing will be known about its result - EASY
-imprecise-string-literal - imprecise-string-literal - The value of string literal containing wide characters or constructed through the External_Initialization aspect is not precisely known - EASY
+imprecise-string-literal - imprecise-string-literal - The value of a string literal containing wide characters or constructed through the External_Initialization aspect is not precisely known - EASY
 imprecise-component-size - imprecise-component-size - the value of attribute Component_Size might not be known for proof if it is not supplied through an attribute definition clause - EASY
 imprecise-record-component-attribute - imprecise-record-component-attribute - the value of attributes First_Bit, Last_Bit, and Position on record components are handled in an imprecise way if the record does not have a record representation clause - EASY
 imprecise-size - imprecise-size - The attributes Size, Object_Size or Value_Size might not be handled precisely, nothing will be known about their evaluation - EASY
@@ -210,7 +210,7 @@ unsupported-access-to-no-return-subp - unsupported-access-to-no-return-subp - an
 unsupported-access-to-relaxed-init-subp - unsupported-access-to-relaxed-init-subp - an access-to-subprogram type designating a subprogram annotated with Relaxed_Initialization - HIGH
 unsupported-access-to-subp-with-exc - unsupported-access-to-subp-with-exc - access attribute on a procedure which might raise exceptions - HIGH
 unsupported-access-to-subp-with-prog-exit - unsupported-access-to-subp-with-prog-exit - access to procedure which might exit the program - HIGH
-unsupported-address-attr-in-unsupported-context - unsupported-address-attr-in-unsupported-context - a reference to the "Address" attribute occuring within a subtype indication, a range constraint, or a quantified expression - HIGH
+unsupported-address-attr-in-unsupported-context - unsupported-address-attr-in-unsupported-context - a reference to the "Address" attribute occurring within a subtype indication, a range constraint, or a quantified expression - HIGH
 unsupported-alloc-with-type-constraints - unsupported-alloc-with-type-constraints - an uninitialized allocator whose subtype indication has a type constraint - HIGH
 unsupported-array-conv-different-size-modular-index - unsupported-array-conv-different-size-modular-index - a conversion between array types if some matching index types are modular types of different sizes - HIGH
 unsupported-array-conv-signed-modular-index - unsupported-array-conv-signed-modular-index - a conversion between array types if some matching index types are not both signed or both modular - HIGH
@@ -233,7 +233,7 @@ unsupported-cut-operation-context - unsupported-cut-operation-context - a call t
 unsupported-deep-object-with-addr - unsupported-deep-object-with-addr - an object with subcomponents of an access-to-variable type annotated with an address clause whose value is the address of another object - HIGH
 unsupported-deep-value-in-delta-aggregate - unsupported-deep-value-in-delta-aggregate - delta aggregate with possible aliasing of component associations of an ownership type - HIGH
 unsupported-derived-interface - unsupported-derived-interface - interface derived from other interfaces - HIGH
-unsupported-destructor - unsupported-destructor - record type with a destructors - HIGH
+unsupported-destructor - unsupported-destructor - record type with a destructor - HIGH
 unsupported-entry-family - unsupported-entry-family - entry families - HIGH
 unsupported-exceptional-cases-dispatch - unsupported-exceptional-cases-dispatch - aspect "Exceptional_Cases" on dispatching operations - HIGH
 unsupported-exceptional-cases-ownership - unsupported-exceptional-cases-ownership - procedure which might propagate exceptions with parameters of mode "in out" or "out" subjected to ownership which might not be passed by reference - HIGH
@@ -246,17 +246,17 @@ unsupported-gnat-ext-conditional-return - unsupported-gnat-ext-conditional-retur
 unsupported-gnat-ext-interpolated-string-literal - unsupported-gnat-ext-interpolated-string-literal - GNAT extension for interpolated string literals - HIGH
 unsupported-generic-in-hidden-private - unsupported-generic-in-hidden-private - instance of a generic unit declared in a package whose private part is hidden outside of this package - HIGH
 unsupported-generic-in-type-inv - unsupported-generic-in-type-inv - instance of a generic unit declared in a package containing a type with an invariant outside of this package - HIGH
-unsupported-goto-cross-inv - unsupported-goto-cross-inv - a goto statement occuring in a loop before the invariant which refers to a label occuring inside the loop but after the invariant - HIGH
+unsupported-goto-cross-inv - unsupported-goto-cross-inv - a goto statement occurring in a loop before the invariant which refers to a label occurring inside the loop but after the invariant - HIGH
 unsupported-hidden-private-relaxed-init - unsupported-hidden-private-relaxed-init - private type whose full view contains only subcomponents whose type is annotated with Relaxed_Initialization in a package whose private part is hidden for proof - HIGH
 unsupported-img-on-non-scalar - unsupported-img-on-non-scalar - a reference to the "Image" or "Img" attribute on a type or an object of a type which is not a scalar type - HIGH
 unsupported-incomplete-type-early-usage - unsupported-incomplete-type-early-usage - usage of incomplete type completed in package body outside of an access type declaration - HIGH
 unsupported-indexed-container-aggregate - unsupported-indexed-container-aggregate - an indexed container aggregate - HIGH
-unsupported-inherited-controlling-result-from-hidden-part - unsupported-inherited-controlling-result-from-hidden-part - a subprogram with dispatching result which is inherited, not overriden, by a private extension completed in a hidden private part - HIGH
-unsupported-inherited-controlling-result-from-spark-off - unsupported-inherited-controlling-result-from-spark-off - a subprogram with dispatching result which is inherited, not overriden, by a private extension completed in a private part with SPARK_Mode Off - HIGH
-unsupported-inherited-prim-from-hidden-part - unsupported-inherited-prim-from-hidden-part - a subprogram which is inherited, not overriden, from an ancestor declared in a hidden private part - HIGH
-unsupported-inherited-prim-from-spark-off - unsupported-inherited-prim-from-spark-off - a subprogram which is inherited, not overriden, from an ancestor declared in the private part of a package with SPARK_Mode Off - HIGH
-unsupported-iterated-element-association - unsupported-iterated-element-association - container aggregates - HIGH
-unsupported-iterator-in-component-assoc - unsupported-iterator-in-component-assoc - an iterated component associations with an iterator specification ("for ... of") in an array aggregate - HIGH
+unsupported-inherited-controlling-result-from-hidden-part - unsupported-inherited-controlling-result-from-hidden-part - a subprogram with dispatching result which is inherited, not overridden, by a private extension completed in a hidden private part - HIGH
+unsupported-inherited-controlling-result-from-spark-off - unsupported-inherited-controlling-result-from-spark-off - a subprogram with dispatching result which is inherited, not overridden, by a private extension completed in a private part with SPARK_Mode Off - HIGH
+unsupported-inherited-prim-from-hidden-part - unsupported-inherited-prim-from-hidden-part - a subprogram which is inherited, not overridden, from an ancestor declared in a hidden private part - HIGH
+unsupported-inherited-prim-from-spark-off - unsupported-inherited-prim-from-spark-off - a subprogram which is inherited, not overridden, from an ancestor declared in the private part of a package with SPARK_Mode Off - HIGH
+unsupported-iterated-element-association - unsupported-iterated-element-association - an iterated element association in a container aggregate - HIGH
+unsupported-iterator-in-component-assoc - unsupported-iterator-in-component-assoc - an iterated component association with an iterator specification ("for ... of") in an array aggregate - HIGH
 unsupported-limited-type-from-limited-with - unsupported-limited-type-from-limited-with - the use of an incomplete view of a type coming from a limited with - HIGH
 unsupported-loop-inv-and-handler - unsupported-loop-inv-and-handler - a loop invariant in a list of statements with an exception handler - HIGH
 unsupported-loop-inv-and-finally - unsupported-loop-inv-and-finally - a loop invariant in a list of statements with a finally section - HIGH
@@ -264,15 +264,15 @@ unsupported-loop-with-iterator-filter - unsupported-loop-with-iterator-filter - 
 unsupported-max-array-dimension - unsupported-max-array-dimension - an array type with more than 4 dimensions - HIGH
 unsupported-max-modulus - unsupported-max-modulus - a modular type with a modulus greater than 2 ** 128 - HIGH
 unsupported-mixed-array-deep-delta-aggr - unsupported-mixed-array-deep-delta-aggr - a delta aggregate mixing range and deep updates - HIGH
-unsupported-move-to-access-constant - unsupported-move-to-access-constant - a move operation occuring as part of  an allocator or a conversion to an access-to-constant type which does not occur directly inside an assignment statement, an object declaration, or a simple return statement - HIGH
+unsupported-move-to-access-constant - unsupported-move-to-access-constant - a move operation occurring as part of an allocator or a conversion to an access-to-constant type which does not occur directly inside an assignment statement, an object declaration, or a simple return statement - HIGH
 unsupported-no-return-function - unsupported-no-return-function - a function annotated as No_Return - HIGH
 unsupported-non-static-attribute - unsupported-non-static-attribute - a reference to a non-static attribute - HIGH
 unsupported-multiple-inheritance-interfaces - unsupported-multiple-inheritance-interfaces - a primitive operation which is inherited from several interfaces in a tagged derivation - HIGH
-unsupported-multiple-inheritance-mixed-spark-mode - unsupported-multiple-inheritance-mixed-spark-mode - a primitive operation which is implicitly inherited from several progenitor types in a tagged derivation, and for which two of these progenitors provide incompatible values for the SPARK  mode of the inherited subprogram - HIGH
+unsupported-multiple-inheritance-mixed-spark-mode - unsupported-multiple-inheritance-mixed-spark-mode - a primitive operation which is implicitly inherited from several progenitor types in a tagged derivation, and for which two of these progenitors provide incompatible values for the SPARK mode of the inherited subprogram - HIGH
 unsupported-multiple-inheritance-root - unsupported-multiple-inheritance-root - a primitive operation which is inherited both from the parent type and from an interface in a tagged derivation - HIGH
 unsupported-multidim-iterator - unsupported-multidim-iterator - an iterator specification on a multidimensional array - HIGH
 unsupported-multidim-update - unsupported-multidim-update - a delta aggregate on a multidimensional array - HIGH
-unsupported-null-aggregate-in-branching-array-aggregate - unsupported-null-aggregate-in-branching-array-aggregate - a null aggregate which is a subaggregate of a multidimensional  array  aggregate with multiple associations - HIGH
+unsupported-null-aggregate-in-branching-array-aggregate - unsupported-null-aggregate-in-branching-array-aggregate - a null aggregate which is a subaggregate of a multidimensional array aggregate with multiple associations - HIGH
 unsupported-object-before-inv - unsupported-object-before-inv - a non-scalar object or an object with an address clause declared before the loop-invariant - HIGH
 unsupported-op-fixed-float - unsupported-op-fixed-float - a multiplication or division between a fixed-point and a floating-point value - HIGH
 unsupported-op-compatible-fixed - unsupported-op-compatible-fixed - a multiplication or division between different fixed-point types if the result is not in the "perfect result set" according to Ada RM G.2.3(21) - HIGH
@@ -338,7 +338,7 @@ violation-aggregate-globals - violation-aggregate-globals - subprogram associate
 violation-aggregate-side-effects - violation-aggregate-side-effects - subprogram with side effects associated with aspect Aggregate - HIGH
 violation-aggregate-volatile - violation-aggregate-volatile - volatile function associated with aspect Aggregate - HIGH
 violation-assert-and-cut-context - violation-assert-and-cut-context - pragma Assert_And_Cut outside a sequence of statements - HIGH
-violation-at-attribute-allocation - violation-at-attribute-allocation - reference to the At attribute on a prefix subject to ownership occuring outside of a pragma or a constant part of an object - HIGH
+violation-at-attribute-allocation - violation-at-attribute-allocation - reference to the At attribute on a prefix subject to ownership occurring outside of a pragma or a constant part of an object - HIGH
 violation-at-attribute-assert-and-cut - violation-at-attribute-assert-and-cut - reference to the At attribute referencing a label located before an Assert_And_Cut pragma - HIGH
 violation-at-attribute-loop-invariant - violation-at-attribute-loop-invariant - reference to the At attribute referencing a label located before a loop invariant or variant - HIGH
 violation-backward-goto - violation-backward-goto - backward goto statement - HIGH
@@ -426,10 +426,10 @@ violation-side-effects-traversal - violation-side-effects-traversal - traversal 
 violation-storage-size - violation-storage-size - access type with Storage_Size - HIGH
 violation-subp-variant-structural - violation-subp-variant-structural - structural subprogram variant which is not a parameter of the subprogram - HIGH
 violation-tagged-extension-local - violation-tagged-extension-local - local derived type from non-local parent or interface - HIGH
-violation-target-name-in-call-with-side-effets - violation-target-name-in-call-with-side-effets - use of @ inside a call to a function with side effects - HIGH
+violation-target-name-in-call-with-side-effects - violation-target-name-in-call-with-side-effects - use of @ inside a call to a function with side effects - HIGH
 violation-tasking-configuration - violation-tasking-configuration - SPARK violation related to tasking configuration - HIGH
 violation-tasking-synchronized-comp - violation-tasking-synchronized-comp - synchronized component of non-synchronized type - HIGH
-violation-tasking-unintialized-concurrent - violation-tasking-unintialized-concurrent - not fully initialized part of concurrent type - HIGH
+violation-tasking-uninitialized-concurrent - violation-tasking-uninitialized-concurrent - not fully initialized part of concurrent type - HIGH
 violation-tasking-unsupported-construct - violation-tasking-unsupported-construct - tasking - HIGH
 violation-uc-from-access - violation-uc-from-access - unchecked conversion instance from a type with access subcomponents - HIGH
 violation-uc-to-access - violation-uc-to-access - unchecked conversion instance to an access type which is not a general access-to-object type - HIGH
@@ -443,7 +443,7 @@ violation-volatile-discriminant - violation-volatile-discriminant - volatile dis
 violation-volatile-discriminated-type - violation-volatile-discriminated-type - discriminated volatile type - HIGH
 violation-volatile-eq - violation-volatile-eq - volatile function as user-defined equality on record type - HIGH
 violation-volatile-global - violation-volatile-global - nonvolatile function with volatile global inputs - HIGH
-violation-volatile-in-interferring-context - violation-volatile-in-interferring-context - volatile object or volatile function call in interfering context - HIGH
+violation-volatile-in-interfering-context - violation-volatile-in-interfering-context - volatile object or volatile function call in interfering context - HIGH
 violation-volatile-incompatible-comp - violation-volatile-incompatible-comp - component of composite type or designated type of an access with an incompatible volatility - HIGH
 violation-volatile-incompatible-type - violation-volatile-incompatible-type - standalone object with an incompatible volatility with respect to its type - HIGH
 violation-volatile-loop-param - violation-volatile-loop-param - effectively volatile loop parameter - HIGH
