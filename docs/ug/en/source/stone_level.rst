@@ -32,7 +32,9 @@ few additional rules, such as the need to avoid side effects in
 functions. These additional rules are checked automatically by running
 GNATprove on the modified program, which can be done either by the developer
 before committing changes or by an automatic system (continuous builder,
-regression testsuite, etc.)
+regression testsuite, etc.) Some of these rules are enforced directly by the
+GNAT compiler on code marked with ``SPARK_Mode``, so that the corresponding
+violations are reported as early as compilation.
 
 .. rubric:: Costs and Limitations
 

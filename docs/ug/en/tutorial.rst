@@ -51,13 +51,7 @@ index.
    :language: ada
    :linenos:
 
-We can check that the above code is valid Ada by using the
-:menuselection:`Build --> Check Semantic` menu, which completes without any
-errors or warnings:
-
 .. index:: Stone level; tutorial
-
-.. image:: /static/search_check_semantic.png
 
 Checking SPARK Legality Rules
 -----------------------------
@@ -74,14 +68,20 @@ an ``out`` parameter:
 .. image:: /static/search_not_spark.png
 
 The permission in Ada 2012 to have ``out`` parameters to functions is not
-allowed in |SPARK|, because it causes calls to have side-effects (assigning to
+allowed in |SPARK|, because it causes calls to have side effects (assigning to
 their ``out`` parameters), which means that various calls in the same
 expression may be conflicting, yielding different results depending on the
-order of evaluation of the expression.
+order of evaluation of the expression. Because the code is marked with
+``SPARK_Mode``, this violation is also rejected by the GNAT compiler itself, so
+it is detected as early as compilation.
 
-We correct this problem by defining a record type ``Search_Result`` in
-``linear_search.ads`` holding both the Boolean result and the index for cases
-when the value is found, and making ``Search`` return this type:
+One way to correct this problem is to declare the function with aspect
+``Side_Effects``, which accepts the side effect at the cost of restricting
+where the function can be called (see :ref:`Aspect Side_Effects`). We choose
+here to remove the side effect altogether, by defining a record type
+``Search_Result`` in ``linear_search.ads`` holding both the Boolean result and
+the index for cases when the value is found, and making ``Search`` return this
+type:
 
 .. literalinclude:: /examples/ug__linear_search_spark/linear_search.ads
    :language: ada
