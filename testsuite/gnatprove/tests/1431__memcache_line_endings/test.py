@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from test_support import gprbuild, is_windows_platform
+from test_support import gprbuild, is_windows_platform, spark_install_path
 
 # Check that the memcached wrapper relays the answer of a prover byte for byte,
 # keeping its line endings and adding no blank line, both on a cache miss and on
@@ -19,10 +19,17 @@ MARKER = b"spark_memcached_wrapper: file\n"
 CACHE = os.path.abspath("cache")
 FAKE_PROVER_DIR = os.path.abspath(os.path.join("fake", "obj"))
 
-# Build the fake prover, and put it ahead of any real prover on the PATH
+PRIVATE_BIN = os.path.join(spark_install_path(), "libexec", "spark", "bin")
+
+# Build the fake prover. The wrapper is not on the PATH of a packaged install,
+# where it lives in the private bin dir, so add that dir at the end of the PATH.
+# The fake prover goes at the front, so that it shadows the real prover shipped
+# in that same private bin dir.
 
 gprbuild(opt=["-P", os.path.join("fake", "fake.gpr")])
-os.environ["PATH"] = FAKE_PROVER_DIR + os.pathsep + os.environ["PATH"]
+os.environ["PATH"] = (
+    FAKE_PROVER_DIR + os.pathsep + os.environ["PATH"] + os.pathsep + PRIVATE_BIN
+)
 
 # The wrapper hashes its last argument as a file, so that file must exist
 
