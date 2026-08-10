@@ -55,7 +55,7 @@ only be guaranteed when the following SPARK features are not used, as their
 purpose is precisely to allow more complex termination conditions that can only
 be analyzed by proof at :ref:`Silver Level <Silver Level>` and above:
 
-* specification of termination with aspect ``Always_Terminate`` with a
+* specification of termination with aspect ``Always_Terminates`` with a
   non-static expression;
 * specification of subprogram variants with aspect ``Subprogram_Variant``;
 * specification of loop variants with pragma ``Loop_Variant``;

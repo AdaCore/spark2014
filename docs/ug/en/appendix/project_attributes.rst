@@ -63,8 +63,8 @@ is allowed to contain the following attributes:
   ("Ada")``.
 
 
-* ``Proof_Dir``, which defines the directory where are stored the files
-  concerning the state of the proof of a project. This directory contains a
+* ``Proof_Dir``, which defines the directory where the files concerning the
+  state of the proof of a project are stored. This directory contains a
   sub-directory ``sessions`` with one directory per source package analyzed for
   proof. Each of these package directories contains a Why3 session file. If a
   manual prover is used to prove some VCs, then a sub-directory called by the

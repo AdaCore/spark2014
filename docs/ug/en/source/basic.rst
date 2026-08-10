@@ -217,7 +217,7 @@ avoids introducing a temporary variable by using bitwise operations:
    :linenos:
 
 |GNATprove| understands the bitwise operations on values of modular types, and
-it proves here that the postcondition of ``Swap_Modulo`` is proved:
+it proves here the postcondition of ``Swap_Modulo``:
 
 .. literalinclude:: /examples/ug__swap_modulo/test.out
    :language: none

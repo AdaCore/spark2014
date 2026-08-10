@@ -120,7 +120,7 @@ of Ada reinforced by a stricter initialization policy (see
 :ref:`Data Initialization Policy`) rules out most sources of invalid values.
 The remaining ones are excluded either by specific assumptions, for values
 created by non-SPARK code, effectively volatile objects, and imprecisely
-supported address clause (see :ref:`Complete List of Assumptions`), or by
+supported address clauses (see :ref:`Complete List of Assumptions`), or by
 additional checks on language features that process or potentially produce
 invalid values. SPARK issues checks specific to data validity on two language
 constructs:
@@ -295,7 +295,7 @@ the violations of the data initialization policy:
    :language: none
 
 While a user can justify individually such messages with pragma ``Annotate``
-(see section :ref:`Justifying Check Messages`), it is under her responsibility
+(see section :ref:`Justifying Check Messages`), it is under their responsibility
 to then ensure correct initialization of subcomponents that are read, as
 |GNATprove| relies during proof on the property that data is properly
 initialized before being read.
@@ -383,7 +383,7 @@ At call site, ownership is similarly transferred to the callee's parameters for
 the duration of the call, and returned to the actual parameters (a.k.a.
 arguments) when returning from the call.
 
-For example, in the following example:
+For example:
 
 .. literalinclude:: /examples/ug__ownership_transfer_at_call/ownership_transfer_at_call.adb
    :language: ada
@@ -424,7 +424,7 @@ following example:
 
 In this case, we say that ``B`` observes the value of ``X``. During the
 lifetime of an observer, it is illegal to move or modify the observed object.
-GNATprove correctly flags the write inside ``X`` in the scope of ``B`` as
+GNATprove correctly flags the write to ``X`` in the scope of ``B`` as
 illegal. Note that reading ``X`` is still possible in the scope of ``B``:
 
 .. literalinclude:: /examples/ug__ownership_observing/test.out
@@ -462,7 +462,7 @@ which already make it illegal to call a procedure with problematic (non-benign)
 aliasing between parameters of scalar type that are `known to denote the same
 object` (a notion formally defined in Ada RM).
 
-For example, in the following example:
+For example:
 
 .. literalinclude:: /examples/ug__aliasing/aliasing.ads
    :language: ada
@@ -542,7 +542,7 @@ Procedure ``Instance_Increment`` is a specific instance of
    :linenos:
 
 |GNATprove| analyzes this instantiation and reports messages on the generic
-code, always stating to which instantiation the messages correspond to:
+code, always stating which instantiation the messages correspond to:
 
 .. literalinclude:: /examples/ug__instance_increment/test.out
    :language: none

@@ -57,7 +57,7 @@ The program is intended to calculate the difference between ``X`` and ``Y`` and
 store the result in ``Z``.  This is reflected in the aspect ``Depends`` which
 states that the output value of Z depends on the input values of X and Y, but,
 as you may have noticed, there is a bug in the code. Note the use of aspect
-``SPARK_Mode`` to identify this as |SPARK| code to be analysed with the |SPARK|
+``SPARK_Mode`` to identify this as |SPARK| code to be analyzed with the |SPARK|
 tools.  To analyze this program, select :menuselection:`SPARK --> Examine File`
 from the menu in GNAT Studio. |GNATprove| executes in flow analysis mode and reports:
 

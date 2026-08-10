@@ -146,7 +146,7 @@ refinement versions of these), and verifies the initialization of
 variables. Proof verifies the absence of run-time errors and the
 correctness of assertions such as ``Pre`` and ``Post`` aspects. Using the
 switch ``--mode=<mode>``, whose possible values are ``check``,
-``check_all``, ``flow``, ``prove`` ``all``, ``stone``, ``bronze``, ``silver``
+``check_all``, ``flow``, ``prove``, ``all``, ``stone``, ``bronze``, ``silver``
 and ``gold``, you can choose which analysis is performed:
 
 * In mode ``check``, |GNATprove| partially checks that the program does not
@@ -166,7 +166,7 @@ and ``gold``, you can choose which analysis is performed:
   Mode ``flow`` includes mode ``check_all``.  This phase is called *flow
   analysis*.
 
-* In mode ``prove`` ,
+* In mode ``prove``,
   |GNATprove| checks that the program is free from run-time errors, and that
   the specified functional contracts are respected in the implementation. Mode
   ``prove`` includes mode ``check_all``, as well as the part of mode ``flow``
@@ -982,7 +982,7 @@ Calling an Interactive Prover From the Command Line
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When the prover used by |GNATprove| is configured as interactive, for each
-analysed condition, either:
+analyzed condition, either:
 
 * It is the first time the prover is used on the condition then a file
   (containing the condition as input to the specified prover) is created in the

@@ -14,7 +14,7 @@ contracts are made up of various optional parts:
 * The `package initial condition` introduced by aspect ``Initial_Condition``
   specifies the properties holding after package startup.
 
-Package startup (a.k.a. package `elaboration` in Ada RM) consists in the
+Package startup (a.k.a. package `elaboration` in Ada RM) consists of the
 evaluation of all declarations in the package specification and implementation,
 in particular the evaluation of constant declarations and those variable
 declarations which contain an initialization expression, as well as the
@@ -158,7 +158,7 @@ Special Cases of State Abstraction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Global constants with a statically known value are not part of a package's
-state. On the contrary, `constant with variable inputs` are constants whose
+state. On the contrary, `constants with variable inputs` are constants whose
 value depends on the value of either a variable or a subprogram
 parameter. Since they participate in the flow of information between variables,
 constants with variable inputs are treated like variables: they are part of a
@@ -272,7 +272,7 @@ Package Initialization
 *Specific to SPARK*
 
 The package initialization specifies which global data (global variables,
-constant with variable inputs, and
+constants with variable inputs, and
 abstract state) defined in the package is initialized at package startup. The
 corresponding global variables may either be initialized at declaration, or by
 the package body statements. Thus, package initialization can be seen as the
@@ -574,7 +574,7 @@ a precisely supported address clause.
    subtype Even is Natural with Predicate => Even mod 2 = 0;
 
    procedure Volatile_Init is
-      Y : Even with Address => System'To_Address (16#DEADBEAF#), Import;
+      Y : Even with Address => System'To_Address (16#DEADBEEF#), Import;
       Tmp : Integer := X;
    begin
       pragma Assert (Y mod 2 = 0);

@@ -81,7 +81,7 @@ over the content of a collection (either an array, a container from the
 Initialization Loops
 ^^^^^^^^^^^^^^^^^^^^
 
-This kind of loops iterates over a collection to initialize every element of
+This kind of loop iterates over a collection to initialize every element of
 the collection to a given value:
 
  ================  ========================
@@ -249,7 +249,7 @@ different value to each element of the collection would be proved by
 Mapping Loops
 ^^^^^^^^^^^^^
 
-This kind of loops iterates over a collection to map every element of the
+This kind of loop iterates over a collection to map every element of the
 collection to a new value:
 
  ================  ========================
@@ -413,9 +413,9 @@ verify these loop invariants as well as the postcondition of ``Map_List_Incr``:
 Validation Loops
 ^^^^^^^^^^^^^^^^
 
-This kind of loops iterates over a collection to validate that every element of
+This kind of loop iterates over a collection to validate that every element of
 the collection has a valid value. The most common pattern is to exit or return
-from the loop if an invalid value if encountered:
+from the loop if an invalid value is encountered:
 
  ================  ========================
  Loop Pattern      Sequence Validation with Early Exit
@@ -525,7 +525,7 @@ the array after a non-zero element has been encountered:
 
 The loop invariant has been modified to state that all elements up to the
 current loop index J have value zero if-and-only-if the output parameter
-Success is True. This in turn requires to move the assignment of ``Success``
+Success is True. This in turn requires moving the assignment of ``Success``
 before the loop. With this loop invariant, |GNATprove| is able to prove the
 postcondition of ``Validate_Full_Arr_Zero``, which is the same as the
 postcondition of ``Validate_Arr_Zero``, namely that output parameter
@@ -543,7 +543,7 @@ encountered would be proved by |GNATprove|.
 Counting Loops
 ^^^^^^^^^^^^^^
 
-This kind of loops iterates over a collection to count the number of elements
+This kind of loop iterates over a collection to count the number of elements
 of the collection that satisfy a given criterion:
 
  ===============  ===================================================
@@ -599,7 +599,7 @@ value:
 Search Loops
 ^^^^^^^^^^^^
 
-This kind of loops iterates over a collection to search an element of the
+This kind of loop iterates over a collection to search for an element of the
 collection that meets a given search criterion:
 
  ================  ========================
@@ -699,7 +699,7 @@ well as the section on :ref:`How to Write Loop Invariants`.
 Maximize Loops
 ^^^^^^^^^^^^^^
 
-This kind of loops iterates over a collection to search an element of the
+This kind of loop iterates over a collection to search for an element of the
 collection that maximizes a given optimality criterion:
 
  ================  ========================
@@ -834,7 +834,7 @@ on :ref:`How to Write Loop Invariants`.
 Update Loops
 ^^^^^^^^^^^^
 
-This kind of loops iterates over a collection to update individual elements
+This kind of loop iterates over a collection to update individual elements
 based either on their value or on their position. The first pattern we consider
 is the one that updates elements based on their value:
 
@@ -915,7 +915,7 @@ Consider now a variant of the same update loop over a pointer-based list.
 To express the postcondition relating the elements of the structure before and
 after the loop, we need to introduce a way to store the values of the list
 before the call in a separate data structure. Indeed, the ``Old`` attribute
-cannot be used on ``L`` directly has it would introduce an alias. In this
+cannot be used on ``L`` directly as it would introduce an alias. In this
 example, it is done by declaring a ``Copy`` function which returns
 a copy of its input list. In its postcondition, we use the two-valued
 ``For_All_List`` function to state that the elements of the new structure

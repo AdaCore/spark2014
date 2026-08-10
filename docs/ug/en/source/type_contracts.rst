@@ -117,7 +117,7 @@ Predicates
 Predicates can be used on any subtype to express a property verified by objects of
 the subtype at all times. Aspects ``Static_Predicate`` and ``Dynamic_Predicate``
 are defined in Ada to associate a predicate with a subtype. Aspect
-``Dynamic_Predicate`` allows to express more general predicates than aspect
+``Dynamic_Predicate`` makes it possible to express more general predicates than aspect
 ``Static_Predicate``, at the cost of restricting the use of variables of the
 subtype. The following table summarizes the main similarities and differences
 between both aspects:
@@ -205,8 +205,8 @@ raising an exception at run time. During analysis, |GNATprove| checks that all
 values assigned to ``Total`` are allowed.
 
 Similarly, we can express that values of subtype ``Normal_Float`` are the *normal*
-32-bits floating-point values (thus excluding *subnormal* values), assuming
-here that ``Float`` is the 32-bits floating-point type on the target:
+32-bit floating-point values (thus excluding *subnormal* values), assuming
+here that ``Float`` is the 32-bit floating-point type on the target:
 
 .. code-block:: ada
 
@@ -467,7 +467,7 @@ are performed when exiting ``Push`` and when calling it from inside
 ``Push_Zero``. They both succeed.
 Note that, because of invariant checks on parameters, it is not allowed in
 |SPARK| to call a function that is visible from outside ``P`` in the invariant
-of ``Stack`` otherwise this would lead to a recursive proof. In particular, it
+of ``Stack``, as this would lead to a recursive proof. In particular, it
 is not allowed to make ``Is_Valid`` visible in
 the public declarations of ``P``. In the same way, the function ``Size`` cannot
 be used in the invariant of ``Stack``. We also avoid using ``Size`` in the

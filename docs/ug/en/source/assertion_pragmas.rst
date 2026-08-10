@@ -27,7 +27,7 @@ code that follows. For example, consider two assertions of the same property
    :language: ada
    :linenos:
 
-As expected, the first assertion on line 5 is not provable in absence of a
+As expected, the first assertion on line 5 is not provable in the absence of a
 suitable precondition for ``Assert_Twice``, but |GNATprove| proves that it
 holds the second time the property is asserted on line 6:
 
@@ -273,7 +273,8 @@ order of the list defines the lexicographic order of progress. See |SPARK| RM
 5.5.3 for details.
 
 The expression of a structural loop variant can be either a local borrower or a
-local observer (see :ref:`Observing` and :ref:`Borrowing`). A check is generated to ensure that, during each iteration of the loop, the object denoted by the
+local observer (see :ref:`Observing` and :ref:`Borrowing`). A check is generated
+to ensure that, during each iteration of the loop, the object denoted by the
 variant is updated to designate a strict subcomponent of the structure it used
 to designate. Since, due to the :ref:`Memory Ownership Policy` of |SPARK|, the
 structure cannot contain cycles, it is enough to ensure that the loop cannot
@@ -420,7 +421,7 @@ of statements, meaning information about
    for control to reach the pragma from the start of the enclosing
    sequence of statements.
 
-Procedure ``Partial_Knowledge`` below shows examples of informations
+Procedure ``Partial_Knowledge`` below shows examples of information
 that are remembered and forgotten.
 
 .. literalinclude:: /examples/ug__partial_forget_assert/partial_knowledge.adb
@@ -432,7 +433,7 @@ that ``Y`` was zero is not forgotten, and the assertion at line 17 is proved.
 Similarly, |GNATprove| does not forget that ``X`` must have been positive
 to reach the inner block in the first place, and proves the assertion at line 18.
 However, it does not prove the following assertions at lines 20/21, and displays
-counter-examples with values of 2 for ``X,Z``, showing indeed
+counter-examples with values of 2 for ``X``, ``Z``, showing indeed
 that |GNATprove| forgot the value of ``Z``, as well as the fact that
 the program should have exited already when ``X`` is 2.
 
@@ -448,6 +449,6 @@ the program should have exited already when ``X`` is 2.
   immediately surrounding statement sequence does not contain the
   loop invariants, including any occurring within nested blocks.
   |GNATprove| also supports as a convenience the special case when the
-  loop invariants occurs at top level in the sequence prefix
+  loop invariants occur at top level in the sequence prefix
   preceding pragma ``Assert_And_Cut``, by implicitly assuming that a
   new block starts immediately after the last pragma ``Loop_Invariant``.

@@ -22,7 +22,7 @@ Examples` menu item.
 We start with creating a GNAT project file:
 
 .. literalinclude:: /examples/ug__linear_search_ada/linear_search_ada.gpr
-   :language: ada
+   :language: gpr
    :linenos:
 
 It specifies that the source code to inspect is in the current directory, and
@@ -51,8 +51,9 @@ index.
    :language: ada
    :linenos:
 
-We can check that the above code is valid Ada by using the ``Build > Check
-Semantic`` menu, which completes without any errors or warnings:
+We can check that the above code is valid Ada by using the
+:menuselection:`Build --> Check Semantic` menu, which completes without any
+errors or warnings:
 
 .. index:: Stone level; tutorial
 
@@ -313,7 +314,7 @@ assertions checked at run time:
 
 .. code-block:: bash
 
-   $ gnatmake -gnata test_search.adb
+   $ gprbuild -gnata test_search.adb
    $ test_search
    > OK: Found existing value at first index
    > OK: Did not find non-existing value
@@ -471,7 +472,7 @@ Here, testing does not show any problems:
 
 .. code-block:: bash
 
-   $ gnatmake -gnata test_search.adb
+   $ gprbuild -gnata test_search.adb
    $ test_search
    > OK: Found existing value at first index
    > OK: Did not find non-existing value
@@ -483,7 +484,7 @@ more complex checks. Let's increase it to level 2
 (passing switch ``--level=2`` or equivalently setting the ``Proof
 level`` to 2 in the proof panel), and rerun |GNATprove|.
 
-The unproved check remains in the contract cases of ``Linear_Search``. The next
+The unproved check remains in the contract cases of ``Search``. The next
 step is to use the :menuselection:`SPARK --> Prove Line` contextual menu
 available on line 31:
 

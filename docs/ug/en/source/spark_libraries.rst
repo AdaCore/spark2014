@@ -134,7 +134,7 @@ integer to a big real.
 
 Though these operations do not have postconditions, they are interpreted by
 |GNATprove| as the equivalent operations on mathematical integers and real
-numbers. This allows to benefit from precise support on code using them. Note
+numbers. This makes it possible to benefit from precise support on code using them. Note
 that the corresponding Ada libraries ``Ada.Numerics.Big_Numbers.Big_Integers``
 and ``Ada.Numerics.Big_Numbers.Big_Reals`` will be handled in the same way, but
 might be not available under specific runtimes. It is preferable to use the
@@ -427,7 +427,7 @@ Among them, 6 are bounded and definite:
 * ``SPARK.Containers.Formal.Hashed_Maps``
 * ``SPARK.Containers.Formal.Ordered_Maps``
 
-The 6 others are unbounded and indefinite but are controlled:
+The 6 others are unbounded and indefinite, and are controlled:
 
 * ``SPARK.Containers.Formal.Unbounded_Vectors``
 * ``SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists``
@@ -473,7 +473,7 @@ a case-by-case basis on each operation.
 
 As a consequence of this difference, only procedures and functions that take
 the container as parameter to query its content are available on formal
-containers. For example, the two-parameters ``Has_Element`` function is
+containers. For example, the two-parameter ``Has_Element`` function is
 available on formal containers while the single-parameter one is not:
 
 .. code-block:: ada
@@ -513,7 +513,7 @@ a reference exists is ensured by ownership:
 
 For each container type, the library provides model functions that are used to
 annotate subprograms from the API. The different models supply different levels
-of abstraction of the container’s functionalities. These model functions are
+of abstraction of the container's functionalities. These model functions are
 grouped in :ref:`Ghost Packages` named ``Formal_Model``.
 
 The higher level view of a container is usually the mathematical structure of
@@ -567,7 +567,7 @@ cursors in a list are not modified by a call to ``Increment_All``:
           Element (Model (L), N) = Element (Model (L)'Old, N) + 1);
 
 
-Switching between the different levels of model functions allows to express
+Switching between the different levels of model functions makes it possible to express
 precise considerations when needed without polluting upper level specifications.
 For example, consider a variant of the ``List.Find`` function defined in the
 API of formal containers, which returns a cursor holding the value searched if
@@ -647,11 +647,10 @@ projects that use the |SPARK| library.
 The assertion level ``SPARKlib_Defensive`` allows enabling preconditions
 on container operations. It is useful in particular if these operations are
 called from non-proved code. The assertion level ``SPARKlib_Logic`` is for
-models of formal containers. It can be enabled in the full runtime. In the
-light runtime, it is also used for the ghost versions of the
-:ref:`Big Numbers Library` and :ref:`Functional Containers Library`. As these
-libraries require finalization, the assertion level ``SPARKlib_Logic`` cannot
-be enabled in the light runtime.
+models of formal containers. It can be enabled in the full runtime. It is
+also used for the ghost versions of the :ref:`Big Numbers Library` and
+:ref:`Functional Containers Library`, but, as these libraries require
+finalization, it cannot be enabled in the light runtime.
 
 Finally, some features of the container library (both functional and formal)
 might not have executable semantics. To ensure that user code never attempts to
@@ -673,7 +672,7 @@ is called, the whole equivalence class is included or excluded at once. As
 equivalence classes might be infinite, quantified expressions over elements of
 a set or multiset or keys of a map could fail to terminate.
 
-To replace quantified expressions over a functional map, set, or multisets
+To replace quantified expressions over a functional map, set, or multiset
 occurring in
 the code, it is possible to use a loop over the ``Iterable_Map``,
 ``Iterable_Set``, or ``Iterable_Multiset`` types instead. They use the
@@ -706,7 +705,7 @@ container are preserved (see
 :ref:`Annotation for Accessing the Logical Equality for a Type`).
 Using logical equality to express such properties increases provability of user
 code, as it is optimally precise and
-natively handled by the automated solvers at the background of SPARK.
+natively handled by the automated solvers in the background of SPARK.
 However, logical equality does not always correspond to Ada equality, and there
 are even types for which it is not possible to write a valid logical equality in
 Ada, due to how things are encoded in the backend of the tool.
@@ -804,7 +803,7 @@ Currently, the SPARK lemma library provides the following lemmas:
 
 * GNAT-specific lemmas on fixed-point arithmetic in file
   ``spark-lemmas-fixed_point_arithmetic.ads``, that need to be instantiated by
-  the user for her specific fixed-point type.
+  the user for their specific fixed-point type.
 
 * Lemmas on floating point arithmetic in file
   ``spark-lemmas-floating_point_arithmetic.ads``, that are instantiated for
@@ -814,7 +813,7 @@ Currently, the SPARK lemma library provides the following lemmas:
 
 * Lemmas on unconstrained arrays in file
   ``spark-lemmas-unconstrained_array.ads``, that need to be instantiated by the
-  user for her specific type of index and element, and specific ordering
+  user for their specific type of index and element, and specific ordering
   function between elements.
 
 To apply lemmas to signed or modular integers of different types than the ones
@@ -837,7 +836,7 @@ The SPARK product also includes a library of higher order functions
 for unconstrained arrays. It is available using the |SPARK| library
 (see :ref:`SPARK Library`).
 
-This library consists in a set of generic entities defining usual operations on
+This library consists of a set of generic entities defining usual operations on
 arrays. As an example, here is a generic function for the map higher-level
 function on arrays. It applies a given function ``F`` to each element of an
 array, returning an array of results in the same order.
@@ -913,7 +912,7 @@ Currently, the higher-order function library provides the following functions:
 * Fold functions over unconstrained one-dimensional and two-dimensional arrays
   in file ``spark-higher_order-fold.ads``. Both left to right and right to left
   fold functions are available for one-dimensional arrays. For two-dimensional
-  arrays, fold functions go on a line by line, left to right, top-to-bottom
+  arrays, fold functions go on a line by line, left-to-right, top-to-bottom
   way. For ease of use, these functions have been instantiated for the most
   common cases. ``Sum`` and ``Sum_2`` respectively compute the sum of all the
   elements of a one-dimensional or two-dimensional array, and ``Count`` and
@@ -1004,7 +1003,7 @@ partially modelled. This means in particular:
        Ada.Text_IO.Put_Line (Var);
     end Bar;
 
-In the examples above, procedure ``Foo`` and ``Bar`` have the same
+In the examples above, procedures ``Foo`` and ``Bar`` have the same
 body, but their declarations are different. Global contracts have to
 be complete or not present at all. In the case of ``Foo``, it has an
 ``Input`` contract on ``Var`` and an ``In_Out`` contract on
@@ -1030,7 +1029,7 @@ necessary. The Global contracts are most of the time ``In_Out`` for
 current column and/or line. Functions have an ``Input`` global
 contract. The only functions with ``Global => null`` are the functions
 ``Get`` and ``Put`` in the generic packages that have a similar
-behaviour as sprintf and sscanf.
+behavior as sprintf and sscanf.
 
 Functions and Procedures Removed in SPARK
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1061,7 +1060,7 @@ are not consistent with SPARK rules:
 
    The function ``Get_Line`` is disabled in SPARK because it is a
    function with side effects. Even with the ``Volatile_Function``
-   attribute, it is not possible to model its action on the files
+   aspect, it is not possible to model its action on the files
    and global variables in SPARK. The function is very convenient
    because it returns an unconstrained string, but a workaround is
    possible by constructing the string with a buffer:
@@ -1102,7 +1101,7 @@ not handled:
 
 -  ``Use_Error`` is related to the external environment.
 
--  ``Name_Error`` would require to check availability on disk beforehand.
+-  ``Name_Error`` would require checking availability on disk beforehand.
 
 -  ``End_Error`` is raised when a file terminator is read while running
    the procedure.
@@ -1116,7 +1115,7 @@ than ``Line_Length`` or ``Page_Length`` respectively. This error is
 handled when using ``Set_Col`` or ``Set_Line`` procedures.
 
 However, this error is not handled when no ``Line_Length`` or
-``Page_Length`` has been specified, e.g, if the lines are unbounded,
+``Page_Length`` has been specified, e.g., if the lines are unbounded,
 it is possible to have a ``Col`` greater than ``Count'Last`` and
 therefore have a ``Layout_Error`` raised when calling ``Col``.
 
@@ -1124,7 +1123,7 @@ Not only the handling is partial, but it is also impossible to prove
 preconditions when working with two files or more. Since
 ``Line_Length`` etc. attributes are stored in the ``File_System``, it
 is not possible to prove that the ``Line_Length`` of ``File_2`` has not
-been modified when running any procedure that do input-output on ``File_1``.
+been modified when running any procedure that does input-output on ``File_1``.
 
 Finally, ``Layout_Error`` may be raised when calling ``Put`` to display the
 value of a real number (floating-point or fixed-point) in a string output
@@ -1268,7 +1267,7 @@ Additionally, some subprograms are annotated with ``SPARK_Mode => Off``:
 
 Finally, the two functions used to allocate memory to create
 ``chars_ptr`` objects are annotated with the ``Volatile_Function``
-attribute. Indeed, calling those functions twice in a row with the
+aspect. Indeed, calling those functions twice in a row with the
 same parameters would return different objects.
 
 Precise C Strings Interface
@@ -1355,7 +1354,7 @@ in the following way:
    side-condition. When ``So (A, B)`` is assumed both ``A`` and ``B`` are
    assumed to be true.
 
-This allows to introduce intermediate assertions to help the proof of some
+This allows introducing intermediate assertions to help the proof of some
 part of an assertion by still controlling in a precise way what is added to the
 enclosing context. This is interesting when doing complex proofs when the
 size of the proof context (the amount of information known at a given program
@@ -1394,10 +1393,10 @@ supported contexts in a recursive way:
 
 * As the expression of a ``pragma Assert`` or ``Assert_And_Cut``;
 
-* As an operand of a AND, OR, AND THEN, or OR ELSE operation which itself occurs
+* As an operand of an AND, OR, AND THEN, or OR ELSE operation which itself occurs
   in a supported context;
 
-* As the THEN or ELSE branch of a IF expression which itself occurs in a
+* As the THEN or ELSE branch of an IF expression which itself occurs in a
   supported context;
 
 * As an alternative of a CASE expression which itself occurs in a supported

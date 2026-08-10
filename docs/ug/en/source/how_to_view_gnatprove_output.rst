@@ -343,7 +343,7 @@ Understanding Counterexamples
 
 When a check cannot be proved, |GNATprove| may generate a counterexample when
 switch ``--counterexamples=on`` is used, either explicitly or implicitly
-through the use of switch ``--level``. A counterexample consists in two parts:
+through the use of switch ``--level``. A counterexample consists of two parts:
 
 * a path (or set of paths) through the subprogram
 * an assignment of values to variables that appear on that path

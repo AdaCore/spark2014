@@ -91,7 +91,7 @@ compiler from optimizing out the duplicate tests. For example:
     end if;
 
 Without ``No_Caching``, the volatile variable is assumed to be used for
-:ref:`Interfaces to the Physical World`, |GNATprove| analyses it specially and
+:ref:`Interfaces to the Physical World`, |GNATprove| analyzes it specially and
 one cannot declare it inside a subprogram.
 
 .. _Aspect Relaxed_Initialization:
@@ -196,7 +196,7 @@ possible to give several objects to the aspect using an aggregate notation:
 
 Finally, if we want to exempt all objects of a type from the data
 initialization policy of |SPARK|, it is possible to specify the
-``Relaxed_Initialization`` aspect on a type. This also allows to exempt a
+``Relaxed_Initialization`` aspect on a type. This also makes it possible to exempt a
 single component of a record, like in the following example:
 
 .. code-block:: ada
@@ -272,7 +272,7 @@ this case. To
 express that, we introduce safe accessors for the record components, which
 check whether the field is initialized before returning it. If the component
 is not initialized, they return ``0`` which is an invalid value since both
-components of ``My_Rec`` are of type ``Positive``. This allows to encode both
+components of ``My_Rec`` are of type ``Positive``. This makes it possible to encode both
 the initialization status and the value of the field in one go:
 
 .. code-block:: ada
@@ -309,7 +309,7 @@ The same safe equality function can be used for the postcondition of ``Copy``:
      Relaxed_Initialization => (Source, Target),
      Post => Safe_Eq (Source, Target);
 
-Remain the procedures ``Init_Only_F`` and ``Init_Only_G``. We reflect the
+The procedures ``Init_Only_F`` and ``Init_Only_G`` remain. We reflect the
 asymmetry of their parameter modes in their postconditions:
 
 .. code-block:: ada
@@ -358,7 +358,9 @@ True even if the stack ``S`` contains uninitialized elements.
 
 .. note::
 
-  When the ``Relaxed_Initialization`` aspect is used, correct initialization is verified by proof (``--mode=all`` or ``--mode=silver``), and not flow analysis (``--mode=flow`` or ``--mode=bronze``).
+  When the ``Relaxed_Initialization`` aspect is used, correct initialization is
+  verified by proof (``--mode=all`` or ``--mode=silver``), and not flow analysis
+  (``--mode=flow`` or ``--mode=bronze``).
 
   It is possible to annotate an object with the ``Relaxed_Initialization``
   aspect to use proof to verify its initialization. For example, it allows to
@@ -914,15 +916,15 @@ attribute ``Old`` is only allowed in postconditions:
      case ... is
         when ... =>
           ...
-	  pragma Assert (F (X, Y, X'At (Start), Y'At (Start)));
+          pragma Assert (F (X, Y, X'At (Start), Y'At (Start)));
         when ... =>
           ...
-	  pragma Assert (F (X, Y, X'At (Start), Y'At (Start)));
+          pragma Assert (F (X, Y, X'At (Start), Y'At (Start)));
      end case;
   end P;
 
 It can also be handy to store values at the beginning of a loop iteration,
-especially as |GNATprove| rejects non-scalar object declarations occuring
+especially as |GNATprove| rejects non-scalar object declarations occurring
 before a loop invariant:
 
 .. code-block:: ada
@@ -938,7 +940,7 @@ before a loop invariant:
 In addition to the restrictions listed above, |SPARK| also forbids references
 to the attribute ``At`` that would cause information to cross proof cut points
 introduced by loop invariants and ``Assert_And_Cut`` pragmas. In particular,
-the attribure ``At`` cannot be used in the loop invariant itself, or after
+the attribute ``At`` cannot be used in the loop invariant itself, or after
 the invariant, to refer to a label located before the invariant in the loop.
 Indeed, the cut point introduced by the invariant would make the label invisible
 after the invariant. As an example, the variant of the previous example
@@ -1019,9 +1021,9 @@ an array and assign all its elements to 0:
 
 Proving its postcondition requires adding a loop invariant that states that all
 the elements that have been visited so far are equal to 0. This cannot be done
-whithout referring to the current array index. To alleviate this concern, the
+without referring to the current array index. To alleviate this concern, the
 ghost attribute ``Loop_Index`` is defined on loop parameters of loops with an
-array component iterator. They are refer to the underlying array index.
+array component iterator. It refers to the underlying array index.
 It makes it possible to write an invariant for the loop in ``Set_To_Zero``:
 
 .. code-block:: ada
@@ -1042,7 +1044,7 @@ It makes it possible to write an invariant for the loop in ``Set_To_Zero``:
 Similarly, the attribute ``Loop_Index`` is defined on loop parameters of loops
 with a container element iterator based on the ``Iterable`` aspect. It is the
 case in particular for containers of the :ref:`SPARK Library`. The attribute
-refers to the underlaying cursor in this case. As an example, the following
+refers to the underlying cursor in this case. As an example, the following
 function looks for 0 in a functional sequence. As sequences are indexed by big
 integers, the ``Loop_Index`` attribute can be used to access the number of
 elements traversed so far:
@@ -1089,7 +1091,7 @@ need to use the ``Positions`` model to retrieve its position in the list:
          end if;
          pragma Loop_Invariant
            (for all I in 1 ..
-	      Formal_Model.P.Get (Formal_Model.Positions (L), E'Loop_Index) =>
+              Formal_Model.P.Get (Formal_Model.Positions (L), E'Loop_Index) =>
                 Formal_Model.M.Get (Formal_Model.Model (L), I) /= 0);
       end loop;
       return False;
@@ -1227,7 +1229,7 @@ equivalent to the above named notation:
 
    Origin : constant Point := (0.0, 0.0, 0.0);
 
-With the difference that named notation and positional notation cannot be mixed
+Apart from the fact that named notation and positional notation cannot be mixed
 in an array aggregate, all other explanations presented for aggregates of
 record type ``Point`` in :ref:`Record Aggregates` are applicable to array
 aggregates here, so all the following declarations are valid:
@@ -1570,7 +1572,7 @@ from the :ref:`SPARK Libraries`.
 
 .. note::
 
-   So the handling is as precise as possible, |SPARK| only
+   So that the handling is as precise as possible, |SPARK| only
    supports aggregates with distinct values or keys for sets and maps.
 
 .. index:: if-expression, case-expression
@@ -2053,7 +2055,7 @@ incremented by one at each call, and that the current value of parameter
 Case 4: Expressing Existentially Quantified Properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In |SPARK|, universal quantification is only allowed in restricted cases
+In |SPARK|, existential quantification is only allowed in restricted cases
 (over integer ranges and over the content of a container). To express the
 existence of a particular object, it is sometimes easier to simply provide it.
 This can be done using a global ghost variable. This can be used in particular
@@ -2219,12 +2221,12 @@ on non-ghost variables.
 .. code-block:: ada
 
    package My_Instantiation is
-     new My_Generic (T          => ... -- ghost or not
-                     Var_Input  => ... -- ghost or not
-                     Var_Output => ... -- must be ghost
-                     F          => ... -- ghost or not
-                     P          => ... -- must be ghost
-                     Pack       => ... -- must be ghost
+     new My_Generic (T          => ..., -- ghost or not
+                     Var_Input  => ..., -- ghost or not
+                     Var_Output => ..., -- must be ghost
+                     F          => ..., -- ghost or not
+                     P          => ..., -- must be ghost
+                     Pack       => ...); -- must be ghost
 
 Ghost Models
 ^^^^^^^^^^^^
@@ -2289,7 +2291,7 @@ state of the automaton:
 Like before, ``Receive`` and ``Send`` should update ``Mailbox_Status`` in their
 bodies.
 Note that all the transitions of the automaton need not be specified, only the
-part which are relevant to the properties we want to express.
+parts which are relevant to the properties we want to express.
 
 If the program also has some regular state, an invariant can be used to link
 the value of this state to the value of the ghost state of the automaton. For
@@ -2319,14 +2321,14 @@ Models of Data Structures
 
 For specifying programs that use complex data structures (doubly-linked lists,
 maps...), it can be useful to supply a model for the data structure. A model
-is an alternative, simpler view of the data-structure which allows to write
+is an alternative, simpler view of the data-structure which makes it possible to write
 properties more easily. For example, a ring buffer, or a doubly-linked list, can
 be modeled using an array containing the elements from the buffer or the list in
 the right order. Typically, though simpler to reason with, the model is less
 efficient than the regular data structure. For example, inserting an element at
 the beginning of a doubly-linked list or at the beginning of a ring buffer can
 be done in constant time whereas inserting an element at the beginning of an
-array requires to slide all the elements to the right. As a result, models of
+array requires sliding all the elements to the right. As a result, models of
 data structures are usually supplied using ghost code. As an example, the
 package ``Ring_Buffer`` offers an implementation of a single instance ring
 buffer. A ghost variable ``Buffer_Model`` is used to write the specification of
@@ -2600,7 +2602,7 @@ entities that are not ignored. Thus, one only needs to check that the substring
 ``___ghost_`` does not appear in the list of names from the object code or
 executable.
 
-On Unix-like platforms, this can done by checking that the following command
+On Unix-like platforms, this can be done by checking that the following command
 does not output anything::
 
   nm <object files or executable> | grep ___ghost_
@@ -2657,7 +2659,7 @@ of the array as follows:
 .. code-block:: ada
 
    procedure Nullify_Array (X : out Integer_Array) with
-     Post => (for all E in X => E = 0);
+     Post => (for all E of X => E = 0);
 
 or using a universally quantified expression iterating over the range of the
 array as follows:

@@ -108,7 +108,7 @@ either as complete objects or as components of other objects:
 
 If only one object of a given task type is needed, then the task object can be
 declared directly giving a declaration and a body. An anonymous task type is
-then defined implicitly for the declared type object. For example, if we only
+then defined implicitly for the declared object. For example, if we only
 need one task ``Account_Management`` then we can write:
 
 .. code-block:: ada
@@ -342,7 +342,7 @@ Definitions of protected types resemble package definitions. They are made of
 two parts, a declaration (divided into a public part and a private part) and a
 body. The public part of a protected type's declaration contains the
 declarations of the subprograms that can be used to access the data declared in
-its private part. The body of these subprograms are located in the protected
+its private part. The bodies of these subprograms are located in the protected
 type's body. In Ravenscar, protected objects should be declared at library
 level, either as complete objects or as components of other objects. As an
 example, here is how a protected type can be used to coordinate concurrent
@@ -450,7 +450,7 @@ The access mode granted by protected subprograms depends on their kind:
 
 So that scheduling is deterministic, Ravenscar requires that at most one entry
 is specified in a protected unit and at most one task is waiting on a given
-entry at every time. To ensure this, |GNATprove| checks that no two tasks can
+entry at any time. To ensure this, |GNATprove| checks that no two tasks can
 call the same protected object's entry. As an example, we could replace the
 procedure ``Incr`` of ``Protected_Natural`` to wait until ``The_Data`` is
 smaller than ``Max_Accounts`` before incrementing it. As only simple Boolean
@@ -677,9 +677,9 @@ following example, the suspension object ``Semaphore`` is used to make sure
    end T2;
 
 In Ada, an exception is raised if a task tries to suspend on a suspension
-object on which another task is already waiting on that same suspension
-object. Like for verifying that no two tasks can be queued on a protected
-entry, this verification is done by |GNATprove| by checking that no two tasks
+object on which another task is already waiting. Like for verifying that no two
+tasks can be queued on a protected entry, this verification is done by
+|GNATprove| by checking that no two tasks
 ever suspend on the same suspension object.  In the following example, the
 suspension objects ``Semaphore1`` and ``Semaphore2`` are used to ensure that
 ``T1`` and ``T2`` never call ``Enter_Protected_Region`` at the same
@@ -816,11 +816,11 @@ Second, the analysis is only done in the context of all the units "withed"
 
 In effect, you might miss checks when:
 
-* building a library that declares tasks objects in unrelated source files,
+* building a library that declares task objects in unrelated source files,
   i.e. files that are never "withed" (directly or indirectly) from the same
-  file, and those tasks objects access the same resource in a way that violates
+  file, and those task objects access the same resource in a way that violates
   tasking-related rules, or
-* using a library that internally declares some tasks objects, they access some
+* using a library that internally declares some task objects, they access some
   tasking-sensitive resource, and your main subprogram also accesses this
   resource.
 
@@ -834,7 +834,7 @@ Interrupt Handlers
 ------------------
 
 SPARK puts no restrictions on the Ada interrupt handling and GNATprove merely
-checks that interrupt handlers will be safely executed. In Ada interrupts
+checks that interrupt handlers will be safely executed. In Ada, interrupt
 handlers are defined by annotating protected procedures, for example:
 
 .. code-block:: ada
@@ -852,7 +852,7 @@ Interrupt_State and Unreserve_All_Interrupts for details. Once examined, those
 checks can be suppressed with pragma Annotate.
 
 If pragma Priority or Interrupt_Priority is explicitly specified for a
-protected type, then GNATprove will check that its value is in the range of the
+protected type, then GNATprove will check that its value is in the range of
 System.Any_Priority or System.Interrupt_Priority, respectively; see Ada RM
 D.3(6.1/3).
 

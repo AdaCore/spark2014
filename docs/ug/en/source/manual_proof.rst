@@ -24,7 +24,7 @@ Manual Proof Using SPARK Lemma Library
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If the property to prove is part of the :ref:`SPARK Lemma Library`, then manual
-proof simply consists in calling the appropriate lemma in your code. For
+proof simply consists of calling the appropriate lemma in your code. For
 example, consider the following assertion to prove, where ``X1``, ``X2`` and
 ``Y`` may be signed or modular positive integers:
 
@@ -101,7 +101,7 @@ Manual Proof Using User Lemmas
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If the property to prove is not part of the :ref:`SPARK Lemma Library`, then a
-user can easily add it as a separate lemma in her program. For example, suppose
+user can easily add it as a separate lemma in their program. For example, suppose
 you need to have a proof that a fixed list of numbers are prime numbers. This can
 be expressed easily in a lemma as follows:
 
@@ -356,7 +356,7 @@ timeout:
 .. literalinclude:: /examples/ug__nonlinear/test.out
    :language: none
 
-This is expected, as the automatic prover Alt-Ergo has only a simple support
+This is expected, as the automatic prover Alt-Ergo has only simple support
 for non-linear integer arithmetic. More generally, it is a known difficulty for
 all automatic provers, although, in the case above, using prover cvc5 is enough
 to prove automatically the postcondition of procedure ``Nonlinear``. We will
@@ -399,7 +399,7 @@ From the ``forall`` to the first ``.`` we can see the expression of what must
 be proved, also called the goal. The proof starts right after the dot and ends
 with the ``Qed`` keyword.  Proofs in Coq are done with the help of different
 tactics which will change the state of the current goal. The first tactic
-(automatically added) here is ``intros``, which allows to "extract" variables
+(automatically added) here is ``intros``, which makes it possible to "extract" variables
 and hypotheses from the current goal and add them to the current
 environment. Each parameter to the ``intros`` tactic is the name that the
 extracted element will have in the new environment.  The ``intros`` tactic here
@@ -449,7 +449,7 @@ at the end of each tactic). The new state is::
 At this state, the hypotheses alone are not enough to prove the goal without
 proving properties about ``÷`` and ``<`` operators. It is necessary to use
 theorems from the Coq standard library. Coq provides a command ``SearchAbout``
-to find theorems and definition concerning its argument. For instance, to find
+to find theorems and definitions concerning its argument. For instance, to find
 the theorems referring to the operator ``÷``, we use ``SearchAbout Z.quot.``,
 where ``Z.quot`` is the underlying function for the ``÷`` operator.  Among the
 theorems displayed, the conclusion (the rightmost term separated by ``->``
@@ -458,7 +458,7 @@ operator) of one of them seems to match our current goal::
    Z.quot_le_compat_l:
      forall p q r : int, (0 <= p)%Z -> (0 < q <= r)%Z -> (p ÷ r <= p ÷ q)%Z
 
-The tactic ``apply`` allows the use of a theorem or an hypothesis on the
+The tactic ``apply`` allows the use of a theorem or a hypothesis on the
 current goal. Here we use: ``apply Z.quot_le_compat_l.``. This tactic will try
 to match the different variables of the theorem with the terms present in the
 goal. If it succeeds, one subgoal per hypothesis in the theorem will be
@@ -585,7 +585,7 @@ subgoal, every step was detailed in order to show how the tactic ``apply``
 worked. Now, let's see that proof doesn't have to be this detailed. The first
 thing to do is to add the fact that ``1 <= z`` to the current
 environment: ``unfold dynamic_invariant1, in_range1 in h3.`` will add the range
-of ``z`` as an hypothesis in the environment::
+of ``z`` as a hypothesis in the environment::
 
   1 subgoal
   r1, r2 : int
@@ -601,7 +601,7 @@ of ``z`` as an hypothesis in the environment::
 At this point, the goal can be solved simply using the ``intuition.`` tactic.
 ``intuition`` is an automatic tactic of Coq implementing a decision procedure
 for some simple goals. It either solves the goal or, if it fails, it does not
-generate any subgoals.  The benefit of the latter way is that there are less
+generate any subgoals.  The benefit of the latter way is that there are fewer
 steps than with the previous subgoal for a more complicated goal (there are two
 inequalities in the second subgoal) and we do not have to find the different
 theorems we need to solve the goal without ``intuition``.
