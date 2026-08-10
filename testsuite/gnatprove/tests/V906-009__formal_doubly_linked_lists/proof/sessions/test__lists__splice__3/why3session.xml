@@ -189,7 +189,7 @@
           </goal>
           <goal name="def'vc.34" proved="true">
             <proof prover="1">
-              <result status="valid" steps="2417" />
+              <result status="valid" steps="6286" />
             </proof>
           </goal>
           <goal name="def'vc.35" proved="true">
