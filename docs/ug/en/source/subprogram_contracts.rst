@@ -279,7 +279,7 @@ be defined in a contract case as follows:
      Contract_Cases => (Total + Incr < Threshold  => Total = Total'Old + Incr,
                         Total + Incr >= Threshold => Total = Threshold);
 
-Each contract case consists in a guard and a consequence separated by the
+Each contract case consists of a guard and a consequence separated by the
 symbol ``=>``. When the guard evaluates to ``True`` on subprogram entry, the
 corresponding consequence should also evaluate to ``True`` on subprogram
 exit. We say that this contract case was enabled for the call. Exactly one
@@ -654,7 +654,7 @@ regular function or an expression function (see :ref:`Expression Functions`):
 
    function Get_Total return Integer is (Total);
 
-Accessor functions can be annotated as :ref:`Ghost Functions` functions to
+Accessor functions can be annotated as :ref:`Ghost Functions` to
 prevent them from being available in the standard API of the package.
 
 Abstraction also affects the visibility of contracts by
@@ -853,7 +853,7 @@ is unexpected and
  * in proof, a check is generated for these statements, to prove that
    no such program point is reachable.
 
-Occurrences of  ``pragma Assert (X)`` where ``X`` is an expression statically
+Occurrences of ``pragma Assert (X)`` where ``X`` is an expression statically
 equivalent to ``False`` are treated in the same way.
 
 As an example, consider the artificial subprogram ``Check_OK`` which raises an
@@ -1036,7 +1036,7 @@ propagated on exceptional exit:
    :language: none
 
 While a check is emitted by |GNATprove| to make sure that the different cases of
-an exit cases are disjoint (there shall be no inputs satisfying the guard of
+an exit cases contract are disjoint (there shall be no inputs satisfying the guard of
 several cases at the same time), it does not ensure that they are complete
 (there can be inputs which are not satisfying any guards). In this case, there
 are no constraints on how the subprogram is allowed to terminate. As an example,
@@ -1143,7 +1143,7 @@ using ``GNAT.OS_Lib.OS_Exit``).
 
 The ``Always_Terminates`` GNAT specific aspect allows users to request that
 |GNATprove| also verifies that a procedure or entry terminates. It is the case
-for example of the procedures ``Ok_Terminating`` and ``Bad_Terminating``
+for example of the procedures ``OK_Terminating`` and ``Bad_Terminating``
 below. The aspect can also be used to provide a boolean condition like for the
 ``Conditionally_Loop`` procedure. If this condition is present, then the proof
 of termination is only attempted when the condition evaluates to True on
@@ -1239,7 +1239,7 @@ Structural variants are generally used on recursive data-structures. The value
 associated to such a variant is necessarily a formal parameter of the
 subprogram. On every recursive call, a check is generated to ensure that the
 actual parameter denoted by the variant designates a strict subcomponent of the
-formal parameter denoted the variant at the beginning of the call. Since,
+formal parameter denoted by the variant at the beginning of the call. Since,
 due to the :ref:`Memory Ownership Policy` of |SPARK|, the data-structures cannot
 contain cycles, it is enough to ensure that there will be no infinite
 chain of recursive calls.
@@ -1259,7 +1259,7 @@ be verified by |GNATprove|:
 .. literalinclude:: /examples/ug__recursive_subprograms-structural/test.out
    :language: none
 
-Structural variants are subjects to a number of restrictions.
+Structural variants are subject to a number of restrictions.
 They cannot be combined with other variants, and are checked according to
 a mostly syntactic criterion. When these restrictions cannot be followed,
 structural variants can be systematically replaced by a decreasing numeric
@@ -1294,7 +1294,7 @@ Modifies Clauses
 
 It is possible to annotate subprograms with side-effects with a ``Modifies``
 aspect. This aspect provides a list of clauses, each specifying a set of objects
-that are modified by the program, possibly with an additional guard introduced
+that are modified by the subprogram, possibly with an additional guard introduced
 by the ``when`` keyword. Objects not mentioned in one of these clauses, or
 objects only mentioned in clauses whose guard evaluates to False, are
 necessarily left unchanged by the subprogram.
@@ -1374,7 +1374,7 @@ Unlike with contract cases, it is possible that several clauses of a
 ``Modifies`` aspect are enabled for a given call - that is, there can be
 several clauses without a guard or whose guard evaluates to True at the
 beginning of the call. In this case, the objects mentioned in enabled
-clause might be modified by the subprogram. As an example, if both ``B1`` and
+clauses might be modified by the subprogram. As an example, if both ``B1`` and
 ``B2`` are set to True, ``Write_G1_F1_And_G2_F2`` is allowed to modify both
 ``X.G1.F1`` and ``X.G2.F2``:
 

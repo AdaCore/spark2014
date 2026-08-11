@@ -275,7 +275,7 @@ The form of a pragma SPARK_Mode is as follows:
 
 .. code-block:: ada
 
-   pragma SPARK_Mode [ (Auto | On | Off) ]
+   pragma SPARK_Mode [ (Auto | On | Off) ];
 
 For example:
 

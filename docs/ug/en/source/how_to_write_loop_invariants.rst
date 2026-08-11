@@ -20,7 +20,7 @@ Automatic Unrolling of Simple For-Loops
 
 In addition, |GNATprove| always unrolls single-iteration loops whose range
 spans exactly one value, of the form ``for J in N .. N loop`` (such as ``for J
-in 1 .. 1 loop``), that don't have a :ref:`loop invariants` or :ref:`loop
+in 1 .. 1 loop``), that don't have :ref:`loop invariants` or :ref:`loop
 variants`, even when they declare local variables of non-scalar type.
 
 As a result of unrolling, |GNATprove| conveys the exact meaning of the loop to
@@ -76,7 +76,7 @@ the scientific literature is essential for |GNATprove|, which otherwise must
 assume that all elements in the collection may have been modified. Special care
 should be taken to write adequate frame conditions, as they usually look
 obvious to programmers, and so it is very common to forget to write them and
-not being able to realize what's the problem afterwards.
+not being able to see afterwards what the problem is.
 
 To alleviate this problem, the |GNATprove| tool generates automatically frame
 conditions in some cases. As examples of use of such generated frame
@@ -145,8 +145,8 @@ generated loop invariant. Note that loop invariant generation for preserved
 array components is based on heuristics, and that it is therefore far from
 complete. In particular, it does not handle updates to variable indexes different
 from the loop index, as can be seen by the failed attempt to verify the
-assertion on line 22. |GNATprove| does not either handle dependences between
-indexes in an update, resulting in the failed attempt to verify the
+assertion on line 22. |GNATprove| does not handle dependences between
+indexes in an update either, resulting in the failed attempt to verify the
 assertion on line 33:
 
 .. literalinclude:: /examples/ug__preserved_components/test.out
@@ -422,7 +422,7 @@ for an example where this is needed.
 In other cases, it may be necessary to guide the prover with intermediate
 assertions. A rule of thumb for deciding which properties to assert, and where
 to assert them, is to try to locate at which program point the prover does not
-success in proving the property of interest, and to restate other properties
+succeed in proving the property of interest, and to restate other properties
 that are useful for the proof.
 
 In yet other cases, where the difficulty is related to the size of the loop

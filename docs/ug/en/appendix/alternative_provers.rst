@@ -74,7 +74,7 @@ be found in the section on :ref:`Coq`):
   the compilation of the library of theorems. This command will be called each
   time a source file is added to the library.
 
-* ``build_commands``: this field allows you to specify a set of command which
+* ``build_commands``: this field allows you to specify a set of commands which
   will be called sequentially to build your library. These commands will be
   called each time |GNATprove| runs the corresponding manual prover.
   (In order to define multiple commands for this field, just set the field

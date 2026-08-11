@@ -11,10 +11,9 @@ operations that would have triggered a run-time exception.
 .. index:: Assertion_Error
 
 GNATprove can be used to prove the complete absence of possible run-time
-errors corresponding to the explicit raising of unexpected exceptions in the
-program, raising the exception ``Constraint_Error`` at run time, and
-failures of assertions (corresponding to raising exception ``Assertion_Error``
-at run time).
+errors, that is, the explicit raising of unexpected exceptions in the program,
+the raising of the exception ``Constraint_Error`` at run time, and the failure
+of assertions (which raises the exception ``Assertion_Error`` at run time).
 
 .. index:: Precondition
 .. index:: Defensive code
@@ -62,7 +61,7 @@ efficient code comparable to what can be achieved in C or assembly.
 .. index:: Qualification (for GNATprove)
 
 The proof of AoRTE can be used to comply with the objectives of
-certification standards in various domains (DO-178B/C in avionics, EN 50128 in
+certification standards in various domains (DO-178C in avionics, EN 50128 in
 railway, IEC 61508 in many safety-related industries, ECSS-Q-ST-80C in
 space, IEC 60880 in nuclear, IEC 62304 in medical, ISO 26262 in
 automotive). To date, the use of SPARK has been qualified in an EN 50128

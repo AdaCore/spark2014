@@ -150,7 +150,7 @@ would be the same.
 
 Sections :ref:`Stone Level <Stone Level>` to :ref:`Platinum Level <Platinum
 Level>` present the details of the five levels of software assurance. Each
-section consists in a short description of three key aspects of adopting SPARK
+section consists of a short description of three key aspects of adopting SPARK
 at that level:
 
 * `Benefits` - What is gained from adopting SPARK?
@@ -234,7 +234,7 @@ complexity of the proof, this might be more or less costly initially and during
 maintenance:
 
 * :ref:`Manual Proof Using SPARK Lemma Library` is the least costly of all,
-  only requiring to use the right lemma from the library.
+  only requiring the use of the right lemma from the library.
 
 * :ref:`Manual Proof Using Ghost Code` is more costly, as it requires expertise
   and interactions with the tool to guide automatic provers.
@@ -259,9 +259,9 @@ Safe Coding Standard for Critical Software
 |SPARK| is a subset of Ada meant for formal verification, by excluding features
 that are difficult or impossible to analyze automatically. This means that
 |SPARK| can also be used as a coding standard to restrict the set of features
-used in critical software. As a safe coding standard checker, |SPARK| allows
-both to prevent the introduction of errors by excluding unsafe Ada features,
-and it facilitates their early detection with |GNATprove|'s flow analysis.
+used in critical software. As a safe coding standard checker, |SPARK| both
+prevents the introduction of errors by excluding unsafe Ada features, and
+facilitates their early detection with |GNATprove|'s flow analysis.
 
 Exclusion of Unsafe Ada Features
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -334,7 +334,7 @@ errors corresponding to:
 * raising exception ``Constraint_Error`` at run time, and
 
 * all possible failures of assertions corresponding to raising exception
-  ``Assert_Error`` at run time.
+  ``Assertion_Error`` at run time.
 
 AoRTE is important for ensuring safety in all possible operational conditions
 for safety-critical software (including boundary conditions, or abnormal
@@ -399,7 +399,7 @@ execution is to exercise them during testing. Test coverage information allows
 guaranteeing a set of run-time checks have been executed successfully during a
 test run. This coverage information may be gathered from the execution of a
 unit testing campaign, an integration testing campaign, or the execution of a
-dedicated testsuite focussing on exercising the run-time checks (for example on
+dedicated testsuite focusing on exercising the run-time checks (for example on
 boundary values or random ones).
 
 This strategy is already applied in other static analysis tools, for example
@@ -876,7 +876,7 @@ types of errors (see Ada RM 1.1.5 "Classification of Errors"):
 
 .. index:: bounded error
 
-* *Bounded errors* - These errors need not be detected either at compiler time
+* *Bounded errors* - These errors need not be detected either at compile time
   or at run time, but their effects should be bounded. For example, reading an
   uninitialized value may result in any value of the type to be used, or to
   ``Program_Error`` being raised. Like for run-time errors, they might be a
@@ -989,7 +989,7 @@ description of the different modes):
 * In modes ``prove`` and ``all``, |GNATprove| issues check messages on all
   possible run-time errors corresponding to raising exception
   ``Constraint_Error`` at run time, all possible failures of assertions
-  corresponding to raising exception ``Assert_Error`` at run time, and all
+  corresponding to raising exception ``Assertion_Error`` at run time, and all
   possible explicit raising of unexpected exceptions in the program.
 
 The analysis of |GNATprove| can take into account characteristics of the target
@@ -1094,14 +1094,14 @@ errors:
 
 * all possible reads of uninitialized data
 
-* all possible explicit raise of unexpected exceptions in the program
+* all possible explicit raises of unexpected exceptions in the program
 
 * all possible run-time errors except raising exception ``Storage_Error``,
   corresponding to raising exception ``Program_Error``, ``Constraint_Error`` or
   ``Tasking_Error`` at run time
 
 * all possible failures of assertions corresponding to raising exception
-  ``Assert_Error`` at run time
+  ``Assertion_Error`` at run time
 
 When parts of the program are not in |SPARK| (for example, in Ada or C), the
 results of |GNATprove|'s analysis depend on assumptions on the correct behavior
@@ -1141,7 +1141,7 @@ Portable Fixed-Point Declarations" section of the GNAT Reference Manual:
    My_Last  : constant := +1.0 - My_Small;
 
    type F2 is delta My_Small range My_First .. My_Last;
-   for F2'Small use my_Small;
+   for F2'Small use My_Small;
    for F2'Size  use 16;
 
 The program should also avoid multiplication and division of fixed-point values
@@ -1208,7 +1208,7 @@ If only a subset of the project files should be analyzed, one should create a
 project file for :ref:`Specifying Files To Analyze` or :ref:`Excluding Files
 From Analysis`.
 
-Finally, one may prefer to work her way through the project one unit at a time
+Finally, one may prefer to work their way through the project one unit at a time
 by :ref:`Using SPARK_Mode in Code`, and running |GNATprove| on the current unit
 only.
 
@@ -1268,7 +1268,7 @@ code ``SPARK_Mode => On``:
    in ``proof`` mode, until all errors are resolved (some unproved checks may
    remain, as errors and checks are different :ref:`Categories of Messages`).
 
-#. Continue with the both the unit spec and body marked ``SPARK_Mode =>
+#. Continue with both the unit spec and body marked ``SPARK_Mode =>
    On``. First run |GNATprove| in ``flow`` mode, then in ``proof`` mode, until
    all errors are resolved.
 
@@ -1879,12 +1879,12 @@ more is necessary, provided there is no need to reclaim the
 allocated memory. Otherwise, potential aliases that could be visible from the
 |SPARK| part of the program should be accounted for. There are two
 possibilities: either non-aliasing should be enforced between objects or the
-memory accessible should to be modeled as a shared global state.
+memory accessible should be modeled as a shared global state.
 
 The shared global solution is simpler to put in place and enforces less
 constraints, both on the non-|SPARK| API and on usage of the private type in
-|SPARK| code. However, the analysis results will be less precise as all writes
-access to a private object will affect the same global state and therefore
+|SPARK| code. However, the analysis results will be less precise as all write
+accesses to a private object will affect the same global state and therefore
 potentially affect all read objects.
 
 The behavior of the API can be modeled using an abstract state ``Data_State``
@@ -1987,7 +1987,7 @@ if it is of interest.
 Pointer-Based Data Structures
 -----------------------------
 
-The :ref:`SPARK Libraries` offers a variety of containers that can be used to
+The :ref:`SPARK Libraries` offer a variety of containers that can be used to
 construct data-structures in a |SPARK|-compliant way. If it is possible, using
 such containers instead of a pointer-based data structure might be the easiest
 way forward. As the API of formal containers (see
@@ -2102,8 +2102,8 @@ any value of ``I`` and ``J``.
 Unfortunately, the automated solvers used as the backend of |GNATprove| mostly
 cannot perform induction. For example, they are not able to prove the assertion
 in procedure ``Test`` above. Recognizing that a particular check requires inductive
-reasoning is not always easy, all the more since they often seem obvious to a
-human reader. Most often, it becomes apparent when attempting to debug a failed
+reasoning is not always easy, all the more since such checks often seem obvious
+to a human reader. Most often, it becomes apparent when attempting to debug a failed
 proof attempt by inserting intermediate assertions in the code: there is no way
 to split an inductive reasoning into intermediate deduction steps.
 
@@ -2268,7 +2268,7 @@ case statement:
        when Circle =>
           return Pi * Item.Radius ** 2;
        when Rectangle =>
-	  return Item.Width * Item.Height;
+          return Item.Width * Item.Height;
        when Triangle =>
           return Item.Base * Item.Side_Height / 2.0;
      end case;

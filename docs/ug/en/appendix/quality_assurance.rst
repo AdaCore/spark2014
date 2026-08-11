@@ -15,7 +15,7 @@ Quality Procedures in place for all development at AdaCore. This includes:
 * Ensuring quality of sources and technical documentation;
 * Preparation of releases.
 
-As an extension to Chapter 2, section “AdaCore internal testsuite”, SPARK
+As an extension to Chapter 2, section "AdaCore internal testsuite", SPARK
 contains its own testsuites:
 
 * The SPARK main testsuite: This testsuite contains 3600 tests. These tests are specifically targeted at the SPARK software and cover typical use cases, often represented by code sent to us by customers, as well as specific features of the SPARK software.
@@ -94,7 +94,7 @@ this part of the tool receives special attention regarding soundness:
 * No axiom is generated for functions which might not return. This also reduces
   the risk that a wrong contract could lead to an inconsistent axiom.
 
-A special run of the SPARK main testsuite allows to monitor statement coverage
+A special run of the SPARK main testsuite makes it possible to monitor statement coverage
 of the testsuite over GNAT2Why source code, which is maintained above 95%, and
 aiming at full statement coverage.
 
@@ -109,7 +109,7 @@ Why3
 
 This part of GNATprove takes the information in the Why language produced by GNAT2Why, translates it further into a format suitable for SMT solvers such as Z3 and cvc5, and runs these tools. The results are reported back to gnat2why.
 
-History: Started around the year 2000 by Jean-Christophe Filliâtre as “Why” (see Jean-Christophe Filliâtre. Why: a multi-language multi-prover verification tool. Research Report 1366, LRI, Université Paris Sud, March 2003), it has undergone a number of redevelopments until its current version Why3 (since 2010).
+History: Started around the year 2000 by Jean-Christophe Filliâtre as "Why" (see Jean-Christophe Filliâtre. Why: a multi-language multi-prover verification tool. Research Report 1366, LRI, Université Paris Sud, March 2003), it has undergone a number of redevelopments until its current version Why3 (since 2010).
 
 Track record: Apart from SPARK, it is used by `Frama-C <http://frama-c.com/>`_, `Atelier B <http://www.atelierb.eu/en/>`_, and other program verification tools.
 
@@ -126,7 +126,7 @@ Alt-Ergo
 ^^^^^^^^
 
 History: Started around the year 2005 at Inria by Sylvain Conchon and Evelyne
-Contejean as “Ergo” (see CC(X): Efficiently combining equality and solvable
+Contejean as "Ergo" (see CC(X): Efficiently combining equality and solvable
 theories without canonizers. Sylvain Conchon, Évelyne Contejean, and Johannes
 Kanig. SMT Workshop, 2007). Starting from 2013, developed and distributed
 mainly by `OCamlPro <https://alt-ergo.ocamlpro.com/>`_. Since then, OCamlPro

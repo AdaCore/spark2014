@@ -121,7 +121,7 @@ Writing Only the Data Dependencies
 When only the data dependencies are given on a subprogram, |GNATprove|
 completes them with flow dependencies that have all outputs depending on all
 inputs. This is a safe over-approximation of the real contract of the
-subprogram, which allows to detect all possible errors of initialization and
+subprogram, which makes it possible to detect all possible errors of initialization and
 contract violation in the subprogram and its callers, but which may also lead
 to false alarms because it is imprecise.
 
@@ -362,7 +362,7 @@ For example, take unit ``Gen_Global`` previously seen, where the body of
      Depends => (V => V);
 
 This is a safe over-approximation of the real contract for
-``Set_Global``, which allows to detect all possible errors of initialization
+``Set_Global``, which makes it possible to detect all possible errors of initialization
 and contract violation in ``Set_Global`` callers, but which may also lead to
 false alarms because it is imprecise. Here, |GNATprove| generates a wrong
 high message that the call to ``Set_Global`` on line 25 reads an uninitialized value
@@ -375,7 +375,7 @@ This is because the generated contract for ``Set_Global`` is not precise
 enough, and considers ``V`` as an input of the procedure. Even if the body of
 ``Set_Global`` is not in |SPARK|, the user can easily provide the precise
 information to |GNATprove| by adding a suitable contract to ``Set_Global``,
-which requires to define an abstract state ``State`` like in the previous
+which requires defining an abstract state ``State`` like in the previous
 section:
 
 .. code-block:: ada
@@ -441,7 +441,7 @@ Here, |GNATprove| generates data and flow dependencies for procedure
 
 Since only generated contracts on SPARK subprograms are guaranteed to be correct, and
 the results of |GNATprove|'s analysis depend on assumptions on the correct behavior
-of the non-|SPARK| code, we recommend the users to scrutinize coarsely-generated contracts
+of the non-|SPARK| code, we recommend that users scrutinize coarsely-generated contracts
 using the printing option (see :ref:`Printing Generated Globals`), and compare them
 against a manual review of the code. See section :ref:`Managing Assumptions` for more
 details on assumptions.
@@ -739,7 +739,7 @@ Verifying Contract Consistency
 By default, |GNATprove| doesn't verify the logical consistency of subprogram
 contracts. It is thus possible to write a precondition that is always false,
 which allows anything to be proved in the subprogram body and subprogram
-postcondition since False implies False is True. Likewise, it's possible to
+postcondition since False implies anything. Likewise, it's possible to
 write a postcondition that is always false, which allows anything to be
 proved after a call to the subprogram.
 
@@ -1018,7 +1018,7 @@ been hidden from analysis using ``SPARK_Mode => Off``, |GNATprove| cannot
 deduce that it terminates. As a result, it stays in the safe side, and assumes
 that ``Not_SPARK`` could loop, which causes the verification of ``P_Call`` to
 fail. Finally, |GNATprove| is able to verify that ``P_Term`` terminates,
-though it contains both a while loop and  a recursive call.  Indeed, we have
+though it contains both a while loop and a recursive call.  Indeed, we have
 bounded both the number of possible iterations of the loop and the number of
 recursive calls using a ``Loop_Variant`` (for the loop iterations) and a
 ``Subprogram_Variant`` (for the recursive calls). Also note that, though it was

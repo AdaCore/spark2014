@@ -93,7 +93,7 @@ Here are overviews and examples of each kind of access type.
   to designate data regardless of where it is allocated (the stack, the
   heap, etc.), but they cannot be deallocated. They are *not* subject to the
   :ref:`Memory Ownership Policy` of |SPARK|, however the value they designate
-  should be constant all the way down (ie. if such a value has a subcomponent
+  should be constant all the way down (i.e. if such a value has a subcomponent
   of an access-to-variable type, the value designated by this subcomponent
   should be constant too).
 
@@ -298,7 +298,7 @@ not mean that the observer itself is necessarily a constant.
 It is possible to update it so that it designates
 another part of a data structure. This is especially useful to traverse
 recursive data structures using loops. As an example, here is a function which
-searches for the an element ``E`` in a list ``L``:
+searches for an element ``E`` in a list ``L``:
 
 .. code-block:: ada
 
@@ -405,7 +405,7 @@ to traverse the list and modify it in place. The two assignments to ``X`` in
 the loop are different in essence. The first one assigns a part of the structure
 designated by ``X``. It is a modification of the borrowed list ``L``. The
 second one assigns ``X`` at top-level. It does not modify ``L``, but changes
-``X`` so that it designates another the part of L. It is called a `reborrow`.
+``X`` so that it designates another part of L. It is called a `reborrow`.
 In |SPARK|, reborrows are only allowed to borrow a part of the borrower. Said
 otherwise, a borrower can only go deeper in the data structure, it is not
 allowed to jump to a distinct object or distinct part of the same
@@ -434,7 +434,7 @@ the type ``Name`` of the pool-specific access-to-variable type:
    :language: ada
    :linenos:
 
-|GNATprove| guarantees the absence of memory leak in the above code:
+|GNATprove| guarantees the absence of memory leaks in the above code:
 
 .. literalinclude:: /examples/ug__access4/test.out
    :language: none
@@ -656,7 +656,7 @@ value to an object is interpreted differently in SPARK.
 Subprogram Pointers
 -------------------
 
-Unlike access to objects, access to subprograms are not subject to the
+Unlike access to objects, access to subprograms is not subject to the
 ownership policy of |SPARK|. Both anonymous and named access-to-subprogram
 types are supported. As an example, the procedure ``Update_All`` below calls
 its parameter ``Update_One`` on all the elements of its array parameter ``A``:
@@ -851,7 +851,7 @@ for the seamless support of allocators in particular. Indeed, an allocator
 returns a different object each time it is evaluated, even if it is
 given the same parameter. In |SPARK|, this behavior would mandate a volatile
 effect, see :ref:`Volatile Variables`. Making all subprograms that perform
-allocations volatile would by overly restrictive, especially since volatile
+allocations volatile would be overly restrictive, especially since volatile
 functions can only be used in particular contexts.
 
 The fact that the value of
@@ -871,7 +871,7 @@ For this reasoning to be sound, it is necessary to ensure that the value of
 access objects is never read in |SPARK| code. In particular, this results in
 the predefined equality on access types being rejected unless one of the
 operands is known to be ``null``. In addition, if the result of a subprogram
-that is not analysed by |GNATprove| depends on the value of one of its access
+that is not analyzed by |GNATprove| depends on the value of one of its access
 inputs, then it is necessary to mark it as volatile, as stated in
 the :ref:`Complete List of Assumptions` of |SPARK|.
 

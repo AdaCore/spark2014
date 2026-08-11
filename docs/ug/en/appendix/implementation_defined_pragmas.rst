@@ -46,7 +46,7 @@ SPARK_Mode is not an aspect of an entity but rather of a section of an entity.
 
 For example, if a subprogram declaration has a SPARK_Mode of On while
 its body has a SPARK_Mode of Off, then an error would be generated if
-the subprogram  took a parameter of a general access type but not if
+the subprogram took a parameter of a general access type but not if
 the subprogram declared a local variable of a general
 access type (recall that general access types are not in |SPARK|).
 
@@ -204,7 +204,7 @@ visible part has a SPARK_Mode of On but whose private part has a SPARK_Mode
 of Off; a package whose visible part has a SPARK_Mode of Auto may also be
 referenced).
 
-Code where SPARK_Mode is Off shall not enclose code where Spark_Mode is On.
+Code where SPARK_Mode is Off shall not enclose code where SPARK_Mode is On.
 However, if an instance of a generic unit is enclosed
 by code where SPARK_Mode is Off and if any SPARK_Mode specifications occur
 within the generic unit, then the corresponding SPARK_Mode specifications
@@ -269,7 +269,7 @@ a lot like
    end Pkg;
 
 which is legal. The point is that a protected type which is
-in |SPARK| can have protected operation whose declaration is not in |SPARK|.
+in |SPARK| can have a protected operation whose declaration is not in |SPARK|.
 
 SPARK_Mode is an implementation-defined Ada aspect; it is not (strictly
 speaking) part of the |SPARK| language. It is used to notionally transform
@@ -342,7 +342,7 @@ addition either an ``Element`` or a ``Constant_Reference`` primitive to the
    type Container is private with
      Iterable => (First       => First,
                   Next        => Next,
-                  Has_Element => Has_Element
+                  Has_Element => Has_Element,
                   Element     => Element);
 
 where
@@ -365,7 +365,7 @@ Similarly, if we write:
    type Container is private with
      Iterable => (First              => First,
                   Next               => Next,
-                  Has_Element        => Has_Element
+                  Has_Element        => Has_Element,
                   Constant_Reference => Constant_Reference);
 
 where
@@ -380,7 +380,7 @@ then the property:
 
    (for all E of S => P (E))
 
-Would be equivalent to:
+would be equivalent to:
 
 .. code-block:: ada
 
@@ -390,7 +390,7 @@ For execution, quantification over elements of a container is translated as a
 loop over its cursors. In the same way, for proof, quantification over elements
 of a container is no more than syntactic sugar for quantification over its
 cursors. For example, the above property is translated using quantification
-over cursors :
+over cursors:
 
 .. code-block:: ada
 
@@ -417,7 +417,9 @@ us consider a package for functional sets:
     function Intersection (S1, S2 : Set) return Set with
       Post => (for all E of Intersection'Result => Mem (S1, E) and Mem (S2, E))
         and (for all E of S1 =>
-	         (if Mem (S2, E) then Mem (Intersection'Result, E)));
+               (if Mem (S2, E) then Mem (Intersection'Result, E)));
+
+  end Sets;
 
 Sets contain elements of type ``Element_Type``. The most basic operation on sets
 is membership test, here provided by the ``Mem`` subprogram. Every other
