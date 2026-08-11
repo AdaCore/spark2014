@@ -66,3 +66,8 @@ repos:
         exclude: ^src/why/xgen/.*
         language: system
         entry: gnatformat -P gnat2why/gnat2why --no-subprojects
+      - id: check-gnatformat-table-generator
+        name: Check for Ada formatting in table generator project
+        files: ^docs/ug/table_generator/.*\.ad(b|s)$
+        language: system
+        entry: gnatformat -P docs/ug/table_generator/table_generator --no-subprojects

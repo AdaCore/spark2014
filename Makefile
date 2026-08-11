@@ -273,10 +273,17 @@ run-benchmark:
 	testsuite/gnatprove/bench/benchtests.py -j0 --testsuite-dir=testsuite/gnatprove $(BENCHTARGETDIR) --results-dir=$(RESULTSDIR)
 	testsuite/gnatprove/bench/gaia.py --testsuite-dir=testsuite/gnatprove $(RESULTSDIR)/results.json
 
+# Sources of the table generator, excluding those shared with the gnatprove
+# project, which are formatted through that project instead.
+TABLE_GENERATOR_GPR=docs/ug/table_generator/table_generator.gpr
+TABLE_GENERATOR_SRCS=docs/ug/table_generator/table_generator.adb
+
 format:
 	gnatformat -P gnatprove --no-subprojects
 	gnatformat -P gnat2why/gnat2why.gpr --no-subprojects
+	gnatformat -P $(TABLE_GENERATOR_GPR) --no-subprojects $(TABLE_GENERATOR_SRCS)
 
 check-format:
 	gnatformat -P gnatprove --check --no-subprojects
 	gnatformat -P gnat2why/gnat2why.gpr --check --no-subprojects
+	gnatformat -P $(TABLE_GENERATOR_GPR) --check --no-subprojects $(TABLE_GENERATOR_SRCS)
