@@ -384,7 +384,7 @@ package body VC_Kinds is
          when VC_Null_Exclusion                   =>
             return
               "Check that the subtype_indication of the allocator "
-              & "does not specify a null_exclusion";
+              & "does not specify a null_exclusion.";
 
          when VC_Dynamic_Accessibility_Check      =>
             return
@@ -395,12 +395,12 @@ package body VC_Kinds is
          when VC_Resource_Leak                    =>
             return
               "Check that the assignment does not lead to a resource"
-              & " or memory leak";
+              & " or memory leak.";
 
          when VC_Resource_Leak_At_End_Of_Scope    =>
             return
               "Check that the declaration does not lead to a resource"
-              & " or memory leak";
+              & " or memory leak.";
 
          when VC_Invariant_Check                  =>
             return
@@ -633,7 +633,7 @@ package body VC_Kinds is
          when VC_UC_Volatile                      =>
             return
               "Check that, if an object has an address clause that is "
-              & "not simply the address of another object, it is volatile";
+              & "not simply the address of another object, it is volatile.";
 
          when VC_Weaker_Pre                       =>
             return
@@ -675,30 +675,30 @@ package body VC_Kinds is
               & " is implied by the postcondition of the source.";
 
          when VC_Inconsistent_Pre                 =>
-            return "Warn if precondition is found to be always False";
+            return "Warn if precondition is found to be always False.";
 
          when VC_Inconsistent_Post                =>
-            return "Warn if postcondition is found to be always False";
+            return "Warn if postcondition is found to be always False.";
 
          when VC_Inconsistent_Assume              =>
-            return "Warn if pragma Assume is found to be always False";
+            return "Warn if pragma Assume is found to be always False.";
 
          when VC_Unreachable_Branch               =>
-            return "Warn if branch is found to be unreachable";
+            return "Warn if branch is found to be unreachable.";
 
          when VC_Dead_Code                        =>
-            return "Warn if code is found to be unreachable";
+            return "Warn if code is found to be unreachable.";
 
          when VC_Initialization_Check             =>
-            return "Check that a variable is initialized";
+            return "Check that a variable is initialized.";
 
          when VC_Validity_Check                   =>
-            return "Check that no invalid value is read";
+            return "Check that no invalid value is read.";
 
          when VC_Unchecked_Union_Restriction      =>
             return
               "Check restrictions imposed on expressions of an unchecked"
-              & " union type";
+              & " union type.";
       end case;
    end Description;
 
@@ -728,7 +728,12 @@ package body VC_Kinds is
            "Subprogram output depends on a Proof_In global.",
          when Ghost_Wrong                                 =>
            "A ghost subprogram has a non-ghost global output.",
-         when Critical_Global_Missing | Global_Missing    =>
+         when Critical_Global_Missing                     =>
+           "A user-written Global or Initializes contract is inconsistent "
+           & "with the objects computed by flow analysis, in a case which is "
+           & "reported as an error and can therefore not be suppressed or "
+           & "justified.",
+         when Global_Missing                              =>
            "A Global or Initializes contract fails to mention some objects.",
          when Global_Wrong                                =>
            "A Global or Initializes contract wrongly mentions some objects.",
@@ -880,7 +885,7 @@ package body VC_Kinds is
          --  Other tool limitations
          when Warn_Comp_Relaxed_Init                          =>
            "If all components of a given type are annotated with "
-           & " Relaxed_Initialization, the containing type is treated as if "
+           & "Relaxed_Initialization, the containing type is treated as if "
            & "it had the same annotation",
          when Warn_Full_View_Visible                          =>
            "The full view of an incomplete type deferred to the body of a "
@@ -893,7 +898,7 @@ package body VC_Kinds is
            & "Global contract",
          when Warn_Init_Array                                 =>
            "Initialization of arrays inside FOR loops is only recognized when "
-           & "assignments to array element are directly indexed by the loop"
+           & "assignments to array element are directly indexed by the loop "
            & "parameter",
          when Warn_Init_Multidim_Array                        =>
            "Initialization of multi-dimensional array inside FOR loops is "
@@ -925,7 +930,7 @@ package body VC_Kinds is
            & "subcomponents initialized by default inside assertions and "
            & "contracts, but will still be available in regular code",
          when Warn_Imprecise_Address                          =>
-           "The adress of objects is not precisely known if it is not "
+           "The address of objects is not precisely known if it is not "
            & "supplied through an address clause",
          when Warn_Imprecise_Align                            =>
            "The alignment of an object might not be known for proof if it is "
@@ -935,7 +940,7 @@ package body VC_Kinds is
            & "an imprecise way; its precondition might be impossible to prove "
            & "and nothing will be known about its result",
          when Warn_Imprecise_String_Literal                   =>
-           "The value of string literal containing wide characters or "
+           "The value of a string literal containing wide characters or "
            & "constructed through the External_Initialization aspect is not "
            & "precisely known",
          when Warn_Component_Size                             =>
@@ -1028,7 +1033,7 @@ package body VC_Kinds is
          when Lim_Access_To_Subp_With_Prog_Exit                           =>
            "access to procedure which might exit the program",
          when Lim_Address_Attr_In_Unsupported_Context                     =>
-           "a reference to the ""Address"" attribute occuring within a "
+           "a reference to the ""Address"" attribute occurring within a "
            & "subtype indication, a range constraint, or a quantified"
            & " expression",
          when Lim_Alloc_With_Type_Constraints                             =>
@@ -1094,7 +1099,7 @@ package body VC_Kinds is
          when Lim_Derived_Interface                                       =>
            "interface derived from other interfaces",
          when Lim_Destructor                                              =>
-           "record type with a destructors",
+           "record type with a destructor",
          when Lim_Entry_Family                                            =>
            "entry families",
          when Lim_Exceptional_Cases_Dispatch                              =>
@@ -1130,8 +1135,8 @@ package body VC_Kinds is
            "instance of a generic unit declared in a package containing a "
            & "type with an invariant outside of this package",
          when Lim_Goto_Cross_Inv                                          =>
-           "a goto statement occuring in a loop before the invariant which"
-           & " refers to a label occuring inside the loop but after the "
+           "a goto statement occurring in a loop before the invariant which"
+           & " refers to a label occurring inside the loop but after the "
            & "invariant",
          when Lim_Hidden_Private_Relaxed_Init                             =>
            "private type whose full view contains only subcomponents whose "
@@ -1145,22 +1150,22 @@ package body VC_Kinds is
            & "access type declaration",
          when Lim_Inherited_Controlling_Result_From_Hidden_Part           =>
            "a subprogram with dispatching result which is inherited,"
-           & " not overriden, by a private extension completed in a hidden"
+           & " not overridden, by a private extension completed in a hidden"
            & " private part",
          when Lim_Inherited_Controlling_Result_From_SPARK_Off             =>
            "a subprogram with dispatching result which is inherited,"
-           & " not overriden, by a private extension completed in a private"
+           & " not overridden, by a private extension completed in a private"
            & " part with SPARK_Mode Off",
          when Lim_Inherited_Prim_From_Hidden_Part                         =>
-           "a subprogram which is inherited, not overriden, from an ancestor"
+           "a subprogram which is inherited, not overridden, from an ancestor"
            & " declared in a hidden private part",
          when Lim_Inherited_Prim_From_SPARK_Off                           =>
-           "a subprogram which is inherited, not overriden, from an ancestor"
+           "a subprogram which is inherited, not overridden, from an ancestor"
            & " declared in the private part of a package with SPARK_Mode Off",
          when Lim_Iterated_Element_Association                            =>
-           "container aggregates",
+           "an iterated element association in a container aggregate",
          when Lim_Iterator_In_Component_Assoc                             =>
-           "an iterated component associations with an iterator specification"
+           "an iterated component association with an iterator specification"
            & " (""for ... of"") in an array aggregate",
          when Lim_Limited_Type_From_Limited_With                          =>
            "the use of an incomplete view of a type coming from a limited"
@@ -1181,7 +1186,7 @@ package body VC_Kinds is
          when Lim_Mixed_Array_Deep_Delta_Aggregate                        =>
            "a delta aggregate mixing range and deep updates",
          when Lim_Move_To_Access_Constant                                 =>
-           "a move operation occuring as part of  an allocator or a conversion"
+           "a move operation occurring as part of an allocator or a conversion"
            & " to an access-to-constant type which does not occur directly"
            & " inside an assignment statement, an object declaration, or a"
            & " simple return statement",
@@ -1196,7 +1201,7 @@ package body VC_Kinds is
            "a primitive operation which is implicitly inherited from several"
            & " progenitor types in a tagged derivation, and for which two of"
            & " these progenitors provide incompatible values for the SPARK "
-           & " mode of the inherited subprogram",
+           & "mode of the inherited subprogram",
          when Lim_Multiple_Inheritance_Root                               =>
            "a primitive operation which is inherited both from the parent type"
            & " and from an interface in a tagged derivation",
@@ -1206,7 +1211,7 @@ package body VC_Kinds is
            "a delta aggregate on a multidimensional array",
          when Lim_Null_Aggregate_In_Branching_Array_Aggregate             =>
            "a null aggregate which is a subaggregate of a multidimensional "
-           & " array  aggregate with multiple associations",
+           & "array aggregate with multiple associations",
          when Lim_Object_Before_Inv                                       =>
            "a non-scalar object or an object with an address clause declared"
            & " before the loop-invariant",
@@ -1401,7 +1406,7 @@ package body VC_Kinds is
            "pragma Assert_And_Cut outside a sequence of statements",
          when Vio_At_Attribute_Allocation                  =>
            "reference to the At attribute on a prefix subject to ownership "
-           & "occuring outside of a pragma or a constant part of an object",
+           & "occurring outside of a pragma or a constant part of an object",
          when Vio_At_Attribute_Assert_And_Cut              =>
            "reference to the At attribute referencing a label located before "
            & "an Assert_And_Cut pragma",
@@ -3450,8 +3455,8 @@ package body VC_Kinds is
            & "relaxed initialization",
          when EC_At_Attribute_Allocation              =>
            "reference to the ""At"" attribute on a prefix subject to "
-           & "ownership occuring outside of a pragma or a constant part of an "
-           & "object",
+           & "ownership occurring outside of a pragma or a constant part of "
+           & "an object",
          when EC_At_Attribute_Assert_And_Cut          =>
            "reference to the ""At"" attribute referencing a label located "
            & "before an Assert_And_Cut pragma",
@@ -3914,13 +3919,13 @@ package body VC_Kinds is
          when Vio_Tagged_Extension_Local                   =>
            "tagged-extension-local",
          when Vio_Target_Name_In_Call_With_Side_Effets     =>
-           "target-name-in-call-with-side-effets",
+           "target-name-in-call-with-side-effects",
          when Vio_Tasking_Configuration                    =>
            "tasking-configuration",
          when Vio_Tasking_Synchronized_Comp                =>
            "tasking-synchronized-comp",
          when Vio_Tasking_Uninitialized_Concurrent         =>
-           "tasking-unintialized-concurrent",
+           "tasking-uninitialized-concurrent",
          when Vio_Tasking_Unsupported_Construct            =>
            "tasking-unsupported-construct",
          when Vio_UC_From_Access                           => "uc-from-access",
@@ -3945,7 +3950,7 @@ package body VC_Kinds is
          when Vio_Volatile_Global                          =>
            "volatile-global",
          when Vio_Volatile_In_Interfering_Context          =>
-           "volatile-in-interferring-context",
+           "volatile-in-interfering-context",
          when Vio_Volatile_Incompatible_Comp               =>
            "volatile-incompatible-comp",
          when Vio_Volatile_Incompatible_Type               =>
@@ -4003,8 +4008,8 @@ package body VC_Kinds is
            "pragma Assert_And_Cut outside a sequence of statements",
          when Vio_At_Attribute_Allocation                            =>
            "reference to the ""At"" attribute on a prefix subject to "
-           & "ownership occuring outside of a pragma or a constant part of an "
-           & "object",
+           & "ownership occurring outside of a pragma or a constant part of "
+           & "an object",
          when Vio_At_Attribute_Assert_And_Cut                        =>
            "reference to the ""At"" attribute referencing a label located "
            & "before an Assert_And_Cut pragma",

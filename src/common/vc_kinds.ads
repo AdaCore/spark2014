@@ -71,7 +71,7 @@ package VC_Kinds is
       VC_Resource_Leak_At_End_Of_Scope,
 
       VC_Unchecked_Union_Restriction,
-      --  Specific restrictions for types with Unchecked_Union occuring in
+      --  Specific restrictions for types with Unchecked_Union occurring in
       --  equality, membership tests, and type conversions.
 
       VC_Length_Check,
@@ -213,6 +213,11 @@ package VC_Kinds is
 
    subtype VC_LSP_Kind is
      VC_Kind range VC_Weaker_Pre .. VC_Stronger_Post_Access;
+
+   subtype VC_LSP_Access_Kind is
+     VC_LSP_Kind range VC_Weaker_Pre_Access .. VC_Stronger_Post_Access;
+   --  Those checks of VC_LSP_Kind which compare the contracts of two
+   --  access-to-subprogram types instead of those of two subprograms
 
    subtype VC_Warning_Kind is
      VC_Kind range VC_Inconsistent_Pre .. VC_Dead_Code;
@@ -1058,7 +1063,7 @@ package VC_Kinds is
            "default initial condition on type & not available for proof in an "
            & "assertion context",
          when Warn_Imprecise_Address                          =>
-           "adress of object is not precisely known",
+           "address of object is not precisely known",
          when Warn_Imprecise_Align                            =>
            "alignment of object is not precisely known",
          when Warn_Imprecise_Call                             =>
@@ -1465,6 +1470,10 @@ package VC_Kinds is
 
    subtype Supported_Annotations is
      GNATprove_Annotation_Kind range At_End_Borrow .. Unhide_Info;
+
+   subtype Deprecated_Annotations is
+     GNATprove_Annotation_Kind range Always_Return .. Terminating;
+   --  Annotations which are still recognized but ignored by GNATprove
 
    function Pretty_Annotation_Name
      (Kind : GNATprove_Annotation_Kind) return String;
