@@ -220,6 +220,9 @@ package body Manifest_Generator is
 
    function Rounded_Steps (Steps : Natural) return Natural;
 
+   function Step_Budget (Steps : Natural) return Natural;
+   --  Return the manifest step budget for a proof observed to take Steps
+
    function Score_Default
      (Data            : Unit_Proof_Data;
       Default_Provers : String_Lists.List;
@@ -630,7 +633,7 @@ package body Manifest_Generator is
                Candidate : constant String :=
                  Ada.Strings.Fixed.Trim
                    (Natural'Image
-                      (Rounded_Steps
+                      (Step_Budget
                          (Max_Success_Steps (Entity.Leaves, Default_Provers))),
                     Ada.Strings.Left);
             begin
@@ -879,8 +882,7 @@ package body Manifest_Generator is
    begin
       Result.Path := Entity.Identity.Name;
       Result.Provers := Provers;
-      Result.Steps :=
-        Rounded_Steps (Max_Success_Steps (Entity.Leaves, Provers));
+      Result.Steps := Step_Budget (Max_Success_Steps (Entity.Leaves, Provers));
 
       --  Explicit entries only need kind/profile when the path alone is
       --  ambiguous. The caller handles the special unit-root entry that shares
@@ -909,7 +911,7 @@ package body Manifest_Generator is
    begin
       if Default_Covers
         and then
-          Rounded_Steps (Max_Success_Steps (Entity.Leaves, Default_Provers))
+          Step_Budget (Max_Success_Steps (Entity.Leaves, Default_Provers))
           <= Default_Steps
       then
          return False;
@@ -1359,7 +1361,8 @@ package body Manifest_Generator is
    begin
       --  Heuristic: step values are rounded upward to coarse buckets so small
       --  prover noise does not rewrite manifests, while large values still
-      --  keep enough precision to avoid excessive replay work.
+      --  keep enough precision to avoid excessive replay work. Bucketing is
+      --  not a replay margin: see Step_Budget.
       if Steps = 0 then
          return 0;
       elsif Steps <= 100 then
@@ -1372,10 +1375,35 @@ package body Manifest_Generator is
          return ((Steps + 499) / 500) * 500;
       elsif Steps <= 20_000 then
          return ((Steps + 999) / 1_000) * 1_000;
+      elsif Steps > Natural'Last - 4_999 then
+
+         --  Rounding up would overflow, so saturate instead
+
+         return Natural'Last;
       else
          return ((Steps + 4_999) / 5_000) * 5_000;
       end if;
    end Rounded_Steps;
+
+   -----------------
+   -- Step_Budget --
+   -----------------
+
+   function Step_Budget (Steps : Natural) return Natural is
+      Margin : constant Natural := Steps / 2;
+   begin
+      --  Give the recorded step count a margin before bucketing it. The same
+      --  proof of the same VC can need a substantially different number of
+      --  steps on another machine, so a budget that merely rounds the observed
+      --  count up to the next bucket leaves next to no headroom for the large
+      --  values, which are precisely the fragile ones. Step counts come from
+      --  the report file, so saturate rather than overflow on absurd values.
+      if Steps > Natural'Last - Margin then
+         return Natural'Last;
+      else
+         return Rounded_Steps (Steps + Margin);
+      end if;
+   end Step_Budget;
 
    -----------------
    -- TOML_String --
