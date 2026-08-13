@@ -358,77 +358,108 @@ user and the tool.
 Memory Ownership Policy
 -----------------------
 
-In SPARK, access values (a.k.a. pointers) are only allowed to alias in known
-ways, so that formal verification can be applied *as if* allocated memory
-pointed to by access values was a component of the access value seen as a
-record object.
+Access values (a.k.a. pointers) are supported in |SPARK|, but they are subject
+to a policy that rules out arbitrary aliasing: at any point of the program, the
+memory designated by an access value is either read-write accessible through a
+single name, or read-only accessible through possibly several names. |SPARK|
+calls this single name the `owner` of the memory. This makes it possible to
+apply formal verification *as if* the designated memory was a component of the
+access object itself.
 
-In particular, assignment between access objects operates a transfer of
-ownership, where the source object loses its permission to read or write the
-underlying allocated memory.
+This section is an overview of the restrictions that result from this policy,
+that is, of the code that |GNATprove| rejects. It does not explain how to
+write programs that use pointers in |SPARK|; for the underlying model, the
+constructs that transfer ownership, and how to work with them, see
+:ref:`Pointer Support, Ownership, and Dynamic Memory Management`.
 
-For example, in the following code:
+.. index:: move; language restriction
+
+An object cannot be read or written after its ownership has been transferred.
+Assigning an access object to another one transfers ownership to the target (a
+`move`, see :ref:`Moving`), and the source object loses the right to read or
+write the designated memory. In the following code, ``X.all`` is neither
+readable nor writable after the assignment of ``X`` to ``Y``:
 
 .. literalinclude:: /examples/ug__ownership_transfer/ownership_transfer.adb
    :language: ada
    :linenos:
 
-GNATprove correctly detects that ``X.all`` can neither be read nor written
-after the assignment of ``X`` to ``Y`` and issues corresponding messages:
-
 .. literalinclude:: /examples/ug__ownership_transfer/test.out
    :language: none
 
-At call site, ownership is similarly transferred to the callee's parameters for
-the duration of the call, and returned to the actual parameters (a.k.a.
-arguments) when returning from the call.
+Ownership is restored to ``X`` if it is assigned a new value, for example the
+result of an allocator or the value moved back from ``Y``. A move as above is
+what happens when the target is of a named access-to-variable type; assignments
+to anonymous access types transfer ownership only temporarily, as described
+below, and named access-to-constant types are not subject to the ownership
+policy at all.
 
-For example:
+A call cannot give the callee write access to the same memory more than once.
+Ownership of the actual parameters is transferred to the callee for the duration
+of the call, so memory that the callee can write cannot also be reachable
+through another parameter or through a global variable. In the following code,
+``X`` cannot be passed in argument to ``Proc``, as ``Proc`` also accesses ``X``
+as a global variable:
 
 .. literalinclude:: /examples/ug__ownership_transfer_at_call/ownership_transfer_at_call.adb
    :language: ada
    :linenos:
 
-GNATprove correctly detects that the call to ``Proc`` cannot take ``X`` in
-argument as ``X`` is already accessed as a global variable by ``Proc``.
-
 .. literalinclude:: /examples/ug__ownership_transfer_at_call/test.out
    :language: none
    :lines: 69-72
 
-It is also possible to transfer the ownership of an object temporarily, for
-the duration of the lifetime of a local object. This can be achieved by
-declaring a local object of an anonymous access type and initializing it with
-a part of an existing object. In the following example, ``B`` temporarily
-borrows the ownership of ``X``:
+Memory that the callee only reads may be reachable through several parameters.
+The general rules on aliasing between parameters and globals are given in
+:ref:`Absence of Interferences`.
+
+.. index:: borrow; language restriction
+
+An object cannot be read or written while it is borrowed. Declaring a local
+object of an anonymous access-to-variable type initialized from a part of an
+existing object transfers ownership temporarily (a `borrow`, see
+:ref:`Borrowing`). In the following code, ``X`` can neither be read nor written
+in the scope of the borrower ``B``:
 
 .. literalinclude:: /examples/ug__ownership_borrowing/ownership_borrowing.adb
    :language: ada
    :linenos:
 
-During the lifetime of ``B``, it is incorrect to either read or modify ``X``,
-but complete ownership is restored to ``X`` when ``B`` goes out of scope.
-GNATprove correctly detects that reading or assigning to ``X`` in the scope of
-``B`` is incorrect.
-
 .. literalinclude:: /examples/ug__ownership_borrowing/test.out
    :language: none
 
-It is also possible to only transfer read access to a local variable. This
-happens when the variable has an anonymous access-to-constant type, as in the
-following example:
+Full ownership is restored to ``X`` when ``B`` goes out of scope, which is why
+the assignments after the inner block are legal.
+
+.. index:: observe; language restriction
+
+An object cannot be written or moved while it is observed. Declaring a local
+object of an anonymous access-to-constant type initialized from a part of an
+existing object transfers read-only access (an `observe`, see
+:ref:`Observing`). Reading the observed object stays legal, as read access can
+be shared, but writing to it is illegal:
 
 .. literalinclude:: /examples/ug__ownership_observing/ownership_observing.adb
    :language: ada
    :linenos:
 
-In this case, we say that ``B`` observes the value of ``X``. During the
-lifetime of an observer, it is illegal to move or modify the observed object.
-GNATprove correctly flags the write to ``X`` in the scope of ``B`` as
-illegal. Note that reading ``X`` is still possible in the scope of ``B``:
-
 .. literalinclude:: /examples/ug__ownership_observing/test.out
    :language: none
+
+Two more restrictions are worth mentioning here, and are detailed in
+:ref:`Pointer Support, Ownership, and Dynamic Memory Management`:
+
+* Allocated memory cannot be silently discarded. When an owner is about to
+  lose the memory it designates, either at the end of its lifetime or because
+  it is assigned a new value, |GNATprove| reports a possible memory leak
+  unless the memory has been transferred to another owner or deallocated (see
+  :ref:`Deallocation`).
+
+* The value of an access object cannot be read, except to compare it to
+  ``null``. |GNATprove| models the designated value and whether the access
+  value is ``null``, but not the address itself, so the predefined equality on
+  access types is rejected unless one of the operands is syntactically ``null``
+  (see :ref:`Pointer Value and Predefined Equality`).
 
 .. index:: aliasing; absence of interference
 
