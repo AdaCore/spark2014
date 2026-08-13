@@ -438,7 +438,7 @@ package body SPARK_Atree.Entities is
    --------------------------------
 
    function Is_Inherently_Limited_Type (Typ : Type_Kind_Id) return Boolean
-   is (Sem_Aux.Is_Inherently_Limited_Type (Typ));
+   is (Sem_Util.Is_Inherently_Limited_Type (Typ));
 
    ----------------------------
    -- Is_Invariant_Procedure --
