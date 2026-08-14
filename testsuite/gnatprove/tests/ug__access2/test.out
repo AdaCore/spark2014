@@ -2,4 +2,3 @@
 --> test.adb:4:04
     4 |       Y : Int_Ptr;        --  Y is null by default
       |       ^~~~~~~~~~~
-      + provers reached step limit before completing the proof

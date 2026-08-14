@@ -407,7 +407,7 @@ as a global variable:
 
 .. literalinclude:: /examples/ug__ownership_transfer_at_call/test.out
    :language: none
-   :lines: 69-72
+   :lines: 62-65
 
 Memory that the callee only reads may be reachable through several parameters.
 The general rules on aliasing between parameters and globals are given in

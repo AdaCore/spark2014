@@ -128,7 +128,7 @@ Thus, |GNATprove| checks that property 2 holds but not property 1:
 
 .. literalinclude:: /examples/ug__simple_loops/test.out
    :language: none
-   :lines: 4-12
+   :lines: 4-11
 
 Conversely, in the following loop, the loop invariant is true during the first
 iteration and false in all remaining iterations:
@@ -142,7 +142,7 @@ Thus, |GNATprove| checks that property 1 holds but not property 2:
 
 .. literalinclude:: /examples/ug__simple_loops/test.out
    :language: none
-   :lines: 14-21
+   :lines: 13-19
 
 The following loop shows a case where the loop invariant holds both during the
 first iteration and all remaining iterations:
@@ -156,7 +156,7 @@ first iteration and all remaining iterations:
 
 .. literalinclude:: /examples/ug__simple_loops/test.out
    :language: none
-   :lines: 23-27
+   :lines: 21-25
 
 In general, it is not sufficient that a loop invariant is true for |GNATprove|
 to prove it. The loop invariant should also be `inductive`: it should be
@@ -174,7 +174,7 @@ invariant is true but not inductive:
 
 .. literalinclude:: /examples/ug__simple_loops/test.out
    :language: none
-   :lines: 29-36
+   :lines: 27-33
 
 Note also that using an assertion (:ref:`Pragma Assert`) instead of a loop
 invariant also allows here to fully prove the corresponding property, by

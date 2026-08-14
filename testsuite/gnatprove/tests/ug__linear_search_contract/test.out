@@ -5,7 +5,6 @@
       :
    34 |              not Search'Result.Found);
       |              ~~~~~~~~~~~~~~~~~~~~~~~
-      + provers reached step limit before completing the proof
 
  medium: contract case might fail
 --> linear_search.ads:29:09
@@ -13,7 +12,6 @@
       |            ^~~~~~~~~~~~~
    30 |              Search'Result.At_Index = 1,
       |              ~~~~~~~~~~~~~~~~~~~~~~~~~~
-      + provers reached step limit before completing the proof
 
  medium: contract case might fail
 --> linear_search.ads:31:09
@@ -21,4 +19,3 @@
       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    32 |              Search'Result.Found,
       |              ~~~~~~~~~~~~~~~~~~~
-      + provers reached step limit before completing the proof
