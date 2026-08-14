@@ -360,11 +360,11 @@ Memory Ownership Policy
 
 Access values (a.k.a. pointers) are supported in |SPARK|, but they are subject
 to a policy that rules out arbitrary aliasing: at any point of the program, the
-memory designated by an access value is either read-write accessible through a
-single name, or read-only accessible through possibly several names. |SPARK|
-calls this single name the `owner` of the memory. This makes it possible to
-apply formal verification *as if* the designated memory was a component of the
-access object itself.
+memory designated by an access value is either read-write accessible through
+a single name, or read-only accessible through possibly several names. |SPARK|
+calls this single name the `owner` of its designated memory. This makes it
+possible to apply formal verification *as if* the designated memory was a
+component of the access object itself.
 
 This section is an overview of the restrictions that result from this policy,
 that is, of the code that |GNATprove| rejects. It does not explain how to
