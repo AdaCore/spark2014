@@ -5,7 +5,6 @@
       :
    12 |              Warnings => Off;
       |              ~~~~~~~~~~~~~~~
-      + provers reached step limit before completing the proof
 
  medium: address in address clause might not be an integral multiple of alignment of object
 --> volatile_example_a.adb:14:04
@@ -14,7 +13,6 @@
       :
    17 |              Warnings => Off;
       |              ~~~~~~~~~~~~~~~
-      + provers reached step limit before completing the proof
 
  info: data dependencies proved
 --> volatile_example_a.adb:20:11
@@ -28,4 +26,3 @@
       |                            ^~~~~~~~~~~~~
       + e.g. when Tmp = (X => -1, Y => 0)
       + possible fix: add or complete related loop invariants or postconditions
-      + provers reached step limit before completing the proof

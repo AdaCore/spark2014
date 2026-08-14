@@ -9,4 +9,3 @@
 --> use_logging_classwide.adb:8:07
     8 |       Log.Append_To_Log (2);
       |       ~~~^~~~~~~~~~~~~~~~~
-      + provers reached step limit before completing the proof

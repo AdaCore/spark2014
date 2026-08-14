@@ -193,7 +193,6 @@
       |       ^~~~~~~~~~~~~~~
    72 |         new List'(1, new List'(2, new List'(3, new List'(4, new List'(5, null)))));
       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      + provers reached step limit before completing the proof
 
  info: pointer dereference check proved
 --> list_borrows.adb:75:33

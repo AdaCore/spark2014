@@ -8,7 +8,6 @@
       + possible fix: loop at line 19 should mention Result in a loop invariant
    19 |          while J <= 2 loop
       |                       ^
-      + provers reached step limit before completing the proof
 
  medium: postcondition might fail
 --> counterex_unprovable.ads:13:14
@@ -16,7 +15,6 @@
       |                 ^~~~~~~~~~~~~
       + e.g. when X'Old = 0
       + possible fix: add or complete related loop invariants or postconditions
-      + provers reached step limit before completing the proof
 
  medium: postcondition might fail
 --> counterex_unprovable.ads:17:14
@@ -24,4 +22,3 @@
       |                 ^~~~~~~~~~~~~
       + e.g. when X'Old = -1
       + possible fix: add or complete related loop invariants or postconditions
-      + provers reached step limit before completing the proof

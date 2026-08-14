@@ -481,6 +481,7 @@ class UGTestDriver(ProcessDiffTestDriver):
             "-f",
             "-q",
             "--debug-no-cache-output",
+            "--debug-disable-prover-feedback",
             "--timeout=30",
             "-A",
             "info-unrolling-inlining",

@@ -12,4 +12,3 @@
       + possible fix: loop at line 13 should mention Num_Accounts in a loop invariant
    13 |          loop
       |          ^
-      + provers gave up before completing the proof

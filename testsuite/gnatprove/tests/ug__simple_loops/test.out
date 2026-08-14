@@ -6,7 +6,6 @@
     8 |          pragma Loop_Invariant (Prop);
       |                                 ^~~~
       + e.g. when Prop = False
-      + provers gave up before completing the proof
 
  info: loop invariant preservation proved
 --> simple_loops.adb:8:30
@@ -18,7 +17,6 @@
 --> simple_loops.adb:14:30
    14 |          pragma Loop_Invariant (Prop);
       |                                 ^~~~
-      + provers gave up before completing the proof
 
  info: loop invariant initialization proved
 --> simple_loops.adb:20:30
@@ -33,4 +31,3 @@
 --> simple_loops.adb:26:44
    26 |          pragma Loop_Invariant (if J > 1 then Prop);
       |                                               ^~~~
-      + provers gave up before completing the proof
