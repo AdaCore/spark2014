@@ -2265,6 +2265,15 @@ package body Flow_Utility is
 
          GG_Get_Globals (Subprogram, Scope, Globals);
 
+         --  Generic formal objects of mode IN are represented by constants
+         --  inside an instance. When a generated Global is queried from
+         --  outside the instance, replace those constants with the objects
+         --  referenced by their actual expressions, just as for an explicit
+         --  Global contract.
+
+         Map_Generic_In_Formals (Scope, Globals.Proof_Ins);
+         Map_Generic_In_Formals (Scope, Globals.Inputs);
+
       --  We don't have user globals and we're not allowed to use computed
       --  globals (i.e. we're trying to compute globals).
 

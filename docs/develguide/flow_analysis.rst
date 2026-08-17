@@ -268,6 +268,13 @@ Global in their Pre/Post contracts). The former are needed always; the latter
 are only needed in --mode=proof; but a subset of both is also needed
 in --mode=check_all, for detecting variable input in illegal contexts.
 
+Generated contracts can contain the constants that represent generic formal
+objects of mode ``in`` inside an instance. When such a contract is queried from
+outside the instance, ``Get_Globals`` maps these constants to the objects
+referenced by their generic actual expressions. This is the same mapping used
+for user-written Global contracts and prevents instance-only entities from
+escaping into a caller's generated contract.
+
 ..  the remaining text is about everything except global generation
 
 Visibility
