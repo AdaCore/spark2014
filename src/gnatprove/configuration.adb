@@ -3677,6 +3677,11 @@ package body Configuration is
       --  Check for the obsolete Prove.Switches attribute and issue a warning
       --  if present.
 
+      procedure Check_Toolchain (Tree : Project.Tree.Object);
+      --  Check that an Ada toolchain was found for the target and runtime of
+      --  the project. Without one there is no runtime to analyze against and
+      --  no compiler configuration, so the analysis cannot proceed.
+
       procedure Set_Mode (Parsed : Parsed_Switches; FS : in out File_Specific);
       procedure Set_Output_Mode (Parsed : Parsed_Switches);
       procedure Set_Warning_Mode (Parsed : Parsed_Switches);
@@ -3730,6 +3735,37 @@ package body Configuration is
          end if;
          null;
       end Check_Obsolete_Prove_Switches;
+
+      ---------------------
+      -- Check_Toolchain --
+      ---------------------
+
+      procedure Check_Toolchain (Tree : Project.Tree.Object) is
+         Ada_Index : constant GPR2.Project.Attribute_Index.Object :=
+           GPR2.Project.Attribute_Index.Create (GPR2.Ada_Language);
+         RTS       : constant String :=
+           String (Tree.Runtime (GPR2.Ada_Language));
+      begin
+         for View of Tree.Ordered_Views loop
+            if View.Kind in GPR2.With_Source_Dirs_Kind
+              and then not View.Is_Externally_Built
+              and then View.Language_Ids.Contains (GPR2.Ada_Language)
+              and then
+                not View.Attribute
+                      (Project.Registry.Attribute.Compiler.Driver,
+                       Index => Ada_Index)
+                      .Is_Defined
+            then
+               Fail
+                 ("gnatprove: no Ada toolchain found for target """
+                  & String (Tree.Target)
+                  & """ and "
+                  & (if RTS = ""
+                     then "the default runtime"
+                     else "runtime """ & RTS & """"));
+            end if;
+         end loop;
+      end Check_Toolchain;
 
       -------------------------------
       -- File_Specific_Postprocess --
@@ -4960,10 +4996,16 @@ package body Configuration is
       Init (Tree, Parse_Result.Opt);
       Check_Obsolete_Prove_Switches (Tree.Root_Project);
 
+      --  Cleaning only removes generated directories, so it must keep working
+      --  when the toolchain the project refers to is gone. Check the toolchain
+      --  only once cleaning has been ruled out.
+
       if Parse_Result.Clean then
          Clean_Up (Tree);
          Succeed;
       end if;
+
+      Check_Toolchain (Tree);
 
       declare
          L : String_List_Access :=
