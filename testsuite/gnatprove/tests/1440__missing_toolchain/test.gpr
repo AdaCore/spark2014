@@ -1,0 +1,4 @@
+project Test is
+   for Target use "dummy";
+   for Runtime ("Ada") use "light-dummy";
+end Test;
