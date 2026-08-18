@@ -1,8 +1,17 @@
+--  Neither the target nor the runtime exist. An explicit compiler driver is
+--  given so that GNATprove proceeds past toolchain detection and reaches the
+--  code deducing the target properties file from the runtime directory, which
+--  is what this test guards: that code must cope with an undefined Runtime_Dir
+--  attribute.
 project Test is
 
 	for Target use "some_target";
 
 	-- Ada Runtime
 	for Runtime ("Ada") use "some_runtime";
+
+	package Compiler is
+	   for Driver ("Ada") use "gcc";
+	end Compiler;
 
 end Test;
