@@ -1,0 +1,19 @@
+Generated contracts for Root
+   Global =>
+   Refined_Global =>
+
+TODO FIX CRASH
+
+gnatprove: error during flow analysis and proof
+Generated contracts for Root.P1
+   Global =>
+   Refined_Global =>
+Generated contracts for Root.P1.P2gp381.P2
+   Global =>
+      Input =>
+         C
+   Refined_Global =>
+      Input =>
+         C
+root.adb:8:25: info: initialization of "R" proved, in instantiation at root.adb:20
+root.adb:24:07: high: constant with variable input "C" must be listed in the Global aspect of "P1" (SPARK RM 6.1.4(15))

@@ -1,0 +1,24 @@
+Generated contracts for Gen
+Generated contracts for Inst
+   Initializes =>
+      Now =>
+         Real_Time.Clock_Time
+      Start_Time =>
+         Real_Time.Clock_Time
+Generated contracts for Main
+   Global =>
+      Input =>
+         Real_Time.Clock_Time
+   Refined_Global =>
+      Input =>
+         Real_Time.Clock_Time
+Generated contracts for Main.Sub
+   Global =>
+      Input =>
+         Real_Time.Clock_Time
+   Refined_Global =>
+      Input =>
+         Real_Time.Clock_Time
+gen.ads:6:25: info: initialization of "R" proved, in instantiation at inst.ads:10
+gen.ads:7:12: info: data dependencies proved, in instantiation at inst.ads:10
+main.adb:7:19: info: initialization of "R" proved
