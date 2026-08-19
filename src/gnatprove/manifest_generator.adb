@@ -26,6 +26,7 @@
 with Ada.Characters.Handling;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Indefinite_Vectors;
+with Ada.Containers.Vectors;
 with Ada.Directories;
 with Ada.Exceptions;        use Ada.Exceptions;
 with Ada.Strings.Fixed;
@@ -53,6 +54,9 @@ package body Manifest_Generator is
    Selection_Hysteresis : constant := 1_000;
    --  Keep the current default-prover heuristic when another candidate's
    --  replay score is only marginally better.
+
+   package Natural_Vectors is new
+     Ada.Containers.Vectors (Index_Type => Positive, Element_Type => Natural);
 
    package Prover_Steps_Maps is new
      Ada.Containers.Indefinite_Ordered_Maps
@@ -618,7 +622,7 @@ package body Manifest_Generator is
      (Data : Unit_Proof_Data; Default_Provers : String_Lists.List)
       return Natural
    is
-      Candidates : String_Lists.List;
+      Candidates : Natural_Vectors.Vector;
       Best       : Natural := 1_000;
       Best_Score : Candidate_Score;
       Have_Best  : Boolean := False;
@@ -630,12 +634,9 @@ package body Manifest_Generator is
       for Entity of Data.Entities loop
          if Covers_All (Entity.Leaves, Default_Provers) then
             declare
-               Candidate : constant String :=
-                 Ada.Strings.Fixed.Trim
-                   (Natural'Image
-                      (Step_Budget
-                         (Max_Success_Steps (Entity.Leaves, Default_Provers))),
-                    Ada.Strings.Left);
+               Candidate : constant Natural :=
+                 Step_Budget
+                   (Max_Success_Steps (Entity.Leaves, Default_Provers));
             begin
                if not Candidates.Contains (Candidate) then
                   Candidates.Append (Candidate);
@@ -644,10 +645,9 @@ package body Manifest_Generator is
          end if;
       end loop;
 
-      for Candidate_Image of Candidates loop
+      for Candidate of Candidates loop
          declare
-            Candidate : constant Natural := Natural'Value (Candidate_Image);
-            Score     : constant Candidate_Score :=
+            Score : constant Candidate_Score :=
               Score_Default (Data, Default_Provers, Candidate);
          begin
             if not Have_Best or else Score_Less (Score, Best_Score) then
