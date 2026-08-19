@@ -1,6 +1,6 @@
-assign_aggr.adb:14:07: info: initialization of "W" proved[#5]
-assign_aggr.adb:16:09: warning: unused assignment[#1]
-assign_aggr.adb:17:07: warning: statement has no effect[#2]
-assign_aggr.adb:17:19: warning: "Err" is set by "Consume" but not used after the call[#3]
-assign_aggr.ads:7:30: info: initialization of "Err" proved[#0]
-assign_aggr.ads:9:23: info: initialization of "V" proved[#4]
+assign_aggr.adb:14:07: info: initialization of "W" proved
+assign_aggr.adb:16:09: warning: unused assignment
+assign_aggr.adb:17:07: warning: statement has no effect
+assign_aggr.adb:17:19: warning: "Err" is set by "Consume" but not used after the call
+assign_aggr.ads:7:30: info: initialization of "Err" proved
+assign_aggr.ads:9:23: info: initialization of "V" proved
