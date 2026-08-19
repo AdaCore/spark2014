@@ -2822,7 +2822,7 @@ package body Flow.Control_Flow_Graph is
             Exp_Util.Is_Statically_Disabled
               (N => N, Value => False, Include_Valid => False));
 
-      V, V_Prev           : Flow_Graphs.Vertex_Id;
+      V                   : Flow_Graphs.Vertex_Id;
       If_Part             : constant List_Id := Then_Statements (N);
       Else_Part           : constant List_Id := Else_Statements (N);
       Elsif_Part          : constant List_Id := Elsif_Parts (N);
@@ -2935,13 +2935,13 @@ package body Flow.Control_Flow_Graph is
 
       if Present (Elsif_Part) then
          Elsif_Statement := First (Elsif_Part);
-         V_Prev := V;
 
          while Present (Elsif_Statement) loop
             Known_Condition :=
               Compile_Time_Known_Value (Condition (Elsif_Statement));
 
             declare
+               V_Prev      : constant Flow_Graphs.Vertex_Id := V;
                Elsif_Body  : constant List_Id :=
                  Then_Statements (Elsif_Statement);
                Funcalls    : Call_Sets.Set;
@@ -3035,7 +3035,6 @@ package body Flow.Control_Flow_Graph is
                CM.Delete (Union_Id (Elsif_Body));
             end;
 
-            V_Prev := V;
             Next (Elsif_Statement);
          end loop;
       end if;
