@@ -53,6 +53,13 @@ def test_acats():
     anod_install("spark2014", qualifier=build_qualifiers())
     anod_test("acats-4-gnatprove-baseline", qualifier=anod_qualifiers())
 
+def test_conformance():
+    anod_install("gcc", query_range=20)
+    anod_install("e3-for-testing", query_range=20)
+    anod_install("gprbuild", target="host", query_range=20)
+    anod_install("spark2014", qualifier=build_qualifiers())
+    anod_test("gnat-conformance-testsuite", qualifier=anod_qualifiers())
+
 def test_sparklib():
     anod_install("e3-for-testing", query_range=20)
     anod_install("gnat", query_range=20)
