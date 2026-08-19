@@ -1,2 +1,0 @@
-no_crash:
-  opt: ["--mode=flow"]
