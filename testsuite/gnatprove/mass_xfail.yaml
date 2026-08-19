@@ -67,3 +67,20 @@ rules:
       - sparkskein
       - trajectory_computation
       - ug__at_end_borrow
+  - description: minor platform diffs for Windows
+    issue: eng/spark/spark2014#965
+    discs: ["NT"]
+    action: skip
+    tests:
+      - NA13-020__constant_with_assert
+      - NC05-005__float_division
+      - P920-047__cvc4_step_consumption
+      - Q525-025__controlling_result
+      - S427-002__inline_dim
+      - S603-051__dimensions
+      - T630-007__records
+      - T727-043__mergesort
+      - TB16-017__subp_variant_inlining
+      - U730-017__IPV4_parsing
+      - V422-016__unbounded_functional_container
+      - pointer_based_maps
