@@ -874,7 +874,11 @@ package body Flow.Analysis.Sanity is
                             (Is_Type (Var) and then Is_Discriminant (F))
                             or else
                               (Ekind (Var) = E_Constant
-                               and then Has_Completion (Var)));
+                               and then Has_Completion (Var))
+                            or else
+                              (Ekind (Var) = E_Variable
+                               and then
+                                 Present (Loop_Iterator_Parameter (Var))));
 
                      --  We emit an error if F is considered a variable, in
                      --  particular, when it is not:

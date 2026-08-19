@@ -4118,6 +4118,25 @@ package body Flow_Utility is
                --  by Do_Pragma and Do_Loop_Statement in the CFG construction.
                return Flow_Id_Sets.Empty_Set;
 
+            when Attribute_Loop_Index  =>
+               declare
+                  --  This is an iterator over container, so attribute
+                  --  reference must have no expressions for array dimensions.
+
+                  pragma Assert (Is_Empty_List (Expressions (N)));
+
+                  Parameter : constant Entity_Id := Entity (Prefix (N));
+                  Iterator  : constant Entity_Id :=
+                    Loop_Parameter_Iterator (Parameter);
+
+               begin
+                  if Ctx.Fold_Functions = Inputs then
+                     return Flatten_Variable (Iterator, Ctx.Scope);
+                  else
+                     return Flow_Id_Sets.Empty_Set;
+                  end if;
+               end;
+
             when Attribute_Address     =>
 
                --  For supported overlays like "X'Address" the expression does

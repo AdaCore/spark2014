@@ -696,10 +696,18 @@ package body Flow_Types is
                --  to understand). Those full views are actually internal
                --  entities, so here we must examine their partial views.
                --  Same for incomplete and private types.
+               --
+               --  Iterator variables excluded, because they are created
+               --  exclusively for flow and have dedicated pretty-printing
+               --  when appearing in error messages.
 
             begin
                if Present (Partial_View) then
                   return Is_Internal (Partial_View);
+               elsif Ekind (F.Node) = E_Variable
+                 and then Present (Loop_Iterator_Parameter (F.Node))
+               then
+                  return False;
                else
                   return Is_Internal (F.Node);
                end if;
@@ -987,7 +995,7 @@ package body Flow_Types is
                      Nam := Anonymous_Object (N);
                   end if;
 
-               when E_Loop_Parameter               =>
+               when E_Loop_Parameter | E_Variable  =>
                   declare
                      Param_Id : constant Entity_Id :=
                        Loop_Iterator_Parameter (N);
@@ -995,7 +1003,9 @@ package body Flow_Types is
                      if Present (Param_Id) then
                         Nam := Param_Id;
                         Append_Loop_Index := True;
-                        Loop_Index_Dimension := Loop_Iterator_Dimension (N);
+                        if Ekind (N) = E_Loop_Parameter then
+                           Loop_Index_Dimension := Loop_Iterator_Dimension (N);
+                        end if;
                      end if;
                   end;
 
