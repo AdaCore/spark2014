@@ -1,3 +1,4 @@
+large: True
 replay: manifest
 session_opt:
   level: 2
