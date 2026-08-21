@@ -70,10 +70,11 @@ version = confvars.version
 release = version
 
 # Substitution for the new SPARK name
-rst_prolog = """.. |SPARK| replace:: SPARK
+rst_prolog = f""".. |SPARK| replace:: SPARK
 .. |GNATprove| replace:: GNATprove
 .. |GNAT Pro| replace:: GNAT
 .. |CodePeer| replace:: CodePeer
+.. |copyright| replace:: {copyright}
 """
 
 exclude_patterns = ["_build"]
@@ -130,7 +131,7 @@ html_theme_options = {
 # -- Options for LaTeX output -------------------------------------------------
 
 with open("en/gfdl.tex", "r") as fd:
-    gfdl = fd.read()
+    gfdl = fd.read().replace("@COPYRIGHT@", copyright)
 
 latex_elements = {
     # Additional stuff for the LaTeX preamble.
