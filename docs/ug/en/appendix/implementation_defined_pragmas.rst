@@ -1,7 +1,12 @@
 Implementation Defined Aspects and Pragmas
 ==========================================
 
-This appendix lists all the aspects or pragmas specific to |GNATprove|.
+This appendix describes the aspects and pragmas whose meaning is specific to
+|GNATprove|: ``SPARK_Mode`` and ``Iterable``. The uses of aspect and pragma
+``Annotate`` that are specific to |GNATprove| are described separately in
+:ref:`Implementation Defined Annotations`. The aspects and pragmas defined by
+the |SPARK| language itself, such as ``Global``, ``Depends`` and
+``Contract_Cases``, are described in :ref:`Overview of SPARK Language`.
 
 .. index:: SPARK_Mode; rules
 
