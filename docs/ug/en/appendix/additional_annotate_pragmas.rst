@@ -4,7 +4,8 @@ Implementation Defined Annotations
 This appendix lists all the uses of aspect or pragma ``Annotate`` for
 |GNATprove|.  Aspect or pragma ``Annotate`` can also be used to control other
 AdaCore tools. The uses of such annotations are explained in the User's Guide
-of each tool.
+of each tool. For the other aspects and pragmas specific to |GNATprove|, see
+:ref:`Implementation Defined Aspects and Pragmas`.
 
 Annotations in |GNATprove| are useful in two cases:
 
