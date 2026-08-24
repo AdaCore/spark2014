@@ -2,6 +2,7 @@ with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Indefinite_Hashed_Sets;
 with GPR2;           use GPR2;
 with GPR2.Build.Compilation_Unit;
+with GPR2.Build.Jobserver;
 with GPR2.Project.Tree;
 with String_Utils;
 
@@ -33,7 +34,8 @@ package Gnatprove_Build is
      (Tree              : Project.Tree.Object;
       SPARK_Error_Files : out String_Utils.String_Lists.List;
       Analyzed_Units    : out Unit_Set;
-      Success           : out Boolean);
+      Success           : out Boolean;
+      Make_JS           : in out GPR2.Build.Jobserver.Object);
    --  Call gnat2why on all relevant units in analysis mode, generating
    --  unit.spark files. Analyzed_Units is set to the units for which an
    --  analysis action was queued; a unit's .spark file may be absent if its
@@ -41,5 +43,8 @@ package Gnatprove_Build is
    --  SPARK_Error_Files is set to the expected .spark_error file paths (one
    --  per queued global-generation action); these carry frontend diagnostics
    --  for the report. Success is set to False if analysis failed.
+   --  Make_JS is a make jobserver initialized by the caller before anything
+   --  in the process can open a file. It is to avoid recycling closed file
+   --  descriptors provided by the jobserver.
 
 end Gnatprove_Build;

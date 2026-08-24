@@ -71,6 +71,7 @@ with GNAT.OS_Lib;
 with Gnatprove_Build; use Gnatprove_Build;
 with GNATCOLL.Tribooleans;
 with GPR2;            use GPR2;
+with GPR2.Build.Jobserver;
 with GPR2.Path_Name;
 with GPR2.Project.Tree;
 with GPR2.Project.View;
@@ -85,6 +86,10 @@ procedure Gnatprove with SPARK_Mode is
    --  This variable contains the exit code emitted by gnatprove in case of
    --  success. This variable is changed to indicate some error situations that
    --  are not signalled via the GNATprove_Failure exception.
+
+   Make_JS : GPR2.Build.Jobserver.Object;
+   --  The make jobserver, connected to as the very first thing the program
+   --  does, see below, and passed down to Flow_Analysis_And_Proof.
 
    SPARK_Error_Files : String_Lists.List;
    --  List of .spark_error files produced by Global_Gen actions, passed to
@@ -230,6 +235,14 @@ procedure Gnatprove with SPARK_Mode is
    --  GNAT project tree
 
 begin
+   --  Must stay the very first statement: MAKEFLAGS advertises the jobserver
+   --  as bare descriptor numbers, and make may have closed them behind our
+   --  back. Any file or pipe we open before connecting to it would be given
+   --  those very numbers, and we would end up reading a pipe of our own,
+   --  waiting forever for a token nobody can write.
+
+   Make_JS.Initialize_Protocol;
+
    Set_Environment;
    Read_Command_Line (Tree);
 
@@ -274,7 +287,7 @@ begin
       Success    : Boolean;
    begin
       Flow_Analysis_And_Proof
-        (Tree, SPARK_Error_Files, Analyzed_Units, Success);
+        (Tree, SPARK_Error_Files, Analyzed_Units, Success, Make_JS);
 
       if not Success then
          Generate_SPARK_Report (Tree, Errors => True);
