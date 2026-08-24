@@ -314,6 +314,17 @@ sparklib:
      reports:
        junit: xunit-*.xml
 
+conformance:
+  extends: .other_test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
+  variables:
+    GENERIC_ANOD_CI_OPTIONS: "--add-dep eng/toolchain/gnat-conformance-testsuite"
+    ANOD_TARGET: test_conformance
+    ANOD_QUALIFIERS: gnatprove-assertions,gnatprove-coverage,testsuite=gnatprove
+
 upload_coverage_html:
   extends: .disk_monitor
   services:
