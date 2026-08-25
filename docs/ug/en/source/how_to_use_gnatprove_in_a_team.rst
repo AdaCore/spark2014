@@ -536,6 +536,13 @@ and port, to cache intermediate results between runs.
 In both cases, significant speedups can be observed after the cache is filled
 with an initial |GNATprove| run.
 
+Only conclusive results are cached. A prover run that ran out of memory, was
+interrupted, or otherwise did not produce an answer is not stored, so that it
+is not replayed on a later run. The time and memory limits are part of what
+identifies a cached result, so raising ``--timeout`` or ``--memlimit`` makes
+|GNATprove| run the provers again instead of reusing results obtained under the
+previous limits.
+
 .. index:: assumptions
            --assumptions
 
