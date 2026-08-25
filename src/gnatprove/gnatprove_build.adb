@@ -197,7 +197,8 @@ package body Gnatprove_Build is
      (Tree              : Project.Tree.Object;
       SPARK_Error_Files : out String_Lists.List;
       Analyzed_Units    : out Unit_Set;
-      Success           : out Boolean)
+      Success           : out Boolean;
+      Make_JS           : in out GPR2.Build.Jobserver.Object)
    is
       Act_Sched : GPR2.Build.Actions_Scheduler.JSON.Object;
       Exec_Opts : GPR2.Build.Actions_Scheduler.Options;
@@ -534,7 +535,7 @@ package body Gnatprove_Build is
       end;
 
       Success :=
-        Tree.Artifacts_Database.Execute (Act_Sched, Exec_Opts)
+        Tree.Artifacts_Database.Execute (Act_Sched, Exec_Opts, Make_JS)
         = GPR2.Build.Actions_Scheduler.Success;
 
       --  ??? Delete why3 conf files.
