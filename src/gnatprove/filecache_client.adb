@@ -47,8 +47,17 @@ package body Filecache_Client is
       FD       : File_Descriptor;
       Name     : String_Access;
       Written  : Integer;
+      Renamed  : Boolean;
       Unused   : Boolean;
    begin
+      --  An empty value is indistinguishable from an absent key on the Get
+      --  side, so there is nothing to be gained from storing it. Returning
+      --  early also avoids indexing an empty string below.
+
+      if Value'Length = 0 then
+         return;
+      end if;
+
       --  We first write to a temporary file, then rename the file to the
       --  target filename. This should protect against:
       --    - Clients reading (via Get) the file while we write it, getting
@@ -66,6 +75,11 @@ package body Filecache_Client is
       Set_Directory (Conn.Dir.all);
 
       Create_Temp_File (FD, Name);
+      if FD = Invalid_FD then
+         Set_Directory (Prev_Dir);
+         return;
+      end if;
+
       Written := Write (FD, Value (Value'First)'Address, Value'Length);
       Close (FD);
       if Written /= Value'Length then
@@ -73,7 +87,15 @@ package body Filecache_Client is
          Delete_File (Name.all, Unused);
          goto Cleanup;
       end if;
-      Rename_File (Name.all, Fn, Unused);
+
+      Rename_File (Name.all, Fn, Renamed);
+
+      --  A failed rename would otherwise leave the temporary file behind,
+      --  cluttering the cache directory.
+
+      if not Renamed then
+         Delete_File (Name.all, Unused);
+      end if;
 
       <<Cleanup>>
       Free (Name);

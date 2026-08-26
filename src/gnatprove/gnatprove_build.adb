@@ -906,8 +906,19 @@ package body Gnatprove_Build is
                --  For file caching the spec holds a directory, so it needs the
                --  same quoting as any other path in the command.
 
+               --  The salt carries both resource limits, so that they are
+               --  part of the cache key. Most provers are given neither
+               --  limit on their command line: the limits are imposed on
+               --  the process instead, and so would otherwise be invisible
+               --  to the wrapper. Without them in the key, a run that hit a
+               --  limit would keep being replayed even after the user
+               --  raised that limit. Both limits are joined into a single
+               --  argument, and no time specifier other than "%t" is used,
+               --  because any of them also tells why3 that the prover
+               --  enforces the time limit itself.
+
                return
-                 "spark_memcached_wrapper %t "
+                 "spark_memcached_wrapper %t-%m "
                  & Quote_For_Command (CL_Switches.Memcached_Server.all)
                  & " "
                  & Cmd;
