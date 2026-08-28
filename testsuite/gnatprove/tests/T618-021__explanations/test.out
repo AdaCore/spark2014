@@ -16,7 +16,6 @@ nonterminating.adb:7:20: medium: aspect Always_Terminates on "Nonterminating" co
 nonterminating.adb:8:15: medium: overflow check might fail, cannot prove upper bound for -X, in call inlined at nonterminating.adb:21 (e.g. when X = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer]
 nonterminating.adb:12:33: warning: unused variable "I"
 nonterminating.adb:14:07: medium: implicit aspect Always_Terminates on "Infinite_Recursion" could be incorrect, subprogram is recursive [possible fix: annotate "Infinite_Recursion" with a Subprogram_Variant aspect]
-nonterminating.adb:14:14: info: analyzing call to "Infinite_Recursion" in context
 nonterminating.adb:14:14: info: no contextual analysis of call to recursive subprogram
 nonterminating.adb:18:33: medium: aspect Always_Terminates on "Nonterminating" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nonterminating.adb:18:33: warning: loop condition is stable

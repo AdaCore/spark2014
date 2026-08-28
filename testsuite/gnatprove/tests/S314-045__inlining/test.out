@@ -94,7 +94,6 @@ compiler.adb:653:11: info: analyzing call to "To_String80" in context
 compiler.adb:679:28: info: analyzing call to "To_String80" in context
 compiler.adb:690:07: info: analyzing call to "General_Expression" in context
 compiler.adb:691:29: info: analyzing call to "Error" in context
-compiler.adb:697:07: info: analyzing call to "Factor" in context
 compiler.adb:697:07: info: no contextual analysis of call to recursive subprogram
 compiler.adb:698:28: info: analyzing call to "To_String80" in context
 compiler.adb:699:28: info: analyzing call to "To_String80" in context
@@ -186,7 +185,6 @@ compiler.adb:1100:28: info: analyzing call to "Error" in context
 compiler.adb:1101:12: info: analyzing call to "Position" in context
 compiler.adb:1102:21: info: analyzing call to "Error" in context
 compiler.adb:1103:44: info: analyzing call to "Error" in context
-compiler.adb:1116:07: info: analyzing call to "Statement" in context
 compiler.adb:1116:07: info: no contextual analysis of call to recursive subprogram
 compiler.adb:1121:29: info: analyzing call to "Error" in context
 compiler.adb:1126:28: info: analyzing call to "To_String80" in context
@@ -234,7 +232,6 @@ compiler.adb:1210:09: info: analyzing call to "Enter" in context
 compiler.adb:1212:32: info: analyzing call to "Error" in context
 compiler.adb:1218:28: info: analyzing call to "Error" in context
 compiler.adb:1219:07: info: analyzing call to "Enter" in context
-compiler.adb:1221:07: info: analyzing call to "Block" in context
 compiler.adb:1221:07: info: no contextual analysis of call to recursive subprogram
 compiler.adb:1222:32: info: analyzing call to "Error" in context
 compiler.adb:1229:30: info: analyzing call to "Error" in context
