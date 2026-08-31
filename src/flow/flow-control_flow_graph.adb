@@ -27,6 +27,7 @@ with Atree;       use Atree;
 with Elists;      use Elists;
 with Exp_SPARK;
 with Exp_Util;
+with Exp_SPARK;
 with Lib;         use Lib;
 with Namet;       use Namet;
 with Nlists;      use Nlists;
@@ -3301,6 +3302,283 @@ package body Flow.Control_Flow_Graph is
       Ctx.Vertex_Ctx.Warnings_Off := Save_Warn_Off;
    end Do_If_Statement;
 
+   procedure Do_At_Snapshot
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   with
+     Pre =>
+       Nkind (N) = N_Attribute_Reference and then Attribute_Name (N) = Name_At;
+
+   --------------------
+   -- Do_At_Snapshot --
+   --------------------
+
+   procedure Do_At_Snapshot
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      E : constant Entity_Id := Exp_SPARK.Implicit_Object (N);
+
+      Funcalls : Call_Sets.Set;
+      Indcalls : Node_Sets.Set;
+
+      V : Flow_Graphs.Vertex_Id;
+
+      Partial         : constant Boolean := False;
+      View_Conversion : constant Boolean := False;
+      LHS_Root        : constant Flow_Id := Direct_Mapping_Id (E);
+      Vars_Defined    : Flow_Id_Sets.Set;
+      Vars_Used       : Flow_Id_Sets.Set;
+      Partial_Ext     : constant Boolean := False;
+      Partial_Priv    : constant Boolean := False;
+
+      LHS_Type : constant Entity_Id := Get_Type (N, FA.B_Scope);
+      To_Cw    : constant Boolean := Is_Class_Wide_Type (LHS_Type);
+
+   begin
+      --  Collect function calls appearing in the assignment statement: both
+      --  its LHS and RHS.
+      Pick_Generated_Info
+        (N,
+         FA.B_Scope,
+         Function_Calls     => Funcalls,
+         Indirect_Calls     => Indcalls,
+         Proof_Dependencies => FA.Proof_Dependencies,
+         Type_Contracts     => FA.Type_Contracts,
+         Locks              => FA.Locks,
+         Generating_Globals => FA.Generating_Globals);
+
+      --  We have two scenarios: some kind of record assignment (in which case
+      --  we try our best to dis-entangle the record fields so that information
+      --  does not bleed all over the place) and the default case.
+
+      if not Partial and then RHS_Split_Useful (E, Prefix (N), FA.B_Scope) then
+
+         --  Deal with record self-assignments like we deal with calls to
+         --  procedures with parameters of mode IN OUT, i.e. create separate
+         --  vertices for each use and definition.
+         --
+         --  For a record self-assignment
+         --
+         --    Tmp := (A => Tmp.B, B => Tmp.A);
+         --
+         --  we produce the following CFG:
+         --
+         --     use {Tmp.B}
+         --     |
+         --     use {Tmp.A}
+         --     |
+         --     define {Tmp.A}
+         --     |
+         --     define {Tmp.B}
+         --
+         --  Each of the 'defined' vertices will also have Record_RHS set in
+         --  its attributes so that we can fiddle the DDG to look like this:
+         --
+         --     use {Tmp.B} ------+
+         --                       |
+         --     use {Tmp.A} ------|--+
+         --                       |  |
+         --     define {Tmp.A} <--+  |
+         --                          |
+         --     define {Tmp.B} <-----+
+         --
+         --  Note that dependencies between the parameters are NOT set up here;
+         --  this is done in Flow.Data_Depence_Graph.Create.
+
+         declare
+            Verts : Vertex_Lists.List;
+
+            Verts_Defined : Vertex_Lists.List;
+            --  Dedicated list with vertices for component definitions
+
+            Cluster : Flow_Graphs.Cluster_Id;
+            --  For grouping vertices corresponding to this object
+            --  assignment in the visual representation of the graph.
+
+            RHS_Map : Flow_Id_Maps.Map :=
+              Untangle_Record_Assignment
+                (Prefix (N),
+                 Map_Root                => LHS_Root,
+                 Map_Type                => LHS_Type,
+                 Target_Name             => Null_Flow_Id, -- FIXME
+                 --  (if Has_Target_Names (N) then LHS_Root else Null_Flow_Id),
+                 Scope                   => FA.B_Scope,
+                 Fold_Functions          => Inputs,
+                 Use_Computed_Globals    => not FA.Generating_Globals,
+                 Expand_Internal_Objects => False,
+                 Extensions_Irrelevant   =>
+                   not View_Conversion
+                   and then not Is_Class_Wide_Type (LHS_Type));
+
+            Empty_Reuse : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+            --  Optimize record assignments with no variable inputs, similar
+            --  to what we do for record object declarations.
+
+         begin
+            --  Split out the assignment over a number of vertices
+            for C in RHS_Map.Iterate loop
+               declare
+                  Output : Flow_Id renames Flow_Id_Maps.Key (C);
+                  Inputs : Flow_Id_Sets.Set renames RHS_Map (C);
+
+                  V_Used, V_Defined : Flow_Graphs.Vertex_Id;
+                  --  Vertices for variables used and defined in a single
+                  --  component assignment.
+
+               begin
+                  --  Reuse existing vertex for a field that uses no variable
+                  --  inputs.
+
+                  if Inputs.Is_Empty
+                    and then Empty_Reuse /= Flow_Graphs.Null_Vertex
+                  then
+                     FA.Atr (Empty_Reuse).Variables_Defined.Insert (Output);
+                  else
+                     --  Create separate vertices with variables used and
+                     --  defined. All variable uses happen first; then happen
+                     --  all variable definitions. This is essential when
+                     --  representing record self-assignments where several
+                     --  components are read and then redefined.
+
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Ex_Use => Inputs,
+                           Subp_Calls => Funcalls,
+                           Indt_Calls => Indcalls,
+                           Vertex_Ctx => Ctx.Vertex_Ctx,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field),
+                        V_Used);
+                     Verts.Append (V_Used);
+
+                     FA.Atr (V_Used).First_Field := Verts.First_Element;
+
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                           Subp_Calls => Funcalls,
+                           Indt_Calls => Indcalls,
+                           Vertex_Ctx => Ctx.Vertex_Ctx,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field),
+                        V_Defined);
+                     Verts_Defined.Append (V_Defined);
+
+                     FA.Atr (V_Defined).First_Field := Verts.First_Element;
+
+                     --  Link variable use with variable definition. We will
+                     --  add a data dependency edge when building DDG.
+                     --  ??? This could be set in Make_Basic_Attributes to
+                     --  avoid explicit manipulation of vertex attributes,
+                     --  but then this routine would no longer be "Basic".
+                     FA.Atr (V_Defined).Record_RHS := V_Used;
+
+                     --  If this field uses no variable inputs, then we want
+                     --  to reuse its vertex.
+
+                     if Inputs.Is_Empty then
+                        Empty_Reuse := V_Defined;
+                     end if;
+                  end if;
+               end;
+            end loop;
+
+            --  Move vertices with variables defined to the end of list
+            Verts.Splice
+              (Before => Vertex_Lists.No_Element, Source => Verts_Defined);
+
+            --  Assigning null records does not produce any assignments, so we
+            --  create a null vertex instead.
+
+            if Verts.Is_Empty then
+               pragma Assert (Is_Null_Record_Type (LHS_Type));
+
+               Add_Dummy_Vertex (N, FA, CM);
+
+            --  Otherwise, we link all the vertices we have produced and update
+            --  the connection map.
+
+            else
+               FA.CFG.New_Cluster (Cluster);
+               V := Flow_Graphs.Null_Vertex;
+               for W of Verts loop
+                  if V /= Flow_Graphs.Null_Vertex then
+                     Linkup (FA, V, W);
+                  end if;
+                  V := W;
+                  FA.CFG.Set_Cluster (V, Cluster);
+               end loop;
+
+               CM.Insert
+                 (Union_Id (N),
+                  Graph_Connections'
+                    (Standard_Entry => Verts.First_Element,
+                     Standard_Exits => To_Set (Verts.Last_Element)));
+            end if;
+         end;
+
+      else
+
+         --  Work out the variables we use. These are the ones already
+         --  used by the LHS + everything on the RHS.
+         Vars_Used.Union
+           (Get_Variables
+              (Prefix (N),
+               Scope                => FA.B_Scope,
+               Target_Name          => Null_Flow_Id, -- FIXME
+               --  (if Has_Target_Names (N) then LHS_Root else Null_Flow_Id),
+               Fold_Functions       => Inputs,
+               Use_Computed_Globals => not FA.Generating_Globals,
+               Consider_Extensions  => To_Cw));
+
+         --  Any proof or null dependency variables need to be checked
+         --  separately. We need to check both the LHS and RHS.
+         Ctx.Folded_Function_Checks.Append (Prefix (N));
+         --  Ctx.Folded_Function_Checks.Append (Name (N));
+
+         declare
+            Var_Im_Use : Flow_Id_Sets.Set;
+         begin
+            if Partial then
+               Var_Im_Use := Vars_Defined;
+            else
+               if Partial_Ext then
+                  Var_Im_Use.Insert
+                    ((LHS_Root with delta Facet => Extension_Part));
+               end if;
+
+               if Partial_Priv then
+                  Var_Im_Use.Insert
+                    ((LHS_Root with delta Facet => Private_Part));
+               end if;
+            end if;
+
+            --  Produce the vertex
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
+               Make_Basic_Attributes
+                 (Var_Def    => Vars_Defined,
+                  Var_Ex_Use => Vars_Used,
+                  Var_Im_Use => Var_Im_Use,
+                  Subp_Calls => Funcalls,
+                  Indt_Calls => Indcalls,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => N),
+               V);
+         end;
+
+         CM.Insert (Union_Id (N), Trivial_Connection (V));
+      end if;
+   end Do_At_Snapshot;
+
    --------------
    -- Do_Label --
    --------------
@@ -3315,10 +3593,22 @@ package body Flow.Control_Flow_Graph is
       C : Goto_Jump_Maps.Cursor :=
         Ctx.Goto_Jumps.Find (Entity (Identifier (N)));
 
-   begin
-      Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
+      At_Snapshots : Union_Lists.List;
+      At_Block     : Graph_Connections;
 
-      CM.Insert (Union_Id (N), Trivial_Connection (V));
+   begin
+      for Attr of Get_At_Attributes_For_Label (Entity (Identifier (N))) loop
+         Create_Initial_And_Final_Vertices
+           (Exp_SPARK.Implicit_Object (Attr), FA);
+         Do_At_Snapshot (Attr, FA, CM, Ctx);
+         At_Snapshots.Append (Union_Id (Attr));
+      end loop;
+
+      Join (FA, CM, At_Snapshots, At_Block);
+
+      CM.Insert (Union_Id (N), At_Block);
+
+      V := At_Block.Standard_Entry;
 
       if Goto_Jump_Maps.Has_Element (C) then
          Linkup (FA, Froms => Ctx.Goto_Jumps (C), To => V);
@@ -7893,7 +8183,7 @@ package body Flow.Control_Flow_Graph is
 
             when N_Attribute_Reference                              =>
                return
-                 Attribute_Name (N) = Name_Update
+                 Attribute_Name (N) in Name_At | Name_Update
                  and then Is_Split_Useful (Prefix (N));
 
             when N_Expression_With_Actions

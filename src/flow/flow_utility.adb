@@ -25,6 +25,7 @@ with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
 with Aspects;        use Aspects;
+with Exp_SPARK;
 with Errout_Wrapper; use Errout_Wrapper;
 with Ghost;          use Ghost;
 with Namet;          use Namet;
@@ -7856,6 +7857,27 @@ package body Flow_Utility is
 
                when Name_Old    =>
                   M := Recurse_On (Prefix (N), Map_Root);
+
+               when Name_At     =>
+                  declare
+                     E : constant Entity_Id := Exp_SPARK.Implicit_Object (N);
+
+                     RHS : constant Flow_Id_Sets.Set :=
+                       Flatten_Variable (E, Scope);
+
+                     LHS : constant Flow_Id_Sets.Set :=
+                       Flatten_Variable (Map_Root, Scope);
+
+                  begin
+                     for Input of RHS loop
+                        declare
+                           F : constant Flow_Id := Join (Map_Root, Input);
+                        begin
+                           pragma Assert (LHS.Contains (F));
+                           M.Insert (F, Flow_Id_Sets.To_Set (Input));
+                        end;
+                     end loop;
+                  end;
 
                when others      =>
                   Error_Msg_N ("cannot untangle attribute", N);

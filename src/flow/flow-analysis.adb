@@ -1350,6 +1350,7 @@ package body Flow.Analysis is
                        or else Has_Junk_Name (E)
                        or else Is_Param_Of_Null_Subp_Of_Generic (E)
                        or else Is_Param_Of_Null_Procedure (E)
+                       or else Is_Internal (E)
                      then
                         null;
 
