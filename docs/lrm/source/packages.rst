@@ -795,9 +795,10 @@ grammar of ``initialization_spec`` given below.
                         | null
 
   initialization_list ::= initialization_item
-                        | ( initialization_item { , initialization_item } )
+                        | ( initialization_item [ => input_list]
+                            { , initialization_item [ => input_list] } )
 
-  initialization_item ::= name [ => input_list]
+  initialization_item ::= name
 
 
 .. container:: heading
