@@ -77,6 +77,8 @@ package Gnat2Why_Opts is
    Invalid_Manifest_Memlimit : constant := -1;
 
    type Manifest_Subprogram is record
+      Id           : Natural := 0;
+      Nested_In    : Natural := 0;
       Path         : Ada.Strings.Unbounded.Unbounded_String;
       Kind         : Ada.Strings.Unbounded.Unbounded_String;
       Profile      : Ada.Strings.Unbounded.Unbounded_String;
@@ -93,7 +95,11 @@ package Gnat2Why_Opts is
    --  the manifest schema; Hierarchical defaults to True; File, Line and
    --  Column locate the manifest entry; Kind, Profile and proof options are
    --  optional. Invalid_Manifest_* and the empty prover list encode absent
-   --  options.
+   --  options. Id is a unit-unique identity assigned when the manifest is
+   --  loaded; Nested_In is the Id of the enclosing rule (0 at the top level),
+   --  so that a rule spelled inside another rule is resolved as an entity
+   --  nested within that other rule's entity, disambiguating overloaded
+   --  ancestors.
 
    package Manifest_Subprogram_Vectors is new
      Ada.Containers.Vectors

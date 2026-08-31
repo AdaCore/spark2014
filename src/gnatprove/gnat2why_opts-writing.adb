@@ -75,9 +75,16 @@ package body Gnat2Why_Opts.Writing is
       procedure Hash (Key : String; Value : Manifest_Subprogram_Vectors.Vector)
       is
       begin
+         --  Every field written for a policy has to be hashed here. A field
+         --  that is written but not hashed lets two manifests that differ
+         --  only in that field share an options file, so the second one
+         --  silently reuses the settings of the first.
+
          Update_Hash_Context (Hash_Context, Key & ASCII.NUL);
          for Policy of Value loop
             Update_Hash_Context (Hash_Context, "subprogram" & ASCII.NUL);
+            Hash ("id", Integer'Image (Policy.Id));
+            Hash ("nested_in", Integer'Image (Policy.Nested_In));
             Hash ("path", To_String (Policy.Path));
             Hash ("kind", To_String (Policy.Kind));
             Hash ("profile", To_String (Policy.Profile));
@@ -217,6 +224,8 @@ package body Gnat2Why_Opts.Writing is
       is
          Obj : constant JSON_Value := Create_Object;
       begin
+         Set_Field (Obj, "id", Policy.Id);
+         Set_Field (Obj, "nested_in", Policy.Nested_In);
          Set_Field (Obj, "path", To_String (Policy.Path));
          Set_Field (Obj, "file", To_String (Policy.File));
          Set_Field (Obj, "line", Policy.Line);

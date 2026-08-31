@@ -900,6 +900,9 @@ files. A folder containing such files is passed to |GNATprove| using the
 
 Only files with the ".toml" ending are considered by |GNATprove|.
 
+The settings of a manifest file take precedence over options specified in the
+project file, but are overridden by options specified on the command-line.
+
 Generating Manifest Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -940,7 +943,8 @@ Each file consists of a list of rules of this form::
 
 The ``path`` field is mandatory and defines the subprogram
 or package to which the rule applies. In addition, each rule must specify at
-least one proof option (see below). All other fields are optional. The ``kind``
+least one proof option (see below), unless it contains nested rules, see
+:ref:`Nested Rules`. All other fields are optional. The ``kind``
 field can be one of ``function``, ``procedure``, ``entry``, ``package``. The
 ``profile`` field describes the arguments and return values of the subprogram
 (only allowed if ``kind`` is one of ``function``, ``procedure`` or ``entry``).
@@ -954,20 +958,94 @@ The options ``provers``, ``steps``, ``timeout``, ``memlimit`` can be set for
 each rule, as well as the ``level`` option. They specify the corresponding
 setting for this subprogram or package.
 
-By default, rules are hierarchical, that is, they match every subprogram or
-package whose full path name matches the ``path`` value of the rule, unless a
-more precise rule exists. This mechanism can be disabled by setting the
-``hierarchical`` field to ``false``, making it require an exact match to apply.
+By default, rules are hierarchical, that is, a rule applies both to the entity
+named by its ``path`` and to every entity declared inside that entity, at any
+depth. This mechanism can be disabled by setting the ``hierarchical`` field to
+``false``, making the rule apply only to the entity named by the path.
+
+Several rules may apply to the same entity. In that case, only the most
+specific one is used, and its options are *not* combined with the options of
+the other matching rules. For example, a rule on ``Pkg.Set`` that only sets
+``timeout`` leaves ``Pkg.Set`` with the default number of steps, even if a rule
+on ``Pkg`` sets ``steps``. A rule that refines an enclosing rule therefore has
+to repeat every option that it wants to keep. The most specific rule is the one
+whose path names the innermost entity; between two rules that name the same
+entity, a non-hierarchical rule takes precedence over a hierarchical one. If
+two rules remain equally specific, |GNATprove| emits a warning and neither of
+them applies.
 
 For a given path, both a hierarchical and non-hierarchical rule can co-exist.
-In this case the hierarchical rule applies to proof entities below that path
-and provides defaults for the contained subprograms and packages. The
-non-hierarchical rule applies only to the entity named by the path. For a
-package path, this includes checks concerning the package's initial condition,
-declarations and body statements.
+In this case the hierarchical rule applies to the proof entities below that
+path, and the non-hierarchical rule applies only to the entity named by the
+path. For a package path, this includes checks concerning the package's initial
+condition, declarations and body statements.
 
-The manifest file takes precedence over options specified in the project file,
-but is overridden by options specified on the command-line.
+If a rule matches no entity of the unit, or if it matches several entities
+without being able to tell them apart, |GNATprove| emits a warning and ignores
+the rule.
+
+Nested Rules
+^^^^^^^^^^^^^
+
+A dotted path cannot always designate an entity unambiguously. Consider a
+package ``Pkg`` with two overloads of a procedure ``Set``, where each overload
+declares a local procedure ``Helper`` with the same profile. The path
+``Pkg.Set.Helper`` then designates both helpers, and the ``kind`` and
+``profile`` fields are of no help, because the two helpers agree on both. What
+tells them apart is the overload of ``Set`` that encloses them.
+
+For such cases, a rule can be nested inside another rule, using TOML's nested
+arrays of tables. A nested rule only applies to an entity declared inside the
+entity of the enclosing rule, so the enclosing rule selects the overload that
+the nested path cannot express::
+
+   [[rule]]
+   path = "Pkg.Set"
+   kind = "procedure"
+   profile = "(_ : Integer)"
+   steps = 100
+
+     [[rule.rule]]
+     path = "Pkg.Set.Helper"
+     kind = "procedure"
+     profile = "(_ : Integer)"
+     steps = 500
+
+   [[rule]]
+   path = "Pkg.Set"
+   kind = "procedure"
+   profile = "(_ : Boolean)"
+   steps = 200
+
+     [[rule.rule]]
+     path = "Pkg.Set.Helper"
+     kind = "procedure"
+     profile = "(_ : Integer)"
+     steps = 1000
+
+The indentation of the nested rules above is only meant to make the structure
+easier to read; as everywhere in a TOML file, it carries no meaning. What makes
+a rule nested is its ``[[rule.rule]]`` header, which places it in the ``rule``
+array of the preceding rule.
+
+The two rules for ``Pkg.Set.Helper`` are spelled identically, but the first one
+applies to the helper of the ``Integer`` overload of ``Set``, and the second one
+to the helper of the ``Boolean`` overload. A single rule for
+``Pkg.Set.Helper`` written at the top level instead would match both helpers,
+and would be reported as ambiguous and ignored.
+
+The ``path`` of a nested rule is still the full path of the entity, and it must
+extend the ``path`` of the enclosing rule; otherwise |GNATprove| reports an
+error. Rules can be nested to any depth, using one more ``rule`` component in
+the header for each level, as in ``[[rule.rule.rule]]``, and the path of a
+nested rule may skip intermediate levels. If the enclosing rule is itself
+ambiguous, its nested rules cannot be resolved either.
+
+A rule that exists only to select the enclosing entity of its nested rules may
+omit its proof options. Note that options are never inherited, so such a rule
+still applies to the entity that it names, and, being the most specific rule
+for that entity, leaves it with the default proof settings. If that entity
+should keep the settings of an enclosing rule, repeat them.
 
 GNATprove and Manual Proof
 --------------------------

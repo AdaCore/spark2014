@@ -1,0 +1,84 @@
+===== nested entries resolve cleanly =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg.Set"
+kind = "procedure"
+profile = "(_ : Integer)"
+steps = 111
+provers = ["cvc5"]
+
+  [[rule.rule]]
+  path = "Pkg.Set.Helper"
+  kind = "procedure"
+  profile = "(_ : Integer)"
+  steps = 333
+  provers = ["cvc5"]
+
+[[rule]]
+path = "Pkg.Set"
+kind = "procedure"
+profile = "(_ : Boolean)"
+steps = 222
+provers = ["cvc5"]
+
+  [[rule.rule]]
+  path = "Pkg.Set.Helper"
+  kind = "procedure"
+  profile = "(_ : Integer)"
+  steps = 444
+  provers = ["cvc5"]
+--- output ---
+Success: all checks proved (4 checks).
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+[Ada Data_Rep]    pkg.adb
+[Ada Global_Gen]  pkg.adb
+===== flat entry is ambiguous =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg.Set.Helper"
+kind = "procedure"
+profile = "(_ : Integer)"
+steps = 333
+provers = ["cvc5"]
+--- output ---
+flat_entry_is_ambiguous/pkg.toml:4:8: warning: invalid proof manifest entry 1 for "Pkg.Set.Helper" kind "procedure" profile "(_ : Integer)" is ambiguous; add or refine the kind field, add or refine the profile field, or nest the rule inside a rule for the enclosing entity
+Success: all checks proved (4 checks).
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+[Ada Global_Gen]  pkg.adb
+===== nested path must extend parent =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg.Set"
+kind = "procedure"
+profile = "(_ : Integer)"
+steps = 111
+provers = ["cvc5"]
+
+  [[rule.rule]]
+  path = "Pkg.Other.Helper"
+  kind = "procedure"
+  steps = 333
+  provers = ["cvc5"]
+--- output ---
+Try "gnatprove --help" for more information.
+error: invalid proof manifest nested_path_must_extend_parent/pkg.toml:11:10: nested path "Pkg.Other.Helper" must extend the enclosing path "Pkg.Set"
+===== nested rule array must not be empty =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg.Set"
+kind = "procedure"
+profile = "(_ : Boolean)"
+rule = []
+--- output ---
+Try "gnatprove --help" for more information.
+error: invalid proof manifest nested_rule_array_must_not_be_empty/pkg.toml:7:8: field "rule" must not be empty

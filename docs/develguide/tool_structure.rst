@@ -323,9 +323,12 @@ During translation, ``gnat2why`` resolves these manifest entries against the
 semantic entities selected for the current analysis unit. Each policy first
 resolves to an exact anchor entity using its ``path`` and the optional
 ``kind`` and ``profile`` identity fields. If ``hierarchical`` is true, which is
-the default, the resolved policy also applies to entities whose canonical
-source path is a strict dot-separated extension of the anchor's source path.
-If ``hierarchical`` is false, the policy applies only to the anchor entity.
+the default, the resolved policy also applies to the entities enclosed by the
+anchor, that is, those whose scope is the anchor entity, transitively. If
+``hierarchical`` is false, the policy applies only to the anchor entity.
+Enclosure is decided by scope, not by comparing source paths, so a policy
+anchored on one overload never spills onto entities enclosed by another
+overload that shares its dotted path.
 The anchor entity itself is matched by identity, not by re-comparing source
 paths, so an entry that names one overload through its ``profile`` applies to
 exactly that overload and does not re-broaden to the other overloads that share
@@ -338,6 +341,26 @@ anchor entity itself. Broader entries are not merged in.
 Two policies that match the same entity at the same specificity are reported
 as an ambiguity warning, as are multiple overloads matched by a single policy
 that lacks sufficient disambiguation.
+
+A rule may be *nested* inside another rule, using TOML's nested arrays of
+tables (a ``rule`` sub-array inside a rule table). Nesting a rule means its
+entity is enclosed by the parent rule's entity, at any depth, so the parent's
+identity fields disambiguate the enclosing overload that the child's dotted
+path cannot express on its own: two Helpers spelled ``Pkg.Set.Helper`` under
+two different ``Pkg.Set`` overloads are told apart by which ``Set`` rule each
+Helper rule sits inside. A nested rule's ``path`` must be a dotted extension of
+its parent's ``path``, checked when the manifest is read. A parent rule that
+only anchors children may omit its own proof options. Because nesting, rather
+than the string ``path``, carries the parent overload's identity,
+``gnatprove`` assigns every rule a unit-unique ``id``, numbered from one in
+load order so that an enclosing rule comes before the rules it nests, and
+records each rule's enclosing rule as a ``nested_in`` id in the ``-gnates``
+options; ``gnat2why`` derives the nesting depth of each rule from those ids and
+resolves anchors by increasing depth, so that a nested rule's anchor is
+constrained to the entities enclosed by its parent's already resolved anchor. Two rules that share
+``path``, ``kind`` and ``profile`` are distinct when nested under different
+parents, so the enclosing rule is part of a rule's identity for duplicate
+detection and for the normalized ordering.
 
 A ``path`` is a dot-separated sequence of segments. A segment is either an Ada
 identifier or a user-defined operator spelled with its quotes as in Ada source,

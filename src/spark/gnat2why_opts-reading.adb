@@ -94,6 +94,15 @@ package body Gnat2Why_Opts.Reading is
                Obj    : constant JSON_Value := Get (Ar, Var_Index);
                Policy : Manifest_Subprogram;
             begin
+               if Has_Field (Obj, "id") then
+                  Policy.Id := Natural (Integer'(Get_Opt (Obj, "id")));
+               end if;
+
+               if Has_Field (Obj, "nested_in") then
+                  Policy.Nested_In :=
+                    Natural (Integer'(Get_Opt (Obj, "nested_in")));
+               end if;
+
                Policy.Path := Get_Opt (Obj, "path");
 
                if Has_Field (Obj, "file") then
