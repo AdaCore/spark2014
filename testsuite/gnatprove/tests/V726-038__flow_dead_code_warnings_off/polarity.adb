@@ -8,7 +8,7 @@ procedure Polarity is
 
    Foo : constant Boolean := True;
    Bar : constant Boolean := False;
-
+   function Unknown return Boolean with Import, Global => null;
    procedure Dummy with Import, Global => null, Always_Terminates;
 begin
 
@@ -109,6 +109,18 @@ begin
    elsif Bar then
       Dummy;
    else
+      Dummy;
+   end if;
+
+   --  The first ELSIF is always true, but is controlled by a statically true
+   --  condition with no pragma Warnings => Off. Consequently, the second ELSIF
+   --  is never executed and we should warn about it.
+
+   if Unknown then
+      Dummy;
+   elsif B then
+      Dummy;
+   elsif A then
       Dummy;
    end if;
 end Polarity;
