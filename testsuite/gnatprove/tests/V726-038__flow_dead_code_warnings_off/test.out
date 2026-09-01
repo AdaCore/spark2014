@@ -27,3 +27,4 @@ polarity.adb:106:07: warning: this statement is never reached
 polarity.adb:109:04: warning: this statement is never reached
 polarity.adb:110:07: warning: this statement is never reached
 polarity.adb:112:07: warning: this statement is never reached
+polarity.adb:124:07: warning: this statement is never reached

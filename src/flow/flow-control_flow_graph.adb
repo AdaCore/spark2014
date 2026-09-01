@@ -2832,9 +2832,7 @@ package body Flow.Control_Flow_Graph is
       Seen_True_Condition : Boolean := False;
       Known_Condition     : Boolean :=
         Compile_Time_Known_Value (Condition (N));
-      Seen_True_Warn_Off  : Boolean :=
-        Exp_Util.Is_Statically_Disabled
-          (N => Condition (N), Value => True, Include_Valid => False);
+      Seen_True_Warn_Off  : Boolean;
       Save_Warn_Off       : constant Boolean := Ctx.Vertex_Ctx.Warnings_Off;
 
    begin
@@ -2887,10 +2885,9 @@ package body Flow.Control_Flow_Graph is
       --  We hang the if part off that
       Process_Statement_List (If_Part, FA, CM, Ctx);
 
-      --  We restore the context after the if part, and if the if condition is
-      --  statically disabled, we won't emit warnings about unreachable
-      --  code on following elsif/else conditions nor the statements.
-      Ctx.Vertex_Ctx.Warnings_Off := Save_Warn_Off or else Seen_True_Warn_Off;
+      Seen_True_Warn_Off :=
+        Exp_Util.Is_Statically_Disabled
+          (Condition (N), Value => True, Include_Valid => False);
 
       --  The statements in the if branch are linked to the if statement vertex
       --  and the standard exits of the if statement if they are not statically
@@ -2943,13 +2940,6 @@ package body Flow.Control_Flow_Graph is
          while Present (Elsif_Statement) loop
             Known_Condition :=
               Compile_Time_Known_Value (Condition (Elsif_Statement));
-            Seen_True_Warn_Off :=
-              Seen_True_Warn_Off
-              or else
-                Exp_Util.Is_Statically_Disabled
-                  (N             => Condition (Elsif_Statement),
-                   Value         => True,
-                   Include_Valid => False);
 
             declare
                Elsif_Body  : constant List_Id :=
@@ -2977,7 +2967,8 @@ package body Flow.Control_Flow_Graph is
                --  Disable warnings on the elsif statement itself when the
                --  condition is statically disabled, no matter its value.
                Ctx.Vertex_Ctx.Warnings_Off :=
-                 Ctx.Vertex_Ctx.Warnings_Off
+                 Save_Warn_Off
+                 or else Seen_True_Warn_Off
                  or else Is_Statically_Disabled (Condition (Elsif_Statement));
 
                Add_Vertex
@@ -3008,7 +2999,8 @@ package body Flow.Control_Flow_Graph is
                --  Like the if part, we set the correct context for warning
                --  emission about unreachable code.
                Ctx.Vertex_Ctx.Warnings_Off :=
-                 Ctx.Vertex_Ctx.Warnings_Off
+                 Save_Warn_Off
+                 or else Seen_True_Warn_Off
                  or else
                    Exp_Util.Is_Statically_Disabled
                      (N             => Condition (Elsif_Statement),
@@ -3018,9 +3010,13 @@ package body Flow.Control_Flow_Graph is
                --  Process statements of elsif
                Process_Statement_List (Elsif_Body, FA, CM, Ctx);
 
-               --  We restore the context afterwards
-               Ctx.Vertex_Ctx.Warnings_Off :=
-                 Save_Warn_Off or else Seen_True_Warn_Off;
+               Seen_True_Warn_Off :=
+                 Seen_True_Warn_Off
+                 or else
+                   Exp_Util.Is_Statically_Disabled
+                     (N             => Condition (Elsif_Statement),
+                      Value         => True,
+                      Include_Valid => False);
 
                --  If the code is not statically dead, link V to the
                --  statements of elsif and add the exits of Elsif_Body to the
@@ -3049,7 +3045,7 @@ package body Flow.Control_Flow_Graph is
 
       if Present (Else_Part) then
          Ctx.Vertex_Ctx.Warnings_Off :=
-           Ctx.Vertex_Ctx.Warnings_Off or else Seen_True_Warn_Off;
+           Save_Warn_Off or else Seen_True_Warn_Off;
          Process_Statement_List (Else_Part, FA, CM, Ctx);
 
          if not Seen_True_Condition then
