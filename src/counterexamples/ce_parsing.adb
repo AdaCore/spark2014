@@ -712,16 +712,18 @@ package body CE_Parsing is
                      Var_Modifier := Index;
 
                      declare
-                        function Is_Quantified_Expr
+                        function Is_Quantified_Expr_Or_Iteration_Scheme
                           (N : Node_Id) return Boolean
-                        is (Nkind (N) = N_Quantified_Expression);
-                        function Enclosing_Quantified_Expr is new
-                          First_Parent_With_Property (Is_Quantified_Expr);
+                        is (Nkind (N)
+                            in N_Quantified_Expression | N_Iteration_Scheme);
+                        function Enclosing_Expr_With_Iterator_Spec is new
+                          First_Parent_With_Property
+                            (Is_Quantified_Expr_Or_Iteration_Scheme);
 
                         Container : constant Entity_Id :=
                           Get_Container_In_Iterator_Specification
                             (Iterator_Specification
-                               (Enclosing_Quantified_Expr (Var)));
+                               (Enclosing_Expr_With_Iterator_Spec (Var)));
                         pragma Assert (Present (Container));
 
                         Container_Typ : constant Entity_Id :=

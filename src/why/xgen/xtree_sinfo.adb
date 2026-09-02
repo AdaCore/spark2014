@@ -494,6 +494,8 @@ package body Xtree_Sinfo is
                  "Context", "W_Prog", Id_One);
       New_Field (W_Binding_Ref,
                  "Typ", "W_Type", Id_One);
+      New_Field (W_Binding_Ref,
+                 "Labels", "Symbol_Set");
 
       ------------
       -- W_Loop --
