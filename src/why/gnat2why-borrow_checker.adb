@@ -4611,6 +4611,14 @@ package body Gnat2Why.Borrow_Checker is
 
                      Copy_Env (Saved_Env, Current_Perm_Env);
                      Check_Expression (Condition (Branch), Read);
+                     if Expr_Has_Side_Effects (Condition (Branch)) then
+
+                        --  If expression has side effects, environment may
+                        --  have changed before further branches. Need to save
+                        --  back above the next branches.
+
+                        Copy_Env (Current_Perm_Env, Saved_Env);
+                     end if;
                      Object_Scope.Push_Scope;
                      Check_List (Then_Statements (Branch));
                      Object_Scope.Pop_Scope;

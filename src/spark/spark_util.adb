@@ -5999,7 +5999,8 @@ package body SPARK_Util is
                when N_If_Statement                                =>
 
                   declare
-                     Elsif_Iter : Node_Id := First (Elsif_Parts (Stmt));
+                     Elsif_Iter   : Node_Id := First (Elsif_Parts (Stmt));
+                     Elsif_Vertex : Vertex;
                   begin
                      --  Create join point if condition has side effects
 
@@ -6007,22 +6008,36 @@ package body SPARK_Util is
                        (Condition (Stmt), Effect_V);
 
                      --  Like case statements, create one path per alternative.
+                     --  Unlike case statements, need to make sure to properly
+                     --  track the effects of cascading conditions. This may
+                     --  require extra vertices for the branching induced by
+                     --  conditions of elsif.
 
                      Exit_Temp := Exit_Vertex;
                      Cache_For_Statement_List
                        (Then_Statements (Stmt), Depth + 1, Exit_Temp);
                      Add_Edge (Effect_V, Exit_Temp);
-                     Exit_Temp := Exit_Vertex;
-                     Cache_For_Statement_List
-                       (Else_Statements (Stmt), Depth + 1, Exit_Temp);
-                     Add_Edge (Effect_V, Exit_Temp);
                      while Present (Elsif_Iter) loop
+                        if Needs_Effect_Vertex (Elsif_Iter) then
+                           Elsif_Vertex :=
+                             Vertex'(Kind => Effect, Node => Elsif_Iter);
+                           Insert_Neighborhood (Elsif_Vertex, Depth + 1);
+                           Exit_Temp := Elsif_Vertex;
+                           Cache_For_Expression
+                             (Condition (Elsif_Iter), Depth + 1, Exit_Temp);
+                           Add_Edge (Effect_V, Exit_Temp);
+                           Effect_V := Elsif_Vertex;
+                        end if;
                         Exit_Temp := Exit_Vertex;
                         Cache_For_Statement_List
                           (Then_Statements (Elsif_Iter), Depth + 1, Exit_Temp);
                         Add_Edge (Effect_V, Exit_Temp);
                         Next (Elsif_Iter);
                      end loop;
+                     Exit_Temp := Exit_Vertex;
+                     Cache_For_Statement_List
+                       (Else_Statements (Stmt), Depth + 1, Exit_Temp);
+                     Add_Edge (Effect_V, Exit_Temp);
                   end;
 
                when N_Loop_Statement                              =>
@@ -6303,6 +6318,7 @@ package body SPARK_Util is
             when N_Function_Call
                | N_Assignment_Statement
                | N_If_Statement
+               | N_Elsif_Part
                | N_Case_Statement                                 =>
                return True;
 

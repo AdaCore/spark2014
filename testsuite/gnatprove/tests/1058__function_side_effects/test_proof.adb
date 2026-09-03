@@ -468,6 +468,111 @@ procedure Test_Proof with SPARK_Mode is
          pragma Assert (V = 0); --@ASSERT:FAIL
    end Test_Nested;
 
+
+   function Test_Elsif (A : in out IArray; I, J : Natural) return Integer
+     with Side_Effects,
+     Post => (if Test_Elsif'Result >= 0
+             then Test_Elsif'Result in A'Range
+                 and then Test_Elsif'Result in I .. J
+                 and then A'Old (Test_Elsif'Result) = Integer'Last
+             elsif Test_Elsif'Result = -1
+             then (for all K in A'Range =>
+                       (if K in I .. J then A (K) = A'Old (K) + 1))
+              else I < A'First or else A'Last < J);
+   function Test_Elsif (A : in out IArray; I, J : Natural) return Integer is
+      Out_Of_Bounds : exception;
+      function Found (K : Natural) return Boolean
+        with Side_Effects,
+        Global => (In_Out => A),
+        Exceptional_Cases => (Out_Of_Bounds => True),
+        Exit_Cases => ((K in A'Range) => Normal_Return, others => (Exception_Raised => Out_Of_Bounds)),
+        Modifies => (A (K) when K in A'Range),
+        Post => (if Found'Result
+                 then A'Old (K) = Integer'Last
+                 else A (K) = A'Old (K) + 1);
+      function Found (K : Natural) return Boolean is
+      begin
+         if K not in A'Range then
+            raise Out_Of_Bounds;
+         end if;
+         return B : Boolean := A (K) = Integer'Last do
+            if not B then
+               A (K) := A (K) + 1;
+            end if;
+         end return;
+      end Found;
+      K : Natural := I;
+   begin
+      loop
+         pragma Loop_Invariant (K >= I);
+         pragma Loop_Invariant (for all L in K .. J => (if L in A'Range then A (L) = A'Loop_Entry (L)));
+         pragma Loop_Invariant (for all L in I .. K - 1 => L in A'Range and then A (L) = A'Loop_Entry (L) + 1);
+         pragma Loop_Variant (Increases => K);
+         if K > J then
+            exit;
+         elsif Found (K) then
+            return K;
+         end if;
+         exit when K = Natural'Last;
+         K := K + 1;
+        end loop;
+      return -1;
+   exception
+      when Out_Of_bounds =>
+         return -2;
+   end Test_Elsif;
+
+  function Test_Elsif_KO (A : in out IArray; I, J : Natural) return Integer
+     with Side_Effects,
+     Post => (if Test_Elsif_KO'Result >= -1
+             then Test_Elsif_KO'Result in A'Range --@POSTCONDITION:FAIL
+                 and then Test_Elsif_KO'Result in I .. J
+                 and then A'Old (Test_Elsif_KO'Result) = Integer'Last
+                 and then (for all K in A'Range =>
+                       (if K in I .. J then A (K) = A'Old (K) + 1))
+              else I < A'First or else A'Last < J);
+  function Test_Elsif_KO (A : in out IArray; I, J : Natural) return Integer is
+      Out_Of_Bounds : exception;
+      function Found (K : Natural) return Boolean
+        with Side_Effects,
+        Global => (In_Out => A),
+        Exceptional_Cases => (Out_Of_Bounds => True),
+        Exit_Cases => ((K in A'Range) => Normal_Return, others => (Exception_Raised => Out_Of_Bounds)),
+        Modifies => (A (K) when K in A'Range),
+        Post => (if Found'Result
+                 then A'Old (K) = Integer'Last
+                 else A (K) = A'Old (K) + 1);
+      function Found (K : Natural) return Boolean is
+      begin
+         if K not in A'Range then
+            raise Out_Of_Bounds;
+         end if;
+         return B : Boolean := A (K) = Integer'Last do
+            if not B then
+               A (K) := A (K) + 1;
+            end if;
+         end return;
+      end Found;
+      K : Natural := I;
+   begin
+      loop
+         pragma Loop_Invariant (K >= I);
+         pragma Loop_Invariant (for all L in K .. J => (if L in A'Range then A (L) = A'Loop_Entry (L)));
+         pragma Loop_Invariant (for all L in I .. K - 1 => L in A'Range and then A (L) = A'Loop_Entry (L) + 1);
+         if K > J then
+           exit;
+         elsif Found (K) then
+            return K;
+         end if;
+         K := K + 1;
+      end loop;
+      return -1;
+   exception
+      when Out_Of_bounds =>
+         return -2;
+   end Test_Elsif_KO;
+
+
 begin
    null;
 end Test_Proof;

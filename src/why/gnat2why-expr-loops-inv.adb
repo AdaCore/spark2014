@@ -1916,6 +1916,12 @@ package body Gnat2Why.Expr.Loops.Inv is
             end;
 
          when N_Elsif_Part                                        =>
+            Process_Expression
+              (Condition (N),
+               Loop_Writes,
+               Invalid_Objects,
+               Relevant_Vertices,
+               After_Inv);
             Process_Statement_List
               (Then_Statements (N),
                Loop_Writes,

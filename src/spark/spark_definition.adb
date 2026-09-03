@@ -6981,6 +6981,7 @@ package body SPARK_Definition is
                      when N_Assignment_Statement
                         | N_Simple_Return_Statement
                         | N_If_Statement
+                        | N_Elsif_Part
                         | N_Case_Statement
                         | N_Exit_Statement
                         | N_Continue_Statement          =>
