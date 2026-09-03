@@ -34,6 +34,18 @@ procedure Structural_Variant with SPARK_Mode is
       end if;
    end Cut_Suffix;
 
+   procedure Test_Elsif (X : List) with
+     Always_Terminates => True, Subprogram_Variant => (Structural => X);
+   procedure Test_Elsif (X : List) is
+      Y : access Cell := X;
+   begin
+      if Y = null then
+         null;
+      elsif Update (Y.all) then
+         Test_Elsif (Y.Tail); --@SUBPROGRAM_VARIANT:FAIL
+      end if;
+   end Test_Elsif;
+
 begin
    null;
 end Structural_Variant;

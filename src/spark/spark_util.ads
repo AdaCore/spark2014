@@ -1771,6 +1771,8 @@ package SPARK_Util is
                 | N_Function_Call
                 | N_If_Expression
                 | N_If_Statement
+                | N_Elsif_Part
+                --  May need extra effect vertices for Elsif branches
                 | N_Object_Declaration
                 | N_Simple_Return_Statement
                and then

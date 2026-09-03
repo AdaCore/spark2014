@@ -103,6 +103,31 @@ procedure Frame_Condition with SPARK_Mode is
       pragma Assert (Y = 0); --@ASSERT:FAIL
    end Test_Case_1;
 
+   procedure Test_Elsif with Global => null;
+   procedure Test_Elsif is
+      Y : Integer := 0;
+      Z : Integer := 0;
+   begin
+      while Random (Y) loop
+         begin
+            if Y = 42 then
+               exit;
+            elsif (if Y /= 0 then Pure_Raise else Writes (Y)) then
+               null;
+            end if;
+         exception
+            when E =>
+               exit when Writes (Z);
+               raise E;
+         end;
+      end loop;
+      pragma Assert (Z = 0 or Z = 1); --@ASSERT:PASS
+      pragma Assert (Y = 0); --@ASSERT:FAIL
+   exception
+      when E =>
+         null;
+   end Test_Elsif;
+
 begin
    null;
 end Frame_Condition;
