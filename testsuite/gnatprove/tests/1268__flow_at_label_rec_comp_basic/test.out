@@ -1,0 +1,7 @@
+test.adb:3:17: warning: unused initial value of "X1"
+test.adb:3:35: info: initialization of "O" proved
+test.adb:4:15: medium: missing dependency "O => X2"
+test.adb:4:20: medium: incorrect dependency "O => X1"
+test.adb:4:24: medium: missing dependency "null => X1"
+test.adb:4:32: medium: incorrect dependency "null => X2"
+test.adb:19:04: warning: initialization of "Obj" has no effect

@@ -1,0 +1,21 @@
+test.adb:4:04: warning: unused initial value of "Before"
+test.adb:8:04: info: initialization of "O" proved
+test.adb:21:06: medium: missing dependency "O => After"
+test.adb:21:06: medium: missing dependency "O => Late_High"
+test.adb:21:06: medium: missing dependency "O => Late_Low"
+test.adb:21:15: medium: incorrect dependency "O => Before"
+test.adb:21:23: medium: incorrect dependency "O => Early_Low"
+test.adb:21:34: medium: incorrect dependency "O => Early_High"
+test.adb:22:06: medium: missing dependency "null => Before"
+test.adb:22:06: medium: missing dependency "null => Early_High"
+test.adb:22:06: medium: missing dependency "null => Early_Low"
+test.adb:22:15: medium: incorrect dependency "null => After"
+test.adb:22:22: medium: incorrect dependency "null => Late_Low"
+test.adb:22:32: medium: incorrect dependency "null => Late_High"
+test.adb:26:04: warning: initialization of "A" has no effect
+test.adb:27:04: warning: initialization of "Low" has no effect
+test.adb:28:04: warning: initialization of "High" has no effect
+test.adb:29:04: warning: initialization of "Index" has no effect
+test.adb:36:09: info: range check proved (CVC5: 4 VC)
+test.adb:36:24: medium: length check might fail [reason for check: array must be of the appropriate length]
+test.adb:36:39: info: index check proved (CVC5: 2 VC)

@@ -1,0 +1,7 @@
+g1.adb:10:11: error: target name not allowed in prefix of attribute 'At
+g2.adb:11:09: error: target name not allowed in prefix of attribute 'At
+g3.adb:15:14: error: target name not allowed in prefix of attribute 'At
+g4.adb:17:11: error: target name not allowed in prefix of attribute 'At
+g5.adb:14:20: error: target name not allowed in prefix of attribute 'At
+g5.adb:14:24: error: target name not allowed in prefix of attribute 'At
+gnatprove: error during flow analysis and proof

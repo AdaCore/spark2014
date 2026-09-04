@@ -1,0 +1,4 @@
+unreachable_label.adb:8:09: warning: this statement is never reached
+unreachable_label.adb:9:09: warning: this statement is never reached
+unreachable_label.adb:11:10: warning: this statement is never reached
+unreachable_label.adb:13:12: warning: this statement is never reached

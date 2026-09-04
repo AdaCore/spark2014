@@ -1,0 +1,22 @@
+direct.adb:6:04: info: initialization of "Length" proved
+direct.adb:14:26: medium: incorrect dependency "Length => Early_Low"
+direct.adb:14:37: medium: incorrect dependency "Length => Early_High"
+direct.adb:14:50: medium: missing dependency "null => Early_High"
+direct.adb:14:50: medium: missing dependency "null => Early_Low"
+direct.adb:18:04: warning: initialization of "A" has no effect
+direct.adb:19:04: warning: initialization of "Low" has no effect
+direct.adb:20:04: warning: initialization of "High" has no effect
+direct.adb:23:08: warning: unused assignment
+direct.adb:24:09: warning: unused assignment
+direct.adb:25:14: info: range check proved (CVC5: 4 VC)
+direct.adb:25:29: medium: length check might fail [reason for check: array must be of the appropriate length]
+direct.adb:25:42: info: range check proved (CVC5: 2 VC)
+qualified.adb:6:04: info: initialization of "Length" proved
+qualified.adb:14:15: medium: missing dependency "Length => Late_High"
+qualified.adb:14:15: medium: missing dependency "Length => Late_Low"
+qualified.adb:14:59: medium: incorrect dependency "null => Late_Low"
+qualified.adb:14:69: medium: incorrect dependency "null => Late_High"
+qualified.adb:20:18: info: range check proved (CVC5: 2 VC)
+qualified.adb:20:23: info: range check proved (CVC5: 2 VC)
+qualified.adb:25:19: info: range check proved (CVC5: 4 VC)
+qualified.adb:25:48: info: range check proved (CVC5: 2 VC)

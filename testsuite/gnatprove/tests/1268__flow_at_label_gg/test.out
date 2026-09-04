@@ -1,0 +1,37 @@
+Generated contracts for Test
+   Initializes =>
+      R
+      X
+Generated contracts for Test.Main
+   Global =>
+      In_Out =>
+         R
+      Output =>
+         X
+   Refined_Global =>
+      In_Out =>
+         R
+      Output =>
+         X
+Generated contracts for Test.Main.B_1.Check_Component
+   Global =>
+      Proof_In =>
+         Component_Snapshot
+         C
+   Refined_Global =>
+      Proof_In =>
+         Component_Snapshot
+         C
+Generated contracts for Test.Main.B_1.Check_Scalar
+   Global =>
+      Proof_In =>
+         Scalar_Snapshot
+         C
+   Refined_Global =>
+      Proof_In =>
+         Scalar_Snapshot
+         C
+test.adb:31:10: info: precondition proved (CVC5: 1 VC)
+test.adb:32:10: info: precondition proved (CVC5: 1 VC)
+test.adb:33:17: medium: overflow check might fail, cannot prove lower bound for X + R.A [reason for check: result of addition must fit in a 32-bits machine integer]
+test.ads:2:33: info: initialization of "O" proved

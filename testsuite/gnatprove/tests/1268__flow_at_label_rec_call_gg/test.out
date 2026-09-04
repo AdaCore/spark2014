@@ -1,0 +1,15 @@
+Generated contracts for Test
+   Initializes =>
+      R
+Generated contracts for Test.Main
+   Global =>
+      Input =>
+         R
+   Refined_Global =>
+      Input =>
+         R
+Generated contracts for Test.Pick_A
+   Global =>
+   Refined_Global =>
+test.adb:13:13: info: implicit aspect Always_Terminates on "Pick_A" has been proved, subprogram will terminate
+test.ads:4:20: info: initialization of "O" proved

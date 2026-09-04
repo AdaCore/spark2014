@@ -1,0 +1,15 @@
+Generated contracts for Test
+   Initializes =>
+      A
+Generated contracts for Test.First
+   Global =>
+   Refined_Global =>
+Generated contracts for Test.Main
+   Global =>
+      Input =>
+         A
+   Refined_Global =>
+      Input =>
+         A
+test.adb:10:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test.ads:2:20: info: initialization of "O" proved

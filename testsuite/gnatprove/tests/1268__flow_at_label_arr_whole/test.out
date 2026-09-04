@@ -1,0 +1,8 @@
+test.adb:3:43: info: initialization of "O1" proved
+test.adb:3:47: info: initialization of "O2" proved
+test.adb:6:16: medium: missing dependency "O1 => C2"
+test.adb:6:16: medium: missing dependency "O1 => D2"
+test.adb:6:20: medium: missing dependency "O2 => C2"
+test.adb:6:20: medium: missing dependency "O2 => D2"
+test.adb:6:46: medium: incorrect dependency "null => C2"
+test.adb:6:50: medium: incorrect dependency "null => D2"

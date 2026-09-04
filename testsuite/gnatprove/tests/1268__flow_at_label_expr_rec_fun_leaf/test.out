@@ -1,0 +1,14 @@
+test.adb:4:04: warning: unused initial value of "Before_Left"
+test.adb:5:04: warning: unused initial value of "Before_Right"
+test.adb:6:04: info: initialization of "Snapshot_Output" proved
+test.adb:7:04: info: initialization of "Current_Output" proved
+test.adb:10:03: medium: missing dependency "null => Before_Left"
+test.adb:10:03: medium: missing dependency "null => Before_Right"
+test.adb:11:06: medium: missing dependency "Snapshot_Output => After_Left"
+test.adb:11:06: medium: missing dependency "Snapshot_Output => After_Right"
+test.adb:11:26: medium: incorrect dependency "Snapshot_Output => Before_Left"
+test.adb:11:39: medium: incorrect dependency "Snapshot_Output => Before_Right"
+test.adb:19:13: info: implicit aspect Always_Terminates on "Make_Pair" has been proved, subprogram will terminate
+test.adb:20:09: info: flow dependencies proved
+test.adb:25:04: warning: initialization of "Left" has no effect
+test.adb:26:04: warning: initialization of "Right" has no effect

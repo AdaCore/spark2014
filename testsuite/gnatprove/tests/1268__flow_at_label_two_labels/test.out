@@ -1,0 +1,16 @@
+test1.adb:3:18: warning: unused initial value of "C1"
+test1.adb:3:22: warning: unused initial value of "C2"
+test1.adb:3:40: info: initialization of "O1" proved
+test1.adb:3:44: info: initialization of "O2" proved
+test1.adb:5:15: medium: missing dependency "O1 => C3"
+test1.adb:5:21: medium: incorrect dependency "O1 => C1"
+test1.adb:5:25: medium: missing dependency "O2 => C3"
+test1.adb:5:31: medium: incorrect dependency "O2 => C2"
+test1.adb:5:35: medium: missing dependency "null => C1"
+test1.adb:5:35: medium: missing dependency "null => C2"
+test1.adb:5:43: medium: incorrect dependency "null => C3"
+test1.adb:7:04: warning: initialization of "X" has no effect
+test1.adb:10:06: warning: unused assignment
+test2.adb:3:31: info: initialization of "O1" proved
+test2.adb:3:35: info: initialization of "O2" proved
+test2.adb:5:04: info: initialization of "X" proved

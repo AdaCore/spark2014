@@ -1,0 +1,25 @@
+test.adb:4:04: warning: unused initial value of "A1"
+test.adb:4:08: warning: unused initial value of "A2"
+test.adb:4:12: warning: unused initial value of "X1"
+test.adb:4:16: warning: unused initial value of "X2"
+test.adb:5:04: info: initialization of "O1" proved
+test.adb:5:08: info: initialization of "O2" proved
+test.adb:8:03: medium: missing dependency "null => A1"
+test.adb:8:03: medium: missing dependency "null => A2"
+test.adb:8:03: medium: missing dependency "null => X1"
+test.adb:8:03: medium: missing dependency "null => X2"
+test.adb:8:28: medium: incorrect dependency "O1 => A1"
+test.adb:8:28: medium: incorrect dependency "O2 => A1"
+test.adb:8:32: medium: incorrect dependency "O1 => A2"
+test.adb:8:32: medium: incorrect dependency "O2 => A2"
+test.adb:8:36: medium: incorrect dependency "O1 => X1"
+test.adb:8:36: medium: incorrect dependency "O2 => X1"
+test.adb:8:40: medium: incorrect dependency "O1 => X2"
+test.adb:8:40: medium: incorrect dependency "O2 => X2"
+test.adb:15:13: info: implicit aspect Always_Terminates on "Pick_A" has been proved, subprogram will terminate
+test.adb:17:13: info: implicit aspect Always_Terminates on "Pick_X" has been proved, subprogram will terminate
+test.adb:19:04: warning: initialization of "Obj" has no effect
+test.adb:25:07: warning: statement has no effect
+test.adb:26:14: warning: unused assignment
+test.adb:34:30: info: loop invariant initialization proved (CVC5: 2 VC)
+test.adb:34:30: info: loop invariant preservation proved (CVC5: 2 VC)

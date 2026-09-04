@@ -1,0 +1,18 @@
+test.adb:4:04: warning: unused initial value of "Before_Left"
+test.adb:5:04: warning: unused initial value of "Before_Right"
+test.adb:6:04: info: initialization of "Output_Left" proved
+test.adb:7:04: info: initialization of "Output_Right" proved
+test.adb:11:06: medium: missing dependency "Output_Left => After_Left"
+test.adb:11:06: medium: missing dependency "Output_Left => After_Right"
+test.adb:11:23: medium: incorrect dependency "Output_Left => Before_Left"
+test.adb:11:36: medium: incorrect dependency "Output_Left => Before_Right"
+test.adb:12:06: medium: missing dependency "Output_Right => After_Left"
+test.adb:12:06: medium: missing dependency "Output_Right => After_Right"
+test.adb:12:23: medium: incorrect dependency "Output_Right => Before_Left"
+test.adb:12:36: medium: incorrect dependency "Output_Right => Before_Right"
+test.adb:13:06: medium: missing dependency "null => Before_Left"
+test.adb:13:06: medium: missing dependency "null => Before_Right"
+test.adb:13:23: medium: incorrect dependency "null => After_Left"
+test.adb:13:35: medium: incorrect dependency "null => After_Right"
+test.adb:22:04: warning: initialization of "Source" has no effect
+test.adb:23:04: info: initialization of "Saved" proved

@@ -1,0 +1,12 @@
+test.adb:10:07: warning: initialization of "Obj" has no effect
+test.ads:11:13: info: implicit aspect Always_Terminates on "Capture" has been proved, subprogram will terminate
+test.ads:12:07: warning: unused initial value of "A1"
+test.ads:13:07: warning: unused initial value of "X1"
+test.ads:14:21: medium: missing dependency "Capture'Result => A2"
+test.ads:14:21: medium: missing dependency "Capture'Result => X2"
+test.ads:14:40: medium: incorrect dependency "Capture'Result => A1"
+test.ads:14:44: medium: incorrect dependency "Capture'Result => X1"
+test.ads:14:49: medium: missing dependency "null => A1"
+test.ads:14:49: medium: missing dependency "null => X1"
+test.ads:14:58: medium: incorrect dependency "null => A2"
+test.ads:14:62: medium: incorrect dependency "null => X2"

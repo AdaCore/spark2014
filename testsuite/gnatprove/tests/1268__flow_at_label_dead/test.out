@@ -1,0 +1,5 @@
+mixed_refs.adb:3:40: info: initialization of "Output" proved
+mixed_refs.adb:6:03: info: flow dependencies proved
+mixed_refs.adb:9:04: warning: unused variable "Y"
+mixed_refs.adb:12:04: warning: statement has no effect
+mixed_refs.adb:13:14: warning: this statement is never reached

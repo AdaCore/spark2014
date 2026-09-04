@@ -1,0 +1,2 @@
+test.adb:18:09: error: prefix of attribute "At" must denote an object
+gnatprove: error during flow analysis and proof

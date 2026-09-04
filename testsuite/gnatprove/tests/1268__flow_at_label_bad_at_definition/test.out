@@ -1,0 +1,2 @@
+test.adb:3:30: info: initialization of "O" proved
+test.adb:5:04: info: initialization of "X" proved

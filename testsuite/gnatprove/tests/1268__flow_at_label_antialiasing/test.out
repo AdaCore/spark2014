@@ -1,0 +1,18 @@
+test.adb:3:21: warning: "B2" is not modified, could be IN
+test.adb:15:06: info: data dependencies proved
+test.adb:20:14: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 13 should mention X]
+test.adb:25:04: warning: initialization of "R" has no effect
+test.adb:28:08: warning: unused assignment
+test.adb:28:18: medium: range check might fail, cannot prove lower bound for B2 [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 3 should mention B2 in a precondition]
+test.adb:30:04: high: result of "Increment_And_Return" and formal parameter "X" are aliased (SPARK RM 6.4.2)
+test.adb:30:04: warning: "A" is set by "Increment_And_Return" but not used after the call
+test.adb:30:16: medium: range check might fail, cannot prove lower bound for B1'At (Init) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 3 should mention B1 in a precondition]
+test.adb:30:32: info: precondition proved (Trivial: 1 VC)
+test.adb:31:04: high: result of "Increment_And_Return" and formal parameter "X" are aliased (SPARK RM 6.4.2)
+test.adb:31:04: warning: "A" is set by "Increment_And_Return" but not used after the call
+test.adb:31:25: info: precondition proved (Trivial: 1 VC)
+test.adb:31:25: warning: statement has no effect
+test.adb:31:48: info: range check proved (CVC5: 2 VC)
+test.adb:31:48: medium: in value of subprogram parameter after the call at test.adb:31
+test.adb:31:48: medium: range check might fail, cannot prove lower bound for R.A [reason for check: input value must fit in parameter type and output value must fit in argument type]
+test.adb:31:48: warning: "R.A" is set by "Increment_And_Return" but not used after the call

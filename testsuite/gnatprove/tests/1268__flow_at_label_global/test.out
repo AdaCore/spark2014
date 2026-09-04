@@ -1,0 +1,2 @@
+test.adb:11:45: error: cannot reference a label outside of the current program unit or accept statement
+gnatprove: error during flow analysis and proof

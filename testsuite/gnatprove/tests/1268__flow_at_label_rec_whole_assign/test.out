@@ -1,0 +1,25 @@
+test.adb:4:04: warning: unused initial value of "A1"
+test.adb:5:04: warning: unused initial value of "X1"
+test.adb:5:12: warning: unused initial value of "Y1"
+test.adb:6:04: info: initialization of "O1" proved
+test.adb:7:04: info: initialization of "O2" proved
+test.adb:7:08: info: initialization of "O3" proved
+test.adb:10:15: medium: missing dependency "O1 => A2"
+test.adb:10:15: medium: missing dependency "O1 => X2"
+test.adb:10:15: medium: missing dependency "O1 => Y2"
+test.adb:10:21: medium: incorrect dependency "O1 => A1"
+test.adb:10:25: medium: missing dependency "O2 => A2"
+test.adb:10:25: medium: missing dependency "O2 => X2"
+test.adb:10:25: medium: missing dependency "O2 => Y2"
+test.adb:10:31: medium: incorrect dependency "O2 => X1"
+test.adb:10:35: medium: missing dependency "O3 => A2"
+test.adb:10:35: medium: missing dependency "O3 => X2"
+test.adb:10:35: medium: missing dependency "O3 => Y2"
+test.adb:10:41: medium: incorrect dependency "O3 => Y1"
+test.adb:10:45: medium: missing dependency "null => A1"
+test.adb:10:45: medium: missing dependency "null => X1"
+test.adb:10:45: medium: missing dependency "null => Y1"
+test.adb:10:54: medium: incorrect dependency "null => A2"
+test.adb:10:58: medium: incorrect dependency "null => X2"
+test.adb:10:62: medium: incorrect dependency "null => Y2"
+test.adb:26:04: info: initialization of "Saved" proved

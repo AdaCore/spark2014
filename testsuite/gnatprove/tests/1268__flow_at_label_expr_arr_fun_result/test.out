@@ -1,0 +1,21 @@
+test.adb:4:04: warning: unused initial value of "Before_First"
+test.adb:5:04: warning: unused initial value of "Before_Second"
+test.adb:6:04: info: initialization of "Output_First" proved
+test.adb:7:04: info: initialization of "Output_Second" proved
+test.adb:11:06: medium: missing dependency "Output_First => After_First"
+test.adb:11:06: medium: missing dependency "Output_First => After_Second"
+test.adb:11:24: medium: incorrect dependency "Output_First => Before_First"
+test.adb:11:38: medium: incorrect dependency "Output_First => Before_Second"
+test.adb:12:06: medium: missing dependency "Output_Second => After_First"
+test.adb:12:06: medium: missing dependency "Output_Second => After_Second"
+test.adb:12:24: medium: incorrect dependency "Output_Second => Before_First"
+test.adb:12:38: medium: incorrect dependency "Output_Second => Before_Second"
+test.adb:13:06: medium: missing dependency "null => Before_First"
+test.adb:13:06: medium: missing dependency "null => Before_Second"
+test.adb:13:24: medium: incorrect dependency "null => After_First"
+test.adb:13:37: medium: incorrect dependency "null => After_Second"
+test.adb:17:13: info: implicit aspect Always_Terminates on "Make_Pair" has been proved, subprogram will terminate
+test.adb:18:09: info: flow dependencies proved
+test.adb:23:04: warning: initialization of "First" has no effect
+test.adb:24:04: warning: initialization of "Second" has no effect
+test.adb:25:04: info: initialization of "Saved" proved

@@ -1,0 +1,10 @@
+g.adb:3:32: info: initialization of "Y1" proved
+g.adb:3:36: info: initialization of "Y2" proved
+g.adb:4:17: info: postcondition proved (CVC5: 2 VC)
+g.adb:5:21: medium: missing dependency "Y1 => X2"
+g.adb:5:31: medium: missing dependency "Y2 => X1"
+g.adb:10:04: info: initialization of "Tmp" proved
+g1.adb:3:28: info: initialization of "Y" proved
+g1.adb:4:17: info: postcondition proved (CVC5: 1 VC)
+g1.adb:5:09: info: flow dependencies proved
+g1.adb:7:04: info: initialization of "Tmp" proved

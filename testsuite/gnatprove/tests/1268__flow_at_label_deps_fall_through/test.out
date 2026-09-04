@@ -1,0 +1,7 @@
+test.adb:4:47: info: initialization of "P_Out" proved
+test.adb:8:03: info: flow dependencies proved
+test.adb:10:13: info: implicit aspect Always_Terminates on "Fun" has been proved, subprogram will terminate
+test.adb:12:06: info: data dependencies proved
+test.adb:14:06: info: flow dependencies proved
+test.adb:18:22: info: assertion proved (CVC5: 1 VC)
+test.adb:27:13: info: precondition proved (CVC5: 1 VC)

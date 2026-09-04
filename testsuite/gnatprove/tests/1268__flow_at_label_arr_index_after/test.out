@@ -1,0 +1,13 @@
+test.adb:4:04: warning: unused initial value of "Before_1"
+test.adb:4:14: warning: unused initial value of "Before_2"
+test.adb:7:04: info: initialization of "O" proved
+test.adb:11:15: medium: missing dependency "O => After_1"
+test.adb:11:15: medium: missing dependency "O => After_2"
+test.adb:11:21: medium: incorrect dependency "O => Before_1"
+test.adb:11:31: medium: incorrect dependency "O => Before_2"
+test.adb:11:45: medium: missing dependency "null => Before_1"
+test.adb:11:45: medium: missing dependency "null => Before_2"
+test.adb:11:54: medium: incorrect dependency "null => After_1"
+test.adb:11:63: medium: incorrect dependency "null => After_2"
+test.adb:15:04: warning: initialization of "A" has no effect
+test.adb:19:25: info: index check proved (CVC5: 2 VC)
