@@ -1324,7 +1324,10 @@ package body Gnat2Why.Unchecked_Conversion is
       Size        : out Uint;
       Explanation : out Unbounded_String)
    is
-      Typ_Name : constant String := Pretty_Source_Name (Typ);
+      function Typ_Name return String
+      is (Pretty_Source_Name (Typ));
+      --  Name of Typ, for use in explanations. It is computed on demand, as
+      --  it is only needed on the paths which give up.
 
    begin
       --  Default initialization for GNAT SAS
@@ -1389,6 +1392,16 @@ package body Gnat2Why.Unchecked_Conversion is
          end if;
 
          for Comp of Get_Component_Set (Typ) loop
+
+            --  Fields which are not visible in SPARK are modelled by the type
+            --  entity holding them. This cannot occur here, as types with
+            --  private components are not precisely supported for unchecked
+            --  conversion.
+
+            if Is_Type (Comp) then
+               raise Program_Error;
+            end if;
+
             declare
                Comp_Ty   : constant Type_Kind_Id := Retysp (Etype (Comp));
                Comp_Size : Uint;

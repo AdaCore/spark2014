@@ -5038,6 +5038,20 @@ package body SPARK_Definition is
                Mark_Unsupported (Lim_Overlay_With_Deep_Object, Address);
             end if;
 
+            --  Precisely supported overlays are translated like unchecked
+            --  conversions in both directions, which accesses record fields
+            --  to check that the types have no holes. Update the
+            --  Unused_Records set accordingly, or the fields would be
+            --  abstracted away when the types come from another unit.
+
+            if not Contains_Access_Subcomponents (Etype (E))
+              and then
+                not Contains_Access_Subcomponents (Etype (Aliased_Object))
+            then
+               Touch_All_Record_Fields (Etype (E));
+               Touch_All_Record_Fields (Etype (Aliased_Object));
+            end if;
+
             --  Reject objects Part_Of a protected object with a precisely
             --  supported address clause.
 
