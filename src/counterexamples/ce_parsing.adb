@@ -702,8 +702,9 @@ package body CE_Parsing is
                      Var_Modifier := Loop_Entry;
                      Current_Slice := 3;
 
-                  --  Go to the enclosing quantified expression to find
-                  --  the Why3 type on which the quantification is done.
+                  --  Go to the enclosing quantified expression or iterator
+                  --  specification to find the Why3 type on which the
+                  --  quantification is done.
                   --  It is the first index type for an array and the
                   --  ultimate cursor type for a container.
                   --  ??? What about multidim arrays?
@@ -712,29 +713,69 @@ package body CE_Parsing is
                      Var_Modifier := Index;
 
                      declare
-                        function Is_Quantified_Expr_Or_Iteration_Scheme
+                        function Is_Quantified_Expr_Or_Loop
                           (N : Node_Id) return Boolean
                         is (Nkind (N)
-                            in N_Quantified_Expression | N_Iteration_Scheme);
-                        function Enclosing_Expr_With_Iterator_Spec is new
+                            in N_Quantified_Expression | N_Loop_Statement);
+                        function Enclosing_Quantified_Expr_Or_Loop is new
                           First_Parent_With_Property
-                            (Is_Quantified_Expr_Or_Iteration_Scheme);
+                            (Is_Quantified_Expr_Or_Loop);
 
-                        Container : constant Entity_Id :=
-                          Get_Container_In_Iterator_Specification
-                            (Iterator_Specification
-                               (Enclosing_Expr_With_Iterator_Spec (Var)));
-                        pragma Assert (Present (Container));
+                        Parent : constant Node_Id :=
+                          Enclosing_Quantified_Expr_Or_Loop (Var);
 
-                        Container_Typ : constant Entity_Id :=
-                          Retysp (Etype (Container));
                      begin
-                        if Is_Array_Type (Container_Typ) then
+                        if Nkind (Parent) = N_Quantified_Expression then
+                           declare
+                              Container_Typ : constant Type_Kind_Id :=
+                                Retysp
+                                  (Etype
+                                     (Get_Container_In_Iterator_Specification
+                                        (Iterator_Specification (Parent))));
+                           begin
+                              if Is_Array_Type (Container_Typ) then
+                                 Current_Ty :=
+                                   Retysp
+                                     (Etype (First_Index (Container_Typ)));
+                              else
+                                 Current_Ty :=
+                                   Ultimate_Cursor_Type (Container_Typ);
+                              end if;
+                           end;
+
+                        elsif Present
+                                (Iterator_Specification
+                                   (Iteration_Scheme (Parent)))
+                        then
                            Current_Ty :=
-                             Retysp (Etype (First_Index (Container_Typ)));
+                             Ultimate_Cursor_Type
+                               (Retysp
+                                  (Etype
+                                     (Get_Container_In_Iterator_Specification
+                                        (Iterator_Specification
+                                           (Iteration_Scheme (Parent))))));
+
+                        --  We are in a "FOR e OF a LOOP" over array, which has
+                        --  been expanded by the frontend into:
+                        --
+                        --    FOR x1 in a'RANGE (1) LOOP
+                        --       FOR x2 in a'RANGE (2) LOOP
+                        --          E : ... renames a (x1, x2, ...);
+                        --
+                        --  Retrieve the type of "a'RANGE (1)`.
+
                         else
-                           Current_Ty := Ultimate_Cursor_Type (Container_Typ);
+                           Current_Ty :=
+                             Retysp
+                               (Etype
+                                  (First_Index
+                                     (Etype
+                                        (Prefix
+                                           (Name
+                                              (Enclosing_Declaration
+                                                 (Var)))))));
                         end if;
+
                      end;
                      Current_Slice := 3;
 
