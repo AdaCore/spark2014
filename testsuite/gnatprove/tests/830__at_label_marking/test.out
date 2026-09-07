@@ -60,16 +60,16 @@ test_at_placement.adb:165:04: warning: analyzing unreferenced procedure "Loop_In
 test_at_placement.adb:177:04: warning: analyzing unreferenced procedure "Loop_Invariant_9" [unreferenced-procedure]
 test_at_placement.adb:191:04: warning: analyzing unreferenced procedure "Loop_Invariant_10" [unreferenced-procedure]
 test_at_placement.adb:203:04: warning: analyzing unreferenced procedure "Loop_Invariant_11" [unreferenced-procedure]
-test_at_placement.adb:242:04: warning: analyzing unreferenced procedure "Test_Allocate_1" [unreferenced-procedure]
-test_at_placement.adb:248:12: error: launch "gnatprove --explain=E0047" for more information
-test_at_placement.adb:248:12: error: reference to the "At" attribute on a prefix subject to ownership occurring outside of a pragma or a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4.1(10)) [E0047]
-test_at_placement.adb:248:12: error: violation of aspect SPARK_Mode at line 3
-test_at_placement.adb:251:04: warning: analyzing unreferenced procedure "Test_Allocate_2" [unreferenced-procedure]
-test_at_placement.adb:260:04: warning: analyzing unreferenced procedure "Test_Allocate_3" [unreferenced-procedure]
-test_at_placement.adb:272:04: warning: analyzing unreferenced procedure "Test_Allocate_4" [unreferenced-procedure]
-test_at_placement.adb:278:37: error: launch "gnatprove --explain=E0047" for more information
-test_at_placement.adb:278:37: error: reference to the "At" attribute on a prefix subject to ownership occurring outside of a pragma or a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4.1(10)) [E0047]
-test_at_placement.adb:278:37: error: violation of aspect SPARK_Mode at line 3
-test_at_placement.adb:284:04: warning: analyzing unreferenced procedure "Test_Allocate_5" [unreferenced-procedure]
-test_at_placement.adb:293:04: warning: analyzing unreferenced procedure "Test_Allocate_6" [unreferenced-procedure]
+test_at_placement.adb:249:04: warning: analyzing unreferenced procedure "Test_Allocate_1" [unreferenced-procedure]
+test_at_placement.adb:255:12: error: launch "gnatprove --explain=E0047" for more information
+test_at_placement.adb:255:12: error: reference to the "At" attribute on a prefix subject to ownership occurring outside of a pragma or a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4.1(10)) [E0047]
+test_at_placement.adb:255:12: error: violation of aspect SPARK_Mode at line 3
+test_at_placement.adb:258:04: warning: analyzing unreferenced procedure "Test_Allocate_2" [unreferenced-procedure]
+test_at_placement.adb:267:04: warning: analyzing unreferenced procedure "Test_Allocate_3" [unreferenced-procedure]
+test_at_placement.adb:280:04: warning: analyzing unreferenced procedure "Test_Allocate_4" [unreferenced-procedure]
+test_at_placement.adb:286:37: error: launch "gnatprove --explain=E0047" for more information
+test_at_placement.adb:286:37: error: reference to the "At" attribute on a prefix subject to ownership occurring outside of a pragma or a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4.1(10)) [E0047]
+test_at_placement.adb:286:37: error: violation of aspect SPARK_Mode at line 3
+test_at_placement.adb:292:04: warning: analyzing unreferenced procedure "Test_Allocate_5" [unreferenced-procedure]
+test_at_placement.adb:301:04: warning: analyzing unreferenced procedure "Test_Allocate_6" [unreferenced-procedure]
 gnatprove: error during flow analysis and proof

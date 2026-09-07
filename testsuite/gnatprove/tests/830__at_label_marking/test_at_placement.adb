@@ -239,6 +239,13 @@ is
       return new Integer'(X);
    end Allocate;
 
+   function Allocate_Wrapper (X : Integer) return Int_Access_Wrapper is
+      Result : Int_Access_Wrapper;
+   begin
+      Result.R := Allocate (X);
+      return Result;
+   end Allocate_Wrapper;
+
    procedure Test_Allocate_1 is
       X : Integer := 12;
       Y : Int_Access;
@@ -263,7 +270,8 @@ is
       <<L1>>
       X := 13;
       declare
-         Y : constant Int_Access_Wrapper := (R => Allocate (X)'At (L1)); --  OK, At on allocating function in constant declaration
+         Y : constant Int_Access_Wrapper :=
+           Allocate_Wrapper (X)'At (L1); --  OK, At on allocating function in constant declaration
       begin
          null;
       end;
@@ -296,7 +304,8 @@ is
    begin
       <<L1>>
       X := 13;
-      Y := new Int_Access_Wrapper'(R => Allocate (X)'At (L1)); --  OK, At on allocating function in move to constant
+      Y :=
+        new Int_Access_Wrapper'(Allocate_Wrapper (X)'At (L1)); --  OK, At on allocating function in move to constant
    end Test_Allocate_6;
 begin
    null;
