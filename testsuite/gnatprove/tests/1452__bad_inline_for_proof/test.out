@@ -1,0 +1,21 @@
+main.adb:7:12: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
+main.adb:7:12: warning: no null value found for type with predefined equality "T" [predefined-equality-null]
+main.adb:18:16: error: "Logical_Eq" does not have the Logical_Equal annotation
+main.adb:18:16: error: function with the "Inline_For_Proof" annotation shall either be an expression function or have a single postcondition of the form ""Copy"'Result = Expr"
+main.adb:20:17: warning: assuming "Logical_Eq" has no effect on global items
+main.adb:20:17: warning: no Global contract available for "Logical_Eq" [assumed-global-null]
+main.adb:33:12: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
+main.adb:33:12: warning: no null value found for type with predefined equality "T" [predefined-equality-null]
+main.adb:44:15: warning: assuming "Is_Reclaimed" has no effect on global items
+main.adb:44:15: warning: no Global contract available for "Is_Reclaimed" [assumed-global-null]
+main.adb:44:29: warning: assuming "Copy" has no effect on global items
+main.adb:44:29: warning: no Global contract available for "Copy" [assumed-global-null]
+main.adb:44:43: warning: assuming "Is_Reclaimed" has no effect on global items
+main.adb:44:43: warning: no Global contract available for "Is_Reclaimed" [assumed-global-null]
+main.adb:44:57: warning: assuming "Copy" has no effect on global items
+main.adb:44:57: warning: no Global contract available for "Copy" [assumed-global-null]
+main.adb:47:16: error: "Logical_Eq" does not have the Logical_Equal annotation
+main.adb:47:16: error: function with the "Inline_For_Proof" annotation shall either be an expression function or have a single postcondition of the form ""Copy"'Result = Expr"
+main.adb:49:17: warning: assuming "Logical_Eq" has no effect on global items
+main.adb:49:17: warning: no Global contract available for "Logical_Eq" [assumed-global-null]
+gnatprove: error during flow analysis and proof

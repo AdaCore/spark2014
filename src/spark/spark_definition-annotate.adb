@@ -161,6 +161,12 @@ package body SPARK_Definition.Annotate is
    --  annotated with Higher_Order_Specialization to the node on which the
    --  checks shall be emited.
 
+   Delayed_Inlined_Functions : Common_Containers.Node_Maps.Map :=
+     Common_Containers.Node_Maps.Empty_Map;
+   --  Maps functions with inline_For_Proof with a post of the form
+   --  P (F'Result, ...) to the predicate P so we can check that it has a
+   --  Logical_Equal annotation.
+
    type Node_Pair is record
       First : Node_Id;
       Snd   : Node_Id;
@@ -3779,6 +3785,22 @@ package body SPARK_Definition.Annotate is
          then
             Value := Next_Actual (First_Actual (Value));
 
+         --  Or a call to a logical equality function
+
+         elsif Nkind (Value) = N_Function_Call
+           and then Number_Formals (Get_Called_Entity (Value)) = 2
+           and then Is_Attribute_Result (First_Actual (Value))
+         then
+            declare
+               Eq : constant Entity_Id := Get_Called_Entity (Value);
+            begin
+               if not Has_Logical_Eq_Annotation (Eq) then
+                  Delayed_Inlined_Functions.Include (E, Eq);
+               end if;
+            end;
+
+            Value := Next_Actual (First_Actual (Value));
+
          else
             Mark_Incorrect_Use_Of_Annotation (Annot_Inline_For_Proof_Post, E);
             return;
@@ -6182,6 +6204,30 @@ package body SPARK_Definition.Annotate is
          end;
       end loop;
       Delayed_Null_Values.Clear;
+
+      --  Go over delayed functions with Inline_For_Proof to make sure that
+      --  the associated predicate is a logical equality function.
+
+      for Pos in Delayed_Inlined_Functions.Iterate loop
+         declare
+            use Node_Maps;
+            F renames Key (Pos);
+            Eq renames Element (Pos);
+         begin
+            if not Has_Logical_Eq_Annotation (Eq) then
+               Mark_Incorrect_Use_Of_Annotation
+                 (Annot_Inline_For_Proof_Post,
+                  F,
+                  Cont_Msg =>
+                    Create
+                      ("& does not have the "
+                       & Pretty_Annotation_Name (Logical_Equal)
+                       & " annotation",
+                       Names => [Eq]));
+            end if;
+         end;
+      end loop;
+      Delayed_Inlined_Functions.Clear;
 
       Violation_Detected := Save_Violation_Detected;
       Var_In_Delayed_Annotation := Save_Var_In_Delayed_Annotation;

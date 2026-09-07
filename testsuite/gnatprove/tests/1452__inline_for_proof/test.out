@@ -1,0 +1,12 @@
+p.adb:8:32: info: pointer dereference check proved (CVC5: 1 VC)
+p.ads:6:09: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
+p.ads:6:09: warning: no null value found for type with predefined equality "T" [predefined-equality-null]
+p.ads:10:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+p.ads:10:13: info: reclamation entity consistency proved (CVC5: 1 VC; Trivial: 1 VC)
+p.ads:13:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate
+p.ads:14:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 2 VC)
+p.ads:16:13: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
+p.ads:17:14: info: postcondition proved (CVC5: 1 VC)
+p.ads:18:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
+p.ads:28:62: info: pointer dereference check proved (CVC5: 1 VC)
+p.ads:28:70: info: pointer dereference check proved (CVC5: 1 VC)
