@@ -1431,7 +1431,6 @@ package SPARK_Util is
 
    function Is_Inlined_Call (Stmt : Node_Id) return Boolean
    is (Nkind (Stmt) = N_Block_Statement
-       and then Present (Original_Node (Stmt))
        and then Nkind (Original_Node (Stmt)) = N_Procedure_Call_Statement);
 
    function Called_Entity_From_Inlined_Call (Call : Node_Id) return Entity_Id
