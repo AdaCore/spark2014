@@ -43,6 +43,7 @@ with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 with Flow_Types;                     use Flow_Types;
+with Ghost;
 with Gnat2Why_Args;
 with Lib;                            use Lib;
 with Namet;                          use Namet;
@@ -5872,7 +5873,7 @@ package body SPARK_Definition is
 
             if Is_Unchecked_Union (Etype (P))
               and then not Attr_Constrained_Statically_Known (P)
-              and then not In_Non_Exec_Context (N)
+              and then not Ghost.In_Non_Exec_Context (N)
             then
                Mark_Unsupported (Lim_UU_Constrained_Attr, N);
             end if;

@@ -451,6 +451,14 @@ package body SPARK_Atree.Entities is
    -- Is_Predicate_Function --
    ---------------------------
 
+   function Is_Non_Exec_Assertion_Level
+     (Level : E_Assertion_Level_Id) return Boolean
+   is (Ghost.Is_Non_Exec_Assertion_Level (Level));
+
+   ---------------------------
+   -- Is_Predicate_Function --
+   ---------------------------
+
    function Is_Predicate_Function (Subp : Subprogram_Kind_Id) return Boolean
    is (Einfo.Entities.Is_Predicate_Function (Subp));
 
