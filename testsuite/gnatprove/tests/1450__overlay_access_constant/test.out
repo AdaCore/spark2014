@@ -1,0 +1,7 @@
+test_acc.adb:7:07: high: object is unsuitable for aliasing via address clause [possible explanation: type "Cst" is an access type]
+test_acc.adb:7:07: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Cst" is an access type]
+test_acc.adb:7:07: info: address in address clause is compatible with object alignment (Trivial)
+test_acc.adb:7:07: warning: imprecise handling of overlay (type is unsuitable as target for unchecked conversion) [imprecise-overlay]
+test_acc.adb:7:42: info: object is suitable for aliasing via address clause (Trivial)
+test_acc.adb:7:42: info: type is suitable as source for unchecked conversion (Trivial)
+test_acc.adb:7:42: info: types of aliased objects have the same size (Trivial)
