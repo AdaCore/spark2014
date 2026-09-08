@@ -1,0 +1,56 @@
+bad_1.adb:7:41: error: attribute "Loop_Index" cannot appear in nested program unit
+bad_2.adb:3:35: info: data dependencies proved
+bad_2.adb:7:44: error: launch "gnatprove --explain=E0007" for more information
+bad_2.adb:7:44: error: subtype constraint cannot depend on variable input "E'Loop_Index" [E0007]
+bad_2.adb:7:44: error: use instead a constant initialized to the expression with variable input
+bad_2.adb:8:40: high: "E'Loop_Index" must be listed in the Global aspect of "F" (SPARK RM 6.1.4(15))
+bad_2.adb:8:60: error: "E'Loop_Index" is referenced in expression function but missing from the Global
+bad_22.adb:3:23: info: data dependencies proved
+bad_22.adb:6:04: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+bad_22.adb:10:48: error: launch "gnatprove --explain=E0007" for more information
+bad_22.adb:10:48: error: subtype constraint cannot depend on variable input "E'Loop_Index" [E0007]
+bad_22.adb:10:48: error: use instead a constant initialized to the expression with variable input
+bad_22.adb:11:48: error: launch "gnatprove --explain=E0007" for more information
+bad_22.adb:11:48: error: subtype constraint cannot depend on variable input "E'Loop_Index (2)" [E0007]
+bad_22.adb:11:48: error: use instead a constant initialized to the expression with variable input
+bad_22.adb:12:44: high: "E'Loop_Index" must be listed in the Global aspect of "F1" (SPARK RM 6.1.4(15))
+bad_22.adb:12:65: error: "E'Loop_Index" is referenced in expression function but missing from the Global
+bad_22.adb:13:44: high: "E'Loop_Index (2)" must be listed in the Global aspect of "F2" (SPARK RM 6.1.4(15))
+bad_22.adb:13:65: error: "E'Loop_Index (2)" is referenced in expression function but missing from the Global
+bad_3.adb:4:47: info: data dependencies proved
+bad_3.adb:8:73: error: launch "gnatprove --explain=E0007" for more information
+bad_3.adb:8:73: error: subtype constraint cannot depend on variable input "E'Loop_Index" [E0007]
+bad_3.adb:8:73: error: use instead a constant initialized to the expression with variable input
+bad_3.adb:9:40: high: "E'Loop_Index" must be listed in the Global aspect of "F" (SPARK RM 6.1.4(15))
+bad_3.adb:9:60: error: "bad_3.B3b.C5b" is referenced in expression function but missing from the Global
+bad_33.adb:3:36: info: data dependencies proved
+bad_33.adb:7:44: error: launch "gnatprove --explain=E0007" for more information
+bad_33.adb:7:44: error: subtype constraint cannot depend on variable input "E'Loop_Index" [E0007]
+bad_33.adb:7:44: error: use instead a constant initialized to the expression with variable input
+bad_33.adb:8:40: high: "E'Loop_Index" must be listed in the Global aspect of "F" (SPARK RM 6.1.4(15))
+bad_33.adb:8:60: error: "E'Loop_Index" is referenced in expression function but missing from the Global
+bad_4.adb:4:47: info: data dependencies proved
+bad_4.adb:6:08: info: precondition proved (Trivial: 1 VC)
+bad_4.adb:7:22: medium: assertion might fail
+dead.adb:4:10: info: implicit aspect Always_Terminates on "Dead" has been proved, subprogram will terminate
+dead.adb:5:08: info: flow dependencies proved
+dead.adb:8:04: warning: statement has no effect
+dead.adb:9:11: info: precondition proved (Trivial: 1 VC)
+dead.adb:9:16: warning: this statement is never reached
+dead.adb:10:10: warning: this statement is never reached
+good_1.adb:1:10: info: implicit aspect Always_Terminates on "Good_1" has been proved, subprogram will terminate
+good_1.adb:2:08: info: flow dependencies proved
+good_1.adb:5:15: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
+good_container.adb:3:10: info: implicit aspect Always_Terminates on "Good_Container" has been proved, subprogram will terminate
+good_container.adb:5:06: info: flow dependencies proved
+good_container.adb:8:08: info: precondition proved (Trivial: 1 VC)
+iterable.ads:6:07: info: range check proved (CVC5: 2 VC)
+iterable.ads:17:13: info: during checks for quantification at iterable.ads:5
+iterable.ads:17:13: info: precondition proved (Trivial: 1 VC)
+iterable.ads:18:13: info: during checks for quantification at iterable.ads:5
+iterable.ads:18:13: info: precondition proved (Trivial: 1 VC)
+iterable.ads:19:13: info: during checks for quantification at iterable.ads:5
+iterable.ads:19:13: info: precondition proved (Trivial: 1 VC)
+iterable.ads:20:13: info: during checks for quantification at iterable.ads:5
+iterable.ads:20:13: info: precondition proved (Trivial: 1 VC)
+gnatprove: error during flow analysis and proof
