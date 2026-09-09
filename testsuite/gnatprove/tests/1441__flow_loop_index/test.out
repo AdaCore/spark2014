@@ -22,7 +22,7 @@ bad_3.adb:8:73: error: launch "gnatprove --explain=E0007" for more information
 bad_3.adb:8:73: error: subtype constraint cannot depend on variable input "E'Loop_Index" [E0007]
 bad_3.adb:8:73: error: use instead a constant initialized to the expression with variable input
 bad_3.adb:9:40: high: "E'Loop_Index" must be listed in the Global aspect of "F" (SPARK RM 6.1.4(15))
-bad_3.adb:9:60: error: "bad_3.B3b.C5b" is referenced in expression function but missing from the Global
+bad_3.adb:9:60: error: "E'Loop_Index" is referenced in expression function but missing from the Global
 bad_33.adb:3:36: info: data dependencies proved
 bad_33.adb:7:44: error: launch "gnatprove --explain=E0007" for more information
 bad_33.adb:7:44: error: subtype constraint cannot depend on variable input "E'Loop_Index" [E0007]
