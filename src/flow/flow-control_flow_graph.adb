@@ -2933,111 +2933,107 @@ package body Flow.Control_Flow_Graph is
       --  If we encounter a condition known to be false, the statements of
       --  the branch are not linked to the vertex representing elsif vertex.
 
-      if Present (Elsif_Part) then
-         Elsif_Statement := First (Elsif_Part);
+      Elsif_Statement := First (Elsif_Part);
 
-         while Present (Elsif_Statement) loop
-            Known_Condition :=
-              Compile_Time_Known_Value (Condition (Elsif_Statement));
+      while Present (Elsif_Statement) loop
+         Known_Condition :=
+           Compile_Time_Known_Value (Condition (Elsif_Statement));
 
-            declare
-               V_Prev      : constant Flow_Graphs.Vertex_Id := V;
-               Elsif_Body  : constant List_Id :=
-                 Then_Statements (Elsif_Statement);
-               Funcalls    : Call_Sets.Set;
-               Dead_Branch : constant Boolean :=
-                 Seen_True_Condition
-                 or else
-                   (Known_Condition
-                    and then
-                      Is_False (Expr_Value (Condition (Elsif_Statement))));
-            begin
+         declare
+            V_Prev      : constant Flow_Graphs.Vertex_Id := V;
+            Elsif_Body  : constant List_Id :=
+              Then_Statements (Elsif_Statement);
+            Funcalls    : Call_Sets.Set;
+            Dead_Branch : constant Boolean :=
+              Seen_True_Condition
+              or else
+                (Known_Condition
+                 and then Is_False (Expr_Value (Condition (Elsif_Statement))));
+         begin
 
-               --  We have a vertex V for each elsif statement
-               Pick_Generated_Info
-                 (Condition (Elsif_Statement),
-                  FA.B_Scope,
-                  Function_Calls     => Funcalls,
-                  Indirect_Calls     => Indcalls,
-                  Proof_Dependencies => FA.Proof_Dependencies,
-                  Type_Contracts     => FA.Type_Contracts,
-                  Locks              => FA.Locks,
-                  Generating_Globals => FA.Generating_Globals);
+            --  We have a vertex V for each elsif statement
+            Pick_Generated_Info
+              (Condition (Elsif_Statement),
+               FA.B_Scope,
+               Function_Calls     => Funcalls,
+               Indirect_Calls     => Indcalls,
+               Proof_Dependencies => FA.Proof_Dependencies,
+               Type_Contracts     => FA.Type_Contracts,
+               Locks              => FA.Locks,
+               Generating_Globals => FA.Generating_Globals);
 
-               --  Disable warnings on the elsif statement itself when the
-               --  condition is statically disabled, no matter its value.
-               Ctx.Vertex_Ctx.Warnings_Off :=
-                 Save_Warn_Off
-                 or else Seen_True_Warn_Off
-                 or else Is_Statically_Disabled (Condition (Elsif_Statement));
+            --  Disable warnings on the elsif statement itself when the
+            --  condition is statically disabled, no matter its value.
+            Ctx.Vertex_Ctx.Warnings_Off :=
+              Save_Warn_Off
+              or else Seen_True_Warn_Off
+              or else Is_Statically_Disabled (Condition (Elsif_Statement));
 
-               Add_Vertex
-                 (FA,
-                  Direct_Mapping_Id (Elsif_Statement),
-                  Make_Basic_Attributes
-                    (Var_Ex_Use =>
-                       Get_Variables
-                         (Condition (Elsif_Statement),
-                          Scope                => FA.B_Scope,
-                          Target_Name          => Null_Flow_Id,
-                          Fold_Functions       => Inputs,
-                          Use_Computed_Globals => not FA.Generating_Globals),
-                     Subp_Calls => Funcalls,
-                     Indt_Calls => Indcalls,
-                     Vertex_Ctx => Ctx.Vertex_Ctx,
-                     E_Loc      => Elsif_Statement),
-                  V);
-               Ctx.Folded_Function_Checks.Append (Condition (Elsif_Statement));
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (Elsif_Statement),
+               Make_Basic_Attributes
+                 (Var_Ex_Use =>
+                    Get_Variables
+                      (Condition (Elsif_Statement),
+                       Scope                => FA.B_Scope,
+                       Target_Name          => Null_Flow_Id,
+                       Fold_Functions       => Inputs,
+                       Use_Computed_Globals => not FA.Generating_Globals),
+                  Subp_Calls => Funcalls,
+                  Indt_Calls => Indcalls,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => Elsif_Statement),
+               V);
+            Ctx.Folded_Function_Checks.Append (Condition (Elsif_Statement));
 
-               --  If we didn't encounter a statically true condition, link
-               --  V_Prev to V.
+            --  If we didn't encounter a statically true condition, link V_Prev
+            --  to V.
 
-               if not Seen_True_Condition then
-                  Linkup (FA, V_Prev, V);
-               end if;
+            if not Seen_True_Condition then
+               Linkup (FA, V_Prev, V);
+            end if;
 
-               --  Like the if part, we set the correct context for warning
-               --  emission about unreachable code.
-               Ctx.Vertex_Ctx.Warnings_Off :=
-                 Save_Warn_Off
-                 or else Seen_True_Warn_Off
-                 or else
-                   Exp_Util.Is_Statically_Disabled
-                     (N             => Condition (Elsif_Statement),
-                      Value         => False,
-                      Include_Valid => False);
+            --  Like the if part, we set the correct context for warning
+            --  emission about unreachable code.
+            Ctx.Vertex_Ctx.Warnings_Off :=
+              Save_Warn_Off
+              or else Seen_True_Warn_Off
+              or else
+                Exp_Util.Is_Statically_Disabled
+                  (N             => Condition (Elsif_Statement),
+                   Value         => False,
+                   Include_Valid => False);
 
-               --  Process statements of elsif
-               Process_Statement_List (Elsif_Body, FA, CM, Ctx);
+            --  Process statements of elsif
+            Process_Statement_List (Elsif_Body, FA, CM, Ctx);
 
-               Seen_True_Warn_Off :=
-                 Seen_True_Warn_Off
-                 or else
-                   Exp_Util.Is_Statically_Disabled
-                     (N             => Condition (Elsif_Statement),
-                      Value         => True,
-                      Include_Valid => False);
+            Seen_True_Warn_Off :=
+              Seen_True_Warn_Off
+              or else
+                Exp_Util.Is_Statically_Disabled
+                  (N             => Condition (Elsif_Statement),
+                   Value         => True,
+                   Include_Valid => False);
 
-               --  If the code is not statically dead, link V to the
-               --  statements of elsif and add the exits of Elsif_Body to the
-               --  exits of N.
+            --  If the code is not statically dead, link V to the statements of
+            --  elsif and add the exits of Elsif_Body to the exits of N.
 
-               if not Dead_Branch then
-                  Seen_True_Condition :=
-                    Seen_True_Condition or else Known_Condition;
+            if not Dead_Branch then
+               Seen_True_Condition :=
+                 Seen_True_Condition or else Known_Condition;
 
-                  Linkup (FA, V, CM (Union_Id (Elsif_Body)).Standard_Entry);
+               Linkup (FA, V, CM (Union_Id (Elsif_Body)).Standard_Entry);
 
-                  CM (Union_Id (N)).Standard_Exits.Union
-                    (CM (Union_Id (Elsif_Body)).Standard_Exits);
-               end if;
+               CM (Union_Id (N)).Standard_Exits.Union
+                 (CM (Union_Id (Elsif_Body)).Standard_Exits);
+            end if;
 
-               CM.Delete (Union_Id (Elsif_Body));
-            end;
+            CM.Delete (Union_Id (Elsif_Body));
+         end;
 
-            Next (Elsif_Statement);
-         end loop;
-      end if;
+         Next (Elsif_Statement);
+      end loop;
 
       --  Remember that V is the vertex associated with either the
       --  last elsif blob or the if statement itself.
