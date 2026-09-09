@@ -10,3 +10,4 @@ test.adb:12:09: medium: missing dependency "null => Before_2"
 test.adb:12:34: medium: incorrect dependency "null => After_1"
 test.adb:12:43: medium: incorrect dependency "null => After_2"
 test.adb:18:07: warning: initialization of "A" has no effect
+test.adb:22:15: warning: statement has no effect

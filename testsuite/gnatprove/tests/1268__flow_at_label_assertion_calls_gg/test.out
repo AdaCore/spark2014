@@ -6,22 +6,22 @@ Generated contracts for Test
       Values
 Generated contracts for Test.Direct_Call
    Global =>
-      Proof_In =>
+      Input =>
          Direct_Check
          Direct_Value
          Values
    Refined_Global =>
-      Proof_In =>
+      Input =>
          Direct_Check
          Direct_Value
          Values
 Generated contracts for Test.Global_Call
    Global =>
-      Proof_In =>
+      Input =>
          Global_Value
          Values
    Refined_Global =>
-      Proof_In =>
+      Input =>
          Global_Value
          Values
 test.adb:19:16: info: implicit aspect Always_Terminates on "Pick" has been proved, subprogram will terminate

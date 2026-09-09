@@ -13,3 +13,5 @@ test.adb:6:35: medium: missing dependency "null => D1"
 test.adb:6:44: medium: incorrect dependency "null => C2"
 test.adb:6:48: medium: incorrect dependency "null => D2"
 test.adb:17:04: warning: initialization of "R" has no effect
+test.adb:22:13: warning: statement has no effect
+test.adb:23:13: warning: statement has no effect

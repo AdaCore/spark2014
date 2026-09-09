@@ -11,6 +11,10 @@ test1.adb:5:35: medium: missing dependency "null => C2"
 test1.adb:5:43: medium: incorrect dependency "null => C3"
 test1.adb:7:04: warning: initialization of "X" has no effect
 test1.adb:10:06: warning: unused assignment
+test1.adb:13:11: warning: statement has no effect
+test1.adb:14:11: warning: statement has no effect
 test2.adb:3:31: info: initialization of "O1" proved
 test2.adb:3:35: info: initialization of "O2" proved
-test2.adb:5:04: info: initialization of "X" proved
+test2.adb:11:11: warning: statement has no effect
+test2.adb:12:10: high: "X" is not initialized
+test2.adb:12:11: warning: statement has no effect

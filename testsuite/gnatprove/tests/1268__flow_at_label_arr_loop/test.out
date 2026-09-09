@@ -19,5 +19,7 @@ test.adb:9:56: medium: incorrect dependency "O2 => Second_2"
 test.adb:13:04: warning: initialization of "A" has no effect
 test.adb:19:07: warning: statement has no effect
 test.adb:20:12: warning: unused assignment
+test.adb:26:21: warning: statement has no effect
+test.adb:27:21: warning: statement has no effect
 test.adb:28:30: info: loop invariant initialization proved (CVC5: 2 VC)
 test.adb:28:30: info: loop invariant preservation proved (CVC5: 2 VC)

@@ -31,6 +31,8 @@ Generated contracts for Test.Main.B_1.Check_Scalar
       Proof_In =>
          Scalar_Snapshot
          C
+test.adb:19:52: warning: statement has no effect
+test.adb:20:52: warning: statement has no effect
 test.adb:31:10: info: precondition proved (CVC5: 1 VC)
 test.adb:32:10: info: precondition proved (CVC5: 1 VC)
 test.adb:33:17: medium: overflow check might fail, cannot prove lower bound for X + R.A [reason for check: result of addition must fit in a 32-bits machine integer]

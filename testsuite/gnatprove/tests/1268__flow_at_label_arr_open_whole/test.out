@@ -10,6 +10,8 @@ test.adb:23:04: info: initialization of "Saved" proved
 test.adb:23:04: info: range check proved (CVC5: 2 VC)
 test.adb:26:08: info: index check proved (CVC5: 2 VC)
 test.adb:27:14: info: precondition proved (CVC5: 1 VC)
+test.adb:27:21: warning: statement has no effect
 test.adb:28:10: info: length check proved (CVC5: 3 VC)
 test.adb:28:14: info: length check proved (CVC5: 3 VC)
+test.adb:28:14: warning: statement has no effect
 test.adb:29:28: info: index check proved (CVC5: 2 VC)

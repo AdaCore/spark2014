@@ -12,3 +12,5 @@ test.adb:6:44: medium: incorrect dependency "null => C2"
 test.adb:6:48: medium: incorrect dependency "null => D2"
 test.adb:8:04: warning: initialization of "X" has no effect
 test.adb:9:04: warning: initialization of "Y" has no effect
+test.adb:14:11: warning: statement has no effect
+test.adb:15:11: warning: statement has no effect

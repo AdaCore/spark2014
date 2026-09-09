@@ -5,3 +5,4 @@ test.adb:6:24: medium: missing dependency "null => C1"
 test.adb:6:32: medium: incorrect dependency "null => C2"
 test.adb:8:04: warning: initialization of "X" has no effect
 test.adb:12:20: info: overflow check proved (CVC5: 2 VC)
+test.adb:12:24: warning: statement has no effect

@@ -22,3 +22,6 @@ test.adb:10:45: medium: missing dependency "null => Y1"
 test.adb:10:54: medium: incorrect dependency "null => A2"
 test.adb:10:58: medium: incorrect dependency "null => X2"
 test.adb:10:62: medium: incorrect dependency "null => Y2"
+test.adb:31:13: warning: statement has no effect
+test.adb:32:13: warning: statement has no effect
+test.adb:33:13: warning: statement has no effect

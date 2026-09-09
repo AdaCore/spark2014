@@ -10,6 +10,7 @@ direct.adb:23:08: warning: unused assignment
 direct.adb:24:09: warning: unused assignment
 direct.adb:25:14: info: range check proved (CVC5: 4 VC)
 direct.adb:25:29: medium: length check might fail [reason for check: array must be of the appropriate length]
+direct.adb:25:29: warning: statement has no effect
 direct.adb:25:42: info: range check proved (CVC5: 2 VC)
 qualified.adb:6:04: info: initialization of "Length" proved
 qualified.adb:14:15: medium: missing dependency "Length => Late_High"
@@ -19,4 +20,5 @@ qualified.adb:14:69: medium: incorrect dependency "null => Late_High"
 qualified.adb:20:18: info: range check proved (CVC5: 2 VC)
 qualified.adb:20:23: info: range check proved (CVC5: 2 VC)
 qualified.adb:25:19: info: range check proved (CVC5: 4 VC)
+qualified.adb:25:34: warning: statement has no effect
 qualified.adb:25:48: info: range check proved (CVC5: 2 VC)

@@ -19,3 +19,4 @@ test.adb:18:09: info: flow dependencies proved
 test.adb:23:04: warning: initialization of "First" has no effect
 test.adb:24:04: warning: initialization of "Second" has no effect
 test.adb:25:04: info: initialization of "Saved" proved
+test.adb:31:38: warning: statement has no effect

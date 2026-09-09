@@ -18,4 +18,5 @@ test.adb:28:04: warning: initialization of "High" has no effect
 test.adb:29:04: warning: initialization of "Index" has no effect
 test.adb:36:09: info: range check proved (CVC5: 4 VC)
 test.adb:36:24: medium: length check might fail [reason for check: array must be of the appropriate length]
+test.adb:36:24: warning: statement has no effect
 test.adb:36:39: info: index check proved (CVC5: 2 VC)

@@ -7,3 +7,4 @@ test.adb:5:33: medium: incorrect dependency "null => C2"
 test.adb:7:13: info: implicit aspect Always_Terminates on "Pick" has been proved, subprogram will terminate
 test.adb:8:06: info: flow dependencies proved
 test.adb:12:04: warning: initialization of "X" has no effect
+test.adb:16:16: warning: statement has no effect

@@ -1,3 +1,4 @@
 test.adb:3:35: info: initialization of "O" proved
 test.adb:4:15: medium: missing dependency "O => C2"
 test.adb:4:32: medium: incorrect dependency "null => C2"
+test.adb:12:14: warning: statement has no effect

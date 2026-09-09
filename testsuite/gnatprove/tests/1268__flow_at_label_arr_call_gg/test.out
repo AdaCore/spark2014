@@ -12,4 +12,5 @@ Generated contracts for Test.Main
       Input =>
          A
 test.adb:10:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test.adb:15:20: warning: statement has no effect
 test.ads:2:20: info: initialization of "O" proved

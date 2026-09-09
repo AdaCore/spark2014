@@ -13,3 +13,4 @@ test.adb:13:13: info: implicit aspect Always_Terminates on "First" has been prov
 test.adb:14:09: info: data dependencies proved
 test.adb:14:25: info: flow dependencies proved
 test.adb:21:04: warning: initialization of "A" has no effect
+test.adb:25:17: warning: statement has no effect

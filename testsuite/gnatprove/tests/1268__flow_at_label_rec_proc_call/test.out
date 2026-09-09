@@ -21,3 +21,5 @@ test.adb:20:09: info: flow dependencies proved
 test.adb:27:44: info: initialization of "O" proved
 test.adb:28:09: info: flow dependencies proved
 test.adb:35:04: warning: initialization of "Obj" has no effect
+test.adb:42:13: warning: statement has no effect
+test.adb:43:23: warning: statement has no effect

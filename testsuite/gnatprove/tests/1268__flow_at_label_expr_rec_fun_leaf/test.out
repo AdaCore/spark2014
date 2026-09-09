@@ -12,3 +12,4 @@ test.adb:19:13: info: implicit aspect Always_Terminates on "Make_Pair" has been 
 test.adb:20:09: info: flow dependencies proved
 test.adb:25:04: warning: initialization of "Left" has no effect
 test.adb:26:04: warning: initialization of "Right" has no effect
+test.adb:32:46: warning: statement has no effect

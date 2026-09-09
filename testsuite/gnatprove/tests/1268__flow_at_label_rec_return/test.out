@@ -1,4 +1,5 @@
 test.adb:10:07: warning: initialization of "Obj" has no effect
+test.adb:16:17: warning: statement has no effect
 test.ads:11:13: info: implicit aspect Always_Terminates on "Capture" has been proved, subprogram will terminate
 test.ads:12:07: warning: unused initial value of "A1"
 test.ads:13:07: warning: unused initial value of "X1"

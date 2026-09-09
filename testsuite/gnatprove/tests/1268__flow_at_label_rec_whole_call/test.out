@@ -16,3 +16,5 @@ test.adb:11:23: medium: incorrect dependency "O1 => X1"
 test.adb:11:23: medium: incorrect dependency "O2 => X1"
 test.adb:27:13: info: implicit aspect Always_Terminates on "Pick_A" has been proved, subprogram will terminate
 test.adb:29:13: info: implicit aspect Always_Terminates on "Pick_X" has been proved, subprogram will terminate
+test.adb:37:21: warning: statement has no effect
+test.adb:38:21: warning: statement has no effect

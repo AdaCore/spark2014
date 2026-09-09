@@ -10,4 +10,5 @@ test.adb:11:45: medium: missing dependency "null => Before_2"
 test.adb:11:54: medium: incorrect dependency "null => After_1"
 test.adb:11:63: medium: incorrect dependency "null => After_2"
 test.adb:15:04: warning: initialization of "A" has no effect
+test.adb:19:10: warning: statement has no effect
 test.adb:19:25: info: index check proved (CVC5: 2 VC)

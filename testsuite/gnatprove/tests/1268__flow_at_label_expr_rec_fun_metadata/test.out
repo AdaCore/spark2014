@@ -10,3 +10,4 @@ test.adb:21:06: info: flow dependencies proved
 test.adb:25:22: info: assertion proved (CVC5: 1 VC)
 test.adb:29:04: warning: initialization of "X" has no effect
 test.adb:34:14: info: precondition proved (CVC5: 1 VC)
+test.adb:34:30: warning: statement has no effect
