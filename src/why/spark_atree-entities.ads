@@ -67,6 +67,7 @@ package SPARK_Atree.Entities is
    subtype Task_Kind is EE.Task_Kind;
    subtype Type_Kind is EE.Type_Kind;
 
+   subtype E_Assertion_Level_Id is EE.E_Assertion_Level_Id;
    subtype E_Constant_Id is EE.E_Constant_Id;
    subtype E_Component_Id is EE.E_Component_Id;
    subtype E_Discriminant_Id is EE.E_Discriminant_Id;
@@ -314,6 +315,9 @@ package SPARK_Atree.Entities is
 
    function Is_Named_Number (E : Object_Kind_Id) return Boolean
    renames Einfo.Utils.Is_Named_Number;
+
+   function Is_Non_Exec_Assertion_Level
+     (Level : E_Assertion_Level_Id) return Boolean;
 
    function Is_Object (E : Entity_Id) return Boolean
    renames Einfo.Utils.Is_Object;

@@ -26,6 +26,7 @@
 with Atree;
 with Einfo.Entities;
 with Exp_Util;
+with Ghost;
 with Namet;  use Namet;
 with Sem_Aggr;
 with Sem_Aux;
@@ -635,6 +636,9 @@ package SPARK_Atree is
    with
      Pre =>
        Nkind (N) in N_Aggregate | N_Extension_Aggregate | N_Delta_Aggregate;
+
+   function In_Non_Exec_Context (N : Node_Id) return Boolean
+   renames Ghost.In_Non_Exec_Context;
 
    function Is_Rewritten_Op_Eq (N : Node_Id) return Boolean;
    --  Return true if N is a function call and its original node is an equality

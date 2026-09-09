@@ -1069,14 +1069,6 @@ package SPARK_Util is
    --  Same as above but with an object. Look through the definition of
    --  constants.
 
-   function Is_Non_Exec_Assertion_Level (Level : Entity_Id) return Boolean;
-   --  Return true on an assertion level that cannot be enabled at runtime
-
-   function In_Non_Exec_Context (N : Node_Id) return Boolean;
-   --  Return True if N is in a ghost context that cannot be enabled at
-   --  runtime. This function does not check whether the enclosing unit itself
-   --  is non-executable.
-
    function In_Statically_Leaking_Context
      (Expr : N_Subexpr_Id; Ignore_Non_Exec : Boolean) return Boolean;
    --  Return True if Expr occurs in a context where it is statically known
@@ -1431,7 +1423,6 @@ package SPARK_Util is
 
    function Is_Inlined_Call (Stmt : Node_Id) return Boolean
    is (Nkind (Stmt) = N_Block_Statement
-       and then Present (Original_Node (Stmt))
        and then Nkind (Original_Node (Stmt)) = N_Procedure_Call_Statement);
 
    function Called_Entity_From_Inlined_Call (Call : Node_Id) return Entity_Id
