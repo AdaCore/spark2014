@@ -182,7 +182,6 @@ r.adb:18:13: high: potentially blocking entry call in protected operation "E"
 r.adb:18:13: warning: potentially blocking operation in protected operation [enabled by default]
 r.adb:25:21: warning: statement has no effect
 r.adb:31:14: warning: subprogram "Proc1" has no effect
-r.adb:34:10: info: analyzing call to "Proc1" in context
 r.adb:34:10: info: no contextual analysis of call to recursive subprogram
 r.adb:40:07: warning: assuming "OS_Exit" has no effect on global items
 r.adb:40:07: warning: no Global contract available for "OS_Exit" [assumed-global-null]
