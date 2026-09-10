@@ -1,14 +1,14 @@
 package body SPARK_Off with
   SPARK_Mode => On
 is
-   procedure Off with SPARK_Mode => Off is
+   procedure Proc_Off with SPARK_Mode => Off is
    begin
       null;
-   end Off;
+   end Proc_Off;
 
-   procedure On is
+   procedure Proc_On is
    begin
-      Off;
-   end On;
+      Proc_Off;
+   end Proc_On;
 
 end SPARK_Off;
