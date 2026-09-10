@@ -34,9 +34,9 @@ procedure Test_Modifies with SPARK_Mode is
    --  abstraction.
 
    package Nested with Abstract_State => State is
-      package Off with Abstract_State => State_2 is
+      package Inner with Abstract_State => State_2 is
          procedure P with Global => (Output => State_2);
-      end Off;
+      end Inner;
       procedure P with Modifies => State;
    end Nested;
 
@@ -47,9 +47,9 @@ procedure Test_Modifies with SPARK_Mode is
          X := 34;
          Y := 10;
       end P;
-      package body Off with SPARK_Mode => Off is
+      package body Inner with SPARK_Mode => Off is
          procedure P is null;
-      end Off;
+      end Inner;
    end Nested;
 
    package Hidden_State is
@@ -65,45 +65,45 @@ procedure Test_Modifies with SPARK_Mode is
    end Hidden_State;
 
    procedure Reset_State (B1, B2 : Boolean) with
-     Global => (In_Out => (Nested.State, Nested.Off.State_2)),
+     Global => (In_Out => (Nested.State, Nested.Inner.State_2)),
      Modifies => --  @MODIFIES:PASS
        (Nested.State when B1,
-        (Nested.State, Nested.Off.State_2) when B2)
+        (Nested.State, Nested.Inner.State_2) when B2)
    is
    begin
       if B1 or B2 then
          Nested.P;
       end if;
       if B2 then
-         Nested.Off.P;
+         Nested.Inner.P;
       end if;
    end Reset_State;
 
    procedure Reset_State_Bad_1 (B1, B2 : Boolean) with
-     Global => (In_Out => (Nested.State, Nested.Off.State_2)),
+     Global => (In_Out => (Nested.State, Nested.Inner.State_2)),
      Modifies => --  @MODIFIES:FAIL
        (Nested.State when B1,
-        (Nested.State, Nested.Off.State_2) when B2)
+        (Nested.State, Nested.Inner.State_2) when B2)
    is
    begin
       if B1 or B2 then
          Nested.P;
       end if;
       if B2 or B1 then
-         Nested.Off.P;
+         Nested.Inner.P;
       end if;
    end Reset_State_Bad_1;
 
    procedure Reset_State_Bad_2 (B1, B2 : Boolean) with
-     Global => (In_Out => (Nested.State, Nested.Off.State_2)),
+     Global => (In_Out => (Nested.State, Nested.Inner.State_2)),
      Modifies => --  @MODIFIES:FAIL
        (Nested.State when B1,
-        (Nested.State, Nested.Off.State_2) when B2)
+        (Nested.State, Nested.Inner.State_2) when B2)
    is
    begin
       Nested.P;
       if B2 then
-         Nested.Off.P;
+         Nested.Inner.P;
       end if;
    end Reset_State_Bad_2;
 
@@ -111,13 +111,13 @@ procedure Test_Modifies with SPARK_Mode is
    --  The hidden state Hidden_State.X has been forgotten, proof should complain
 
    procedure Forgotten_State (B : Boolean) with
-     Modifies => (Nested.State, Nested.Off.State_2 when B); --  @MODIFIES:FAIL
+     Modifies => (Nested.State, Nested.Inner.State_2 when B); --  @MODIFIES:FAIL
 
    procedure Forgotten_State (B : Boolean) is
    begin
       Nested.P;
       if B then
-         Nested.Off.P;
+         Nested.Inner.P;
       end if;
       Hidden_State.P;
    end Forgotten_State;
