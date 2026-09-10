@@ -29,8 +29,7 @@ from e3.testsuite.result import Log
 from fnmatch import fnmatch
 from time import sleep
 from pathlib import Path
-from shutil import copy, copytree, move, rmtree, which
-import tempfile
+from shutil import which
 from typing import Literal
 from test_util import sort_key_for_errors
 
@@ -42,7 +41,7 @@ default_provers = ["cvc5", "altergo", "z3", "colibri"]
 default_ada = 2022
 replay_manifest_dir = "proof/manifest"
 sparklib_project_path_env = "SPARKLIB_PROJECT_PATH"
-sparklib_bodymode_path_env = "SPARKLIB_BODYMODE_PROJECT_PATH"
+sparklib_body_mode_var = "SPARKLIB_BODY_MODE"
 
 #  Change directory
 
@@ -1392,7 +1391,11 @@ def gprbuild(
     if opt is None:
         opt = []
     if sparklib or sparklib_bodymode:
-        opt = ["-aP", sparklib_project_dir(sparklib_bodymode)] + opt
+        opt = (
+            ["-aP", sparklib_project_dir()]
+            + sparklib_body_mode_switch(sparklib_bodymode)
+            + opt
+        )
     process = run_command(["gprbuild", "-q"] + opt, cwd=cwd)
     lines = str.splitlines(process.out)
     if len(lines) == 0:
@@ -1425,8 +1428,7 @@ def resolve_sparklib_location(path=None):
 
     Returns a tuple `(project_dir, root_dir)` where:
       - `project_dir` contains `sparklib_internal.gpr`;
-      - `root_dir` is the installed-tree layout root used to copy files for
-        bodymode.
+      - `root_dir` is the root of the installed-tree layout.
     """
 
     def installed_location(project_dir, root_dir):
@@ -1457,130 +1459,28 @@ def resolve_sparklib_location(path=None):
     raise RuntimeError(f"Invalid SPARKlib location: {path}")
 
 
-def preprocess_sparklib_source_file(filepath, logger=None):
+def sparklib_body_mode_switch(sparklib_bodymode):
+    """Return the switches selecting the SPARKlib body mode, if enabled.
+
+    Body mode is the SPARKlib configuration in which the library bodies, and
+    the private parts they rely on, are analysed instead of being hidden from
+    analysis. It is selected by an external of the SPARKlib project files,
+    passed on the command line rather than through the environment, which
+    concurrent tests share.
     """
-    Reads a file line by line and replaces specific SPARK_Mode patterns
-    in-place, preserving line numbers.
-
-    Args:
-        filepath (str): The path to the file to be processed.
-    """
-    # Pattern 1: Recognizes '... SPARK_Mode => Off --  #BODYMODE' at the end of a line.
-    # It's case-insensitive and handles variable whitespace.
-    # This will be used with re.sub to replace 'Off' with 'On' while preserving
-    # any leading content on the line.
-    pattern_to_enable = re.compile(
-        r"(SPARK_Mode\s*=>\s*)Off(\s*--  #BODYMODE\s*$)", re.IGNORECASE
-    )
-
-    # Pattern 2: Recognizes a line containing only
-    # 'pragma SPARK_Mode (Off); -- # #BODYMODE'
-    # It's case-insensitive and handles variable whitespace.
-    pattern_to_remove = re.compile(
-        r"^\s*pragma\s+SPARK_Mode\s*\(\s*Off\s*\)\s*;\s*--  #BODYMODE\s*$",
-        re.IGNORECASE,
-    )
-
-    fd, temp_path = tempfile.mkstemp()
-
-    try:
-        with os.fdopen(fd, "w", newline="") as newfile:
-            with open(filepath, "r", newline="") as oldfile:
-                for line in oldfile:
-                    # Test for the first pattern and replace using re.subn.
-                    # re.subn returns a tuple: (new_string, number_of_subs_made).
-                    # This handles cases where the pattern is not at the start
-                    # of the line.
-                    new_line, count = pattern_to_enable.subn(r"\1On\2", line)
-                    if count > 0:
-                        # If a substitution was made, write the modified line.
-                        # new_line already contains the original newline
-                        # character.
-                        newfile.write(new_line)
-                        continue
-
-                    # Test for the second pattern.
-                    # This pattern is expected to match the entire line.
-                    match_remove = pattern_to_remove.match(line)
-                    if match_remove:
-                        if line.endswith("\r\n"):
-                            # Preserve Windows-style line endings.
-                            newfile.write("\r\n")
-                        elif line.endswith("\n"):
-                            # Preserve Unix-style line endings.
-                            newfile.write("\n")
-                        else:
-                            # EOF case
-                            pass
-                        continue
-
-                    # If no pattern is matched, write the original line back to
-                    # the file.  'line' already contains a newline character.
-                    newfile.write(line)
-
-        # Replace the original file with the modified temporary file.
-        move(temp_path, filepath)
-
-    except FileNotFoundError:
-        log(logger, f"Error: The file {filepath!r} was not found.")
-        sys.exit(1)
-    except Exception as e:
-        log(logger, f"An unexpected error occurred: {e}")
-        sys.exit(1)
+    if sparklib_bodymode:
+        return [f"-X{sparklib_body_mode_var}=On"]
+    return []
 
 
-def prepare_sparklib_bodymode(base_path, logger=None):
-    """Create a preprocessed SPARKlib tree under `base_path`.
-
-    The tree contains `lib/gnat` project files and `include` sources. Source
-    files are preprocessed in-place while preserving line numbers.
-
-    Returns:
-        The absolute path to the generated `lib/gnat` project directory.
-    """
-    base_path = Path(base_path)
-    _, root_dir = resolve_sparklib_location()
-
-    for rel in ["lib", "include"]:
-        target_dir = base_path / rel
-        if target_dir.is_dir():
-            rmtree(str(target_dir))
-
-    # Copy install tree into base_path/lib and base_path/include.
-    copytree(os.path.join(root_dir, "lib"), str(base_path / "lib"))
-    copytree(os.path.join(root_dir, "include"), str(base_path / "include"))
-
-    src_prefix = base_path / "include" / "spark"
-    for target in [
-        src_prefix / "full" / "spark.ads",
-        src_prefix / "light" / "spark.ads",
-    ]:
-        copy(str(src_prefix / "spark__exec.ads"), str(target))
-
-    for path_obj in (base_path / "include").rglob("*"):
-        if path_obj.is_file():
-            preprocess_sparklib_source_file(str(path_obj), logger=logger)
-
-    return str((base_path / "lib" / "gnat").resolve())
-
-
-def sparklib_project_dir(sparklib_bodymode):
-    """Return the directory containing sparklib_internal.gpr (which the
-    test-local sparklib.gpr extends): the shared body-mode tree generated by
-    the testsuite driver, or the installed location.
+def sparklib_project_dir():
+    """Return the directory containing sparklib_internal.gpr, which the
+    test-local sparklib.gpr extends.
 
     Callers add it to the project path with "-aP" on the command line rather
     than mutating the shared GPR_PROJECT_PATH, which would let concurrent tests
     pick up each other's SPARKlib location.
     """
-    if sparklib_bodymode:
-        path = os.environ.get(sparklib_bodymode_path_env)
-        if path is None:
-            raise RuntimeError(
-                "SPARKlib body-mode tests require a shared SPARKlib generated "
-                "by the testsuite driver"
-            )
-        return path
     project_dir, _ = resolve_sparklib_location()
     return project_dir
 
@@ -1704,7 +1604,8 @@ def gnatprove(
     # If the tests uses SPARKlib, do not prove them again
     if sparklib:
         cmd += ["--no-subprojects"]
-        cmd += [f"-aP={sparklib_project_dir(sparklib_bodymode)}"]
+        cmd += [f"-aP={sparklib_project_dir()}"]
+    cmd += sparklib_body_mode_switch(sparklib_bodymode)
     if cache_allowed and cache_mode():
         cmd += [cache_option()]
     cmd += to_list(opt)
@@ -2300,9 +2201,11 @@ def sparklib_exec_test(
     logger=None,
 ):
     cov_mode = coverage_mode()
+    mode_switch = sparklib_body_mode_switch(sparklib_bodymode)
     if cov_mode:
         run_command(
-            ["gnatcov", "instrument", "-P", project_file, "--level=stmt"], cwd=cwd
+            ["gnatcov", "instrument", "-P", project_file, "--level=stmt"] + mode_switch,
+            cwd=cwd,
         )
     opt = ["-P", project_file]
     if cov_mode:

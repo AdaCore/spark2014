@@ -129,9 +129,6 @@ def configure_test():
 
 replayer = configure_test()
 
-path = test_support.prepare_sparklib_bodymode(curdir)
-os.environ[test_support.sparklib_bodymode_path_env] = path
-
 
 def delete(fn, isdir=False):
     testfun = os.path.isdir if isdir else os.path.isfile

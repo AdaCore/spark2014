@@ -64,7 +64,7 @@ test.adb:118:07: info: precondition proved (CVC5: 1 VC), in call inlined at test
 test.adb:119:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:138
 test.adb:122:14: info: add a contract to analyze it separately from calling contexts
 test.adb:122:14: info: local subprogram "Test_Aggregate" only analyzed in the context of calls [info-unrolling-inlining]
-test.adb:123:18: info: keys shall be distinct for maps aggregates at spark-containers-functional-total_maps.ads:117, in instantiation at inst.ads:10
+test.adb:123:18: info: keys shall be distinct for maps aggregates at spark-containers-functional-total_maps.ads:118, in instantiation at inst.ads:10
 test.adb:123:18: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:139
 test.adb:125:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:139
 test.adb:126:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:139

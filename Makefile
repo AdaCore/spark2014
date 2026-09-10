@@ -48,8 +48,6 @@ COVERAGE_SOURCE_DIR?=/it/wave/x86_64-linux/spark2014-core_assertions_coverage/sr
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
 SIDDIR=$(SHAREDIR)/gnat2why-sids
-INCLUDEDIR=$(INSTALLDIR)/include/spark
-LIBDIR=$(INSTALLDIR)/lib/gnat
 EXAMPLESDIR=$(SHAREDIR)/examples/spark
 DOCDIR=$(SHAREDIR)/doc/spark
 GNATPROVEDIR=$(SHAREDIR)/spark
@@ -130,7 +128,7 @@ install-codex-skills:
 
 install:
 	mkdir -p $(INSTALLDIR)/bin $(CONFIGDIR) $(THEORIESDIR) \
-	  $(EXPLAINCODESDIR) $(RUNTIMESDIR) $(INCLUDEDIR) $(LIBDIR)
+	  $(EXPLAINCODESDIR) $(RUNTIMESDIR)
 	@echo "Generate default target.atp in $(INSTALLDIR)/bin:"
 	gcc -c -gnats spark2014vsn.ads -gnatet=$(INSTALLDIR)/bin/target.atp
 	$(CP) share/spark/help.txt $(GNATPROVEDIR)
@@ -141,14 +139,8 @@ install:
 	$(CP) share/spark/runtimes/README $(RUNTIMESDIR)
 	@echo "Generate Coq files by preprocessing context files:"
 	$(MAKE) -C include generate
-	$(CP) include/src/*.ad? $(INCLUDEDIR)
-	mkdir -p $(INCLUDEDIR)/full
-	mkdir -p $(INCLUDEDIR)/light
-	$(CP) include/src/full/*.ad? $(INCLUDEDIR)/full
-	$(CP) include/src/light/*.ad? $(INCLUDEDIR)/light
-	$(CP) include/*.gpr $(LIBDIR)
-	$(CP) include/*.gpr.templ $(LIBDIR)
-	$(CP) include/proof $(LIBDIR)
+	@echo "Install SPARKlib in $(INSTALLDIR):"
+	python3 include/scripts/sparklib_tree.py install-tree --dest $(INSTALLDIR)
 
 doc: $(DOC)
 
