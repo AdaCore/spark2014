@@ -403,11 +403,36 @@ package body Flow_Refinement is
 
    function Is_Fully_Contained
      (State : Flow_Id; Outputs : Flow_Id_Sets.Set; Scop : Flow_Scope)
-      return Boolean
-   is (case State.Kind is
+      return Boolean is
+   begin
+      case State.Kind is
          when Direct_Mapping =>
-           Is_Fully_Contained (State.Node, To_Node_Set (Outputs), Scop),
-         when others         => raise Program_Error);
+
+            --  Abstract state known by Entity_Id must have its constituents
+            --  also known by Entity_Ids. Filter outputs known by Entity_Name.
+
+            declare
+               Output_Nodes : Node_Sets.Set;
+            begin
+               for Output of Outputs loop
+                  case Output.Kind is
+                     when Direct_Mapping =>
+                        Output_Nodes.Insert (Get_Direct_Mapping_Id (Output));
+
+                     when Magic_String   =>
+                        null;
+
+                     when others         =>
+                        raise Program_Error;
+                  end case;
+               end loop;
+               return Is_Fully_Contained (State.Node, Output_Nodes, Scop);
+            end;
+
+         when others         =>
+            raise Program_Error;
+      end case;
+   end Is_Fully_Contained;
 
    ----------------
    -- Up_Project --
