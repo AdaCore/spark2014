@@ -66,28 +66,28 @@ procedure Frame_Condition with SPARK_Mode is
       pragma Assert (Y = 0); --@ASSERT:FAIL
    end Test_If_2;
 
-   procedure Test_If_3 with Global => null;
-   procedure Test_If_3 is
-      Y : Integer := 0;
-      Z : Integer := 0;
-   begin
-      while Random (Y) loop
-         begin
-            if (if Y /= 0 then Pure_Raise else Writes (Y)) then
-               null;
-            end if;
-         exception
-            when E =>
-               exit when Writes (Z);
-               raise E;
-         end;
-      end loop;
-      pragma Assert (Z = 0 or Z = 1); --@ASSERT:PASS
-      pragma Assert (Y = 0); --@ASSERT:FAIL
-   exception
-      when E =>
-         null;
-   end Test_If_3;
+--   procedure Test_If_3 with Global => null;
+--   procedure Test_If_3 is
+--      Y : Integer := 0;
+--      Z : Integer := 0;
+--   begin
+--      while Random (Y) loop
+--         begin
+--            if (if Y /= 0 then Pure_Raise else Writes (Y)) then
+--               null;
+--            end if;
+--         exception
+--            when E =>
+--               exit when Writes (Z);
+--               raise E;
+--         end;
+--      end loop;
+--      pragma Assert (Z = 0 or Z = 1); --@ ASSERT:PASS
+--      pragma Assert (Y = 0); --@ ASSERT:FAIL
+--   exception
+--      when E =>
+--         null;
+--   end Test_If_3;
 
    procedure Test_Case_1 is
       Y : Integer := 0;
@@ -112,7 +112,10 @@ procedure Frame_Condition with SPARK_Mode is
          begin
             if Y = 42 then
                exit;
-            elsif (if Y /= 0 then Pure_Raise else Writes (Y)) then
+--            elsif (if Y /= 0 then Pure_Raise else Writes (Y)) then
+            elsif Pure_Raise then
+               null;
+            elsif Writes (Y) then
                null;
             end if;
          exception

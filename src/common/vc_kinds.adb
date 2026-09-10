@@ -1310,6 +1310,8 @@ package body VC_Kinds is
            "a call to a suspend operation on a dereference",
          when Lim_Suspension_On_Formal                                    =>
            "a call to a suspend operation on a suspension formal parameter",
+         when Lim_Side_Effect_Call_Subexpression                          =>
+           "a call to function with side effect as a subexpression",
          when Lim_Target_Name_In_Borrow                                   =>
            "an occurrence of the target name @ in an assignment to an object "
            & "of an anonymous access-to-variable type",
@@ -3676,6 +3678,8 @@ package body VC_Kinds is
            "relaxed-init-invariant",
          when Lim_Relaxed_Init_Variant_Part                               =>
            "relaxed-init-variant-part",
+         when Lim_Side_Effect_Call_Subexpression                          =>
+           "side-effect-call-subexpression",
          when Lim_Subprogram_Before_Inv                                   =>
            "subprogram-before-inv",
          when Lim_Subp_Variant_Duplicate                                  =>

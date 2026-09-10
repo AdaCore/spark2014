@@ -304,6 +304,7 @@ unsupported-relaxed-init-access-type - unsupported-relaxed-init-access-type - an
 unsupported-relaxed-init-aliasing - unsupported-relaxed-init-aliasing - an object annotated with Relaxed_Initialization is part of an overlay - HIGH
 unsupported-relaxed-init-invariant - unsupported-relaxed-init-invariant - a type annotated with an invariant used as a subcomponent of a type or an object annotated with Relaxed_Initialization - HIGH
 unsupported-relaxed-init-variant-part - unsupported-relaxed-init-variant-part - a subtype with a discriminant constraint containing only subcomponents whose type is annotated with Relaxed_Initialization - HIGH
+unsupported-side-effect-call-subexpression - unsupported-side-effect-call-subexpression - a call to function with side effect as a subexpression - HIGH
 unsupported-subprogram-before-inv - unsupported-subprogram-before-inv - a subprogram declaration occurring in a loop before the loop invariant - HIGH
 unsupported-subp-variant-duplicate - unsupported-subp-variant-duplicate - a subprogram with several Subprogram_Variant contracts - HIGH
 unsupported-subp-variant-eq - unsupported-subp-variant-eq - a subprogram variant on the primitive equality of a record type - HIGH

@@ -307,166 +307,166 @@ procedure Test_Proof with SPARK_Mode is
          return -2;
    end Test_If_KO;
 
-   procedure Test_Deeply_Nested (X : Integer);
-   procedure Test_Deeply_Nested (X : Integer) is
-      E : exception;
-      F : exception;
-      function Err_E (X : Integer; Err_Value : Integer) return Integer
-        with Side_Effects, Exceptional_Cases => (E => True),
-        Exit_Cases => (X = Err_Value => (Exception_Raised => E), others => Normal_Return),
-        Post => Err_E'Result = X;
-      function Err_F (X : Integer; Err_Value : Integer) return Integer
-        with Side_Effects, Exceptional_Cases => (F => True),
-        Exit_Cases => (X = Err_Value => (Exception_Raised => F), others => Normal_Return),
-        Post => Err_F'Result = X;
-      function Err_E (X : Integer; Err_Value : Integer) return Integer is
-      begin
-         if X = Err_Value then
-            raise E;
-         end if;
-         return X;
-      end Err_E;
-      function Err_F (X : Integer; Err_Value : Integer) return Integer is
-      begin
-         if X = Err_Value then
-            raise F;
-         end if;
-         return X;
-      end Err_F;
-      Y : Integer;
-   begin
-      Y := (if X < 42
-            then (case X is
-                 when 0 .. 3 => Err_E (X, 2),
-                 when 6 .. 10 => 7,
-                 when 11 .. 13 => Err_F (X, 12),
-                 when others =>
-                (declare
-                   Z : constant Integer := (if X >= 36 then 36 else X);
-                 begin
-                   Err_E (X, Z)
-                ))
-              else Err_F (X, 89));
-      pragma Assert (Y = 7
-                     or else Y in 0 .. 1
-                     or else Y = 3
-                     or else (Y in 42 .. Integer'Last and then Y /= 89)
-                     or else Y = 11
-                     or else Y = 13
-                     or else Y in 37 .. 41
-                     or else Y in Integer'First .. (-1));
-   exception
-      when E =>
-         pragma Assert (X = 2
-                        or else
-                          ((X not in 0 .. 3)
-                           and then (X not in 6 .. 10)
-                           and then (X not in 11 .. 13)
-                           and then (X <= 36)));
-      when F =>
-         pragma Assert (X = 89 or else X = 12);
-   end Test_Deeply_Nested;
-
-   procedure Test_Deeply_Nested_KO (X : Integer);
-   procedure Test_Deeply_Nested_KO (X : Integer) is
-      E : exception;
-      F : exception;
-      function Err_E (X : Integer; Err_Value : Integer) return Integer
-        with Side_Effects, Exceptional_Cases => (E => True),
-        Exit_Cases => (X = Err_Value => (Exception_Raised => E), others => Normal_Return),
-        Post => Err_E'Result = X;
-      function Err_F (X : Integer; Err_Value : Integer) return Integer
-        with Side_Effects, Exceptional_Cases => (F => True),
-        Exit_Cases => (X = Err_Value => (Exception_Raised => F), others => Normal_Return),
-        Post => Err_F'Result = X;
-      function Err_E (X : Integer; Err_Value : Integer) return Integer is
-      begin
-         if X = Err_Value then
-            raise E;
-         end if;
-         return X;
-      end Err_E;
-      function Err_F (X : Integer; Err_Value : Integer) return Integer is
-      begin
-         if X = Err_Value then
-            raise F;
-         end if;
-         return X;
-      end Err_F;
-      Y : Integer;
-   begin
-      Y := (if X < 42
-            then (case X is
-                 when 0 .. 3 => Err_E (X, 2),
-                 when 6 .. 10 => 7,
-                 when 11 .. 13 => Err_F (X, 12),
-                 when others =>
-                (declare
-                   Z : constant Integer := (if X >= 36 then 36 else X);
-                 begin
-                   Err_E (X, Z)
-                ))
-              else Err_F (X, 89));
-      pragma Assert (Y = 7 --@ASSERT:FAIL
-                     or else Y in 0 .. 1
-                     or else Y = 3
-                     or else (Y in 42 .. Integer'Last and then Y /= 89)
-                     or else Y = 11
-                     or else Y = 13
-                     or else Y in 37 .. 40
-                     or else Y in Integer'First .. (-1));
-   exception
-      when E =>
-         pragma Assert (X = 2 --@ASSERT:FAIL
-                        or else
-                          ((X not in 0 .. 4)
-                           and then (X not in 6 .. 10)
-                           and then (X not in 11 .. 13)
-                           and then (X <= 36)));
-      when F =>
-         pragma Assert (X = 89 or else X = 12);
-   end Test_Deeply_Nested_KO;
-
-   procedure Test_Nested (X : Integer);
-   procedure Test_Nested (X : Integer) is
-      E : exception;
-      F : exception;
-      U, V, W : Integer := 0;
-      function Random (Y : Integer) return Boolean
-        with Global => null, Import;
-      function Err_E (Z : Integer) return Integer
-        with Side_Effects, Global => (In_Out => U),
-        Exceptional_Cases => (E => True),
-        Post => U = U'Old,
-        Import;
-      function Err_F (Z : Integer) return Integer
-        with Side_Effects, Global => (In_Out => V),
-        Exceptional_Cases => (F => True),
-        Post => V = V'Old,
-        Import;
-   begin
-      while Random (W) loop
-         pragma Loop_Invariant (U = U'Loop_Entry);
-         pragma Loop_Invariant (V = V'Loop_Entry);
-         W := (declare
-               T : constant Integer := (if Random (W + X) then W + X else W - X);
-               begin
-               (case T is
-                  when 2 | 5 =>
-                    Err_E (T),
-                  when others =>
-                    Err_F (T)));
-      end loop;
-      pragma Assert (U = 0 and then V = 0); --@ASSERT:PASS
-      pragma Assert (W = 0); --@ASSERT:FAIL
-   exception
-      when E =>
-         pragma Assert (V = 0); --@ASSERT:PASS
-         pragma Assert (U = 0); --@ASSERT:FAIL
-      when F =>
-         pragma Assert (U = 0); --@ASSERT:PASS
-         pragma Assert (V = 0); --@ASSERT:FAIL
-   end Test_Nested;
+--   procedure Test_Deeply_Nested (X : Integer);
+--   procedure Test_Deeply_Nested (X : Integer) is
+--      E : exception;
+--      F : exception;
+--      function Err_E (X : Integer; Err_Value : Integer) return Integer
+--        with Side_Effects, Exceptional_Cases => (E => True),
+--        Exit_Cases => (X = Err_Value => (Exception_Raised => E), others => Normal_Return),
+--        Post => Err_E'Result = X;
+--      function Err_F (X : Integer; Err_Value : Integer) return Integer
+--        with Side_Effects, Exceptional_Cases => (F => True),
+--        Exit_Cases => (X = Err_Value => (Exception_Raised => F), others => Normal_Return),
+--        Post => Err_F'Result = X;
+--      function Err_E (X : Integer; Err_Value : Integer) return Integer is
+--      begin
+--         if X = Err_Value then
+--            raise E;
+--         end if;
+--         return X;
+--      end Err_E;
+--      function Err_F (X : Integer; Err_Value : Integer) return Integer is
+--      begin
+--         if X = Err_Value then
+--            raise F;
+--         end if;
+--         return X;
+--      end Err_F;
+--      Y : Integer;
+--   begin
+--      Y := (if X < 42
+--            then (case X is
+--                 when 0 .. 3 => Err_E (X, 2),
+--                 when 6 .. 10 => 7,
+--                 when 11 .. 13 => Err_F (X, 12),
+--                 when others =>
+--                (declare
+--                   Z : constant Integer := (if X >= 36 then 36 else X);
+--                 begin
+--                   Err_E (X, Z)
+--                ))
+--              else Err_F (X, 89));
+--      pragma Assert (Y = 7
+--                     or else Y in 0 .. 1
+--                     or else Y = 3
+--                     or else (Y in 42 .. Integer'Last and then Y /= 89)
+--                     or else Y = 11
+--                     or else Y = 13
+--                     or else Y in 37 .. 41
+--                     or else Y in Integer'First .. (-1));
+--   exception
+--      when E =>
+--         pragma Assert (X = 2
+--                        or else
+--                          ((X not in 0 .. 3)
+--                           and then (X not in 6 .. 10)
+--                           and then (X not in 11 .. 13)
+--                           and then (X <= 36)));
+--      when F =>
+--         pragma Assert (X = 89 or else X = 12);
+--   end Test_Deeply_Nested;
+--
+--   procedure Test_Deeply_Nested_KO (X : Integer);
+--   procedure Test_Deeply_Nested_KO (X : Integer) is
+--      E : exception;
+--      F : exception;
+--      function Err_E (X : Integer; Err_Value : Integer) return Integer
+--        with Side_Effects, Exceptional_Cases => (E => True),
+--        Exit_Cases => (X = Err_Value => (Exception_Raised => E), others => Normal_Return),
+--        Post => Err_E'Result = X;
+--      function Err_F (X : Integer; Err_Value : Integer) return Integer
+--        with Side_Effects, Exceptional_Cases => (F => True),
+--        Exit_Cases => (X = Err_Value => (Exception_Raised => F), others => Normal_Return),
+--        Post => Err_F'Result = X;
+--      function Err_E (X : Integer; Err_Value : Integer) return Integer is
+--      begin
+--         if X = Err_Value then
+--            raise E;
+--         end if;
+--         return X;
+--      end Err_E;
+--      function Err_F (X : Integer; Err_Value : Integer) return Integer is
+--      begin
+--         if X = Err_Value then
+--            raise F;
+--         end if;
+--         return X;
+--      end Err_F;
+--      Y : Integer;
+--   begin
+--      Y := (if X < 42
+--            then (case X is
+--                 when 0 .. 3 => Err_E (X, 2),
+--                 when 6 .. 10 => 7,
+--                 when 11 .. 13 => Err_F (X, 12),
+--                 when others =>
+--                (declare
+--                   Z : constant Integer := (if X >= 36 then 36 else X);
+--                 begin
+--                   Err_E (X, Z)
+--                ))
+--              else Err_F (X, 89));
+--      pragma Assert (Y = 7 --@ ASSERT:FAIL
+--                     or else Y in 0 .. 1
+--                     or else Y = 3
+--                     or else (Y in 42 .. Integer'Last and then Y /= 89)
+--                     or else Y = 11
+--                     or else Y = 13
+--                     or else Y in 37 .. 40
+--                     or else Y in Integer'First .. (-1));
+--   exception
+--      when E =>
+--         pragma Assert (X = 2 --@ ASSERT:FAIL
+--                        or else
+--                          ((X not in 0 .. 4)
+--                           and then (X not in 6 .. 10)
+--                           and then (X not in 11 .. 13)
+--                           and then (X <= 36)));
+--      when F =>
+--         pragma Assert (X = 89 or else X = 12);
+--   end Test_Deeply_Nested_KO;
+--
+--   procedure Test_Nested (X : Integer);
+--   procedure Test_Nested (X : Integer) is
+--      E : exception;
+--      F : exception;
+--      U, V, W : Integer := 0;
+--      function Random (Y : Integer) return Boolean
+--        with Global => null, Import;
+--      function Err_E (Z : Integer) return Integer
+--        with Side_Effects, Global => (In_Out => U),
+--        Exceptional_Cases => (E => True),
+--        Post => U = U'Old,
+--        Import;
+--      function Err_F (Z : Integer) return Integer
+--        with Side_Effects, Global => (In_Out => V),
+--        Exceptional_Cases => (F => True),
+--        Post => V = V'Old,
+--        Import;
+--   begin
+--      while Random (W) loop
+--         pragma Loop_Invariant (U = U'Loop_Entry);
+--         pragma Loop_Invariant (V = V'Loop_Entry);
+--         W := (declare
+--               T : constant Integer := (if Random (W + X) then W + X else W - X);
+--               begin
+--               (case T is
+--                  when 2 | 5 =>
+--                    Err_E (T),
+--                  when others =>
+--                    Err_F (T)));
+--      end loop;
+--      pragma Assert (U = 0 and then V = 0); --@ ASSERT:PASS
+--      pragma Assert (W = 0); --@ ASSERT:FAIL
+--   exception
+--      when E =>
+--         pragma Assert (V = 0); --@ ASSERT:PASS
+--         pragma Assert (U = 0); --@ ASSERT:FAIL
+--      when F =>
+--         pragma Assert (U = 0); --@ ASSERT:PASS
+--         pragma Assert (V = 0); --@ ASSERT:FAIL
+--   end Test_Nested;
 
 
    function Test_Elsif (A : in out IArray; I, J : Natural) return Integer

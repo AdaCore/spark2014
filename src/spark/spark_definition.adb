@@ -7022,6 +7022,14 @@ package body SPARK_Definition is
                end loop;
             end;
 
+            --  Even if legal, calls to functions with side effects inside
+            --  subexpressions are not yet supported by flow analysis.
+
+            if Nkind (Parent (N)) in N_Subexpr then
+               Mark_Unsupported (Lim_Side_Effect_Call_Subexpression, N);
+               return;
+            end if;
+
          elsif Is_Volatile_Call (N)
            and then
              (not Is_OK_Volatile_Context
