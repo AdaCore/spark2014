@@ -81,11 +81,11 @@ is
       end if;
       <<L4>>
       X := 3;
-      <<L5>>
+      <<L5>><<L6>>  --  labels for GOTO and 'AT must be exclusive
       X := 4;
       pragma Assert (X'At (L1) = 0); -- @ASSERT:PASS
       pragma Assert (X'At (L2) = 42); -- @ASSERT:PASS
-      pragma Assert (X'At (L5) = (if B1 or not B2 then 3 else 2)); -- @ASSERT:PASS
+      pragma Assert (X'At (L6) = (if B1 or not B2 then 3 else 2)); -- @ASSERT:PASS
    end;
 
    type R is record
