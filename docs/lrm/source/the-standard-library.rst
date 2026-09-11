@@ -492,12 +492,16 @@ Other packages are not directly supported.
 Unchecked Union Types
 ~~~~~~~~~~~~~~~~~~~~~
 
+The discriminant of an unchecked union type can be mentioned in ghost code or
+assertions whose assertion level (see :ref:`Pragma Assertion_Level`) depends on
+the Static assertion level. Similarly,
 Program_Error is not considered to be raised on evaluation of the predefined
 equality operator, individual membership tests, and conversions on unchecked
 union types occurring inside ghost code or assertions whose assertion level
 depends on the Static assertion level even if the operand lacks inferable
 discriminants.
-Instead the operation is considered to behave as on non-unchecked-union types.
+Instead, the discriminants and operations are considered to behave as on
+non-unchecked-union types.
 
 Systems Programming (Annex C)
 -----------------------------
