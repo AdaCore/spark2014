@@ -1,15 +1,24 @@
 with Interfaces; use Interfaces;
 with Ada.Numerics.Big_Numbers.Big_Integers; use Ada.Numerics.Big_Numbers.Big_Integers;
-with SPARK.Pointers.Pointers_With_Aliasing;
+with SPARK.Pointers.Explicit_Reclamation.Global_Memory;
 
 with P1; use P1;
 with P2; use P2;
 
 procedure Example_Tagged_Obj with SPARK_Mode is
 
-   package Pointers_To_Obj is new SPARK.Pointers.Pointers_With_Aliasing (Object'Class);
+   function Is_Reclaimed (Unused : Object'Class) return Boolean is (True)
+   with Ghost => Static;
+
+   package Pointers_To_Obj is new
+     SPARK.Pointers.Explicit_Reclamation.Global_Memory (Object'Class, Is_Reclaimed);
+
+   function Copy (O : Object'Class) return Object'Class is (O);
+   package Pointers_To_Obj_Copy_Operations is new
+     Pointers_To_Obj.Copy_Operations (Copy);
 
    use Pointers_To_Obj;
+   use Pointers_To_Obj_Copy_Operations;
    use Memory_Model;
 
    X1 : Pointer;
@@ -27,11 +36,12 @@ procedure Example_Tagged_Obj with SPARK_Mode is
    end Swap;
 
    procedure Swap_Val (X, Y : Pointer) with
-     Pre  => Valid (Memory, Address (X)) and then Valid (Memory, Address (Y)),
-     Post => Deref (X) = Deref (Y)'Old and Deref (Y) = Deref (X)'Old
-     and Allocates (Memory'Old, Memory, None)
-     and Deallocates (Memory'Old, Memory, None)
-     and Writes (Memory'Old, Memory, [for A in Address_Type => A in Address (X) | Address (Y)])
+     Pre  => (Static => In_Memory (Model (Memory), X)
+              and then In_Memory (Model (Memory), Y)),
+     Post => (Static => Deref (X) = Deref (Y)'Old and Deref (Y) = Deref (X)'Old
+     and Allocates (Model (Memory)'Old, Model (Memory), None)
+     and Deallocates (Model (Memory)'Old, Model (Memory), None)
+     and Writes (Model (Memory)'Old, Model (Memory), Add (Only (X), Y)))
    is
       Tmp : constant Object'Class := Deref (X);
    begin
@@ -42,13 +52,14 @@ procedure Example_Tagged_Obj with SPARK_Mode is
    function Ignore (X : Object'Class) return Boolean with Import;
 
    procedure Update_In_Place (X : Pointer; New_F : Positive) with
-     Pre => Valid (Memory, Address (X)) and then Deref (X) in Child,
-     Post =>
+     Pre => (Static => In_Memory (Model (Memory), X)
+             and then Deref (X) in Child),
+     Post => (Static =>
         --  Deref (X) = Object'Class ((Child (Deref (X)'Old) with delta F => New_F))
         Deref (X) in Child and Child (Deref (X)) = (New_F, Child (Deref (X)).G'Old)
-     and Allocates (Memory'Old, Memory, None)
-     and Deallocates (Memory'Old, Memory, None)
-     and Writes (Memory'Old, Memory, Only (Address (X)))
+     and Allocates (Model (Memory)'Old, Model (Memory), None)
+     and Deallocates (Model (Memory)'Old, Model (Memory), None)
+     and Writes (Model (Memory)'Old, Model (Memory), Only (X)))
    is
       X_Content : access Object'Class := Reference (Memory, X);
    begin
@@ -56,9 +67,9 @@ procedure Example_Tagged_Obj with SPARK_Mode is
    end Update_In_Place;
 
 begin
-   Create (Child'(F => 1, G => 4), X1);
-   Create (Child'(F => 2, G => 5), X2);
-   Create (Child'(F => 3, G => 6), X3);
+   Pointers_To_Obj_Copy_Operations.Create_Copy (Child'(F => 1, G => 4), X1);
+   Pointers_To_Obj_Copy_Operations.Create_Copy (Child'(F => 2, G => 5), X2);
+   Pointers_To_Obj_Copy_Operations.Create_Copy (Child'(F => 3, G => 6), X3);
    X1_B := X1; --  X1_B is an alias of X1
    pragma Assert (Child (Deref (X1_B)).F = 1);
    Swap (X1, X2);

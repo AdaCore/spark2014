@@ -1,0 +1,32 @@
+test_auto_reclaimed_mutable.adb:28:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+test_auto_reclaimed_mutable.adb:44:14: info: aspect Always_Terminates on "Reclaim" has been proved, subprogram will terminate
+test_auto_reclaimed_mutable.adb:45:09: info: data dependencies proved
+test_auto_reclaimed_mutable.adb:45:52: info: postcondition proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:54:13: info: implicit aspect Always_Terminates on "Make" has been proved, subprogram will terminate
+test_auto_reclaimed_mutable.adb:62:13: info: implicit aspect Always_Terminates on "Copy_Owning" has been proved, subprogram will terminate
+test_auto_reclaimed_mutable.adb:63:09: info: data dependencies proved
+test_auto_reclaimed_mutable.adb:69:40: info: pointer dereference check proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:78:07: info: initialization of "P" proved
+test_auto_reclaimed_mutable.adb:78:10: info: initialization of "Q" proved
+test_auto_reclaimed_mutable.adb:86:32: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:87:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:87:22: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:88:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:88:22: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:92:07: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:93:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:93:22: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:94:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:94:22: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:99:07: info: initialization of "P" proved
+test_auto_reclaimed_mutable.adb:108:35: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:109:10: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:110:25: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:110:25: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:111:25: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:111:25: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:118:07: info: initialization of "P" proved
+test_auto_reclaimed_mutable.adb:123:12: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:133:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:135:20: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed_mutable.adb:140:12: info: assertion proved (CVC5: 1 VC)

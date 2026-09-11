@@ -1,0 +1,385 @@
+union_find_global.adb:30:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+union_find_global.adb:31:26: info: data dependencies proved
+union_find_global.adb:36:13: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
+union_find_global.adb:36:59: info: data dependencies proved
+union_find_global.adb:47:13: info: implicit aspect Always_Terminates on "Cell_Parent" has been proved, subprogram will terminate
+union_find_global.adb:48:40: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:49:26: info: data dependencies proved
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:104
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:114
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:130
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:157
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:176
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:227
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:231
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:245
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:249
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:273
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:277
+union_find_global.adb:62:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:97
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:104, instance at line 62
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:104, instance at line 62
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-pointers-abstract_reachability.ads:176, instance at line 62
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-pointers-abstract_reachability.ads:176, instance at line 62
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:130, instance at line 62
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:130, instance at line 62
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:231, instance at line 62
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:231, instance at line 62
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-pointers-abstract_reachability.ads:277, instance at line 62
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-pointers-abstract_reachability.ads:277, instance at line 62
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:249, instance at line 62
+union_find_global.adb:62:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:249, instance at line 62
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:62:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:69:13: info: implicit aspect Always_Terminates on "Valid_Handles" has been proved, subprogram will terminate
+union_find_global.adb:70:40: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:71:26: info: data dependencies proved
+union_find_global.adb:77:13: info: implicit aspect Always_Terminates on "Parent_Of" has been proved, subprogram will terminate
+union_find_global.adb:78:07: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:78:18: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:81:06: info: data dependencies proved
+union_find_global.adb:82:56: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:84:13: info: implicit aspect Always_Terminates on "Size_Of" has been proved, subprogram will terminate
+union_find_global.adb:85:07: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:86:26: info: data dependencies proved
+union_find_global.adb:95:13: info: implicit aspect Always_Terminates on "Is_Rooted" has been proved, subprogram will terminate
+union_find_global.adb:96:13: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:99:06: info: data dependencies proved
+union_find_global.adb:115:14: info: implicit aspect Always_Terminates on "Lemma_Rooted_Frame" has been proved, subprogram will terminate
+union_find_global.adb:118:06: info: data dependencies proved
+union_find_global.adb:126:17: info: precondition proved (CVC5: 3 VC)
+union_find_global.adb:130:26: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:130:58: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:132:08: info: postcondition proved (CVC5: 2 VC)
+union_find_global.adb:132:08: info: precondition proved (CVC5: 3 VC)
+union_find_global.adb:132:35: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:132:53: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:134:30: info: range check proved (CVC5: 1 VC)
+union_find_global.adb:134:44: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:141:14: info: implicit aspect Always_Terminates on "Lemma_Link" has been proved, subprogram will terminate
+union_find_global.adb:144:06: info: data dependencies proved
+union_find_global.adb:152:17: info: precondition proved (CVC5: 3 VC)
+union_find_global.adb:155:31: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:156:31: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:157:17: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:158:17: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:159:17: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:159:36: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:162:33: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:164:31: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:165:17: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:166:17: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:166:36: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:168:08: info: postcondition proved (CVC5: 2 VC)
+union_find_global.adb:168:08: info: precondition proved (CVC5: 3 VC)
+union_find_global.adb:169:17: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:170:23: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:170:57: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:172:30: info: range check proved (CVC5: 1 VC)
+union_find_global.adb:172:44: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:174:13: info: implicit aspect Always_Terminates on "Valid_Forest" has been proved, subprogram will terminate
+union_find_global.adb:177:35: info: precondition proved (CVC5: 3 VC)
+union_find_global.adb:178:26: info: data dependencies proved
+union_find_global.adb:180:13: info: implicit aspect Always_Terminates on "Root_Of" has been proved, subprogram will terminate
+union_find_global.adb:180:13: warning: potentially missing automatically instanciated lemma "Lemma_Link" declared at line 141
+union_find_global.adb:180:13: warning: potentially missing automatically instanciated lemma "Lemma_Rooted_Frame" declared at line 115
+union_find_global.adb:180:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_global.adb:180:13: warning: the body and contract of "Root_Of" might be missing
+union_find_global.adb:181:10: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:183:12: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:183:12: info: subprogram variant proved (CVC5: 1 VC)
+union_find_global.adb:183:24: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:186:06: info: data dependencies proved
+union_find_global.adb:191:17: info: precondition proved (CVC5: 3 VC)
+union_find_global.adb:193:08: info: postcondition proved (CVC5: 3 VC)
+union_find_global.adb:194:31: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:195:17: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:197:30: info: range check proved (CVC5: 1 VC)
+union_find_global.adb:197:44: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:203:24: info: initialization of "P" proved
+union_find_global.adb:205:06: info: data dependencies proved
+union_find_global.adb:208:08: info: postcondition proved (CVC5: 6 VC)
+union_find_global.adb:210:17: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:211:17: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:213:13: info: implicit aspect Always_Terminates on "Find" has been proved, subprogram will terminate
+union_find_global.adb:215:06: info: data dependencies proved
+union_find_global.adb:217:16: info: postcondition proved (CVC5: 1 VC)
+union_find_global.adb:217:30: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:219:13: info: implicit aspect Always_Terminates on "Set_Size" has been proved, subprogram will terminate
+union_find_global.adb:221:06: info: data dependencies proved
+union_find_global.adb:224:08: info: postcondition proved (CVC5: 1 VC)
+union_find_global.adb:224:26: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:224:51: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:230:06: info: data dependencies proved
+union_find_global.adb:238:21: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:238:52: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:239:23: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:239:48: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:241:28: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:241:53: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:243:08: medium: in inlined expression function body at union_find_global.adb:177
+union_find_global.adb:243:08: medium: postcondition might fail, cannot prove Is_Rooted (M, A)
+union_find_global.adb:246:17: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:246:47: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:250:20: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:251:26: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:252:28: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:253:28: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:254:29: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:255:31: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:256:28: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:257:28: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:265:10: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:266:10: info: precondition proved (CVC5: 10 VC)
+union_find_global.adb:266:10: info: subprogram variant proved (CVC5: 1 VC)
+union_find_global.adb:266:38: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:272:27: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:273:10: info: precondition proved (CVC5: 21 VC; Trivial: 1 VC)
+union_find_global.adb:273:10: info: subprogram variant proved (CVC5: 1 VC)
+union_find_global.adb:273:38: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:285:13: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:285:24: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:286:33: info: loop invariant initialization proved (CVC5: 1 VC)
+union_find_global.adb:286:33: info: loop invariant preservation proved (CVC5: 1 VC)
+union_find_global.adb:287:33: info: loop invariant initialization proved (CVC5: 1 VC)
+union_find_global.adb:287:33: info: loop invariant preservation proved (CVC5: 1 VC)
+union_find_global.adb:287:33: info: precondition proved (CVC5: 6 VC)
+union_find_global.adb:289:13: info: loop invariant initialization proved (CVC5: 1 VC)
+union_find_global.adb:289:13: info: loop invariant preservation proved (CVC5: 1 VC)
+union_find_global.adb:289:13: info: precondition proved (CVC5: 8 VC)
+union_find_global.adb:289:43: info: precondition proved (CVC5: 8 VC)
+union_find_global.adb:292:15: info: loop variant proved (CVC5: 1 VC)
+union_find_global.adb:293:25: info: range check proved (CVC5: 2 VC)
+union_find_global.adb:293:39: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:294:15: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:294:26: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:299:56: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:299:63: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:302:32: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:303:32: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:310:40: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:311:40: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:320:13: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:322:68: info: overflow check proved (CVC5: 2 VC)
+union_find_global.adb:323:13: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:325:13: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:327:68: info: overflow check proved (CVC5: 2 VC)
+union_find_global.adb:328:13: info: precondition proved (CVC5: 2 VC)
+union_find_global.adb:345:06: info: data dependencies proved
+union_find_global.adb:351:21: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:351:52: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:352:23: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:352:48: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:354:28: info: precondition proved (CVC5: 1 VC)
+union_find_global.adb:354:53: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:357:17: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:357:48: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:358:17: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:358:48: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:360:08: info: postcondition proved (CVC5: 6 VC)
+union_find_global.adb:362:17: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:363:19: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:364:17: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:364:47: info: precondition proved (CVC5: 4 VC)
+union_find_global.adb:367:07: info: precondition proved (CVC5: 6 VC; Trivial: 1 VC)
+union_find_separate.adb:25:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+union_find_separate.adb:26:26: info: data dependencies proved
+union_find_separate.adb:32:13: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
+union_find_separate.adb:32:59: info: data dependencies proved
+union_find_separate.adb:40:13: info: implicit aspect Always_Terminates on "Cell_Parent" has been proved, subprogram will terminate
+union_find_separate.adb:41:40: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:42:26: info: data dependencies proved
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:104
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:114
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:130
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:157
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:176
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:227
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:231
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:245
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:249
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:273
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:277
+union_find_separate.adb:52:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:97
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:104, instance at line 52
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:104, instance at line 52
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-pointers-abstract_reachability.ads:176, instance at line 52
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-pointers-abstract_reachability.ads:176, instance at line 52
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:130, instance at line 52
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:130, instance at line 52
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:231, instance at line 52
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:231, instance at line 52
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-pointers-abstract_reachability.ads:277, instance at line 52
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-pointers-abstract_reachability.ads:277, instance at line 52
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:249, instance at line 52
+union_find_separate.adb:52:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:249, instance at line 52
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:52:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:59:13: info: implicit aspect Always_Terminates on "Valid_Handles" has been proved, subprogram will terminate
+union_find_separate.adb:60:40: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:61:26: info: data dependencies proved
+union_find_separate.adb:68:13: info: implicit aspect Always_Terminates on "Parent_Of" has been proved, subprogram will terminate
+union_find_separate.adb:69:07: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:69:18: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:72:06: info: data dependencies proved
+union_find_separate.adb:73:56: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:75:13: info: implicit aspect Always_Terminates on "Size_Of" has been proved, subprogram will terminate
+union_find_separate.adb:76:07: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:77:26: info: data dependencies proved
+union_find_separate.adb:85:13: info: implicit aspect Always_Terminates on "Is_Rooted" has been proved, subprogram will terminate
+union_find_separate.adb:86:13: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:89:06: info: data dependencies proved
+union_find_separate.adb:95:14: info: implicit aspect Always_Terminates on "Lemma_Rooted_Frame" has been proved, subprogram will terminate
+union_find_separate.adb:98:06: info: data dependencies proved
+union_find_separate.adb:106:17: info: precondition proved (CVC5: 3 VC)
+union_find_separate.adb:110:26: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:110:58: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:112:08: info: postcondition proved (CVC5: 2 VC)
+union_find_separate.adb:112:08: info: precondition proved (CVC5: 3 VC)
+union_find_separate.adb:112:35: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:112:53: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:114:30: info: range check proved (CVC5: 1 VC)
+union_find_separate.adb:114:44: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:116:14: info: implicit aspect Always_Terminates on "Lemma_Link" has been proved, subprogram will terminate
+union_find_separate.adb:119:06: info: data dependencies proved
+union_find_separate.adb:127:17: info: precondition proved (CVC5: 3 VC)
+union_find_separate.adb:130:31: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:131:31: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:132:17: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:133:17: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:134:17: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:134:36: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:137:33: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:139:31: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:140:17: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:141:17: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:141:36: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:143:08: info: postcondition proved (CVC5: 2 VC)
+union_find_separate.adb:143:08: info: precondition proved (CVC5: 3 VC)
+union_find_separate.adb:144:17: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:145:23: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:145:57: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:147:30: info: range check proved (CVC5: 1 VC)
+union_find_separate.adb:147:44: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:149:13: info: implicit aspect Always_Terminates on "Valid_Forest" has been proved, subprogram will terminate
+union_find_separate.adb:152:35: info: precondition proved (CVC5: 3 VC)
+union_find_separate.adb:153:26: info: data dependencies proved
+union_find_separate.adb:155:13: info: implicit aspect Always_Terminates on "Root_Of" has been proved, subprogram will terminate
+union_find_separate.adb:155:13: warning: potentially missing automatically instanciated lemma "Lemma_Link" declared at line 116
+union_find_separate.adb:155:13: warning: potentially missing automatically instanciated lemma "Lemma_Rooted_Frame" declared at line 95
+union_find_separate.adb:155:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+union_find_separate.adb:155:13: warning: the body and contract of "Root_Of" might be missing
+union_find_separate.adb:156:10: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:158:12: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:158:12: info: subprogram variant proved (CVC5: 1 VC)
+union_find_separate.adb:158:24: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:161:06: info: data dependencies proved
+union_find_separate.adb:166:17: info: precondition proved (CVC5: 3 VC)
+union_find_separate.adb:168:08: info: postcondition proved (CVC5: 3 VC)
+union_find_separate.adb:169:31: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:170:17: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:172:30: info: range check proved (CVC5: 1 VC)
+union_find_separate.adb:172:44: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:179:48: info: initialization of "P" proved
+union_find_separate.adb:181:06: info: data dependencies proved
+union_find_separate.adb:184:08: info: postcondition proved (CVC5: 9 VC)
+union_find_separate.adb:186:17: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:187:17: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:190:13: info: implicit aspect Always_Terminates on "Find" has been proved, subprogram will terminate
+union_find_separate.adb:192:06: info: data dependencies proved
+union_find_separate.adb:194:16: info: postcondition proved (CVC5: 1 VC)
+union_find_separate.adb:194:30: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:196:13: info: implicit aspect Always_Terminates on "Set_Size" has been proved, subprogram will terminate
+union_find_separate.adb:198:06: info: data dependencies proved
+union_find_separate.adb:200:16: info: postcondition proved (CVC5: 1 VC)
+union_find_separate.adb:200:34: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:200:47: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:206:06: info: data dependencies proved
+union_find_separate.adb:211:21: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:211:40: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:212:23: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:212:36: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:213:41: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:213:54: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:215:08: medium: in inlined expression function body at union_find_separate.adb:152
+union_find_separate.adb:215:08: medium: postcondition might fail, cannot prove Is_Rooted (M, A)
+union_find_separate.adb:218:17: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:218:35: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:220:20: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:221:26: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:222:28: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:223:28: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:224:29: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:225:31: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:226:28: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:227:28: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:235:10: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:236:10: info: precondition proved (CVC5: 10 VC)
+union_find_separate.adb:236:10: info: subprogram variant proved (CVC5: 1 VC)
+union_find_separate.adb:236:38: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:242:27: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:243:10: info: precondition proved (CVC5: 21 VC; Trivial: 1 VC)
+union_find_separate.adb:243:10: info: subprogram variant proved (CVC5: 1 VC)
+union_find_separate.adb:243:38: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:255:13: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:255:24: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:256:33: info: loop invariant initialization proved (CVC5: 1 VC)
+union_find_separate.adb:256:33: info: loop invariant preservation proved (CVC5: 1 VC)
+union_find_separate.adb:257:33: info: loop invariant initialization proved (CVC5: 1 VC)
+union_find_separate.adb:257:33: info: loop invariant preservation proved (CVC5: 1 VC)
+union_find_separate.adb:257:33: info: precondition proved (CVC5: 6 VC)
+union_find_separate.adb:258:33: info: loop invariant initialization proved (CVC5: 1 VC)
+union_find_separate.adb:258:33: info: loop invariant preservation proved (CVC5: 1 VC)
+union_find_separate.adb:258:33: info: precondition proved (CVC5: 8 VC)
+union_find_separate.adb:258:51: info: precondition proved (CVC5: 8 VC)
+union_find_separate.adb:261:15: info: loop variant proved (CVC5: 1 VC)
+union_find_separate.adb:261:36: info: range check proved (CVC5: 2 VC)
+union_find_separate.adb:261:50: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:262:15: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:262:26: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:268:08: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:268:18: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:271:32: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:272:32: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:279:40: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:280:40: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:287:13: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:289:68: info: overflow check proved (CVC5: 2 VC)
+union_find_separate.adb:290:13: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:292:13: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:294:68: info: overflow check proved (CVC5: 2 VC)
+union_find_separate.adb:295:13: info: precondition proved (CVC5: 2 VC)
+union_find_separate.adb:306:32: warning: "M2" is not modified, could be IN
+union_find_separate.adb:308:06: info: data dependencies proved
+union_find_separate.adb:313:21: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:313:41: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:314:23: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:314:37: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:315:41: info: precondition proved (CVC5: 1 VC)
+union_find_separate.adb:315:55: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:319:08: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC)
+union_find_separate.adb:321:17: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:321:36: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:322:17: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:322:36: info: precondition proved (CVC5: 4 VC)
+union_find_separate.adb:325:07: info: precondition proved (CVC5: 6 VC; Trivial: 1 VC)

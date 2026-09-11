@@ -1,5 +1,5 @@
 with Interfaces; use Interfaces;
-with SPARK.Pointers.Pointers_With_Aliasing;
+with SPARK.Pointers.Explicit_Reclamation.Global_Memory;
 
 procedure Example_Untagged_Obj with SPARK_Mode is
    type Object is record
@@ -7,9 +7,18 @@ procedure Example_Untagged_Obj with SPARK_Mode is
       G : Integer;
    end record;
 
-   package Pointers_To_Obj is new SPARK.Pointers.Pointers_With_Aliasing (Object);
+   function Is_Reclaimed (Unused : Object) return Boolean is (True)
+   with Ghost => Static;
+
+   package Pointers_To_Obj is new
+     SPARK.Pointers.Explicit_Reclamation.Global_Memory (Object, Is_Reclaimed);
+
+   function Copy (O : Object) return Object is (O);
+   package Pointers_To_Obj_Copy_Operations is new
+     Pointers_To_Obj.Copy_Operations (Copy);
 
    use Pointers_To_Obj;
+   use Pointers_To_Obj_Copy_Operations;
    use Memory_Model;
 
    X1 : Pointer;
@@ -27,11 +36,12 @@ procedure Example_Untagged_Obj with SPARK_Mode is
    end Swap;
 
    procedure Swap_Val (X, Y : Pointer) with
-     Pre => Valid (Memory, Address (X)) and Valid (Memory, Address (Y)),
-     Post => Deref (X) = Deref (Y)'Old and Deref (Y) = Deref (X)'Old
-     and Allocates (Memory'Old, Memory, None)
-     and Deallocates (Memory'Old, Memory, None)
-     and Writes (Memory'Old, Memory, [for A in Address_Type => A in Address (X) | Address (Y)])
+     Pre => (Static => In_Memory (Model (Memory), X)
+             and In_Memory (Model (Memory), Y)),
+     Post => (Static => Deref (X) = Deref (Y)'Old and Deref (Y) = Deref (X)'Old
+     and Allocates (Model (Memory)'Old, Model (Memory), None)
+     and Deallocates (Model (Memory)'Old, Model (Memory), None)
+     and Writes (Model (Memory)'Old, Model (Memory), Add (Only (X), Y)))
    is
       Tmp : constant Object := Deref (X);
    begin
@@ -40,20 +50,20 @@ procedure Example_Untagged_Obj with SPARK_Mode is
    end Swap_Val;
 
    procedure Update_In_Place (X : Pointer; New_F : Positive) with
-     Pre => Valid (Memory, Address (X)),
-     Post => Deref (X) = (Deref (X)'Old with delta F => New_F)
-     and Allocates (Memory'Old, Memory, None)
-     and Deallocates (Memory'Old, Memory, None)
-     and Writes (Memory'Old, Memory, Only (Address (X)))
+     Pre => (Static => In_Memory (Model (Memory), X)),
+     Post => (Static => Deref (X) = (Deref (X)'Old with delta F => New_F)
+     and Allocates (Model (Memory)'Old, Model (Memory), None)
+     and Deallocates (Model (Memory)'Old, Model (Memory), None)
+     and Writes (Model (Memory)'Old, Model (Memory), Only (X)))
    is
       X_Content : access Object := Reference (Memory, X);
    begin
       X_Content.F := New_F;
    end Update_In_Place;
 begin
-   Create (Object'(F => 1, G => 4), X1);
-   Create (Object'(F => 2, G => 5), X2);
-   Create (Object'(F => 3, G => 6), X3);
+   Pointers_To_Obj_Copy_Operations.Create_Copy (Object'(F => 1, G => 4), X1);
+   Pointers_To_Obj_Copy_Operations.Create_Copy (Object'(F => 2, G => 5), X2);
+   Pointers_To_Obj_Copy_Operations.Create_Copy (Object'(F => 3, G => 6), X3);
    X1_B := X1; --  X1_B is an alias of X1
    pragma Assert (Deref (X1_B).F = 1);
    Swap (X1, X2);

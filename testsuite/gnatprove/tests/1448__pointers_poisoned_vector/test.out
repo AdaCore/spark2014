@@ -1,0 +1,43 @@
+poisoned_vector.adb:37:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+poisoned_vector.adb:38:26: info: data dependencies proved
+poisoned_vector.adb:47:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+poisoned_vector.adb:48:09: info: data dependencies proved
+poisoned_vector.adb:59:13: info: implicit aspect Always_Terminates on "Valid_Elements" has been proved, subprogram will terminate
+poisoned_vector.adb:66:26: info: data dependencies proved
+poisoned_vector.adb:70:13: info: implicit aspect Always_Terminates on "Hole_At" has been proved, subprogram will terminate
+poisoned_vector.adb:77:26: info: data dependencies proved
+poisoned_vector.adb:81:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+poisoned_vector.adb:83:06: info: data dependencies proved
+poisoned_vector.adb:86:19: info: postcondition proved (CVC5: 1 VC)
+poisoned_vector.adb:86:55: info: precondition proved (CVC5: 1 VC)
+poisoned_vector.adb:86:62: info: predicate check proved (CVC5: 1 VC)
+poisoned_vector.adb:90:06: info: data dependencies proved
+poisoned_vector.adb:96:08: info: postcondition proved (CVC5: 6 VC; Trivial: 2 VC)
+poisoned_vector.adb:100:81: info: index check proved (CVC5: 2 VC)
+poisoned_vector.adb:104:70: info: index check proved (CVC5: 2 VC)
+poisoned_vector.adb:109:06: info: data dependencies proved
+poisoned_vector.adb:112:08: info: postcondition proved (CVC5: 5 VC)
+poisoned_vector.adb:114:37: info: precondition proved (CVC5: 1 VC)
+poisoned_vector.adb:114:44: info: predicate check proved (CVC5: 1 VC)
+poisoned_vector.adb:118:06: info: data dependencies proved
+poisoned_vector.adb:120:16: info: postcondition proved (CVC5: 4 VC)
+poisoned_vector.adb:124:06: info: data dependencies proved
+poisoned_vector.adb:130:08: info: postcondition proved (CVC5: 7 VC; Trivial: 2 VC)
+poisoned_vector.adb:132:37: info: precondition proved (CVC5: 1 VC)
+poisoned_vector.adb:132:44: info: predicate check proved (CVC5: 1 VC)
+poisoned_vector.adb:137:81: info: index check proved (CVC5: 2 VC)
+poisoned_vector.adb:141:70: info: index check proved (CVC5: 2 VC)
+poisoned_vector.adb:145:06: info: data dependencies proved
+poisoned_vector.adb:147:16: info: postcondition proved (CVC5: 4 VC)
+poisoned_vector.adb:154:08: info: precondition proved (CVC5: 2 VC)
+poisoned_vector.adb:158:07: info: precondition proved (CVC5: 12 VC)
+poisoned_vector.adb:165:24: info: range check proved (CVC5: 2 VC)
+poisoned_vector.adb:171:07: info: precondition proved (CVC5: 5 VC)
+poisoned_vector.adb:173:27: info: absence of resource or memory leak proved (CVC5: 1 VC)
+poisoned_vector.adb:179:07: info: precondition proved (CVC5: 3 VC)
+poisoned_vector.adb:185:07: info: precondition proved (CVC5: 2 VC)
+poisoned_vector.adb:188:07: info: precondition proved (CVC5: 12 VC)
+poisoned_vector.adb:195:24: info: range check proved (CVC5: 2 VC)
+poisoned_vector.adb:202:13: info: loop invariant initialization proved (CVC5: 2 VC)
+poisoned_vector.adb:202:13: info: loop invariant preservation proved (CVC5: 2 VC)
+poisoned_vector.adb:206:10: info: precondition proved (CVC5: 2 VC)
