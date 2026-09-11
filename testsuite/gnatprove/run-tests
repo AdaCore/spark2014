@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-from e3.testsuite import CleanupMode, Testsuite
+from e3.testsuite import Testsuite
 import multiprocessing
 import os
 import os.path
@@ -8,28 +8,14 @@ import subprocess
 import sys
 import tempfile
 import yaml
-from shutil import rmtree
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib", "python"))
 
 from spark_drivers import SPARKTestFinder  # noqa: E402
-from test_support import (  # noqa: E402
-    prepare_sparklib_bodymode,
-    sparklib_bodymode_path_env,
-)
 
 
 class SPARKTestsuite(Testsuite):
     """Testsuite for SPARK."""
-
-    def setup_shared_sparklib_bodymode(self):
-        """Create the shared bodymode SPARKlib tree for this run."""
-        self.shared_sparklib_bodymode_dir = os.path.join(
-            self.working_dir, "sparklib_bodymode"
-        )
-        project_path = prepare_sparklib_bodymode(self.shared_sparklib_bodymode_dir)
-        # Body-mode tests consume this shared copy through create_sparklib.
-        os.environ[sparklib_bodymode_path_env] = project_path
 
     @property
     def test_finders(self):
@@ -151,8 +137,6 @@ class SPARKTestsuite(Testsuite):
             self.env.discs += ["large"]
         else:
             self.env.only_large = False
-        self.shared_sparklib_bodymode_dir = None
-        self.setup_shared_sparklib_bodymode()
         if os.path.exists("mass_xfail.yaml"):
             with open("mass_xfail.yaml", "r") as file:
                 self.env.skipped_reasons = yaml.safe_load(file)
@@ -171,12 +155,6 @@ class SPARKTestsuite(Testsuite):
     def tear_down(self):
         if self.why3_process:
             self.why3_process.kill()
-        if (
-            self.shared_sparklib_bodymode_dir is not None
-            and self.env.cleanup_mode != CleanupMode.NONE
-            and os.path.isdir(self.shared_sparklib_bodymode_dir)
-        ):
-            rmtree(self.shared_sparklib_bodymode_dir)
         super().tear_down()
 
 

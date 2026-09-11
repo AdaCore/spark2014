@@ -4,7 +4,12 @@ import glob
 import os.path
 import subprocess
 import shutil
+import sys
 import tempfile
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib", "python"))
+
+import test_support  # noqa: E402
 
 
 def run_command(args):
@@ -55,14 +60,14 @@ def sidfiles(covtempdir):
     exit(1)
 
 
-def report_project(covtempdir):
-    shared_project = os.path.join(
-        covtempdir, "sparklib_bodymode", "lib", "gnat", "sparklib_internal.gpr"
-    )
-    if os.path.isfile(shared_project):
-        return shared_project
+def report_project():
+    """Return the SPARKlib project the coverage report is computed against.
 
-    raise RuntimeError(f"Missing generated SPARKlib bodymode project: {shared_project}")
+    It is the very project the instrumented tests were built against, so the
+    report covers the same sources.
+    """
+    project_dir, _ = test_support.resolve_sparklib_location()
+    return os.path.join(project_dir, "sparklib_internal.gpr")
 
 
 def produce_report(covlibdir, covtempdir):
@@ -70,7 +75,6 @@ def produce_report(covlibdir, covtempdir):
     trf = tracefiles(covtempdir)
     sid = sidfiles(covtempdir)
     try:
-        project_file = report_project(covtempdir)
         args = [
             "gnatcov",
             "coverage",
@@ -81,7 +85,10 @@ def produce_report(covlibdir, covtempdir):
             "--sid",
             f"@{sid.name}",
             "-P",
-            project_file,
+            report_project(),
+            # The instrumented tests are built in body mode, so the report has
+            # to be computed against the same variants of the library units.
+            f"-X{test_support.sparklib_body_mode_var}=On",
             f"@{trf.name}",
         ]
         run_command(args)
