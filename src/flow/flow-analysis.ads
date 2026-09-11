@@ -219,6 +219,13 @@ package Flow.Analysis is
    --  Check if the global contracts directly reference any constant without
    --  variable inputs. This enforces SPARK RM 6.1.4(16).
 
+   procedure Contract_Sanity_Check (E : Entity_Id)
+   with
+     Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind | E_Task_Type;
+   --  Run the sanity checks that only depend on the declaration of E. Unlike
+   --  Sanity_Check, this needs no flow graph and so it also applies to
+   --  subprograms whose body is not in SPARK.
+
    procedure Check_Required_Contracts (E : Entity_Id);
 
 private

@@ -1,0 +1,9 @@
+p.ads:17:46: high: "Outp" is not an input in the Global contract of subprogram "Bad_Pre_Global" at line 16
+p.ads:17:46: high: make it an input in the Global contract
+p.ads:21:34: high: "X" is not initialized
+p.ads:25:51: high: "Outp" is not initialized at subprogram entry
+p.ads:29:39: high: "X" is not initialized at subprogram entry
+p.ads:32:13: error: user-defined equality shall have a Global aspect of null (SPARK RM 6.6(1))
+p.ads:38:18: high: "X" is not initialized
+p.ads:41:23: high: "X" is not initialized at subprogram entry
+gnatprove: error during flow analysis and proof

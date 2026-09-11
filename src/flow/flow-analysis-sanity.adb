@@ -1403,43 +1403,6 @@ package body Flow.Analysis.Sanity is
             begin
                Traverse_Declarations_And_HSS (Subp_Body);
 
-               --  A user-defined primitive equality operation on a record type
-               --  shall have a Global aspect of NULL, unless the record type
-               --  has only limited views (SPARK RM 6.1.4(11)).
-
-               if Is_User_Defined_Equality (FA.Spec_Entity)
-                 and then Is_Primitive (FA.Spec_Entity)
-               then
-                  declare
-                     Typ     : constant Entity_Id :=
-                       Etype (First_Formal (FA.Spec_Entity));
-                     Globals : Global_Flow_Ids;
-                  begin
-                     if Is_Record_Type (Unchecked_Full_Type (Typ))
-                       and then not Is_Limited_Type (Retysp (Typ))
-                     then
-                        Get_Globals
-                          (Subprogram => FA.Spec_Entity,
-                           Scope      => FA.S_Scope,
-                           Classwide  => False,
-                           Globals    => Globals);
-
-                        if not (Globals.Proof_Ins.Is_Empty
-                                and then Globals.Inputs.Is_Empty)
-                        then
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Msg      =>
-                                "user-defined equality shall "
-                                & "have a Global aspect of null",
-                              SRM_Ref  => "6.6(1)",
-                              N        => FA.Spec_Entity,
-                              Severity => Error_Kind);
-                        end if;
-                     end if;
-                  end;
-               end if;
-
                --  If the node is an instance of a generic then we need to
                --  check its actuals.
 

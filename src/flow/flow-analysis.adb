@@ -46,6 +46,7 @@ with VC_Kinds;               use VC_Kinds;
 
 with Errout_Wrapper;                 use Errout_Wrapper;
 with Flow.Analysis.Antialiasing;
+with Flow.Analysis.Contract_Sanity;
 with Flow.Analysis.Sanity;
 with Flow_Classwide;
 with Flow_Debug;                     use Flow_Debug;
@@ -776,6 +777,25 @@ package body Flow.Analysis is
          exit when not Sane;
       end loop;
    end Sanity_Check;
+
+   ---------------------------
+   -- Contract_Sanity_Check --
+   ---------------------------
+
+   procedure Contract_Sanity_Check (E : Entity_Id) is
+      type Contract_Sanity_Check is access procedure (E : Entity_Id);
+
+      type Contract_Sanity_Checks_T is
+        array (Positive range <>) of Contract_Sanity_Check;
+
+      Contract_Sanity_Checks : constant Contract_Sanity_Checks_T :=
+        [Contract_Sanity.Check_User_Defined_Equality_Globals'Access,
+         Contract_Sanity.Check_Inputs_Of_Contract_Expressions'Access];
+   begin
+      for C of Contract_Sanity_Checks loop
+         C (E);
+      end loop;
+   end Contract_Sanity_Check;
 
    ----------------------------
    -- Find_Unwritten_Exports --

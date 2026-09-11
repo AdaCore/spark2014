@@ -123,6 +123,72 @@ routines only deal with one "kind" of thing at a time.
 Graphs are created in ``flow-control-flow-graph.adb`` and analysed in
 ``flow-analysis.adb``.
 
+Sanity checks
+*************
+
+Before the real analysis we run a number of sanity checks. They come in two
+families, and the difference between them matters more than it looks.
+
+The first family lives in ``Flow.Analysis.Sanity`` and is dispatched by
+``Flow.Analysis.Sanity_Check``, which simply walks an array of
+access-to-procedure values and calls each in turn, stopping at the first check
+that reports the unit as not sane (subsequent checks would only produce noise
+on a graph we already know to be wrong). These checks take a
+``Flow_Analysis_Graphs`` and so they can only run for a subprogram that has a
+graph. ``Build_Graphs_For_Analysis`` builds one only when
+``Entity_Body_In_SPARK`` holds, so a subprogram whose body is annotated with
+``SPARK_Mode => Off`` is never seen by this family at all.
+
+The second family lives in ``Flow.Analysis.Contract_Sanity`` and is dispatched
+the same way by ``Flow.Analysis.Contract_Sanity_Check``, except that each check
+takes a plain ``Entity_Id``. These checks depend only on the declaration of a
+subprogram, never on its body, so they also apply when there is no graph. That
+covers a body annotated with ``SPARK_Mode => Off`` and, for the same reason, an
+imported subprogram, which has no body at all: both fail
+``Entity_Body_In_SPARK``. They are called from ``Check_Specification_Contracts``
+in ``flow.adb``, which runs before the graphs are built. There is no ``Sane``
+flag here: with no graph to protect, the checks are independent and all of them
+run.
+
+A rule that constrains a subprogram's contract rather than its implementation
+belongs in the second family, even when the body happens to be in SPARK.
+Putting it in the first family silently exempts every subprogram with a
+``SPARK_Mode => Off`` body, which is usually not what the rule intends.
+Diagnostics there use the ``Entity_Id`` variant of ``Error_Msg_Flow`` (the
+``Flow_Analysis_Graphs`` variant also writes a tracefile, which needs vertices
+we do not have).
+
+Some defects are worth reporting from both families, because the graph gives a
+better answer when we have one. ``Check_Inputs_Of_Contract_Expressions`` is the
+example: reading a non-input in a precondition, or in the prefix of a ``'Old``
+in a postcondition, is reported from the graph by
+``Find_Use_Of_Uninitialized_Variables`` and ``Check_Prefixes_Of_Attribute_Old``,
+and from the declaration alone when there is no graph. In that case the
+declaration-only check must return early when ``Entity_Body_In_SPARK`` holds, or
+the same defect is reported twice, and it should reuse the wording of the
+graph-based check so that a contract reads the same either way.
+
+Doing that without a graph is less work than it sounds. A precondition is
+evaluated exactly once, on entry, before any statement of the body, and so is
+the prefix of a ``'Old``; there is no path along which the read might not
+happen, so no reachability question to answer. What remains is whether the
+entity read holds a meaningful value on entry, which is fixed by the
+declaration: the parameter mode for a formal, the ``Global`` contract for a
+global, plus the carve-outs for bounds, tags and input discriminants, which are
+well defined on entry even for a parameter of mode ``out``. That is the same
+information the graph builder puts in ``V_Attributes.Is_Import`` for the initial
+vertices; ``Check_Prefixes_Of_Attribute_Old`` reads it back with a single vertex
+lookup rather than a traversal.
+
+One trap when writing such a check: ``Get_Globals`` returns entire variables in
+the ``In_View`` and ``Out_View`` variants, while ``Get_All_Variables`` returns
+``Normal_Use``, so a set membership test between the two silently fails unless
+one side is converted with ``Change_Variant``. Another: for an imported
+subprogram without an explicit ``Global``, phase 1 synthesizes the ``Proof_In``
+globals from the contract expressions themselves (see
+``Contract_Expressions_Globals``), so a check comparing the contract against the
+globals must be gated on ``Has_User_Supplied_Globals`` to avoid being vacuous.
+
 ..  this is about global generation
 
 Global generation
