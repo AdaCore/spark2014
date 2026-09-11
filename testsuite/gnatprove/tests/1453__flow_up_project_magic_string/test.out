@@ -1,0 +1,2 @@
+p.ads:3:22: high: "q.worker" must be a global Output of "Go"
+p.ads:3:22: medium: "q.worker" must be a global Input of "Go"
