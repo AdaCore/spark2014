@@ -4814,9 +4814,13 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  represented as Magic_Strings. Deferred constants which
                   --  only have partial view in SPARK will be represented by
                   --  this partial view.
+                  --
+                  --  We special-case 'Loop_Index, which is represented by an
+                  --  implicit entity that is never marked.
 
                   Proof_View :=
                     (if Entity_In_SPARK (E)
+                       or else Present (Loop_Iterator_Parameter (E))
                      then Change_Variant (F, Normal_Use)
                      elsif Present (Partial_View (E))
                        and then Entity_In_SPARK (Partial_View (E))

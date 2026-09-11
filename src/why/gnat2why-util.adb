@@ -2425,7 +2425,45 @@ package body Gnat2Why.Util is
 
    function Name_For_Loop_Index
      (Param_Id : Object_Kind_Id) return W_Identifier_Id
-   is (Loop_Index_Map (Param_Id));
+   is
+      use Ada_Node_To_Why_Id;
+      Position : Ada_Node_To_Why_Id.Cursor := Loop_Index_Map.Find (Param_Id);
+   begin
+      if not Has_Element (Position) then
+         declare
+            function Is_Loop_Stmt (N : Node_Id) return Boolean
+            is (Nkind (N) = N_Loop_Statement);
+
+            function Enclosing_Loop_Statement is new
+              First_Parent_With_Property (Is_Loop_Stmt);
+
+            Stmt      : constant Node_Id :=
+              Enclosing_Loop_Statement (Param_Id);
+            Scheme    : constant Opt_N_Iteration_Scheme_Id :=
+              Iteration_Scheme (Stmt);
+            Iter_Spec : constant Node_Id := Iterator_Specification (Scheme);
+            Inserted  : Boolean;
+
+         begin
+            Loop_Index_Map.Insert
+              (Param_Id,
+               New_Temp_Identifier
+                 (Ada_Node => Types.Empty,
+                  Typ      =>
+                    Type_Of_Node
+                      (Get_Iterable_Type_Primitive
+                         (Typ =>
+                            Etype
+                              (Get_Container_In_Iterator_Specification
+                                 (Iter_Spec)),
+                          Nam => Name_First))),
+               Position,
+               Inserted);
+         end;
+      end if;
+
+      return Element (Position);
+   end Name_For_Loop_Index;
 
    ------------------
    -- Name_For_Old --
@@ -2566,16 +2604,6 @@ package body Gnat2Why.Util is
               then Retysp (Etype (E))
               else E),
              Dim)));
-
-   ----------------------------------
-   -- Register_Name_For_Loop_Index --
-   ----------------------------------
-
-   procedure Register_Name_For_Loop_Index
-     (Param_Id : Object_Kind_Id; Name : W_Identifier_Id) is
-   begin
-      Loop_Index_Map.Insert (Param_Id, Name);
-   end Register_Name_For_Loop_Index;
 
    ----------------
    -- Short_Name --

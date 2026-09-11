@@ -290,11 +290,25 @@ package body Why.Gen.Binders is
                Binders (I) := Ada_Ent_To_Why.Element (C);
                I := I + 1;
 
+            --  Flow analysis can return entities that have not be declared
+            --  to stand for the loop parameter of a for of loop over a
+            --  container.
+
+            elsif Use_Ent then
+               pragma Assert (Present (Loop_Iterator_Parameter (Entity)));
+
+               Binders (I) :=
+                 Mk_Tmp_Item_Of_Entity
+                   (Empty,
+                    Name_For_Loop_Index (Loop_Iterator_Parameter (Entity)),
+                    Mutable => True);
+               I := I + 1;
+
             --  Otherwise, F is an opaque name of a flow effect. Construct a
             --  dummy binder with the appropriate name.
 
             else
-               pragma Assert (not Use_Ent and then Is_Opaque_For_Proof (F));
+               pragma Assert (Is_Opaque_For_Proof (F));
 
                Binders (I) :=
                  (Regular,

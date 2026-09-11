@@ -772,21 +772,6 @@ package body Gnat2Why.Expr.Loops is
                   Loop_Index_Type := Get_Typ (Loop_Index);
                   Insert_Item (Loop_Param_Ent, Index_Item);
                end;
-
-               if Of_Present (Iterator_Specification (Scheme)) then
-                  Register_Name_For_Loop_Index
-                    (Loop_Param_Ent,
-                     New_Temp_Identifier
-                       (Ada_Node => Empty,
-                        Typ      =>
-                          Type_Of_Node
-                            (Get_Iterable_Type_Primitive
-                               (Typ =>
-                                  Etype
-                                    (Get_Container_In_Iterator_Specification
-                                       (Iter_Spec)),
-                                Nam => Name_First))));
-               end if;
             end;
          end if;
 
