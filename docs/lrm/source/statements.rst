@@ -561,14 +561,14 @@ Attribute Loop_Index
 
 1. For a prefix *X* that denotes the loop parameter of a loop with an array
    component iterator or a container element iterator based on the Iterable
-   aspect, the following attribute is defined:
+   aspect, the following ghost attribute is defined:
 
    ::
 
       X'Loop_Index
 
    If *X* denotes the loop parameter of a loop with an array component iterator,
-   the following attribute is also defined:
+   the following ghost attribute is also defined:
 
    ::
 
