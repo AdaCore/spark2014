@@ -885,8 +885,8 @@ package body Flow.Analysis.Sanity is
                      --  * a bound
                      --  * a current object inside a predicate expression
                      --    or inside a type invariant expression
-                     --  * a loop parameter (except for those acting as a
-                     --    'Loop_Index in expanded loops over arrays)
+                     --  * a loop parameter
+                     --  * a 'Loop_Index attribute
                      --  * a record discriminant
                      --  * a discriminant of a protected type
                      --  * a component or part of a protected type accessed
@@ -904,10 +904,18 @@ package body Flow.Analysis.Sanity is
                        and then not Is_Access_Variable (Etype (Var))
                      then
                         null;
+                     elsif Ekind (Var) = E_Variable
+                       and then Present (Loop_Iterator_Parameter (Var))
+                     then
+                        null; --  this is 'Loop_Index over a container
+                     elsif Ekind (Var) = E_Loop_Parameter
+                       and then Present (Loop_Iterator_Parameter (Var))
+                     then
+                        null; --  this is 'Loop_Index over an array
                      elsif Ekind (Var) = E_Loop_Parameter
                        and then No (Loop_Iterator_Parameter (Var))
                      then
-                        null;
+                        null; --  this is an ordinary loop parameter
                      elsif Is_Record_Discriminant (F) then
                         null;
                      elsif Ekind (Var) = E_Protected_Type
