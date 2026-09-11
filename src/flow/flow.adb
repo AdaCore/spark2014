@@ -1680,6 +1680,8 @@ package body Flow is
                Analysis.Check_Constant_Global_Contracts (E);
             end if;
 
+            Analysis.Contract_Sanity_Check (E);
+
             if not Gnat2Why_Args.Flow_Generate_Contracts then
                Analysis.Check_Required_Contracts (E);
             end if;

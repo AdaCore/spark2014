@@ -8422,9 +8422,7 @@ package body SPARK_Definition is
                declare
                   Typ : constant Entity_Id := Etype (First_Formal (Id));
                begin
-                  if Is_Record_Type (Unchecked_Full_Type (Typ))
-                    and then not Is_Limited_Type (Retysp (Typ))
-                  then
+                  if Is_Nonlimited_Record_Type (Typ) then
                      --  A user-defined primitive equality operation on a
                      --  record type shall not be a function with side effects,
                      --  unless the record type has only limited views (SPARK

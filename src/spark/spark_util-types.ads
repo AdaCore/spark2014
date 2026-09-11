@@ -54,6 +54,13 @@ package SPARK_Util.Types is
    --  @param T any type
    --  @return the entity kind of the "Representative Type in SPARK" of type T.
 
+   function Is_Nonlimited_Record_Type (Typ : Type_Kind_Id) return Boolean;
+   --  @param Typ any type
+   --  @return True if Typ is a record type which does not have only limited
+   --    views. This is the condition under which the SPARK RM restrictions on
+   --    a user-defined primitive equality of Typ apply, see SPARK RM 6.6(1),
+   --    6.1.13(8) and 7.1.3(10).
+
    function Base_Retysp (T : Type_Kind_Id) return Type_Kind_Id;
    --  @param T any type
    --  @return the representative of the base type of T, or the result of

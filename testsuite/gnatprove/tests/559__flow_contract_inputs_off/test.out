@@ -1,0 +1,7 @@
+p.ads:10:46: high: "Outp" is not an input in the Global contract of subprogram "Bad_Pre_Global" at line 9
+p.ads:10:46: high: make it an input in the Global contract
+p.ads:13:34: high: "X" is not initialized
+p.ads:16:51: high: "Outp" is not initialized at subprogram entry
+p.ads:19:39: high: "X" is not initialized at subprogram entry
+p.ads:37:11: error: "Inp" is referenced in Pre but missing from the Global
+gnatprove: error during flow analysis and proof
