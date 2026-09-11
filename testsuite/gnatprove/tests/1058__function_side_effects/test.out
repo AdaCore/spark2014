@@ -18,20 +18,6 @@ frame_condition.adb:62:13: info: no contextual analysis of "Test_If_2" (exceptio
 frame_condition.adb:63:18: warning: this statement is never reached
 frame_condition.adb:63:23: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention Y in a loop invariant]
 frame_condition.adb:66:22: medium: assertion might fail [possible fix: loop at line 56 should mention Y in a loop invariant]
-frame_condition.adb:69:29: info: data dependencies proved
-frame_condition.adb:74:24: warning: loop condition is stable
-frame_condition.adb:76:32: info: only expected exception raised (CVC5: 1 VC)
-frame_condition.adb:76:32: warning: assuming "Pure_Raise" always terminates
-frame_condition.adb:76:32: warning: assuming "Pure_Raise" has no effect on global items
-frame_condition.adb:76:32: warning: no Always_Terminates aspect available for "Pure_Raise" [assumed-always-terminates]
-frame_condition.adb:76:32: warning: no Global contract available for "Pure_Raise" [assumed-global-null]
-frame_condition.adb:76:48: warning: assuming "Writes" always terminates
-frame_condition.adb:76:48: warning: no Always_Terminates aspect available for "Writes" [assumed-always-terminates]
-frame_condition.adb:81:16: warning: this statement is never reached
-frame_condition.adb:81:26: warning: assuming "Writes" always terminates
-frame_condition.adb:81:26: warning: no Always_Terminates aspect available for "Writes" [assumed-always-terminates]
-frame_condition.adb:85:22: info: assertion proved (CVC5: 1 VC)
-frame_condition.adb:86:22: medium: assertion might fail
 frame_condition.adb:92:04: warning: analyzing unreferenced procedure "Test_Case_1" [unreferenced-procedure]
 frame_condition.adb:92:14: warning: subprogram "Test_Case_1" has no effect
 frame_condition.adb:95:24: warning: loop condition is stable
@@ -40,18 +26,18 @@ frame_condition.adb:96:15: warning: no Always_Terminates aspect available for "W
 frame_condition.adb:103:22: medium: assertion might fail
 frame_condition.adb:106:30: info: data dependencies proved
 frame_condition.adb:111:24: warning: loop condition is stable
-frame_condition.adb:115:35: info: only expected exception raised (CVC5: 1 VC)
-frame_condition.adb:115:35: warning: assuming "Pure_Raise" always terminates
-frame_condition.adb:115:35: warning: assuming "Pure_Raise" has no effect on global items
-frame_condition.adb:115:35: warning: no Always_Terminates aspect available for "Pure_Raise" [assumed-always-terminates]
-frame_condition.adb:115:35: warning: no Global contract available for "Pure_Raise" [assumed-global-null]
-frame_condition.adb:115:51: warning: assuming "Writes" always terminates
-frame_condition.adb:115:51: warning: no Always_Terminates aspect available for "Writes" [assumed-always-terminates]
-frame_condition.adb:120:16: warning: this statement is never reached
-frame_condition.adb:120:26: warning: assuming "Writes" always terminates
-frame_condition.adb:120:26: warning: no Always_Terminates aspect available for "Writes" [assumed-always-terminates]
-frame_condition.adb:124:22: info: assertion proved (CVC5: 1 VC)
-frame_condition.adb:125:22: medium: assertion might fail
+frame_condition.adb:116:19: info: only expected exception raised (CVC5: 1 VC)
+frame_condition.adb:116:19: warning: assuming "Pure_Raise" always terminates
+frame_condition.adb:116:19: warning: assuming "Pure_Raise" has no effect on global items
+frame_condition.adb:116:19: warning: no Always_Terminates aspect available for "Pure_Raise" [assumed-always-terminates]
+frame_condition.adb:116:19: warning: no Global contract available for "Pure_Raise" [assumed-global-null]
+frame_condition.adb:118:19: warning: assuming "Writes" always terminates
+frame_condition.adb:118:19: warning: no Always_Terminates aspect available for "Writes" [assumed-always-terminates]
+frame_condition.adb:123:16: warning: this statement is never reached
+frame_condition.adb:123:26: warning: assuming "Writes" always terminates
+frame_condition.adb:123:26: warning: no Always_Terminates aspect available for "Writes" [assumed-always-terminates]
+frame_condition.adb:127:22: info: assertion proved (CVC5: 1 VC)
+frame_condition.adb:128:22: medium: assertion might fail
 structural_variant.adb:12:14: info: aspect Always_Terminates on "Test" has been proved, subprogram will terminate
 structural_variant.adb:17:23: info: pointer dereference check proved (CVC5: 1 VC)
 structural_variant.adb:18:13: medium: subprogram variant might fail [possible explanation: the call to "Update" might update the value designated by "X"]
@@ -262,79 +248,6 @@ test_proof.adb:299:104: info: index check proved (CVC5: 4 VC)
 test_proof.adb:299:107: info: overflow check proved (CVC5: 4 VC)
 test_proof.adb:300:13: info: only expected exception raised (CVC5: 1 VC)
 test_proof.adb:307:10: warning: this statement is never reached
-test_proof.adb:310:14: warning: subprogram "Test_Deeply_Nested" has no effect
-test_proof.adb:315:55: info: exceptional case proved (Trivial: 1 VC)
-test_proof.adb:316:41: info: exit case proved (CVC5: 1 VC)
-test_proof.adb:316:41: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
-test_proof.adb:316:41: info: on exceptional exit from "Err_E" at test_proof.adb:314
-test_proof.adb:316:41: info: on normal return from "Err_E" at test_proof.adb:314
-test_proof.adb:316:76: info: exit case proved (CVC5: 1 VC)
-test_proof.adb:316:76: info: on exceptional exit from "Err_E" at test_proof.adb:314
-test_proof.adb:317:17: info: postcondition proved (CVC5: 1 VC)
-test_proof.adb:319:55: info: exceptional case proved (Trivial: 1 VC)
-test_proof.adb:320:41: info: exit case proved (CVC5: 1 VC)
-test_proof.adb:320:41: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
-test_proof.adb:320:41: info: on exceptional exit from "Err_F" at test_proof.adb:318
-test_proof.adb:320:41: info: on normal return from "Err_F" at test_proof.adb:318
-test_proof.adb:320:76: info: exit case proved (CVC5: 1 VC)
-test_proof.adb:320:76: info: on exceptional exit from "Err_F" at test_proof.adb:318
-test_proof.adb:321:17: info: postcondition proved (CVC5: 1 VC)
-test_proof.adb:322:07: info: no contextual analysis of "Test_Deeply_Nested" (nested subprogram)
-test_proof.adb:336:07: info: initialization of "Y" proved
-test_proof.adb:340:33: info: only expected exception raised (CVC5: 1 VC)
-test_proof.adb:342:35: info: only expected exception raised (CVC5: 1 VC)
-test_proof.adb:347:20: info: only expected exception raised (CVC5: 1 VC)
-test_proof.adb:349:20: info: only expected exception raised (CVC5: 1 VC)
-test_proof.adb:350:22: info: assertion proved (CVC5: 1 VC)
-test_proof.adb:360:25: info: assertion proved (CVC5: 1 VC)
-test_proof.adb:367:25: info: assertion proved (CVC5: 1 VC)
-test_proof.adb:370:14: warning: subprogram "Test_Deeply_Nested_KO" has no effect
-test_proof.adb:375:55: info: exceptional case proved (Trivial: 1 VC)
-test_proof.adb:376:41: info: exit case proved (CVC5: 1 VC)
-test_proof.adb:376:41: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
-test_proof.adb:376:41: info: on exceptional exit from "Err_E" at test_proof.adb:374
-test_proof.adb:376:41: info: on normal return from "Err_E" at test_proof.adb:374
-test_proof.adb:376:76: info: exit case proved (CVC5: 1 VC)
-test_proof.adb:376:76: info: on exceptional exit from "Err_E" at test_proof.adb:374
-test_proof.adb:377:17: info: postcondition proved (CVC5: 1 VC)
-test_proof.adb:379:55: info: exceptional case proved (Trivial: 1 VC)
-test_proof.adb:380:41: info: exit case proved (CVC5: 1 VC)
-test_proof.adb:380:41: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
-test_proof.adb:380:41: info: on exceptional exit from "Err_F" at test_proof.adb:378
-test_proof.adb:380:41: info: on normal return from "Err_F" at test_proof.adb:378
-test_proof.adb:380:76: info: exit case proved (CVC5: 1 VC)
-test_proof.adb:380:76: info: on exceptional exit from "Err_F" at test_proof.adb:378
-test_proof.adb:381:17: info: postcondition proved (CVC5: 1 VC)
-test_proof.adb:382:07: info: no contextual analysis of "Test_Deeply_Nested_KO" (nested subprogram)
-test_proof.adb:396:07: info: initialization of "Y" proved
-test_proof.adb:400:33: info: only expected exception raised (CVC5: 1 VC)
-test_proof.adb:402:35: info: only expected exception raised (CVC5: 1 VC)
-test_proof.adb:407:20: info: only expected exception raised (CVC5: 1 VC)
-test_proof.adb:409:20: info: only expected exception raised (CVC5: 1 VC)
-test_proof.adb:410:22: medium: assertion might fail (e.g. when Y = 41)
-test_proof.adb:420:25: medium: assertion might fail [possible fix: subprogram at line 370 should mention X in a precondition]
-test_proof.adb:427:25: info: assertion proved (CVC5: 1 VC)
-test_proof.adb:430:14: warning: subprogram "Test_Nested" has no effect
-test_proof.adb:449:33: info: loop invariant initialization proved (CVC5: 1 VC)
-test_proof.adb:449:33: info: loop invariant preservation proved (CVC5: 1 VC)
-test_proof.adb:450:33: info: loop invariant initialization proved (CVC5: 1 VC)
-test_proof.adb:450:33: info: loop invariant preservation proved (CVC5: 1 VC)
-test_proof.adb:452:54: medium: overflow check might fail, cannot prove lower bound for W + X [reason for check: result of addition must fit in a 32-bits machine integer]
-test_proof.adb:452:66: info: overflow check proved (CVC5: 2 VC)
-test_proof.adb:452:77: medium: overflow check might fail, cannot prove lower bound for W - X [reason for check: result of subtraction must fit in a 32-bits machine integer]
-test_proof.adb:456:21: info: only expected exception raised (CVC5: 1 VC)
-test_proof.adb:456:21: warning: assuming "Err_E" always terminates
-test_proof.adb:456:21: warning: no Always_Terminates aspect available for "Err_E" [assumed-always-terminates]
-test_proof.adb:458:21: info: only expected exception raised (CVC5: 1 VC)
-test_proof.adb:458:21: warning: assuming "Err_F" always terminates
-test_proof.adb:458:21: warning: no Always_Terminates aspect available for "Err_F" [assumed-always-terminates]
-test_proof.adb:460:22: info: assertion proved (CVC5: 2 VC)
-test_proof.adb:461:22: medium: assertion might fail
-test_proof.adb:463:07: info: no contextual analysis of "Test_Nested" (exception handler)
-test_proof.adb:464:25: info: assertion proved (CVC5: 1 VC)
-test_proof.adb:465:25: medium: assertion might fail
-test_proof.adb:467:25: info: assertion proved (CVC5: 1 VC)
-test_proof.adb:468:25: medium: assertion might fail
 test_proof.adb:472:25: warning: "A" is not modified, could be IN
 test_proof.adb:474:14: info: postcondition proved (CVC5: 7 VC; Trivial: 1 VC)
 test_proof.adb:477:44: info: index check proved (CVC5: 2 VC)

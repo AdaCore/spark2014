@@ -814,6 +814,7 @@ package VC_Kinds is
       Lim_Relaxed_Init_Aliasing,
       Lim_Relaxed_Init_Invariant,
       Lim_Relaxed_Init_Variant_Part,
+      Lim_Side_Effect_Call_Subexpression,
       Lim_Subprogram_Before_Inv,
       Lim_Subp_Variant_Duplicate,
       Lim_Subp_Variant_Eq,
@@ -1364,6 +1365,8 @@ package VC_Kinds is
            "primitive calls in default initial condition",
          when Lim_Constrained_Classwide                                   =>
            "constrained class-wide subtype",
+         when Lim_Side_Effect_Call_Subexpression                          =>
+           "call to function with side effects as a subexpression",
          when Lim_Type_Inv_Access_Type                                    =>
            "access to incomplete or private type which needs an invariant"
            & " check",
