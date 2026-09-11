@@ -1,13 +1,8 @@
-test.adb:5:04: warning: unused initial value of "Before"
 test.adb:7:04: info: initialization of "O" proved
-test.adb:11:15: medium: missing dependency "O => After"
-test.adb:11:32: medium: incorrect dependency "O => Before"
-test.adb:11:44: medium: missing dependency "null => Before"
-test.adb:11:52: medium: incorrect dependency "null => After"
+test.adb:11:03: info: flow dependencies proved
 test.adb:15:04: info: range check proved (CVC5: 2 VC)
-test.adb:15:04: warning: initialization of "A" has no effect
 test.adb:15:29: info: length check proved (CVC5: 3 VC)
 test.adb:18:06: info: length check proved (CVC5: 3 VC)
+test.adb:18:06: warning: unused assignment
 test.adb:18:09: info: length check proved (CVC5: 3 VC)
-test.adb:19:10: warning: statement has no effect
 test.adb:19:25: info: index check proved (CVC5: 2 VC)

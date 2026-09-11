@@ -1,10 +1,5 @@
-generic_snapshot.adb:5:07: warning: initialization of "Value" has no effect, in instantiation at test.adb:7
-generic_snapshot.adb:13:22: warning: statement has no effect, in instantiation at test.adb:7
-generic_snapshot.ads:4:14: warning: unused initial value of constant with variable input "Initial", in instantiation at test.adb:7
+generic_snapshot.adb:8:13: warning: unused assignment, in instantiation at test.adb:7
 generic_snapshot.ads:4:46: info: initialization of "Output" proved, in instantiation at test.adb:7
-generic_snapshot.ads:5:21: medium: missing dependency "Output => Later", in instantiation at test.adb:7
-generic_snapshot.ads:5:31: medium: incorrect dependency "Output => constant with variable input Initial", in instantiation at test.adb:7
-generic_snapshot.ads:5:40: medium: missing dependency "null => constant with variable input Initial", in instantiation at test.adb:7
-generic_snapshot.ads:5:48: medium: incorrect dependency "null => Later", in instantiation at test.adb:7
+generic_snapshot.ads:5:09: info: flow dependencies proved, in instantiation at test.adb:7
 test.adb:3:40: info: initialization of "Output" proved
 test.adb:5:03: info: flow dependencies proved

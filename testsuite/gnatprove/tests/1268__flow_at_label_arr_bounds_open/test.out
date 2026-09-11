@@ -2,7 +2,4 @@ test.adb:5:04: info: initialization of "First" proved
 test.adb:5:11: info: initialization of "Last" proved
 test.adb:5:17: info: initialization of "Length" proved
 test.adb:8:03: info: flow dependencies proved
-test.adb:12:14: warning: statement has no effect
-test.adb:13:13: warning: statement has no effect
-test.adb:14:15: warning: statement has no effect
 test.adb:14:28: info: range check proved (CVC5: 2 VC)

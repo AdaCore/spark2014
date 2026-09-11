@@ -215,6 +215,7 @@ unsupported-alloc-with-type-constraints - unsupported-alloc-with-type-constraint
 unsupported-array-conv-different-size-modular-index - unsupported-array-conv-different-size-modular-index - a conversion between array types if some matching index types are modular types of different sizes - HIGH
 unsupported-array-conv-signed-modular-index - unsupported-array-conv-signed-modular-index - a conversion between array types if some matching index types are not both signed or both modular - HIGH
 unsupported-assert-and-cut-meet-inv - unsupported-assert-and-cut-meet-inv - a pragma Assert_And_Cut occurring immediately within a sequence of statements containing a Loop_Invariant - HIGH
+unsupported-at-unsupported-context - unsupported-at-unsupported-context - a reference to the "At" attribute in an unsupported context - HIGH
 unsupported-borrow-slice - unsupported-borrow-slice - a borrow of a (part of) a slice - HIGH
 unsupported-borrow-traversal-first-param - unsupported-borrow-traversal-first-param - a borrowing traversal function whose first formal parameter does not have an anonymous access-to-variable type - HIGH
 unsupported-borrow-traversal-volatile - unsupported-borrow-traversal-volatile - a borrowing traversal function marked as a volatile function - HIGH

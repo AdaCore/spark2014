@@ -1339,6 +1339,7 @@ package body Flow.Analysis is
                   --  * the variable is a formal parameter of a null subprogram
                   --    of a generic unit
                   --  * the variable is a formal parameter of a null procedure
+                  --  * the variable represents an internal At snapshot
                   declare
                      E     : constant Entity_Id := Get_Direct_Mapping_Id (F);
                      E_Typ : constant Entity_Id := Etype (E);
@@ -1350,7 +1351,7 @@ package body Flow.Analysis is
                        or else Has_Junk_Name (E)
                        or else Is_Param_Of_Null_Subp_Of_Generic (E)
                        or else Is_Param_Of_Null_Procedure (E)
-                       or else Is_Internal (E)
+                       or else Is_At_Snapshot_Object (F)
                      then
                         null;
 

@@ -1,8 +1,4 @@
 test.adb:3:35: info: initialization of "O" proved
-test.adb:6:15: medium: missing dependency "O => C2"
-test.adb:6:20: medium: incorrect dependency "O => C1"
-test.adb:6:24: medium: missing dependency "null => C1"
-test.adb:6:32: medium: incorrect dependency "null => C2"
-test.adb:8:04: warning: initialization of "X" has no effect
+test.adb:6:03: info: flow dependencies proved
+test.adb:11:06: warning: unused assignment
 test.adb:12:20: info: overflow check proved (CVC5: 2 VC)
-test.adb:12:24: warning: statement has no effect

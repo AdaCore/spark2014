@@ -725,6 +725,7 @@ package VC_Kinds is
       Lim_Array_Conv_Different_Size_Modular_Index,
       Lim_Array_Conv_Signed_Modular_Index,
       Lim_Assert_And_Cut_Meet_Inv,
+      Lim_At_Unsupported_Context,
       Lim_Borrow_Slice,
       Lim_Borrow_Traversal_First_Param,
       Lim_Borrow_Traversal_Volatile,
@@ -1172,6 +1173,8 @@ package VC_Kinds is
          when Lim_Assert_And_Cut_Meet_Inv                                 =>
            "pragma Assert_And_Cut immediately within a sequence of statements"
            & " containing a loop invariant",
+         when Lim_At_Unsupported_Context                                  =>
+           "this use of attribute ""At""",
          when Lim_Multidim_Update                                         =>
            "attribute ""Update"" of unconstrained multidimensional array",
          when Lim_Null_Aggregate_In_Branching_Array_Aggregate             =>

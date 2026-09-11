@@ -1,5 +1,4 @@
 test.adb:6:04: info: initialization of "O" proved
-test.adb:10:24: medium: missing dependency "O => V"
+test.adb:10:03: info: flow dependencies proved
 test.adb:14:08: info: index check proved (CVC5: 2 VC)
-test.adb:15:10: warning: statement has no effect
 test.adb:15:26: info: index check proved (CVC5: 2 VC)

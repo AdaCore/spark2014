@@ -36,6 +36,7 @@ with Einfo.Utils;                    use Einfo.Utils;
 with Elists;                         use Elists;
 with Errout;
 with Errout_Wrapper;                 use Errout_Wrapper;
+with Exp_SPARK;
 with Exp_Util;                       use Exp_Util;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
@@ -6197,12 +6198,16 @@ package body SPARK_Definition is
                end if;
             end;
 
-            --  Check restrictions on the placement of attribute 'At and store
-            --  it in a map for further use.
+            --  Require frontend expansion for attribute 'At, check its
+            --  placement restrictions and store it in a map for further use.
 
-            if Attr_Id = Attribute_At then
-               Check_Attribute_At_Placement (N);
-               Register_At_Attribute (N);
+            if Attribute_Name (N) = Name_At then
+               if No (Exp_SPARK.Implicit_Object (N)) then
+                  Mark_Unsupported (Lim_At_Unsupported_Context, N);
+               else
+                  Check_Attribute_At_Placement (N);
+                  Register_At_Attribute (N);
+               end if;
             end if;
 
          when Attribute_Access                                    =>

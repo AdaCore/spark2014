@@ -1,13 +1,8 @@
-test.adb:4:04: warning: unused initial value of "Value"
 test.adb:5:04: info: initialization of "Output" proved
-test.adb:10:06: medium: missing dependency "Output => Later"
-test.adb:10:17: medium: incorrect dependency "Output => Value"
-test.adb:10:39: medium: missing dependency "null => Value"
-test.adb:10:48: medium: incorrect dependency "null => Later"
+test.adb:9:03: info: flow dependencies proved
 test.adb:17:13: info: implicit aspect Always_Terminates on "Pick" has been proved, subprogram will terminate
 test.adb:19:06: info: data dependencies proved
 test.adb:21:06: info: flow dependencies proved
 test.adb:25:22: info: assertion proved (CVC5: 1 VC)
-test.adb:29:04: warning: initialization of "X" has no effect
+test.adb:33:06: warning: unused assignment
 test.adb:34:14: info: precondition proved (CVC5: 1 VC)
-test.adb:34:30: warning: statement has no effect

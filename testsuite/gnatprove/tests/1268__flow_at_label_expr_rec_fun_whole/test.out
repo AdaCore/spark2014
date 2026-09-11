@@ -1,22 +1,8 @@
-test.adb:4:04: warning: unused initial value of "Before_Left"
-test.adb:5:04: warning: unused initial value of "Before_Right"
 test.adb:6:04: info: initialization of "Output_Left" proved
 test.adb:7:04: info: initialization of "Output_Right" proved
-test.adb:11:06: medium: missing dependency "Output_Left => After_Left"
-test.adb:11:06: medium: missing dependency "Output_Left => After_Right"
-test.adb:11:23: medium: incorrect dependency "Output_Left => Before_Left"
-test.adb:11:36: medium: incorrect dependency "Output_Left => Before_Right"
-test.adb:12:06: medium: missing dependency "Output_Right => After_Left"
-test.adb:12:06: medium: missing dependency "Output_Right => After_Right"
-test.adb:12:23: medium: incorrect dependency "Output_Right => Before_Left"
-test.adb:12:36: medium: incorrect dependency "Output_Right => Before_Right"
-test.adb:13:06: medium: missing dependency "null => Before_Left"
-test.adb:13:06: medium: missing dependency "null => Before_Right"
-test.adb:13:23: medium: incorrect dependency "null => After_Left"
-test.adb:13:35: medium: incorrect dependency "null => After_Right"
+test.adb:10:03: info: flow dependencies proved
 test.adb:20:13: info: implicit aspect Always_Terminates on "Make_Pair" has been proved, subprogram will terminate
 test.adb:21:09: info: flow dependencies proved
-test.adb:26:04: warning: initialization of "Left" has no effect
-test.adb:27:04: warning: initialization of "Right" has no effect
 test.adb:28:04: info: initialization of "Saved" proved
-test.adb:34:36: warning: statement has no effect
+test.adb:32:09: warning: unused assignment
+test.adb:33:10: warning: unused assignment

@@ -123,6 +123,50 @@ routines only deal with one "kind" of thing at a time.
 Graphs are created in ``flow-control-flow-graph.adb`` and analysed in
 ``flow-analysis.adb``.
 
+At snapshots
+************
+
+For every supported use of attribute ``At``, the frontend creates an implicit
+variable that represents the saved value of the prefix. This variable is not
+attached to the AST. When flow analysis processes the referenced label, it
+queries the frontend for all corresponding ``At`` attributes. As a defensive
+mechanism, marking rejects any ``At`` reference where a frontend-generated
+internal object is not available. When the implicit object is available, flow
+generates respective initialization vertices. Later references to the
+attributes read those objects. A component selected from a record-valued
+snapshot reads only the corresponding field of the implicit variable.
+
+The frontend rejects a label referenced by both a goto statement and an
+``At`` attribute. Flow analysis can therefore connect pending goto vertices
+directly while processing their label; folded checks added for snapshot
+initializations never need to be entered from a goto path.
+
+Like an ordinary object declaration, each snapshot initialization has a marker
+that associates the implicit object's ``Initial`` and ``Final`` vertices with
+the path containing its label.  This lets dead-path pruning remove those
+boundary vertices when the label is dead.  If the label is reachable but the
+corresponding ``At`` reference is unreachable, the snapshot initialization is
+currently retained; removing such snapshots requires a separate liveness-based
+cleanup.
+
+Array slice bounds are also evaluated at the label.  When a slice snapshot is
+the direct prefix of ``First``, ``Last`` or ``Length``, flow analysis reads its
+implicit object so that the dependency reaches the label-time initialization.
+The initialization conservatively depends on the complete slice prefix, so a
+bound attribute can depend on more inputs than semantically necessary. More
+precise modeling of snapshot bounds is left for a future redesign.
+
+When collecting source-level dependencies, for example to detect variable
+inputs in subtype constraints, flow analysis instead expands an implicit
+snapshot variable back to the prefix expression.  Snapshot variables are also
+registered in the mapping between entity names and entities because references
+from nested subprograms can make them part of generated globals.
+
+Variable collection for proof also expands these snapshot variables back to
+their prefixes.  Proof represents saved values independently with Why3
+temporaries created for ``At`` references, so the frontend-created flow objects
+must not become proof variables.
+
 Sanity checks
 *************
 

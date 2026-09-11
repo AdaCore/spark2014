@@ -1,7 +1,6 @@
 test.adb:6:04: info: initialization of "O_Call" proved
 test.adb:6:12: info: initialization of "O_Assign" proved
-test.adb:10:25: medium: missing dependency "O_Call => V"
-test.adb:10:33: medium: missing dependency "O_Assign => V"
+test.adb:10:03: info: flow dependencies proved
 test.adb:12:13: info: implicit aspect Always_Terminates on "Head" has been proved, subprogram will terminate
 test.adb:14:06: info: data dependencies proved
 test.adb:16:06: info: flow dependencies proved
@@ -10,8 +9,6 @@ test.adb:23:04: info: initialization of "Saved" proved
 test.adb:23:04: info: range check proved (CVC5: 2 VC)
 test.adb:26:08: info: index check proved (CVC5: 2 VC)
 test.adb:27:14: info: precondition proved (CVC5: 1 VC)
-test.adb:27:21: warning: statement has no effect
 test.adb:28:10: info: length check proved (CVC5: 3 VC)
 test.adb:28:14: info: length check proved (CVC5: 3 VC)
-test.adb:28:14: warning: statement has no effect
 test.adb:29:28: info: index check proved (CVC5: 2 VC)

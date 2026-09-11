@@ -1048,6 +1048,8 @@ package body VC_Kinds is
          when Lim_Assert_And_Cut_Meet_Inv                                 =>
            "a pragma Assert_And_Cut occurring immediately within a sequence"
            & " of statements containing a Loop_Invariant",
+         when Lim_At_Unsupported_Context                                  =>
+           "a reference to the ""At"" attribute in an unsupported context",
          when Lim_Borrow_Slice                                            =>
            "a borrow of a (part of) a slice",
          when Lim_Borrow_Traversal_First_Param                            =>
@@ -3500,6 +3502,8 @@ package body VC_Kinds is
            "array-conv-signed-modular-index",
          when Lim_Assert_And_Cut_Meet_Inv                                 =>
            "assert-and-cut-meet-inv",
+         when Lim_At_Unsupported_Context                                  =>
+           "at-unsupported-context",
          when Lim_Borrow_Slice                                            =>
            "borrow-slice",
          when Lim_Borrow_Traversal_First_Param                            =>

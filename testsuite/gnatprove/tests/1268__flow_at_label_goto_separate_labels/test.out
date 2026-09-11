@@ -1,5 +1,3 @@
 test.adb:6:04: info: initialization of "Snapshot_Output" proved
 test.adb:6:21: info: initialization of "Current" proved
-test.adb:10:06: medium: missing dependency "Snapshot_Output => After"
-test.adb:10:06: medium: missing dependency "Snapshot_Output => Jump"
-test.adb:25:28: warning: statement has no effect
+test.adb:9:03: info: flow dependencies proved

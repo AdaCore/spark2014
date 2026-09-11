@@ -265,7 +265,8 @@ package Flow_Utility is
    --     * Expand_Internal_Objects: if True, then constants that do not come
    --       from source (i.e. constants that capture variables) are expanded to
    --       the variables referenced in their initialization expression;
-   --       similar for variables that come from inlining-for-proof.
+   --       similar for variables that come from inlining-for-proof and for
+   --       implicit objects that capture the value of an At attribute.
    --
    --     * Skip_Old: if True, then the prefix of references to the Old
    --       attribute are skipped.
@@ -737,6 +738,13 @@ package Flow_Utility is
    function Is_Constant_After_Elaboration (F : Flow_Id) return Boolean
    with Pre => Present (F);
    --  Returns True iff F represents a constant after elaboration
+
+   function Is_At_Snapshot_Object (E : Entity_Id) return Boolean;
+   --  Return True when E is an implicit object created for an At attribute
+
+   function Is_At_Snapshot_Object (F : Flow_Id) return Boolean;
+   --  Return True when F represents an implicit object created for an At
+   --  attribute, or one of its components.
 
    function Is_Variable (F : Flow_Id) return Boolean
    with Pre => Present (F);

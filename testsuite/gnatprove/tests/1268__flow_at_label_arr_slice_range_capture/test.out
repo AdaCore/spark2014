@@ -1,13 +1,2 @@
-test.adb:7:04: info: initialization of "O" proved
-test.adb:16:15: medium: incorrect dependency "O => Early_Low"
-test.adb:16:26: medium: incorrect dependency "O => Early_High"
-test.adb:17:06: medium: missing dependency "null => Early_High"
-test.adb:17:06: medium: missing dependency "null => Early_Low"
-test.adb:21:04: warning: initialization of "A" has no effect
-test.adb:22:04: warning: initialization of "Low" has no effect
-test.adb:23:04: warning: initialization of "High" has no effect
-test.adb:26:08: warning: unused assignment
-test.adb:27:09: warning: unused assignment
-test.adb:28:18: info: range check proved (CVC5: 4 VC)
-test.adb:28:33: info: length check proved (CVC5: 3 VC)
-test.adb:28:33: medium: length check might fail [reason for check: array must be of the appropriate length]
+test.adb:28:33: error: this use of attribute "At" is not yet supported
+gnatprove: error during flow analysis and proof

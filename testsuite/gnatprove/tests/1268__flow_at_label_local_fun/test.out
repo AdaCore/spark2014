@@ -1,10 +1,5 @@
-test.adb:3:17: warning: unused initial value of "C1"
 test.adb:3:42: info: initialization of "O" proved
-test.adb:5:15: medium: missing dependency "O => C2"
-test.adb:5:20: medium: incorrect dependency "O => C1"
-test.adb:5:24: medium: missing dependency "null => C1"
-test.adb:5:33: medium: incorrect dependency "null => C2"
+test.adb:5:03: info: flow dependencies proved
 test.adb:7:13: info: implicit aspect Always_Terminates on "Pick" has been proved, subprogram will terminate
 test.adb:8:06: info: flow dependencies proved
-test.adb:12:04: warning: initialization of "X" has no effect
-test.adb:16:16: warning: statement has no effect
+test.adb:15:06: warning: unused assignment
