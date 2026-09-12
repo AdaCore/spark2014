@@ -34,6 +34,7 @@ with ALI;    use ALI;
 with Namet;  use Namet;
 with Osint;  use Osint;
 with Output; use Output;
+with Sem_Type; use Sem_Type;
 with Stand;  use Stand;
 
 with Call;                      use Call;
@@ -567,6 +568,34 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Get_Globals --
    --------------------
 
+   function Has_Generic_In_Formal
+     (E : Entity_Name; Globals : Global_Names) return Boolean;
+   --  Return True if Globals contains the synthetic nested name used for a
+   --  generic formal object of mode IN.
+
+   function Has_Generic_In_Formal
+     (E : Entity_Name; Globals : Global_Names) return Boolean
+   is
+      Prefix  : constant String := To_String (E) & "__";
+      Objects : Name_Sets.Set := Globals.Proof_Ins;
+
+      function Is_Formal (Object : Entity_Name) return Boolean;
+
+      function Is_Formal (Object : Entity_Name) return Boolean is
+         Name : constant String := To_String (Object);
+
+      begin
+         return
+           Name'Length > Prefix'Length
+           and then Name (Name'First .. Name'First + Prefix'Length - 1) =
+             Prefix;
+      end Is_Formal;
+
+   begin
+      Objects.Union (Globals.Inputs);
+      return (for some Object of Objects => Is_Formal (Object));
+   end Has_Generic_In_Formal;
+
    Null_Globals_Reported : Node_Sets.Set;
    --  Prevents repeated reports about giving null globals
 
@@ -575,6 +604,8 @@ package body Flow_Generated_Globals.Phase_2 is
    is
       C : constant Entity_Contract_Maps.Cursor :=
         Global_Contracts.Find (To_Entity_Name (E));
+
+      use type Flow_Id_Sets.Set;
 
       procedure To_Flow_Id_Set (G : Global_Names);
       --  Convert to Flow_Id because down-projecting relies on visibility
@@ -594,13 +625,16 @@ package body Flow_Generated_Globals.Phase_2 is
             Outputs   => To_Flow_Id_Set (G.Outputs));
       end To_Flow_Id_Set;
 
-      use type Flow_Id_Sets.Set;
-
    begin
       if Entity_Contract_Maps.Has_Element (C) then
          To_Flow_Id_Set
            (if Ekind (E) /= E_Package
               and then Subprogram_Refinement_Is_Visible (E, S)
+              and then
+                (Scope_Within_Or_Same (S.Ent, E)
+                 or else
+                   not Has_Generic_In_Formal
+                     (To_Entity_Name (E), Global_Contracts (C).Refined))
             then Global_Contracts (C).Refined
             else Global_Contracts (C).Proper);
 
@@ -2328,6 +2362,12 @@ package body Flow_Generated_Globals.Phase_2 is
             function Callee_Globals
               (Callee : Entity_Name; Caller : Entity_Name) return Global_Names;
 
+            procedure Restore_Generic_In_Actuals
+              (Proper   : in out Global_Names;
+               Original : Flow_Names);
+            --  Preserve substitutions of generic formal IN objects computed
+            --  in phase 1, where their actual-expression AST was available.
+
             function Collect (Caller : Entity_Name) return Flow_Names
             with
               Post =>
@@ -2365,6 +2405,62 @@ package body Flow_Generated_Globals.Phase_2 is
                   return Global_Names'(others => <>);
                end if;
             end Callee_Globals;
+
+            --------------------------------
+            -- Restore_Generic_In_Actuals --
+            --------------------------------
+
+            procedure Restore_Generic_In_Actuals
+              (Proper   : in out Global_Names;
+               Original : Flow_Names)
+            is
+               procedure Restore
+                 (Result           : in out Name_Sets.Set;
+                  Original_Proper  : Name_Sets.Set;
+                  Original_Refined : Name_Sets.Set);
+
+               -------------
+               -- Restore --
+               -------------
+
+               procedure Restore
+                 (Result           : in out Name_Sets.Set;
+                  Original_Proper  : Name_Sets.Set;
+                  Original_Refined : Name_Sets.Set)
+               is
+                  Formals     : Name_Sets.Set;
+                  Non_Formals : Name_Sets.Set := Original_Refined;
+
+               begin
+                  for Name of Original_Refined loop
+                     declare
+                        Obj : constant Entity_Id := Find_Entity (Name);
+
+                     begin
+                        if Present (Obj)
+                          and then Ekind (Obj) = E_Constant
+                          and then In_Generic_Actual (Obj)
+                        then
+                           Formals.Insert (Name);
+                        end if;
+                     end;
+                  end loop;
+
+                  Non_Formals.Difference (Formals);
+                  Result.Difference (Formals);
+                  Result.Union (Original_Proper - Non_Formals);
+               end Restore;
+
+            begin
+               Restore
+                 (Proper.Proof_Ins,
+                  Original.Proper.Proof_Ins,
+                  Original.Refined.Proof_Ins);
+               Restore
+                 (Proper.Inputs,
+                  Original.Proper.Inputs,
+                  Original.Refined.Inputs);
+            end Restore_Generic_In_Actuals;
 
             -------------
             -- Collect --
@@ -2435,6 +2531,61 @@ package body Flow_Generated_Globals.Phase_2 is
 
                --  Now determine genuine calls and collect their globals
                Result.Calls := Categorize_Calls (Caller, Analyzed, Contracts);
+
+               --  Frontend globals normally account for calls whose explicit
+               --  contracts come from another compilation unit. They omit a
+               --  generic formal object of mode IN, however. Complete those
+               --  inputs from the proper contract that phase 1 generated in
+               --  the unit containing the instantiation.
+
+               Add_Generic_In_Inputs : declare
+                  Seen : Name_Sets.Set;
+
+                  procedure Add_From_Callees (Entity : Entity_Name);
+
+                  procedure Add_From_Callees (Entity : Entity_Name) is
+                  begin
+                     for Callee of Generated_Calls (Entity) loop
+                        if not Seen.Contains (Callee) then
+                           Seen.Insert (Callee);
+
+                           declare
+                              C : constant Entity_Contract_Maps.Cursor :=
+                                Contracts.Find (Callee);
+
+                           begin
+                              if Entity_Contract_Maps.Has_Element (C)
+                                and then
+                                  Has_Generic_In_Formal
+                                    (Callee, Contracts (C).Refined)
+                                and then
+                                  not Scope_Within_Or_Same
+                                    (Inner => Callee, Outer => Analyzed)
+                              then
+                                 declare
+                                    G : constant Global_Names :=
+                                      Down_Project
+                                        (Contracts (C).Proper, Folded);
+
+                                 begin
+                                    Result_Proof_Ins.Union (G.Proof_Ins);
+                                    Result_Inputs.Union (G.Inputs);
+                                 end;
+                              elsif Phase_1_Info.Contains (Callee)
+                                and then
+                                  Phase_1_Info (Callee).Origin /= Origin_User
+                              then
+                                 Add_From_Callees (Callee);
+                              end if;
+                           end;
+                        end if;
+                     end loop;
+                  end Add_From_Callees;
+
+               begin
+                  Seen.Insert (Caller);
+                  Add_From_Callees (Caller);
+               end Add_Generic_In_Inputs;
 
                for Callee of Result.Calls.Definite_Calls loop
                   declare
@@ -2539,6 +2690,8 @@ package body Flow_Generated_Globals.Phase_2 is
               (Update.Refined,
                Update.Proper,
                (Ent => Folded, Part => Visible_Part));
+
+            Restore_Generic_In_Actuals (Update.Proper, Original);
 
             pragma Assert (Phase_1_Info.Contains (Folded));
 
@@ -3319,6 +3472,24 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function GG_Has_Been_Generated return Boolean
    is (GG_Generated);
+
+   ------------------------------
+   -- GG_Has_Generic_In_Formal --
+   ------------------------------
+
+   function GG_Has_Generic_In_Formal
+     (E : Entity_Id) return Boolean
+   is
+      C : constant Entity_Contract_Maps.Cursor :=
+        Global_Contracts.Find (To_Entity_Name (E));
+
+   begin
+      return
+        Entity_Contract_Maps.Has_Element (C)
+        and then
+          Has_Generic_In_Formal
+            (To_Entity_Name (E), Global_Contracts (C).Refined);
+   end GG_Has_Generic_In_Formal;
 
    ----------------------------------------
    -- GG_State_Constituents_Map_Is_Ready --

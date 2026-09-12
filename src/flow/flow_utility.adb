@@ -1913,9 +1913,10 @@ package body Flow_Utility is
    ----------------------------
 
    procedure Map_Generic_In_Formals
-     (Scop    : Flow_Scope;
-      Objects : in out Flow_Id_Sets.Set;
-      Entire  : Boolean := True)
+     (Scop                : Flow_Scope;
+      Objects             : in out Flow_Id_Sets.Set;
+      Entire              : Boolean := True;
+      Map_In_Owning_Scope : Boolean := False)
    is
       Mapped : Flow_Id_Sets.Set;
 
@@ -1931,8 +1932,13 @@ package body Flow_Utility is
 
                begin
                   if Ekind (E) = E_Constant and then In_Generic_Actual (E) then
-                     if Scope_Within_Or_Same
-                          (Inner => Scop.Ent, Outer => Scope (E))
+                     if (if Map_In_Owning_Scope
+                         then
+                           Scope_Within
+                             (Inner => Scop.Ent, Outer => Scope (E))
+                         else
+                           Scope_Within_Or_Same
+                             (Inner => Scop.Ent, Outer => Scope (E)))
                      then
                         Mapped.Include (Object);
                      else
@@ -1995,7 +2001,10 @@ package body Flow_Utility is
         Get_Contract_Node (Subprogram, Scope, Depends_Contract);
 
       Use_Generated_Globals : constant Boolean :=
-        Rely_On_Generated_Global (Subprogram, Scope);
+        Rely_On_Generated_Global (Subprogram, Scope)
+        or else
+          (GG_Has_Been_Generated
+           and then GG_Has_Generic_In_Formal (Subprogram));
 
       procedure Debug (Msg : String);
       --  Write message Msg to debug output

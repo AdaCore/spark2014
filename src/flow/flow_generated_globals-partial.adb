@@ -335,6 +335,12 @@ package body Flow_Generated_Globals.Partial is
    procedure Filter_Local (E : Entity_Id; G : in out Global_Nodes);
    --  Same as above, lifted to container with Proof_In/Input/Output globals
 
+   procedure Map_Generic_In_Formals
+     (Scop : Flow_Scope; G : in out Global_Nodes);
+   --  Replace constants that represent generic formal objects of mode IN with
+   --  the inputs of their actual expressions when Scop is outside the
+   --  instance.
+
    procedure Fold
      (Folded    : Entity_Id;
       Analyzed  : Entity_Id;
@@ -1661,6 +1667,34 @@ package body Flow_Generated_Globals.Partial is
       Filter_Local (E, G.Outputs);
    end Filter_Local;
 
+   ----------------------------
+   -- Map_Generic_In_Formals --
+   ----------------------------
+
+   procedure Map_Generic_In_Formals
+     (Scop : Flow_Scope; G : in out Global_Nodes) is
+      procedure Map (Objects : in out Global_Set);
+
+      ---------
+      -- Map --
+      ---------
+
+      procedure Map (Objects : in out Global_Set) is
+         Flow_Objects : Flow_Id_Sets.Set := To_Flow_Id_Set (Objects);
+
+      begin
+         Flow_Utility.Map_Generic_In_Formals
+           (Scop                => Scop,
+            Objects             => Flow_Objects,
+            Map_In_Owning_Scope => True);
+         Objects := To_Node_Set (Flow_Objects);
+      end Map;
+
+   begin
+      Map (G.Proof_Ins);
+      Map (G.Inputs);
+   end Map_Generic_In_Formals;
+
    ----------
    -- Fold --
    ----------
@@ -1704,7 +1738,26 @@ package body Flow_Generated_Globals.Partial is
       --------------------
 
       function Callee_Globals
-        (Callee : Entity_Id; Caller : Entity_Id) return Global_Nodes is
+        (Callee : Entity_Id; Caller : Entity_Id) return Global_Nodes
+      is
+         function For_Caller (G : Global_Nodes) return Global_Nodes;
+         --  Return the callee view expressed in terms of generic actuals.
+
+         ----------------
+         -- For_Caller --
+         ----------------
+
+         function For_Caller (G : Global_Nodes) return Global_Nodes is
+            Result : Global_Nodes := G;
+
+         begin
+            if Is_Generic_Instance (Callee) then
+               Map_Generic_In_Formals
+                 (Scop => Get_Flow_Scope (Caller), G => Result);
+            end if;
+            return Result;
+         end For_Caller;
+
       begin
          if Scope_Truly_Within_Or_Same (Callee, Analyzed) then
             declare
@@ -1731,14 +1784,18 @@ package body Flow_Generated_Globals.Partial is
                         when others           => raise Program_Error)
                   then
                      Debug ("Folding with down-projected globals:", Callee);
-                     return Down_Project (Callee_Globals.Proper, Caller);
+                     return
+                       For_Caller
+                         (Down_Project (Callee_Globals.Proper, Caller));
                   else
                      Debug ("Folding with refined globals:", Callee);
-                     return Callee_Globals.Refined;
+                     return For_Caller (Callee_Globals.Refined);
                   end if;
                else
                   Debug ("Folding with proper globals:", Callee);
-                  return Down_Project (Callee_Globals.Proper, Caller);
+                  return
+                    For_Caller
+                      (Down_Project (Callee_Globals.Proper, Caller));
                end if;
             end;
          else
@@ -2762,7 +2819,47 @@ package body Flow_Generated_Globals.Partial is
       Constant_Graph : Constant_Graphs.Graph;
       Contracts      : in out Entity_Contract_Maps.Map)
    is
-      Contr : Contract renames Contracts (E);
+      Contr   : Contract renames Contracts (E);
+      Globals : Flow_Nodes := Contr.Globals;
+
+      procedure Expand_Initialized_Constants (G : in out Global_Nodes);
+      --  Replace package constants initialized from variable inputs with the
+      --  inputs of their package initialization.
+
+      procedure Expand_Initialized_Constants (G : in out Global_Nodes) is
+         procedure Expand (Objects : in out Global_Set);
+
+         procedure Expand (Objects : in out Global_Set) is
+            Result : Global_Set;
+
+         begin
+            for Object of Objects loop
+               declare
+                  Owner : constant Entity_Id := Scope (Object);
+
+               begin
+                  if Ekind (Object) = E_Constant
+                    and then Contracts.Contains (Owner)
+                    and then
+                      Contracts (Owner)
+                        .Globals.Initializes.Refined.Contains (Object)
+                  then
+                     Result.Union
+                       (Contracts (Owner).Globals.Proper.Proof_Ins);
+                     Result.Union (Contracts (Owner).Globals.Proper.Inputs);
+                  else
+                     Result.Insert (Object);
+                  end if;
+               end;
+            end loop;
+
+            Node_Sets.Move (Target => Objects, Source => Result);
+         end Expand;
+
+      begin
+         Expand (G.Proof_Ins);
+         Expand (G.Inputs);
+      end Expand_Initialized_Constants;
 
    begin
       for Child of Scope_Map (E) loop
@@ -2770,8 +2867,13 @@ package body Flow_Generated_Globals.Partial is
       end loop;
 
       if Ekind (E) /= E_Protected_Type then
+         if Is_Generic_Instance (E) then
+            Map_Generic_In_Formals
+              (Scop => Get_Flow_Scope (Scope (E)), G => Globals.Proper);
+            Expand_Initialized_Constants (Globals.Proper);
+         end if;
 
-         Strip_Constants (Contr.Globals, Constant_Graph);
+         Strip_Constants (Globals, Constant_Graph);
 
          GG_Register_Calls (E, Contr.Direct_Calls, EK_Direct_Calls);
          GG_Register_Calls
@@ -2788,7 +2890,7 @@ package body Flow_Generated_Globals.Partial is
             Is_Library_Level  =>
               Ekind (E) = E_Package and then Is_Library_Level_Entity (E),
             Origin            => Origin_Flow,      --  ??? dummy
-            Globals           => Contr.Globals,
+            Globals           => Globals,
 
             Local_Packages    => Contr.Local_Packages,
             Local_Variables   => Contr.Local_Variables,
