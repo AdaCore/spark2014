@@ -1,0 +1,6 @@
+test.adb:6:04: info: initialization of "Output_Left" proved
+test.adb:7:04: info: initialization of "Output_Right" proved
+test.adb:11:36: medium: incorrect dependency "Output_Left => Before_Right"
+test.adb:12:23: medium: incorrect dependency "Output_Right => Before_Left"
+test.adb:21:04: info: initialization of "Saved" proved
+test.adb:25:11: warning: unused assignment
