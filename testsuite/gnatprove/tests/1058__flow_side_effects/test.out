@@ -1,0 +1,12 @@
+p.adb:7:12: info: data dependencies proved
+p.adb:15:12: info: data dependencies proved
+p.adb:24:12: info: data dependencies proved
+p.adb:32:12: info: data dependencies proved
+p.adb:41:11: info: data dependencies proved
+p.adb:52:11: info: data dependencies proved
+p.adb:64:11: info: data dependencies proved
+p.adb:73:11: info: data dependencies proved
+p1.adb:16:12: info: data dependencies proved
+p1.adb:24:12: info: data dependencies proved
+p1.adb:31:12: info: data dependencies proved
+p1.adb:39:12: info: data dependencies proved

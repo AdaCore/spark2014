@@ -25,6 +25,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 
 with Atree;       use Atree;
 with Elists;      use Elists;
+with Exp_SPARK;
 with Exp_Util;
 with Lib;         use Lib;
 with Namet;       use Namet;
@@ -275,6 +276,28 @@ package body Flow.Control_Flow_Graph is
      Pre  => CM.Contains (Src) and not CM.Contains (Dst),
      Post => CM.Contains (Dst) and not CM.Contains (Src);
    --  Create the connection map for Dst and moves all fields from Src to it
+
+   ---------------------------------------------
+   -- Move_Connections_With_No_Standard_Exits --
+   ---------------------------------------------
+
+   procedure Move_Connections_With_No_Standard_Exits
+     (CM   : in out Connection_Maps.Map;
+      Dst  : Union_Id;
+      Src  : Union_Id;
+      Last : out Flow_Graphs.Vertex_Id)
+   with
+     Pre  =>
+       CM.Contains (Src)
+       and not CM.Contains (Dst)
+       and CM (Src).Standard_Exits.Length = 1,
+     Post =>
+       CM.Contains (Dst)
+       and not CM.Contains (Src)
+       and CM (Dst).Standard_Exits.Is_Empty
+       and Last /= Flow_Graphs.Null_Vertex;
+   --  Similar to the above, but for calls with side effects where there is a
+   --  single standard exit that needs to be explicitly linked with the graph.
 
    procedure fndi (E : Entity_Id; N : Node_Id);
    --  This is a debug procedure that is called whenever we add a vertex N to
@@ -1254,6 +1277,39 @@ package body Flow.Control_Flow_Graph is
       CM.Delete (Src_Position);
    end Move_Connections;
 
+   procedure Move_Connections_With_No_Standard_Exits
+     (CM   : in out Connection_Maps.Map;
+      Dst  : Union_Id;
+      Src  : Union_Id;
+      Last : out Flow_Graphs.Vertex_Id)
+   is
+      Dst_Position : Connection_Maps.Cursor;
+      Src_Position : Connection_Maps.Cursor;
+      Inserted     : Boolean;
+   begin
+      --  This code is subtle, but efficient. It does only 2 lookups in the
+      --  map (for Src and Dst) while avoiding tampering with cursors.
+
+      CM.Insert (Key => Dst, Position => Dst_Position, Inserted => Inserted);
+
+      pragma Assert (Inserted);
+
+      Src_Position := CM.Find (Src);
+
+      declare
+         New_Connections : Graph_Connections renames CM (Dst_Position);
+         Old_Connections : Graph_Connections renames CM (Src_Position);
+
+         Old_Exits : Vertex_Sets.Set renames Old_Connections.Standard_Exits;
+      begin
+         New_Connections.Standard_Entry := Old_Connections.Standard_Entry;
+
+         Last := Old_Exits (Old_Exits.First);
+      end;
+
+      CM.Delete (Src_Position);
+   end Move_Connections_With_No_Standard_Exits;
+
    ----------------------
    -- Add_Dummy_Vertex --
    ----------------------
@@ -2153,6 +2209,41 @@ package body Flow.Control_Flow_Graph is
          then Find_Static_Alternative (N)
          else Types.Empty);
    begin
+      if Nkind (Expression (N)) = N_Function_Call
+        and then
+          Is_Function_With_Side_Effects (Get_Called_Entity (Expression (N)))
+      then
+         declare
+            V_Call_Exit     : Flow_Graphs.Vertex_Id;
+            Function_Result : constant Entity_Id :=
+              Exp_SPARK.Implicit_Object (Expression (N));
+         begin
+            Create_Initial_And_Final_Vertices (Function_Result, FA);
+
+            Do_Call_Statement (Expression (N), FA, CM, Ctx);
+
+            Move_Connections_With_No_Standard_Exits
+              (CM,
+               Dst  => Union_Id (N),
+               Src  => Union_Id (Expression (N)),
+               Last => V_Call_Exit);
+
+            Add_Vertex
+              (FA,
+               Make_Basic_Attributes
+                 (Var_Ex_Use => Flatten_Variable (Function_Result, FA.B_Scope),
+                  Obj_Decls  => Node_Sets.To_Set (Function_Result),
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => N,
+                  Print_Hint => Pretty_Print_Implicit_Object),
+               V_Case);
+
+            Linkup (FA, From => V_Call_Exit, To => V_Case);
+         end;
+
+         goto ORDINARY_PROCESSING;
+      end if;
+
       Pick_Generated_Info
         (Expression (N),
          FA.B_Scope,
@@ -2185,6 +2276,8 @@ package body Flow.Control_Flow_Graph is
         (Union_Id (N),
          Graph_Connections'
            (Standard_Entry => V_Case, Standard_Exits => Empty_Set));
+
+      <<ORDINARY_PROCESSING>>
 
       Alternative := First_Non_Pragma (Alternatives (N));
 
@@ -2311,6 +2404,38 @@ package body Flow.Control_Flow_Graph is
             Graph_Connections'
               (Standard_Entry => V, Standard_Exits => Vertex_Sets.Empty_Set));
 
+      elsif Nkind (Cond) = N_Function_Call
+        and then Is_Function_With_Side_Effects (Get_Called_Entity (Cond))
+      then
+         declare
+            Function_Result : constant Entity_Id :=
+              Exp_SPARK.Implicit_Object (Cond);
+
+            V_Prev : Flow_Graphs.Vertex_Id;
+         begin
+            Create_Initial_And_Final_Vertices (Function_Result, FA);
+
+            Do_Call_Statement (Cond, FA, CM, Ctx);
+
+            Move_Connections_With_No_Standard_Exits
+              (CM,
+               Dst  => Union_Id (N),
+               Src  => Union_Id (Cond),
+               Last => V_Prev);
+
+            Add_Vertex
+              (FA,
+               Make_Basic_Attributes
+                 (Var_Ex_Use => Flatten_Variable (Function_Result, FA.B_Scope),
+                  Obj_Decls  => Node_Sets.To_Set (Function_Result),
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => Cond,
+                  Print_Hint => Pretty_Print_Implicit_Object),
+               V);
+
+            Linkup (FA, From => V_Prev, To => V);
+            CM (Union_Id (N)).Standard_Exits.Insert (V);
+         end;
       else
          Pick_Generated_Info
            (Cond,
@@ -2474,6 +2599,38 @@ package body Flow.Control_Flow_Graph is
             Graph_Connections'
               (Standard_Entry => V, Standard_Exits => Vertex_Sets.Empty_Set));
 
+      elsif Nkind (Cond) = N_Function_Call
+        and then Is_Function_With_Side_Effects (Get_Called_Entity (Cond))
+      then
+         declare
+            Function_Result : constant Entity_Id :=
+              Exp_SPARK.Implicit_Object (Cond);
+
+            V_Prev : Flow_Graphs.Vertex_Id;
+         begin
+            Create_Initial_And_Final_Vertices (Function_Result, FA);
+
+            Do_Call_Statement (Cond, FA, CM, Ctx);
+
+            Move_Connections_With_No_Standard_Exits
+              (CM,
+               Dst  => Union_Id (N),
+               Src  => Union_Id (Cond),
+               Last => V_Prev);
+
+            Add_Vertex
+              (FA,
+               Make_Basic_Attributes
+                 (Var_Ex_Use => Flatten_Variable (Function_Result, FA.B_Scope),
+                  Obj_Decls  => Node_Sets.To_Set (Function_Result),
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => Cond,
+                  Print_Hint => Pretty_Print_Implicit_Object),
+               V);
+
+            Linkup (FA, From => V_Prev, To => V);
+            CM (Union_Id (N)).Standard_Exits.Insert (V);
+         end;
       else
          Pick_Generated_Info
            (Cond,
@@ -2836,6 +2993,46 @@ package body Flow.Control_Flow_Graph is
       Save_Warn_Off       : constant Boolean := Ctx.Vertex_Ctx.Warnings_Off;
 
    begin
+      --  Disable warnings on the if statement itself when the condition is
+      --  statically disabled, no matter its value.
+      Ctx.Vertex_Ctx.Warnings_Off :=
+        Save_Warn_Off or else Is_Statically_Disabled (Condition (N));
+
+      if Nkind (Condition (N)) = N_Function_Call
+        and then
+          Is_Function_With_Side_Effects (Get_Called_Entity (Condition (N)))
+      then
+         declare
+            V_Call_Exit     : Flow_Graphs.Vertex_Id;
+            Function_Result : constant Entity_Id :=
+              Exp_SPARK.Implicit_Object (Condition (N));
+         begin
+            Create_Initial_And_Final_Vertices (Function_Result, FA);
+
+            Do_Call_Statement (Condition (N), FA, CM, Ctx);
+
+            Move_Connections_With_No_Standard_Exits
+              (CM,
+               Dst  => Union_Id (N),
+               Src  => Union_Id (Condition (N)),
+               Last => V_Call_Exit);
+
+            Add_Vertex
+              (FA,
+               Make_Basic_Attributes
+                 (Var_Ex_Use => Flatten_Variable (Function_Result, FA.B_Scope),
+                  Obj_Decls  => Node_Sets.To_Set (Function_Result),
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => N,
+                  Print_Hint => Pretty_Print_Implicit_Object),
+               V);
+
+            Linkup (FA, From => V_Call_Exit, To => V);
+         end;
+
+         goto ORDINARY_PROCESSING;
+      end if;
+
       --  We have a vertex for the if statement itself
       Pick_Generated_Info
         (Condition (N),
@@ -2846,11 +3043,6 @@ package body Flow.Control_Flow_Graph is
          Type_Contracts     => FA.Type_Contracts,
          Locks              => FA.Locks,
          Generating_Globals => FA.Generating_Globals);
-
-      --  Disable warnings on the if statement itself when the condition is
-      --  statically disabled, no matter its value.
-      Ctx.Vertex_Ctx.Warnings_Off :=
-        Save_Warn_Off or else Is_Statically_Disabled (Condition (N));
 
       Add_Vertex
         (FA,
@@ -2872,6 +3064,8 @@ package body Flow.Control_Flow_Graph is
       CM.Insert
         (Union_Id (N),
          Graph_Connections'(Standard_Entry => V, Standard_Exits => Empty_Set));
+
+      <<ORDINARY_PROCESSING>>
 
       --  We don't want to emit warnings about unreachable code on the if part
       --  statements either when we are already in such a case, or when the if
@@ -2950,6 +3144,49 @@ package body Flow.Control_Flow_Graph is
                 (Known_Condition
                  and then Is_False (Expr_Value (Condition (Elsif_Statement))));
          begin
+            --  Disable warnings on the elsif statement itself when the
+            --  condition is statically disabled, no matter its value.
+            Ctx.Vertex_Ctx.Warnings_Off :=
+              Save_Warn_Off
+              or else Seen_True_Warn_Off
+              or else Is_Statically_Disabled (Condition (Elsif_Statement));
+
+            if Nkind (Condition (Elsif_Statement)) = N_Function_Call
+              and then
+                Is_Function_With_Side_Effects
+                  (Get_Called_Entity (Condition (Elsif_Statement)))
+            then
+               declare
+                  V_Call_Exit     : Flow_Graphs.Vertex_Id;
+                  Function_Result : constant Entity_Id :=
+                    Exp_SPARK.Implicit_Object (Condition (Elsif_Statement));
+               begin
+                  Create_Initial_And_Final_Vertices (Function_Result, FA);
+
+                  Do_Call_Statement (Condition (Elsif_Statement), FA, CM, Ctx);
+
+                  Move_Connections_With_No_Standard_Exits
+                    (CM,
+                     Dst  => Union_Id (Elsif_Statement),
+                     Src  => Union_Id (Condition (Elsif_Statement)),
+                     Last => V_Call_Exit);
+
+                  Add_Vertex
+                    (FA,
+                     Make_Basic_Attributes
+                       (Var_Ex_Use =>
+                          Flatten_Variable (Function_Result, FA.B_Scope),
+                        Obj_Decls  => Node_Sets.To_Set (Function_Result),
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => Elsif_Statement,
+                        Print_Hint => Pretty_Print_Implicit_Object),
+                     V);
+
+                  Linkup (FA, From => V_Call_Exit, To => V);
+               end;
+
+               goto ORDINARY_ELSIF_PROCESSING;
+            end if;
 
             --  We have a vertex V for each elsif statement
             Pick_Generated_Info
@@ -2961,13 +3198,6 @@ package body Flow.Control_Flow_Graph is
                Type_Contracts     => FA.Type_Contracts,
                Locks              => FA.Locks,
                Generating_Globals => FA.Generating_Globals);
-
-            --  Disable warnings on the elsif statement itself when the
-            --  condition is statically disabled, no matter its value.
-            Ctx.Vertex_Ctx.Warnings_Off :=
-              Save_Warn_Off
-              or else Seen_True_Warn_Off
-              or else Is_Statically_Disabled (Condition (Elsif_Statement));
 
             Add_Vertex
               (FA,
@@ -2986,12 +3216,19 @@ package body Flow.Control_Flow_Graph is
                   E_Loc      => Elsif_Statement),
                V);
             Ctx.Folded_Function_Checks.Append (Condition (Elsif_Statement));
+            CM.Insert
+              (Union_Id (Elsif_Statement),
+               Graph_Connections'
+                 (Standard_Entry => V, Standard_Exits => Empty_Set));
+
+            <<ORDINARY_ELSIF_PROCESSING>>
 
             --  If we didn't encounter a statically true condition, link V_Prev
             --  to V.
 
             if not Seen_True_Condition then
-               Linkup (FA, V_Prev, V);
+               Linkup
+                 (FA, V_Prev, CM (Union_Id (Elsif_Statement)).Standard_Entry);
             end if;
 
             --  Like the if part, we set the correct context for warning
@@ -3030,6 +3267,7 @@ package body Flow.Control_Flow_Graph is
             end if;
 
             CM.Delete (Union_Id (Elsif_Body));
+            CM.Delete (Union_Id (Elsif_Statement));
          end;
 
          Next (Elsif_Statement);
@@ -6562,6 +6800,8 @@ package body Flow.Control_Flow_Graph is
 
       Expr : constant Node_Id := Expression (N);
 
+      Is_Call_With_Side_Effects : Boolean := False;
+
    begin
       if No (Expr) then
          --  We have a return for a procedure, entry, extended return or accept
@@ -6585,6 +6825,12 @@ package body Flow.Control_Flow_Graph is
             --  statements and borrower reclamations.
             Add_Vertex (FA, Null_Node_Attributes, V);
          end if;
+
+      elsif Nkind (Expr) = N_Function_Call
+        and then Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
+      then
+         Do_Call_Statement (Expr, FA, CM, Ctx);
+         Is_Call_With_Side_Effects := True;
       else
          --  We have a function return
          Pick_Generated_Info
@@ -6617,10 +6863,24 @@ package body Flow.Control_Flow_Graph is
          Ctx.Folded_Function_Checks.Append (Expr);
       end if;
 
-      --  Control flows in, but we do not flow out again
-      CM.Insert
-        (Union_Id (N),
-         Graph_Connections'(Standard_Entry => V, Standard_Exits => Empty_Set));
+      --  For a call with side effects ve need to move the connections in the
+      --  map from the call expression to the return statement, record the
+      --  single standard exit for subsequent processing and leave empty
+      --  standard exits in the connection map (just like for ordinary return
+      --  statement).
+      --
+      --  For ordinary return statements the connection map is much simpler.
+
+      if Is_Call_With_Side_Effects then
+         Move_Connections_With_No_Standard_Exits
+           (CM, Dst => Union_Id (N), Src => Union_Id (Expr), Last => V);
+      else
+         --  Control flows in, but we do not flow out again
+         CM.Insert
+           (Union_Id (N),
+            Graph_Connections'
+              (Standard_Entry => V, Standard_Exits => Empty_Set));
+      end if;
 
       --  Process all cleanup actions
 
@@ -7089,7 +7349,11 @@ package body Flow.Control_Flow_Graph is
           (if Is_Formal (Formal)
            then Nkind (Actual) in N_Subexpr
            elsif Is_Function_With_Side_Effects (Formal)
-           then Nkind (Actual) in N_Subexpr | N_Defining_Identifier);
+           then
+             Nkind (Actual)
+             in N_Subexpr
+              | N_Defining_Identifier
+              | N_Defining_Operator_Symbol);
 
       ----------------------
       -- Handle_Parameter --
@@ -7102,15 +7366,19 @@ package body Flow.Control_Flow_Graph is
 
       begin
          --  Build an in vertex
-         Pick_Generated_Info
-           (Actual,
-            FA.B_Scope,
-            Function_Calls     => Funcalls,
-            Indirect_Calls     => Indcalls,
-            Proof_Dependencies => FA.Proof_Dependencies,
-            Type_Contracts     => FA.Type_Contracts,
-            Locks              => FA.Locks,
-            Generating_Globals => FA.Generating_Globals);
+         if Ekind (Formal) = E_Function then
+            pragma Assert (Is_Function_With_Side_Effects (Formal));
+         else
+            Pick_Generated_Info
+              (Actual,
+               FA.B_Scope,
+               Function_Calls     => Funcalls,
+               Indirect_Calls     => Indcalls,
+               Proof_Dependencies => FA.Proof_Dependencies,
+               Type_Contracts     => FA.Type_Contracts,
+               Locks              => FA.Locks,
+               Generating_Globals => FA.Generating_Globals);
+         end if;
 
          Add_Vertex
            (FA,
@@ -7176,10 +7444,10 @@ package body Flow.Control_Flow_Graph is
    begin
       Handle_Parameters (Call);
 
-      --  Function call is only processed for assignment where the call
-      --  occurs immediately as the RHS and the function has side effects. The
-      --  function entity acts as a formal parameter and the LHS acts as the
-      --  actual parameter.
+      --  Model the result of a call to a function with side effects as an
+      --  additional parameter of mode OUT. The function entity acts as the
+      --  formal, while the explicit or implicit object receiving the result,
+      --  as determined from the call context, acts as the actual.
 
       if Nkind (Call) = N_Function_Call then
          declare
@@ -7187,13 +7455,24 @@ package body Flow.Control_Flow_Graph is
             Actual  : Node_Id;
          begin
             case Nkind (Context) is
-               when N_Assignment_Statement =>
+               when N_Assignment_Statement    =>
                   Actual := Name (Context);
 
-               when N_Object_Declaration   =>
+               when N_Object_Declaration      =>
                   Actual := Defining_Identifier (Context);
 
-               when others                 =>
+               when N_Simple_Return_Statement =>
+                  Actual :=
+                    Return_Applies_To (Return_Statement_Entity (Context));
+
+               when N_If_Statement
+                  | N_Case_Statement
+                  | N_Continue_Statement
+                  | N_Elsif_Part
+                  | N_Exit_Statement          =>
+                  Actual := Exp_SPARK.Implicit_Object (Call);
+
+               when others                    =>
                   raise Program_Error;
             end case;
             Handle_Parameter

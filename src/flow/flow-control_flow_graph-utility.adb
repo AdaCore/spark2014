@@ -590,12 +590,14 @@ package body Flow.Control_Flow_Graph.Utility is
 
          A.Variables_Explicitly_Used := A.Variables_Used;
 
-      --  For a function with side effects occuring in object declaration, the
-      --  entire object is written. We special-case this here, because we don't
-      --  the ordinary processing would crash on actual parameter not being an
-      --  expression.
+      --  For a function with side effects occuring in object declaration
+      --  or a simple return statement, the entire object is written. We
+      --  special-case this here, because if we don't, the ordinary processing
+      --  would crash on actual parameter not being an expression.
 
-      elsif Nkind (Actual) = N_Defining_Identifier then
+      elsif Nkind (Actual)
+            in N_Defining_Identifier | N_Defining_Operator_Symbol
+      then
          pragma Assert (Is_Function_With_Side_Effects (Formal));
 
          A.Variables_Defined := Flatten_Variable (Actual, Scope);

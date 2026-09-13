@@ -174,7 +174,9 @@ package Flow.Control_Flow_Graph.Utility is
        and then
          (if Ekind (Formal) = E_In_Parameter
           then In_Vertex or else Is_Writable_Parameter (Formal))
-       and then Nkind (Actual) in N_Subexpr | N_Defining_Identifier
+       and then
+         Nkind (Actual)
+         in N_Subexpr | N_Defining_Identifier | N_Defining_Operator_Symbol
        and then Nkind (Call) in N_Subprogram_Call | N_Entry_Call_Statement,
      Post =>
        not Make_Parameter_Attributes'Result.Is_Null_Node
