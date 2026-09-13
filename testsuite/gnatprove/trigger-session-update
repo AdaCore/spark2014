@@ -111,7 +111,8 @@ def apply_sessions(gl, pipeline_id):
 
     sessions = [
         os.path.relpath(d, tmpdir)
-        for d in glob.glob(os.path.join(tmpdir, "*/*/*/*/*/sessions"))
+        for target in ["sessions", "manifest"]
+        for d in glob.glob(os.path.join(tmpdir, f"*/*/*/*/*/{target}"))
     ]
 
     for session in sessions:
