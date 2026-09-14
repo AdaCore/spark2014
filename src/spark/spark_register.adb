@@ -377,6 +377,23 @@ package body SPARK_Register is
                   Register_Entity (Defining_Entity (N));
                end if;
 
+            when N_Iterator_Specification       =>
+
+               --  Register the implicit iterator created belonging to
+               --  loop-over-container, i.e. "for ... of ... loop". If it gets
+               --  into generated globals or variables-for-proof, we will
+               --  recognize it and pretty print nicely.
+
+               declare
+                  Parameter : constant Entity_Id := Defining_Identifier (N);
+               begin
+                  if Ekind (Parameter) = E_Loop_Parameter
+                    and then Present (Loop_Parameter_Iterator (Parameter))
+                  then
+                     Register_Entity (Loop_Parameter_Iterator (Parameter));
+                  end if;
+               end;
+
             when N_Object_Declaration           =>
                Register_Entity (Unique_Defining_Entity (N));
 

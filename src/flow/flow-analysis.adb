@@ -2761,16 +2761,18 @@ package body Flow.Analysis is
       begin
          --  Skip info messages for:
 
-         --  Variables with explicit initialization expressions, because
-         --  their initialization is obvious.
+         --  Internal objects created by the frontend, because they are
+         --  initialized-by-construction. Skip them first, because they
+         --  may lack a full decoration.
 
-         if (Ekind (E) = E_Variable
-             and then Present (Expression (Declaration_Node (E))))
+         if Is_Internal (E)
 
-           --  Internal objects created by the frontend, because they are
-           --  initialized-by-construction.
+           --  Variables with explicit initialization expressions, because
+           --  their initialization is obvious.
 
-           or else Is_Internal (E)
+           or else
+             (Ekind (E) = E_Variable
+              and then Present (Expression (Declaration_Node (E))))
 
            --  Auxiliary 'Result objects created by flow analysis.
 

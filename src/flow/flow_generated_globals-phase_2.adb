@@ -4805,18 +4805,22 @@ package body Flow_Generated_Globals.Phase_2 is
          case F.Kind is
             when Direct_Mapping =>
                declare
-                  Aliases : Flow_Id_Sets.Set;
-
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
+                  Proof_View : Flow_Id;
 
                begin
                   --  Proof expects objects that are not in SPARK to be
                   --  represented as Magic_Strings. Deferred constants which
                   --  only have partial view in SPARK will be represented by
                   --  this partial view.
+                  --
+                  --  We special-case 'Loop_Index, which is represented by an
+                  --  implicit entity that is never marked.
 
-                  Aliases.Insert
+                  Proof_View :=
                     (if Entity_In_SPARK (E)
+                       or else Present (Loop_Iterator_Parameter (E))
                      then Change_Variant (F, Normal_Use)
                      elsif Present (Partial_View (E))
                        and then Entity_In_SPARK (Partial_View (E))
@@ -4825,7 +4829,7 @@ package body Flow_Generated_Globals.Phase_2 is
                          (Direct_Mapping_Id (Partial_View (E)), Normal_Use)
                      else Magic_String_Id (To_Entity_Name (E)));
 
-                  return Aliases;
+                  return Flow_Id_Sets.To_Set (Proof_View);
                end;
 
             when Magic_String   =>

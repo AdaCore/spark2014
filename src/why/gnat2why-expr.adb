@@ -18407,7 +18407,12 @@ package body Gnat2Why.Expr is
                Index_Id : constant W_Identifier_Id :=
                  Name_For_Loop_Index (Entity (Var));
             begin
-               return New_Deref (Right => Index_Id, Typ => Get_Typ (Index_Id));
+               if Params.Ref_Allowed then
+                  return
+                    New_Deref (Right => Index_Id, Typ => Get_Typ (Index_Id));
+               else
+                  return +Index_Id;
+               end if;
             end;
 
          when others                                                        =>

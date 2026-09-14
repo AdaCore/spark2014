@@ -4209,9 +4209,10 @@ package body Flow.Control_Flow_Graph is
          I_Spec : constant Node_Id :=
            Iterator_Specification (Iteration_Scheme (N));
 
-         Param  : constant Entity_Id := Defining_Identifier (I_Spec);
-         Cont   : constant Node_Id := Name (I_Spec);
-         Filter : constant Node_Id := Iterator_Filter (I_Spec);
+         Param    : constant Entity_Id := Defining_Identifier (I_Spec);
+         Cont     : constant Node_Id := Name (I_Spec);
+         Filter   : constant Node_Id := Iterator_Filter (I_Spec);
+         Iterator : constant Entity_Id := Loop_Parameter_Iterator (Param);
 
          V        : Flow_Graphs.Vertex_Id;
          Funcalls : Call_Sets.Set;
@@ -4219,6 +4220,15 @@ package body Flow.Control_Flow_Graph is
       begin
          --  Set up parameter variable
          Create_Initial_And_Final_Vertices (Param, FA);
+
+         --  A "FOR ... OF ... LOOP" over a container will have an iterator
+         --  object; a "FOR ... IN ... LOOP" will not have it.
+
+         pragma Assert (Of_Present (I_Spec) = Present (Iterator));
+
+         if Present (Iterator) then
+            Create_Initial_And_Final_Vertices (Iterator, FA);
+         end if;
 
          --  Create vertex for the container expression. We also define the
          --  loop parameter here.
@@ -4236,7 +4246,11 @@ package body Flow.Control_Flow_Graph is
            (FA,
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Def    => Flatten_Variable (Param, FA.B_Scope),
+              (Var_Def    =>
+                 Flatten_Variable (Param, FA.B_Scope).Union
+                   (if Present (Iterator)
+                    then Flatten_Variable (Iterator, FA.B_Scope)
+                    else Flow_Id_Sets.Empty_Set),
                Var_Ex_Use =>
                  Get_Variables
                    (Cont,
@@ -4247,7 +4261,8 @@ package body Flow.Control_Flow_Graph is
                  or Get_Filter_Variables (Filter),
                Subp_Calls => Funcalls,
                Indt_Calls => Indcalls,
-               Obj_Decls  => Node_Sets.To_Set (Param),
+               Obj_Decls  =>
+                 (if Present (Iterator) then [Param, Iterator] else [Param]),
                Vertex_Ctx => Ctx.Vertex_Ctx,
                E_Loc      => Cont),
             V);

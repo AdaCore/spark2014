@@ -996,15 +996,10 @@ package Gnat2Why.Util is
    --  Transform_Subprogram. For each call to this function, a declaration at
    --  the beginning of the Why program is generated.
 
-   procedure Register_Name_For_Loop_Index
-     (Param_Id : Object_Kind_Id; Name : W_Identifier_Id);
-   --  Register the why identifier that should be used for a reference to
-   --  'Loop_Index on an entity Param_Id.
-
    function Name_For_Loop_Index
      (Param_Id : Object_Kind_Id) return W_Identifier_Id;
    --  Returns a why identifier for a reference to 'Loop_Index on an entity
-   --  Param_Id.
+   --  Param_Id. A suitable Id is constructed if none exists.
 
    Target_Name : W_Identifier_Id := Why_Empty;
    --  Name to use for occurrences of target names @ in assignments. It should

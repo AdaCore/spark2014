@@ -874,34 +874,57 @@ package body Flow.Analysis.Sanity is
                             (Is_Type (Var) and then Is_Discriminant (F))
                             or else
                               (Ekind (Var) = E_Constant
-                               and then Has_Completion (Var)));
+                               and then Has_Completion (Var))
+                            or else
+                              (Ekind (Var) = E_Variable
+                               and then
+                                 Present (Loop_Iterator_Parameter (Var))));
 
                      --  We emit an error if F is considered a variable, in
                      --  particular, when it is not:
                      --  * a bound
-                     --  * a constant object
+                     --  * a current object inside a predicate expression
+                     --    or inside a type invariant expression
+                     --  * a loop parameter
+                     --  * a 'Loop_Index attribute
                      --  * a record discriminant
                      --  * a discriminant of a protected type
                      --  * a component or part of a protected type accessed
                      --    from within a protected function.
 
-                     --  The frontend introduces a variable for the current
-                     --  instance in a predicate, which should not lead to an
-                     --  error here.
-
-                     if not (Is_Bound (F)
-                             or else
-                               (Is_Constant_Object (Var)
-                                and then
-                                  (not Is_Access_Variable (Etype (Var))
-                                   or else not Comes_From_Source (Var)))
-                             or else Is_Record_Discriminant (F)
-                             or else
-                               (Ekind (Var) = E_Protected_Type
-                                and then
-                                  (Is_Protected_Discriminant (F)
-                                   or else Is_Within_Protected_Function)))
+                     if Is_Bound (F) then
+                        null;
+                     elsif Ekind (Var) = E_In_Parameter
+                       and then
+                         (Is_Predicate_Function (Scope (Var))
+                          or else Is_Invariant_Procedure (Scope (Var)))
                      then
+                        null;
+                     elsif Ekind (Var) in E_Constant | E_In_Parameter
+                       and then not Is_Access_Variable (Etype (Var))
+                     then
+                        null;
+                     elsif Ekind (Var) = E_Variable
+                       and then Present (Loop_Iterator_Parameter (Var))
+                     then
+                        null; --  this is 'Loop_Index over a container
+                     elsif Ekind (Var) = E_Loop_Parameter
+                       and then Present (Loop_Iterator_Parameter (Var))
+                     then
+                        null; --  this is 'Loop_Index over an array
+                     elsif Ekind (Var) = E_Loop_Parameter
+                       and then No (Loop_Iterator_Parameter (Var))
+                     then
+                        null; --  this is an ordinary loop parameter
+                     elsif Is_Record_Discriminant (F) then
+                        null;
+                     elsif Ekind (Var) = E_Protected_Type
+                       and then
+                         (Is_Protected_Discriminant (F)
+                          or else Is_Within_Protected_Function)
+                     then
+                        null;
+                     else
                         Emit_Error (F);
                      end if;
                   end;
