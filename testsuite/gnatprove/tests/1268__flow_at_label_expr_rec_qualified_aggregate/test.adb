@@ -8,8 +8,8 @@ procedure Test
 with
   SPARK_Mode,
   Depends =>
-    (Output_Left  => (Before_Left, Before_Right),
-     Output_Right => (Before_Left, Before_Right),
+    (Output_Left  => Before_Left,
+     Output_Right => Before_Right,
      null         => (After_Left, After_Right))
 is
    type Pair is record
