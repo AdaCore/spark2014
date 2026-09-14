@@ -1,0 +1,8 @@
+main.adb:16:20: info: discriminant check proved (CVC5: 1 VC)
+main.adb:17:27: info: postcondition proved (CVC5: 2 VC)
+main.adb:18:20: info: discriminant check proved (CVC5: 1 VC)
+main.adb:18:31: info: discriminant check proved (CVC5: 1 VC)
+main.adb:18:43: info: overflow check proved (CVC5: 2 VC)
+main.adb:21:08: info: discriminant check proved (CVC5: 1 VC)
+main.adb:21:20: info: discriminant check proved (CVC5: 1 VC)
+main.adb:21:28: info: overflow check proved (CVC5: 2 VC)
