@@ -1925,7 +1925,20 @@ package body Flow.Analysis is
                         and then
                           Is_Dummy_Call
                             (Get_Direct_Mapping_Id (Key), FA.B_Scope))
+                 and then
 
+                   --  Suppression for implicit objects that capture results of
+                   --  calls to functions with side effects.
+                   not (Atr.Is_Parameter
+                        and then
+                          Ekind (Get_Direct_Mapping_Id (Atr.Parameter_Formal))
+                          = E_Function
+                        and then
+                          Nkind (Get_Direct_Mapping_Id (Atr.Parameter_Actual))
+                          = N_Defining_Identifier
+                        and then
+                          Is_Internal
+                            (Get_Direct_Mapping_Id (Atr.Parameter_Actual)))
                then
                   declare
                      Mask : constant Vertex_Sets.Set := Find_Masking_Code (V);

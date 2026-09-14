@@ -1830,7 +1830,7 @@ Note that a function with side effects is also a volatile function (see section
 
    * the expression of a ``return_statement``
 
-   * The condition of a ``if_statement``
+   * The condition of an ``if_statement``
 
    * The selecting expression of a ``case_statement``
 

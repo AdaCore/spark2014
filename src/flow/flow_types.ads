@@ -569,6 +569,7 @@ package Flow_Types is
       Pretty_Print_Package,
       Pretty_Print_Folded_Function_Check,
       Pretty_Print_Loop_Init,
+      Pretty_Print_Implicit_Object,
       Pretty_Print_Record_Field,
       Pretty_Print_Entry_Barrier,
       Pretty_Print_Reclaim,
