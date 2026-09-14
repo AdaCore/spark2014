@@ -23,11 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Ordered_Maps;
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 with Checked_Types;          use Checked_Types;
-with Common_Containers;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Utility;           use Flow_Utility;
 with Gnat2Why.Tables;        use Gnat2Why.Tables;
@@ -92,22 +91,22 @@ package body Gnat2Why.Expr.Loops.Inv is
       type Write_Status_Access is access Write_Status;
 
       package Write_Status_Maps is new
-        Ada.Containers.Hashed_Maps
-          (Key_Type        => Node_Id,
-           Element_Type    => Write_Status_Access,
-           Hash            => Common_Containers.Node_Hash,
-           Equivalent_Keys => "=");
+        Ada.Containers.Ordered_Maps
+          (Key_Type     => Node_Id,
+           Element_Type => Write_Status_Access,
+           "<"          => "<",
+           "="          => "=");
 
       subtype Array_Constraint_Data is Boolean;
       --  Each array constraint is associated a data. For now, we only need a
       --  single boolean.
 
       package Array_Constraints_Maps is new
-        Ada.Containers.Hashed_Maps
-          (Key_Type        => Node_Id,
-           Element_Type    => Array_Constraint_Data,
-           Hash            => Common_Containers.Node_Hash,
-           Equivalent_Keys => "=");
+        Ada.Containers.Ordered_Maps
+          (Key_Type     => Node_Id,
+           Element_Type => Array_Constraint_Data,
+           "<"          => "<",
+           "="          => "=");
 
       type Write_Status (Kind : Write_Kind) is limited record
          case Kind is
