@@ -45,6 +45,13 @@
 COVERAGE_ROOT_DIR?=/it/wave/x86_64-linux/spark2014-core_assertions_coverage/src/
 COVERAGE_SOURCE_DIR?=/it/wave/x86_64-linux/spark2014-core_assertions_coverage/src/
 
+# On Windows, the interpreter is called "python", not "python3"
+ifeq ($(OS),Windows_NT)
+PYTHON?=python
+else
+PYTHON?=python3
+endif
+
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
 SIDDIR=$(SHAREDIR)/gnat2why-sids
@@ -140,7 +147,7 @@ install:
 	@echo "Generate Coq files by preprocessing context files:"
 	$(MAKE) -C include generate
 	@echo "Install SPARKlib in $(INSTALLDIR):"
-	python3 include/scripts/sparklib_tree.py install-tree --dest $(INSTALLDIR)
+	$(PYTHON) include/scripts/sparklib_tree.py install-tree --dest $(INSTALLDIR)
 
 doc: $(DOC)
 
@@ -163,7 +170,7 @@ gnat2why:
 	# Produce Ada code that stores the reserved keywords of Why3
 	# This script should be run *ONLY* in developer build not in prod
 	# (gnat2why-nightly)
-	python3 scripts/why3keywords.py why3/src/core/keywords.ml src/why/why-keywords.adb
+	$(PYTHON) scripts/why3keywords.py why3/src/core/keywords.ml src/why/why-keywords.adb
 	$(MAKE) -C gnat2why
 	# (The timestamp of) src/why/xgen/gnat_ast.ml is updated every time `make` is called in
 	# `gnat2why`, causing a recompilation of why3 every time because Why3's makefile is
