@@ -27,7 +27,6 @@ with Atree;       use Atree;
 with Elists;      use Elists;
 with Exp_SPARK;
 with Exp_Util;
-with Exp_SPARK;
 with Lib;         use Lib;
 with Namet;       use Namet;
 with Nlists;      use Nlists;
