@@ -1,0 +1,7 @@
+test1.adb:3:40: info: initialization of "O1" proved
+test1.adb:3:44: info: initialization of "O2" proved
+test1.adb:5:03: info: flow dependencies proved
+test1.adb:12:06: warning: unused assignment
+test2.adb:3:31: info: initialization of "O1" proved
+test2.adb:3:35: info: initialization of "O2" proved
+test2.adb:12:10: high: "X" is not initialized

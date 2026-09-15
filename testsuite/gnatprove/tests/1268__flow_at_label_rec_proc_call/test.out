@@ -1,0 +1,11 @@
+test.adb:6:04: info: initialization of "O1" proved
+test.adb:7:04: info: initialization of "O2" proved
+test.adb:7:08: info: initialization of "O3" proved
+test.adb:10:03: info: flow dependencies proved
+test.adb:19:29: info: initialization of "A" proved
+test.adb:19:46: info: initialization of "X" proved
+test.adb:20:09: info: flow dependencies proved
+test.adb:27:44: info: initialization of "O" proved
+test.adb:28:09: info: flow dependencies proved
+test.adb:39:10: warning: unused assignment
+test.adb:40:10: warning: unused assignment

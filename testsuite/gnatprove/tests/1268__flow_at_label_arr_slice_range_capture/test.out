@@ -1,0 +1,2 @@
+test.adb:28:33: error: this use of attribute "At" is not yet supported
+gnatprove: error during flow analysis and proof

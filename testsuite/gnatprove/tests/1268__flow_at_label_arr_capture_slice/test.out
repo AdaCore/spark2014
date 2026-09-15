@@ -1,0 +1,9 @@
+test.adb:8:04: info: initialization of "O" proved
+test.adb:20:03: info: flow dependencies proved
+test.adb:29:04: warning: initialization of "Index" has no effect
+test.adb:32:06: warning: unused assignment
+test.adb:33:08: warning: unused assignment
+test.adb:34:09: warning: unused assignment
+test.adb:36:09: info: range check proved (CVC5: 4 VC)
+test.adb:36:24: medium: length check might fail [reason for check: array must be of the appropriate length]
+test.adb:36:39: info: index check proved (CVC5: 2 VC)

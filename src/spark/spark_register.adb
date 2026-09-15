@@ -28,6 +28,7 @@ with Atree;                  use Atree;
 with Common_Containers;      use Common_Containers;
 with Einfo.Entities;         use Einfo.Entities;
 with Einfo.Utils;            use Einfo.Utils;
+with Exp_SPARK;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Sem_Util;               use Sem_Util;
@@ -372,6 +373,28 @@ package body SPARK_Register is
          --  ??? this is quite delicate
 
          case Nkind (N) is
+            when N_Attribute_Reference          =>
+               if Attribute_Name (N) = Name_At then
+                  declare
+                     Snapshot : constant Entity_Id :=
+                       Exp_SPARK.Implicit_Object (N);
+
+                  begin
+                     --  An accepted 'At snapshot can be referenced (also
+                     --  indirectly, e.g. through a type) across a subprogram
+                     --  definition and hence appear in its generated globals.
+                     --  Register the snapshot's implicit object so that the
+                     --  name stored in phase 1 maps properly back to the same
+                     --  entity in phase 2. Marking rejects snapshots without
+                     --  an implicit object, so there is nothing to register
+                     --  for them.
+
+                     if Present (Snapshot) then
+                        Register_Entity (Snapshot);
+                     end if;
+                  end;
+               end if;
+
             when N_Loop_Parameter_Specification =>
                if Nkind (Parent (N)) /= N_Quantified_Expression then
                   Register_Entity (Defining_Entity (N));

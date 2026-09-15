@@ -1,0 +1,5 @@
+test.adb:6:04: info: initialization of "Snapshot_Output" proved
+test.adb:7:04: info: initialization of "Current_Output" proved
+test.adb:10:03: info: flow dependencies proved
+test.adb:19:13: info: implicit aspect Always_Terminates on "Make_Pair" has been proved, subprogram will terminate
+test.adb:20:09: info: flow dependencies proved

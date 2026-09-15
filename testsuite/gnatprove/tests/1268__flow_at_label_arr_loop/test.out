@@ -1,0 +1,5 @@
+test.adb:6:04: info: initialization of "O1" proved
+test.adb:6:08: info: initialization of "O2" proved
+test.adb:9:03: info: flow dependencies proved
+test.adb:28:30: info: loop invariant initialization proved (CVC5: 2 VC)
+test.adb:28:30: info: loop invariant preservation proved (CVC5: 2 VC)

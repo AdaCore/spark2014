@@ -1,0 +1,13 @@
+pragma Extensions_Allowed (All_Extensions);
+
+procedure G1 (X : Integer; Y : out Integer)
+   with Post => Y = X,
+        Depends => (Y => X)
+is
+   Tmp : Integer;
+begin
+   Tmp := X;
+   <<L>>
+   Tmp := Tmp'At (L);
+   Y := Tmp;
+end;

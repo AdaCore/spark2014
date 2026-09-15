@@ -25,6 +25,7 @@ with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
 with Aspects;        use Aspects;
+with Exp_SPARK;
 with Errout_Wrapper; use Errout_Wrapper;
 with Ghost;          use Ghost;
 with Namet;          use Namet;
@@ -3712,6 +3713,24 @@ package body Flow_Utility is
                   return Do_Subprogram_Call (N);
                end if;
 
+            when Attribute_At          =>
+               if Ctx.Expand_Internal_Objects then
+                  return Recurse (Prefix (N));
+
+               --  The prefix is evaluated by the snapshot vertices created at
+               --  the referenced label. Here we only read the resulting
+               --  implicit object. This read is an ordinary input; proof
+               --  inputs and null dependencies belong to the evaluation at
+               --  the label, not to later references to the saved value.
+
+               elsif Ctx.Fold_Functions = Inputs then
+                  return
+                    Flatten_Variable
+                      (Exp_SPARK.Implicit_Object (N), Ctx.Scope);
+               else
+                  return Flow_Id_Sets.Empty_Set;
+               end if;
+
             when Attribute_Result      =>
                pragma Assert (Ekind (Entity (Prefix (N))) = E_Function);
 
@@ -4015,6 +4034,26 @@ package body Flow_Utility is
                   --  arrays.
 
                begin
+                  --  Slice bounds are determined when the range is evaluated
+                  --  and may depend on variables whose values later change.
+                  --  For a slice saved by At, use the implicit snapshot object
+                  --  to resolve dependencies according to its label-time
+                  --  initialization. As captured bounds and snapshot contents
+                  --  are not represented separately, every bound attribute
+                  --  conservatively reads the entire snapshot. This is
+                  --  currently less precise than slice references without At.
+
+                  if Nkind (Prefix (N)) = N_Attribute_Reference
+                    and then Attribute_Name (Prefix (N)) = Name_At
+                    and then Nkind (Prefix (Prefix (N))) = N_Slice
+                    and then not Ctx.Expand_Internal_Objects
+                    and then Ctx.Fold_Functions = Inputs
+                  then
+                     return
+                       Flatten_Variable
+                         (Exp_SPARK.Implicit_Object (Prefix (N)), Ctx.Scope);
+                  end if;
+
                   --  ??? We don't use Get_Type, because currently for a record
                   --  component with per-object constraints it returns its
                   --  ultimate constrained type. Instead, when the Etype is
@@ -4300,6 +4339,18 @@ package body Flow_Utility is
          --  Returns True if N denotes an attribute 'Old or 'Loop_Entry, which
          --  are ignored when detecting references to variables.
 
+         function Is_At_Snapshot_Root (N : Node_Id) return Boolean
+         is (not Expand_Internal_Objects
+             and then Fold_Functions = Inputs
+             and then Nkind (N) = N_Attribute_Reference
+             and then Attribute_Name (N) = Name_At
+             and then Is_Record_Type (Unchecked_Full_Type (Etype (N))));
+         --  Returns True if N denotes an At attribute whose implicit snapshot
+         --  object should be used as the root of the field mapping. This holds
+         --  only for ordinary input queries. Proof inputs and null
+         --  dependencies belong to its evaluation at the label. Queries that
+         --  expand internal objects must also inspect the prefix instead.
+
          function Is_Ignored_Attribute (N : Node_Id) return Boolean
          is (Nkind (N) = N_Attribute_Reference
              and then Attribute_Name (N) in Name_Old | Name_Loop_Entry);
@@ -4512,13 +4563,16 @@ package body Flow_Utility is
          --  declare expressions (because we can't do better with the current
          --  handling of declare expressions in flow).
 
-         if not (Nkind (Root_Node)
-                 in N_Identifier | N_Expanded_Name | N_Target_Name
-                 and then
-                   (if Nkind (Root_Node) = N_Identifier
-                    then not Comes_From_Declare_Expr (Entity (Root_Node)))
-                 and then
-                   Is_Record_Type (Unchecked_Full_Type (Etype (Root_Node))))
+         if not (Is_At_Snapshot_Root (Root_Node)
+                 or else
+                   (Nkind (Root_Node)
+                    in N_Identifier | N_Expanded_Name | N_Target_Name
+                    and then
+                      (if Nkind (Root_Node) = N_Identifier
+                       then not Comes_From_Declare_Expr (Entity (Root_Node)))
+                    and then
+                      Is_Record_Type
+                        (Unchecked_Full_Type (Etype (Root_Node)))))
          then
             return Vars : Flow_Id_Sets.Set do
 
@@ -4589,15 +4643,22 @@ package body Flow_Utility is
 
          pragma
            Assert
-             (Nkind (Root_Node)
-              in N_Identifier | N_Expanded_Name | N_Target_Name);
+             (Is_At_Snapshot_Root (Root_Node)
+              or else
+                Nkind (Root_Node)
+                in N_Identifier | N_Expanded_Name | N_Target_Name);
 
          --  Set the Current_Field to the object (or its component) that is is
          --  being untangled. Likewise, set Comp_Id to the index of the current
          --  component that is being untangled. ??? Actually, Comp_Id could be
          --  a function of the Current_Field; see the Loop_Invariant below.
 
-         if Nkind (Root_Node) = N_Target_Name then
+         if Is_At_Snapshot_Root (Root_Node) then
+            Comp_Id := 1;
+            Current_Field :=
+              Direct_Mapping_Id (Exp_SPARK.Implicit_Object (Root_Node));
+
+         elsif Nkind (Root_Node) = N_Target_Name then
             Comp_Id :=
               (if Target_Name.Kind = Direct_Mapping
                then 1
@@ -5833,6 +5894,14 @@ package body Flow_Utility is
       --  for variables referenced by arbitrary subexpressions) to flow (which
       --  keeps track what target_name represents as part of its context info).
 
+      function Expand_At_Snapshots
+        (Variables : Flow_Id_Sets.Set; Scope : Flow_Scope)
+         return Flow_Id_Sets.Set;
+      --  Replace implicit frontend-generated snapshot objects created for At
+      --  attributes with the variables of the At prefix expressions. Proof has
+      --  its own representation of At snapshots and should only see their
+      --  source-level dependencies.
+
       ----------------------------------------
       -- Enclosing_Declaration_Or_Statement --
       ----------------------------------------
@@ -5877,17 +5946,43 @@ package body Flow_Utility is
          end if;
       end Resolve_Target_Name;
 
+      -------------------------
+      -- Expand_At_Snapshots --
+      -------------------------
+
+      function Expand_At_Snapshots
+        (Variables : Flow_Id_Sets.Set; Scope : Flow_Scope)
+         return Flow_Id_Sets.Set
+      is
+         Results : Flow_Id_Sets.Set;
+
+      begin
+         for V of Variables loop
+            if Is_At_Snapshot_Object (V) then
+               Results.Union
+                 (Expand_At_Snapshots
+                    (Get_All_Variables
+                       (Prefix (Parent (V.Node)),
+                        Scope                   => Scope,
+                        Target_Name             => Null_Flow_Id,
+                        Use_Computed_Globals    => True,
+                        Assume_In_Expression    => True,
+                        Expand_Internal_Objects => False,
+                        Skip_Old                => Skip_Old),
+                     Scope));
+            else
+               Results.Include (V);
+            end if;
+         end loop;
+         return Results;
+      end Expand_At_Snapshots;
+
       --  Local variables
       Entire_Variables : Flow_Id_Sets.Set;
       Scope            : constant Flow_Scope := Get_Flow_Scope (Scope_N);
       Target_Name      : constant Flow_Id :=
         Resolve_Target_Name (Expr_N, Scope);
-
-   begin
-      --  Ignore references to array bounds of objects (because they are never
-      --  mutable).
-
-      for V of
+      Variables        : Flow_Id_Sets.Set :=
         Get_All_Variables
           (Expr_N,
            Scope                   => Scope,
@@ -5895,8 +5990,15 @@ package body Flow_Utility is
            Use_Computed_Globals    => True,
            Assume_In_Expression    => True,
            Expand_Internal_Objects => False,
-           Skip_Old                => Skip_Old)
-      loop
+           Skip_Old                => Skip_Old);
+
+   begin
+      Variables := Expand_At_Snapshots (Variables, Scope);
+
+      --  Ignore references to array bounds of objects (because they are never
+      --  mutable).
+
+      for V of Variables loop
          if not Is_Bound (V) then
             Entire_Variables.Include (Entire_Variable (V));
          end if;
@@ -6381,6 +6483,26 @@ package body Flow_Utility is
       end loop;
       return False;
    end Is_Valid_Assignment_Target;
+
+   ---------------------------
+   -- Is_At_Snapshot_Object --
+   ---------------------------
+
+   function Is_At_Snapshot_Object (E : Entity_Id) return Boolean
+   is (Is_Internal (E)
+       and then Present (Parent (E))
+       and then Nkind (Parent (E)) = N_Attribute_Reference
+       and then Attribute_Name (Parent (E)) = Name_At
+       and then Exp_SPARK.Implicit_Object (Parent (E)) = E);
+
+   ---------------------------
+   -- Is_At_Snapshot_Object --
+   ---------------------------
+
+   function Is_At_Snapshot_Object (F : Flow_Id) return Boolean
+   is (F.Kind in Direct_Mapping | Record_Field
+       and then Nkind (F.Node) in N_Entity
+       and then Is_At_Snapshot_Object (F.Node));
 
    -----------------
    -- Is_Variable --
@@ -7856,6 +7978,27 @@ package body Flow_Utility is
 
                when Name_Old    =>
                   M := Recurse_On (Prefix (N), Map_Root);
+
+               when Name_At     =>
+                  declare
+                     E : constant Entity_Id := Exp_SPARK.Implicit_Object (N);
+
+                     RHS : constant Flow_Id_Sets.Set :=
+                       Flatten_Variable (E, Scope);
+
+                     LHS : constant Flow_Id_Sets.Set :=
+                       Flatten_Variable (Map_Root, Scope);
+
+                  begin
+                     for Input of RHS loop
+                        declare
+                           F : constant Flow_Id := Join (Map_Root, Input);
+                        begin
+                           pragma Assert (LHS.Contains (F));
+                           M.Insert (F, Flow_Id_Sets.To_Set (Input));
+                        end;
+                     end loop;
+                  end;
 
                when others      =>
                   Error_Msg_N ("cannot untangle attribute", N);

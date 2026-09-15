@@ -1,0 +1,4 @@
+test_at_placement.adb:19:13: info: implicit aspect Always_Terminates on "Allocate" has been proved, subprogram will terminate
+test_at_placement.adb:28:04: warning: analyzing unreferenced procedure "Test_Allocate_3" [unreferenced-procedure]
+test_at_placement.adb:28:14: warning: subprogram "Test_Allocate_3" has no effect
+test_at_placement.adb:34:10: medium: resource or memory leak might occur at end of scope

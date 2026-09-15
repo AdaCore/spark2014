@@ -1,0 +1,5 @@
+test.adb:3:42: info: initialization of "O" proved
+test.adb:5:03: info: flow dependencies proved
+test.adb:7:13: info: implicit aspect Always_Terminates on "Pick" has been proved, subprogram will terminate
+test.adb:8:06: info: flow dependencies proved
+test.adb:15:06: warning: unused assignment

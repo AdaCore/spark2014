@@ -1,0 +1,41 @@
+Generated contracts for Test
+   Initializes =>
+      Assertion_Input
+      Executable_Input
+      Mixed_Input
+      Record_Input
+Generated contracts for Test.Assertion_Only
+   Global =>
+      Proof_In =>
+         Assertion_Input
+   Refined_Global =>
+      Proof_In =>
+         Assertion_Input
+Generated contracts for Test.Executable
+   Global =>
+      Input =>
+         Executable_Input
+   Refined_Global =>
+      Input =>
+         Executable_Input
+Generated contracts for Test.Mixed
+   Global =>
+      Input =>
+         Mixed_Input
+   Refined_Global =>
+      Input =>
+         Mixed_Input
+Generated contracts for Test.Record_Assertion
+   Global =>
+      Proof_In =>
+         Record_Input
+   Refined_Global =>
+      Proof_In =>
+         Record_Input
+test.adb:24:22: medium: assertion might fail [possible fix: subprogram at test.ads:4 should mention Assertion_Input in a precondition]
+test.adb:35:22: medium: assertion might fail [possible fix: subprogram at test.ads:6 should mention Record_Input in a precondition]
+test.adb:55:22: medium: assertion might fail [possible fix: subprogram at test.ads:10 should mention Mixed_Input in a precondition]
+test.ads:4:14: warning: subprogram "Assertion_Only" has no effect
+test.ads:6:14: warning: subprogram "Record_Assertion" has no effect
+test.ads:8:26: info: initialization of "Output" proved
+test.ads:10:21: info: initialization of "Output" proved

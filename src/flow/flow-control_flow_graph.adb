@@ -27,6 +27,7 @@ with Atree;       use Atree;
 with Elists;      use Elists;
 with Exp_SPARK;
 with Exp_Util;
+with Exp_SPARK;
 with Lib;         use Lib;
 with Namet;       use Namet;
 with Nlists;      use Nlists;
@@ -578,6 +579,33 @@ package body Flow.Control_Flow_Graph is
    --  Create the 'initial and 'final vertices for the given global and link
    --  them up to the start and end vertices.
 
+   procedure Add_Explicit_Initialization
+     (N     : Node_Id;
+      E     : Entity_Id;
+      Expr  : Node_Id;
+      Alias : Entity_Id;
+      FA    : in out Flow_Analysis_Graphs;
+      Inits : in out Vertex_Lists.List;
+      Ctx   : in out Context)
+   with
+     Pre =>
+       Ekind (E) in E_Constant | E_Variable
+       and then Nkind (Expr) in N_Subexpr
+       and then Inits.Is_Empty;
+   --  Add vertices that model the explicit initialization of E with Expr. N is
+   --  the node represented by the vertices. If E overlays another object it
+   --  should be passed as Alias.
+
+   procedure Add_Object_Declaration_Vertex
+     (N     : Node_Id;
+      E     : Entity_Id;
+      FA    : in out Flow_Analysis_Graphs;
+      Inits : in out Vertex_Lists.List)
+   with Pre => Ekind (E) in E_Constant | E_Variable;
+   --  Prepend to Inits a vertex which associates the declaration path at N
+   --  with E. This lets dead-path pruning remove the 'Initial and 'Final
+   --  vertices of E when all paths declaring it are dead.
+
    procedure Do_Assignment_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -778,9 +806,8 @@ package body Flow.Control_Flow_Graph is
    --  Deal with forward goto statements. For each goto statement we create
    --  a vertex. In the connection map it will be its own standard entry (as
    --  usual), but will have no standard exits (because forward gotos jump to
-   --  labels that we have seen yet). Instead, we record this vertex in the
-   --  context paramter Ctx and we will connect it with the vertex for the
-   --  label in Do_Label.
+   --  labels that we have not seen yet). Instead, we record this vertex in the
+   --  context parameter Ctx. Do_Label connects it to the entry of the label.
 
    procedure Do_Handled_Sequence_Of_Statements
      (N   : Node_Id;
@@ -832,7 +859,10 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    with Pre => Nkind (N) = N_Label;
-   --  Deal with goto labels; see Do_Goto_Statement
+   --  Deal with labels referenced by goto statements (see Do_Goto_Statement)
+   --  or by 'At references. The frontend rejects labels referenced in both
+   --  ways. For each 'At reference, create its snapshot initialization
+   --  vertices here; for gotos, connect their pending vertices to the label.
 
    procedure Do_Loop_Statement
      (N   : Node_Id;
@@ -3301,6 +3331,175 @@ package body Flow.Control_Flow_Graph is
       Ctx.Vertex_Ctx.Warnings_Off := Save_Warn_Off;
    end Do_If_Statement;
 
+   ---------------------------------
+   -- Add_Explicit_Initialization --
+   ---------------------------------
+
+   procedure Add_Explicit_Initialization
+     (N     : Node_Id;
+      E     : Entity_Id;
+      Expr  : Node_Id;
+      Alias : Entity_Id;
+      FA    : in out Flow_Analysis_Graphs;
+      Inits : in out Vertex_Lists.List;
+      Ctx   : in out Context)
+   is
+      Funcalls : Call_Sets.Set;
+      Indcalls : Node_Sets.Set;
+
+      V : Flow_Graphs.Vertex_Id;
+
+      To_CW : constant Boolean :=
+        Is_Class_Wide_Type (Get_Type (E, FA.B_Scope))
+        and then not Is_Class_Wide_Type (Get_Type (Expr, FA.B_Scope));
+
+      Var_Def : constant Flow_Id_Sets.Set :=
+        (if Present (Alias)
+         then Flatten_Variable (Alias, FA.B_Scope)
+         else Flatten_Variable (E, FA.B_Scope));
+
+   begin
+      Pick_Generated_Info
+        (Expr,
+         FA.B_Scope,
+         Function_Calls     => Funcalls,
+         Indirect_Calls     => Indcalls,
+         Proof_Dependencies => FA.Proof_Dependencies,
+         Type_Contracts     => FA.Type_Contracts,
+         Locks              => FA.Locks,
+         Generating_Globals => FA.Generating_Globals);
+
+      --  Object initializers have no assignment target, and target names are
+      --  not supported in At prefixes.
+
+      if No (Alias) and then RHS_Split_Useful (E, Expr, FA.B_Scope) then
+         declare
+            M : constant Flow_Id_Maps.Map :=
+              Untangle_Record_Assignment
+                (N                       => Expr,
+                 Map_Root                => Direct_Mapping_Id (E),
+                 Map_Type                => Get_Type (E, FA.B_Scope),
+                 Target_Name             => Null_Flow_Id,
+                 Scope                   => FA.B_Scope,
+                 Fold_Functions          => Inputs,
+                 Use_Computed_Globals    => not FA.Generating_Globals,
+                 Expand_Internal_Objects => False,
+                 Extensions_Irrelevant   =>
+                   not Is_Class_Wide_Type (Get_Type (E, FA.B_Scope)));
+
+            Cluster : Flow_Graphs.Cluster_Id;
+            --  For grouping vertices corresponding to this object
+            --  initialization in the visual representation of the graph.
+
+            Empty_Reuse : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+
+         begin
+            FA.CFG.New_Cluster (Cluster);
+
+            for C in M.Iterate loop
+               declare
+                  Output : Flow_Id renames Flow_Id_Maps.Key (C);
+                  Inputs : Flow_Id_Sets.Set renames M (C);
+
+               begin
+                  --  ??? It might be useful to improve E_Loc to point
+                  --      at the relevant bit in the aggregate.
+
+                  if Inputs.Is_Empty then
+                     if Empty_Reuse = Flow_Graphs.Null_Vertex then
+                        Add_Vertex
+                          (FA,
+                           Make_Basic_Attributes
+                             (Var_Def    => Flow_Id_Sets.Empty_Set,
+                              Var_Ex_Use => Inputs,
+                              Subp_Calls => Funcalls,
+                              Indt_Calls => Indcalls,
+                              Vertex_Ctx => Ctx.Vertex_Ctx,
+                              E_Loc      => N,
+                              Print_Hint => Pretty_Print_Record_Field),
+                           V);
+
+                        Inits.Append (V);
+                        FA.Atr (V).First_Field := Inits.First_Element;
+                        FA.CFG.Set_Cluster (V, Cluster);
+
+                        Empty_Reuse := V;
+                     end if;
+
+                     FA.Atr (Empty_Reuse).Variables_Defined.Insert (Output);
+                  else
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                           Var_Ex_Use => Inputs,
+                           Subp_Calls => Funcalls,
+                           Indt_Calls => Indcalls,
+                           Vertex_Ctx => Ctx.Vertex_Ctx,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field),
+                        V);
+
+                     Inits.Append (V);
+                     FA.Atr (V).First_Field := Inits.First_Element;
+                     FA.CFG.Set_Cluster (V, Cluster);
+                  end if;
+               end;
+            end loop;
+         end;
+
+      else
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
+            Make_Basic_Attributes
+              (Var_Def    => Var_Def,
+               Var_Ex_Use =>
+                 Get_Variables
+                   (Expr,
+                    Scope                => FA.B_Scope,
+                    Target_Name          => Null_Flow_Id,
+                    Fold_Functions       => Inputs,
+                    Use_Computed_Globals => not FA.Generating_Globals,
+                    Consider_Extensions  => To_CW),
+               Subp_Calls => Funcalls,
+               Indt_Calls => Indcalls,
+               Vertex_Ctx => Ctx.Vertex_Ctx,
+               E_Loc      => N),
+            V);
+         Inits.Append (V);
+      end if;
+
+      Ctx.Folded_Function_Checks.Append (Expr);
+      pragma Assert (not Inits.Is_Empty);
+   end Add_Explicit_Initialization;
+
+   -----------------------------------
+   -- Add_Object_Declaration_Vertex --
+   -----------------------------------
+
+   procedure Add_Object_Declaration_Vertex
+     (N     : Node_Id;
+      E     : Entity_Id;
+      FA    : in out Flow_Analysis_Graphs;
+      Inits : in out Vertex_Lists.List)
+   is
+      V : Flow_Graphs.Vertex_Id;
+
+   begin
+      Add_Vertex
+        (FA,
+         (Null_Node_Attributes
+          with delta
+            Is_Null_Node        => False,
+            Is_Program_Node     => False,
+            Object_Declarations => Node_Sets.To_Set (E),
+            Pretty_Print_Kind   => Pretty_Print_Declaration,
+            Error_Location      => N),
+         V);
+      Inits.Prepend (V);
+   end Add_Object_Declaration_Vertex;
+
    --------------
    -- Do_Label --
    --------------
@@ -3311,17 +3510,83 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V : Flow_Graphs.Vertex_Id;
+      At_Snapshots : Union_Lists.List;
+      At_Block     : Graph_Connections;
+
       C : Goto_Jump_Maps.Cursor :=
         Ctx.Goto_Jumps.Find (Entity (Identifier (N)));
 
    begin
-      Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
 
-      CM.Insert (Union_Id (N), Trivial_Connection (V));
+      --  Create snapshot vertices for implicit objects created for 'At
+      --  expressions referencing this label.
+
+      for Attr of Get_At_Attributes_For_Label (Entity (Identifier (N))) loop
+         declare
+            E : constant Entity_Id := Exp_SPARK.Implicit_Object (Attr);
+
+            Inits : Vertex_Lists.List;
+            Prev  : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+
+            Is_Assertion : constant Boolean :=
+              In_Assertion_Expression_Pragma (Attr);
+
+         begin
+            Create_Initial_And_Final_Vertices (E, FA);
+            Add_Explicit_Initialization
+              (N     => Attr,
+               E     => E,
+               Expr  => Prefix (Attr),
+               Alias => Types.Empty,
+               FA    => FA,
+               Inits => Inits,
+               Ctx   => Ctx);
+
+            Add_Object_Declaration_Vertex
+              (N => Attr, E => E, FA => FA, Inits => Inits);
+
+            --  ??? This declaration marker lets dead-path pruning remove the
+            --  snapshot boundary vertices when the label is unreachable. It is
+            --  not sufficient to remove the snapshot initialization when the
+            --  label is reachable but the corresponding 'At reference is
+            --  unreachable. A future refined cleanup should handle this case.
+
+            for Init of Inits loop
+
+               --  The generated snapshot initialization is not a source-level
+               --  program statement. It should also inherit the assertion
+               --  context of the 'At reference, so that variables used only to
+               --  compute a snapshot for proof remain proof inputs.
+
+               FA.Atr (Init).Is_Program_Node := False;
+               FA.Atr (Init).Is_Assertion := Is_Assertion;
+
+               if Prev /= Flow_Graphs.Null_Vertex then
+                  Linkup (FA, Prev, Init);
+               end if;
+               Prev := Init;
+            end loop;
+
+            CM.Insert
+              (Union_Id (Attr),
+               Graph_Connections'
+                 (Standard_Entry => Inits.First_Element,
+                  Standard_Exits => To_Set (Inits.Last_Element)));
+         end;
+
+         At_Snapshots.Append (Union_Id (Attr));
+      end loop;
+
+      Join (FA, CM, At_Snapshots, At_Block);
+
+      CM.Insert (Union_Id (N), At_Block);
+
+      --  Connect the pending vertices created for goto statements targeting
+      --  this label.
 
       if Goto_Jump_Maps.Has_Element (C) then
-         Linkup (FA, Froms => Ctx.Goto_Jumps (C), To => V);
+         Linkup
+           (FA, Froms => Ctx.Goto_Jumps (C), To => At_Block.Standard_Entry);
          Ctx.Goto_Jumps.Delete (C);
       end if;
    end Do_Label;
@@ -5223,147 +5488,20 @@ package body Flow.Control_Flow_Graph is
       --  We have a declaration with an explicit initialization
 
       if Present (Expr) then
-         declare
-            Funcalls : Call_Sets.Set;
-            Indcalls : Node_Sets.Set;
+         Add_Explicit_Initialization
+           (N     => N,
+            E     => E,
+            Expr  => Expr,
+            Alias => Alias,
+            FA    => FA,
+            Inits => Inits,
+            Ctx   => Ctx);
 
-            To_CW : constant Boolean :=
-              Is_Class_Wide_Type (Get_Type (E, FA.B_Scope))
-              and then not Is_Class_Wide_Type (Get_Type (Expr, FA.B_Scope));
-
-            Var_Def : constant Flow_Id_Sets.Set :=
-              (if Present (Alias)
-               then Flatten_Variable (Alias, FA.B_Scope)
-               else Flatten_Variable (E, FA.B_Scope));
-
-         begin
-            Pick_Generated_Info
-              (Expr,
-               FA.B_Scope,
-               Function_Calls     => Funcalls,
-               Indirect_Calls     => Indcalls,
-               Proof_Dependencies => FA.Proof_Dependencies,
-               Type_Contracts     => FA.Type_Contracts,
-               Locks              => FA.Locks,
-               Generating_Globals => FA.Generating_Globals);
-
-            if No (Alias) and then RHS_Split_Useful (E, Expr, FA.B_Scope) then
-
-               declare
-                  M : constant Flow_Id_Maps.Map :=
-                    Untangle_Record_Assignment
-                      (N                       => Expr,
-                       Map_Root                => Direct_Mapping_Id (E),
-                       Map_Type                => Get_Type (E, FA.B_Scope),
-                       Target_Name             => Null_Flow_Id,
-                       Scope                   => FA.B_Scope,
-                       Fold_Functions          => Inputs,
-                       Use_Computed_Globals    => not FA.Generating_Globals,
-                       Expand_Internal_Objects => False,
-                       Extensions_Irrelevant   =>
-                         not Is_Class_Wide_Type (Get_Type (E, FA.B_Scope)));
-
-                  Cluster : Flow_Graphs.Cluster_Id;
-                  --  For grouping vertices corresponding to this object
-                  --  declaration in the visual representation of the graph.
-
-                  Empty_Reuse : Flow_Graphs.Vertex_Id :=
-                    Flow_Graphs.Null_Vertex;
-
-               begin
-                  FA.CFG.New_Cluster (Cluster);
-
-                  for C in M.Iterate loop
-                     declare
-                        Output : Flow_Id renames Flow_Id_Maps.Key (C);
-                        Inputs : Flow_Id_Sets.Set renames M (C);
-
-                     begin
-                        --  ??? It might be useful to improve E_Loc to point
-                        --      at the relevant bit in the aggregate.
-
-                        if Inputs.Is_Empty then
-                           if Empty_Reuse = Flow_Graphs.Null_Vertex then
-                              Add_Vertex
-                                (FA,
-                                 Make_Basic_Attributes
-                                   (Var_Def    => Flow_Id_Sets.Empty_Set,
-                                    Var_Ex_Use => Inputs,
-                                    Subp_Calls => Funcalls,
-                                    Indt_Calls => Indcalls,
-                                    Vertex_Ctx => Ctx.Vertex_Ctx,
-                                    E_Loc      => N,
-                                    Print_Hint => Pretty_Print_Record_Field),
-                                 V);
-
-                              Inits.Append (V);
-                              FA.Atr (V).First_Field := Inits.First_Element;
-                              FA.CFG.Set_Cluster (V, Cluster);
-
-                              Empty_Reuse := V;
-                           end if;
-
-                           FA.Atr (Empty_Reuse).Variables_Defined.Insert
-                             (Output);
-                        else
-                           Add_Vertex
-                             (FA,
-                              Make_Basic_Attributes
-                                (Var_Def    => Flow_Id_Sets.To_Set (Output),
-                                 Var_Ex_Use => Inputs,
-                                 Subp_Calls => Funcalls,
-                                 Indt_Calls => Indcalls,
-                                 Vertex_Ctx => Ctx.Vertex_Ctx,
-                                 E_Loc      => N,
-                                 Print_Hint => Pretty_Print_Record_Field),
-                              V);
-
-                           Inits.Append (V);
-                           FA.Atr (V).First_Field := Inits.First_Element;
-                           FA.CFG.Set_Cluster (V, Cluster);
-                        end if;
-                     end;
-                  end loop;
-               end;
-
-            else
-               Add_Vertex
-                 (FA,
-                  Direct_Mapping_Id (N),
-                  Make_Basic_Attributes
-                    (Var_Def    => Var_Def,
-                     Var_Ex_Use =>
-                       Get_Variables
-                         (Expr,
-                          Scope                => FA.B_Scope,
-                          Target_Name          => Null_Flow_Id,
-                          Fold_Functions       => Inputs,
-                          Use_Computed_Globals => not FA.Generating_Globals,
-                          Consider_Extensions  => To_CW),
-                     Subp_Calls => Funcalls,
-                     Indt_Calls => Indcalls,
-                     Vertex_Ctx => Ctx.Vertex_Ctx,
-                     E_Loc      => N),
-                  V);
-               Inits.Append (V);
-
-               --  If this object is a local borrower, then put its declaration
-               --  on the stack. We only need this for assignments whose RHS
-               --  doesn't need to be split, because local borrowers are always
-               --  of an access type and thus in flow they are represented as
-               --  single "blobs".
-
-               if Is_Anonymous_Access_Object_Type (Get_Type (E, FA.B_Scope))
-                 and then not Is_Access_Constant (Get_Type (E, FA.B_Scope))
-               then
-                  Ctx.Unwind_Actions.Append (N);
-               end if;
-
-            end if;
-
-            Ctx.Folded_Function_Checks.Append (Expr);
-         end;
-         pragma Assert (not Inits.Is_Empty);
+         if Is_Anonymous_Access_Object_Type (Get_Type (E, FA.B_Scope))
+           and then not Is_Access_Constant (Get_Type (E, FA.B_Scope))
+         then
+            Ctx.Unwind_Actions.Append (N);
+         end if;
 
       --  We have a non-overlaid object with Import and Address clause
 
@@ -5531,17 +5669,8 @@ package body Flow.Control_Flow_Graph is
       --  link to the object entity when declaration turns out to be dead code.
 
       if No (Alias) then
-         Add_Vertex
-           (FA,
-            (Null_Node_Attributes
-             with delta
-               Is_Null_Node        => False,
-               Is_Program_Node     => False,
-               Object_Declarations => Node_Sets.To_Set (E),
-               Pretty_Print_Kind   => Pretty_Print_Declaration,
-               Error_Location      => N),
-            V);
-         Inits.Prepend (V);
+         Add_Object_Declaration_Vertex
+           (N => N, E => E, FA => FA, Inits => Inits);
       end if;
 
       --  If nothing has been initialized by this object declaration, then add
@@ -7746,6 +7875,11 @@ package body Flow.Control_Flow_Graph is
                then Path_To_Flow_Id (Name (N), FA.B_Scope)
                else Null_Flow_Id);
 
+            Is_Assertion : constant Boolean :=
+              In_Assertion_Expression_Pragma (Expr);
+            --  Folded checks inherit the assertion context of their original
+            --  expression, including checks for otherwise unused inputs.
+
             Unchecked : Flow_Id_Sets.Set;
 
             V : Flow_Graphs.Vertex_Id;
@@ -7765,7 +7899,8 @@ package body Flow.Control_Flow_Graph is
                      Make_Sink_Vertex_Attributes
                        (Var_Use       => Unchecked,
                         Is_Fold_Check => True,
-                        Is_Assertion  => Ref_Kind = Proof_Ins,
+                        Is_Assertion  =>
+                          Ref_Kind = Proof_Ins or else Is_Assertion,
                         Vertex_Ctx    => Ctx.Vertex_Ctx,
                         E_Loc         => Expr),
                      V);
@@ -7796,6 +7931,7 @@ package body Flow.Control_Flow_Graph is
 
          CM (Union_Id (N)).Standard_Entry := L.First_Element;
       end if;
+
    end Process_Statement;
 
    ----------------------
@@ -7893,7 +8029,7 @@ package body Flow.Control_Flow_Graph is
 
             when N_Attribute_Reference                              =>
                return
-                 Attribute_Name (N) = Name_Update
+                 Attribute_Name (N) in Name_At | Name_Update
                  and then Is_Split_Useful (Prefix (N));
 
             when N_Expression_With_Actions

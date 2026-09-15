@@ -1,0 +1,8 @@
+test.adb:6:04: info: initialization of "Output_First" proved
+test.adb:7:04: info: initialization of "Output_Second" proved
+test.adb:10:03: info: flow dependencies proved
+test.adb:17:13: info: implicit aspect Always_Terminates on "Make_Pair" has been proved, subprogram will terminate
+test.adb:18:09: info: flow dependencies proved
+test.adb:25:04: info: initialization of "Saved" proved
+test.adb:29:10: warning: unused assignment
+test.adb:30:11: warning: unused assignment

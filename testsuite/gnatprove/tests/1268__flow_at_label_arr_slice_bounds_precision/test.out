@@ -1,0 +1,18 @@
+direct.adb:6:04: info: initialization of "First" proved
+direct.adb:6:11: info: initialization of "Last" proved
+direct.adb:14:03: info: flow dependencies proved
+direct.adb:26:08: warning: unused assignment
+direct.adb:27:09: warning: unused assignment
+direct.adb:28:13: info: range check proved (CVC5: 4 VC)
+direct.adb:28:28: medium: length check might fail [reason for check: array must be of the appropriate length]
+direct.adb:29:12: info: range check proved (CVC5: 4 VC)
+direct.adb:29:27: info: length check proved (CVC5: 3 VC)
+qualified.adb:6:04: info: initialization of "First" proved
+qualified.adb:6:11: info: initialization of "Last" proved
+qualified.adb:14:03: info: flow dependencies proved
+qualified.adb:23:18: info: range check proved (CVC5: 2 VC)
+qualified.adb:23:23: info: range check proved (CVC5: 2 VC)
+qualified.adb:26:08: warning: unused assignment
+qualified.adb:27:09: warning: unused assignment
+qualified.adb:28:18: info: range check proved (CVC5: 4 VC)
+qualified.adb:29:17: info: range check proved (CVC5: 4 VC)

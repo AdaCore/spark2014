@@ -1,0 +1,5 @@
+test.adb:14:13: warning: unused assignment
+test.adb:15:15: warning: unused assignment
+test.adb:16:15: warning: unused assignment
+test.ads:22:07: info: initialization of "O" proved
+test.ads:23:09: info: flow dependencies proved

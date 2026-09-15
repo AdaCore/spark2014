@@ -1,0 +1,8 @@
+test.adb:6:04: info: initialization of "O2" proved
+test.adb:6:08: info: initialization of "O3" proved
+test.adb:9:03: info: flow dependencies proved
+test.adb:24:13: info: implicit aspect Always_Terminates on "Pick_X" has been proved, subprogram will terminate
+test.adb:26:13: info: implicit aspect Always_Terminates on "Pick_Y" has been proved, subprogram will terminate
+test.adb:31:10: warning: unused assignment
+test.adb:32:12: warning: unused assignment
+test.adb:33:12: warning: unused assignment

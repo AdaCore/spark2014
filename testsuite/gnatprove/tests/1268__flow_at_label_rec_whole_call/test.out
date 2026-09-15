@@ -1,0 +1,7 @@
+test.adb:6:04: info: initialization of "O1" proved
+test.adb:6:08: info: initialization of "C1" proved
+test.adb:7:04: info: initialization of "O2" proved
+test.adb:7:08: info: initialization of "C2" proved
+test.adb:10:03: info: flow dependencies proved
+test.adb:27:13: info: implicit aspect Always_Terminates on "Pick_A" has been proved, subprogram will terminate
+test.adb:29:13: info: implicit aspect Always_Terminates on "Pick_X" has been proved, subprogram will terminate

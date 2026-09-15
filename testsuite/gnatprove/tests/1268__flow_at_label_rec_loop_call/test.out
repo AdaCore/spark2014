@@ -1,0 +1,7 @@
+test.adb:5:04: info: initialization of "O1" proved
+test.adb:5:08: info: initialization of "O2" proved
+test.adb:8:03: info: flow dependencies proved
+test.adb:15:13: info: implicit aspect Always_Terminates on "Pick_A" has been proved, subprogram will terminate
+test.adb:17:13: info: implicit aspect Always_Terminates on "Pick_X" has been proved, subprogram will terminate
+test.adb:34:30: info: loop invariant initialization proved (CVC5: 2 VC)
+test.adb:34:30: info: loop invariant preservation proved (CVC5: 2 VC)

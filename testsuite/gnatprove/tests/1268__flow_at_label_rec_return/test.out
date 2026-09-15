@@ -1,0 +1,4 @@
+test.adb:13:13: warning: unused assignment
+test.adb:14:13: warning: unused assignment
+test.ads:11:13: info: implicit aspect Always_Terminates on "Capture" has been proved, subprogram will terminate
+test.ads:14:09: info: flow dependencies proved

@@ -1,0 +1,4 @@
+test.adb:3:35: info: initialization of "O" proved
+test.adb:6:03: info: flow dependencies proved
+test.adb:11:06: warning: unused assignment
+test.adb:12:20: info: overflow check proved (CVC5: 2 VC)

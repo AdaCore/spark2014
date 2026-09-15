@@ -1,0 +1,8 @@
+array_snapshot.adb:17:11: error: label is already referenced by goto statement at line 13
+array_snapshot.adb:18:11: error: label is already referenced by goto statement at line 13
+folded_inputs.adb:33:51: error: label is already referenced by goto statement at line 30
+loop_snapshot.adb:17:32: error: label is already referenced by goto statement at line 14
+record_snapshot.adb:27:21: error: label is already referenced by goto statement at line 21
+record_snapshot.adb:28:21: error: label is already referenced by goto statement at line 21
+scalar.adb:20:19: error: label is already referenced by goto statement at line 13
+gnatprove: error during flow analysis and proof

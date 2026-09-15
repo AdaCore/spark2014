@@ -1,0 +1,6 @@
+test.adb:6:04: info: initialization of "Output_Left" proved
+test.adb:7:04: info: initialization of "Output_Right" proved
+test.adb:10:03: info: flow dependencies proved
+test.adb:22:04: info: initialization of "Saved" proved
+test.adb:26:09: warning: unused assignment
+test.adb:27:10: warning: unused assignment

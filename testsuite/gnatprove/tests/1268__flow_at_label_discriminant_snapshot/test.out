@@ -1,0 +1,3 @@
+test.adb:3:34: info: initialization of "Output" proved
+test.adb:4:03: info: flow dependencies proved
+test.adb:16:43: info: range check proved (CVC5: 2 VC)

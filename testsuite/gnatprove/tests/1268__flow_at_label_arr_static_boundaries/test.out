@@ -1,0 +1,3 @@
+test.adb:23:19: info: assertion proved (CVC5: 1 VC)
+test.adb:24:19: info: assertion proved (CVC5: 1 VC)
+test.adb:25:19: info: assertion proved (CVC5: 1 VC)

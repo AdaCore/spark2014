@@ -1,0 +1,6 @@
+test.adb:6:04: info: initialization of "O" proved
+test.adb:9:03: info: flow dependencies proved
+test.adb:13:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test.adb:14:09: info: data dependencies proved
+test.adb:14:25: info: flow dependencies proved
+test.adb:24:06: warning: unused assignment

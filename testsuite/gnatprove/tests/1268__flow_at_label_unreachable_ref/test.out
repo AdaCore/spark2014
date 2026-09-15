@@ -1,0 +1,10 @@
+mixed_refs.adb:3:40: info: initialization of "Output" proved
+mixed_refs.adb:6:03: info: flow dependencies proved
+mixed_refs.adb:9:04: warning: unused variable "Y"
+mixed_refs.adb:12:04: warning: statement has no effect
+mixed_refs.adb:13:14: warning: this statement is never reached
+unreachable_ref.adb:4:04: warning: unused initial value of "C"
+unreachable_ref.adb:4:17: info: initialization of "O" proved
+unreachable_ref.adb:9:06: warning: unused assignment
+unreachable_ref.adb:12:04: warning: statement has no effect
+unreachable_ref.adb:13:09: warning: this statement is never reached

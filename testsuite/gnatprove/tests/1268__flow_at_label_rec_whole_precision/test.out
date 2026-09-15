@@ -1,0 +1,6 @@
+test.adb:6:04: info: initialization of "O1" proved
+test.adb:9:03: info: flow dependencies proved
+test.adb:25:04: info: initialization of "Saved" proved
+test.adb:28:10: warning: unused assignment
+test.adb:29:12: warning: unused assignment
+test.adb:30:12: warning: unused assignment
