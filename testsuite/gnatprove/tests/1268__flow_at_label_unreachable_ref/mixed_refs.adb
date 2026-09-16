@@ -10,6 +10,11 @@ is
 begin
    <<Capture>>
    if False then
+
+      --  The following statement is unreachable. However, the 'At introduces
+      --  an implicit object at a reachable label. Hence, the prefix (i.e., the
+      --  implicit object) must still be analysed.
+
       Output := Y'At (Capture);
    else
       Output := X'At (Capture);
