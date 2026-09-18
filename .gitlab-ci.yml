@@ -44,6 +44,21 @@ stages:
     # If the package exists, move it to /tmp so as not to influence "anod vcs"
     - if [ -f $PACKAGE_ABSOLUTE_NAME ] ; then mv $PACKAGE_ABSOLUTE_NAME /tmp ; fi
 
+    # When why3 has moved since the last nightly build, build it from sources
+    # instead of using the nightly one, which would be missing the why3 changes
+    # that a spark2014 change may require. This is a no-op on the usual day
+    # where why3 did not move. It is done in the setup shared by all jobs
+    # rather than in the build job alone, so that every job agrees on how why3
+    # is obtained and the components built here are reused downstream.
+    # Depends-On still wins: generic_anod_ci processes MR-description
+    # dependencies before --add-dep entries and gives them priority.
+    #
+    # The check is advisory, so its status is discarded: the script itself
+    # never exits non-zero, and the "|| true" additionally covers a failure of
+    # the interpreter to even run it. Either way the pipeline falls back to the
+    # nightly why3 instead of aborting here.
+    - GENERIC_ANOD_CI_OPTIONS="$GENERIC_ANOD_CI_OPTIONS $(python $CI_PROJECT_DIR/scripts/check_why3_nightly.py || true)"
+
     # Use generic_anod_ci here.
     - generic_anod_ci $GENERIC_ANOD_CI_OPTIONS
     - cat /tmp/ci_env.sh

@@ -99,3 +99,21 @@ Few things to know:
 - To test your tests you can run ``testsuite`` and then go to
   ``out/new/*.yaml``. This is a file containing the log and debug information
   of your test.
+
+.. _CI:
+
+**********************
+Continuous Integration
+**********************
+
+The GitLab CI is described by ``.gitlab-ci.yml``. All jobs that need an anod
+sandbox share the ``.basic-setup`` anchor, which calls ``generic_anod_ci`` to
+build the sandbox and to check out the repositories that the pipeline must
+build from sources rather than take from the nightly build. Each such
+repository is named by an ``--add-dep`` option.
+
+Keeping why3 in sync
+====================
+
+A script ``scripts/check_why3_nightly.py`` checks if why3 needs a rebuild
+for the CI run.
