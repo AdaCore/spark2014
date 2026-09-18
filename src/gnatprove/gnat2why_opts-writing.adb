@@ -110,6 +110,7 @@ package body Gnat2Why_Opts.Writing is
       Hash (Global_Gen_Mode_Name, Boolean'Image (Phase = Global_Generation));
       Hash (Output_Mode_Name, Gnat2Why_Opts.Output_Mode_Type'Image (Output));
       Hash (Exclude_Line_Name, CL_Switches.Exclude_Line.all);
+      Hash (Target_Name_Name, Configuration.Target_Name);
       Hash (Gnattest_Values_Name, CL_Switches.Gnattest_Values.all);
       Hash (Debug_Exec_RAC_Name, Boolean'Image (Debug_Exec_RAC));
       Hash
@@ -299,6 +300,7 @@ package body Gnat2Why_Opts.Writing is
             Output_Mode_Name,
             Gnat2Why_Opts.Output_Mode_Type'Image (Output));
          Set_Field (Obj, Exclude_Line_Name, CL_Switches.Exclude_Line.all);
+         Set_Field (Obj, Target_Name_Name, Configuration.Target_Name);
          Set_Field
            (Obj, Gnattest_Values_Name, CL_Switches.Gnattest_Values.all);
 

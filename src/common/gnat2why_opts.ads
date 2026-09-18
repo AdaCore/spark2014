@@ -155,6 +155,7 @@ private
    Proof_Warnings_Name                : constant String := "proof_warnings";
    Proof_Manifest_Name                : constant String := "proof_manifest";
    Report_Mode_Name                   : constant String := "report_mode";
+   Target_Name_Name                   : constant String := "target_name";
    Warning_Mode_Name                  : constant String := "warning_mode";
    Why3_Args_Name                     : constant String := "why3_args";
    Why3_Dir_Name                      : constant String := "why3_dir";

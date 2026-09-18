@@ -53,6 +53,16 @@ package Call is
    --  Standout and error output is directed to Standerr. If Verbose is
    --  set, the command-line is displayed.
 
+   function First_Line_Of_Command_Output
+     (Command : String; Arguments : String_Lists.List; Status : out Integer)
+      return String;
+   --  Run Command with Arguments and return the first line of its output,
+   --  without the line terminator. The error output of the command is merged
+   --  into its standard output, so that it does not pollute the output of the
+   --  caller. Status is set to the exit status of the command, or to a
+   --  non-zero value when the command could not be run at all. Assumes that
+   --  Command is in PATH or is an absolute path.
+
    function Read_File_Into_String (Fn : String) return String;
    --  Return a string with the contents of the file in argument.
 

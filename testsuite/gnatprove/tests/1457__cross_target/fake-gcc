@@ -1,0 +1,8 @@
+#!/bin/sh
+# Minimal stand-in for a cross compiler driver: GNATprove only queries it for
+# its target name, so reporting one is enough.
+if [ "$1" = "-dumpmachine" ]; then
+  echo arm-eabi
+  exit 0
+fi
+exit 1

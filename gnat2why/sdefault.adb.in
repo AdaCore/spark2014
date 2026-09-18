@@ -29,7 +29,8 @@
 --  and adalib directories, so generate them from Makefile.generic, using the
 --  native compiler.
 
-with Osint; use Osint;
+with Osint;        use Osint;
+with SPARK_Target;
 
 package body Sdefault is
    pragma Style_Checks (Off);
@@ -38,8 +39,11 @@ package body Sdefault is
    -- Local Data --
    ----------------
 
-   Prefix : constant String := "@PREFIX@";
-   Target : constant String := "spark/";
+   Prefix         : constant String := "@PREFIX@";
+   Default_Target : constant String := "@TARGET@";
+   --  Target name used when gnatprove did not provide one, e.g. when gnat2why
+   --  is run by hand. It is deliberately not substituted at build time, so
+   --  that it cannot be mistaken for the name of a real target.
 
    ------------------------------
    -- Include_Dir_Default_Name --
@@ -74,7 +78,16 @@ package body Sdefault is
 
    function Target_Name return String_Ptr is
    begin
-      return new String'(Target);
+      --  The target name is the one of the toolchain that would compile the
+      --  analyzed code, as computed by gnatprove and passed to gnat2why in
+      --  the extra options. This is what makes attribute Target_Name have the
+      --  same value in analysis as in compilation.
+
+      if SPARK_Target.Target_Name /= null then
+         return SPARK_Target.Target_Name;
+      else
+         return new String'(Default_Target);
+      end if;
    end Target_Name;
 
 end Sdefault;
