@@ -44,7 +44,8 @@ package body Gnat2Why_Opts.Writing is
       Obj_Dir         : String;
       Why3_Dir        : String;
       Source_Path_Key : String;
-      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector) return String
+      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector;
+      Data_Rep_Files  : String_Utils.String_Lists.List) return String
    is
       Hash_Context : Blake3_Context;
       File_Name    : String (1 .. 12);
@@ -151,6 +152,7 @@ package body Gnat2Why_Opts.Writing is
          Hash (CWE_Name, Boolean'Image (CL_Switches.CWE));
          Hash (Max_Why3_Processes_Name, Integer'Image (Max_Why3_Processes));
          Hash (Proof_Manifest_Name, Proof_Manifest);
+         Hash (Data_Rep_Files_Name, Data_Rep_Files);
          Hash (Why3_Dir_Name, Ada.Directories.Full_Name (Why3_Dir));
       end if;
 
@@ -198,7 +200,8 @@ package body Gnat2Why_Opts.Writing is
       Obj_Dir         : String;
       Why3_Dir        : String;
       Source_Path_Key : String;
-      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector) return String
+      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector;
+      Data_Rep_Files  : String_Utils.String_Lists.List) return String
    is
       function To_JSON (SL : String_Lists.List) return JSON_Array;
       function To_JSON
@@ -273,7 +276,12 @@ package body Gnat2Why_Opts.Writing is
 
       Result : constant String :=
         Opt_File_Name
-          (Phase, Obj_Dir, Why3_Dir, Source_Path_Key, Proof_Manifest);
+          (Phase,
+           Obj_Dir,
+           Why3_Dir,
+           Source_Path_Key,
+           Proof_Manifest,
+           Data_Rep_Files);
 
    begin
       --  Skip writing if a file with the same content hash already exists
@@ -346,6 +354,8 @@ package body Gnat2Why_Opts.Writing is
             Set_Field (Obj, Max_Why3_Processes_Name, Max_Why3_Processes);
 
             Set_Field (Obj, Proof_Manifest_Name, To_JSON (Proof_Manifest));
+
+            Set_Field (Obj, Data_Rep_Files_Name, To_JSON (Data_Rep_Files));
 
             --  The call to Ada.Directories.Full_Name removes any trailing
             --  slash, which could confuse gnat2why.

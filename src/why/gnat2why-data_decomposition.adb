@@ -32,12 +32,10 @@ with GNAT.OS_Lib;
 with GNATCOLL.JSON;        use GNATCOLL.JSON;
 with GNATCOLL.Buffer;
 with GNATCOLL.String_Builders;
-with Lib;                  use Lib;
-with Namet;                use Namet;
+with Gnat2Why_Opts.Reading;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util;           use SPARK_Util;
-with String_Utils;         use String_Utils;
 
 package body Gnat2Why.Data_Decomposition is
 
@@ -606,44 +604,34 @@ package body Gnat2Why.Data_Decomposition is
    ---------------------------------------
 
    procedure Read_Data_Decomposition_JSON_File is
-      File_Names : String_Sets.Set;
-
    begin
-      for J in Main_Unit .. Last_Unit loop
+      --  The files to read are selected by gnatprove, which knows the object
+      --  directory of each project in the tree. The sources of a withed
+      --  project are not necessarily analyzed in the directory where their
+      --  data representation was generated, so the files cannot be located
+      --  from the source names alone.
 
-         --  Ignore units with no compilation unit. Those are pragma
-         --  configuration units and they have no data decomposition.
-
-         if Present (Cunit (J)) then
-            declare
-               Source_File_Name : constant String :=
-                 Get_Name_String (Unit_File_Name (J));
-               JSON_File_Name   : constant String :=
-                 Source_File_Name & ".json";
-            begin
-               if not File_Names.Contains (Source_File_Name)
-                 and then Ada.Directories.Exists (JSON_File_Name)
-               then
-                  Read_JSON (JSON_File_Name);
-                  File_Names.Insert (Source_File_Name);
-               end if;
-            exception
-               when E : others =>
-                  Ada.Text_IO.Put_Line
-                    (Ada.Text_IO.Standard_Error,
-                     "error: ill-formed GNAT data representation file at "
-                     & Ada.Exceptions.Exception_Message (E));
-                  Ada.Text_IO.Put_Line
-                    (Ada.Text_IO.Standard_Error,
-                     "error: Try installing a more recent version of GNAT.");
-                  Ada.Text_IO.Put_Line
-                    (Ada.Text_IO.Standard_Error,
-                     "error: As possible workarounds, remove GNAT from your "
-                     & "PATH or use the switch -gnateT=<target.atp> to pass "
-                     & "an explicit target parametrization file.");
-                  GNAT.OS_Lib.OS_Exit (1);
-            end;
-         end if;
+      for File_Name of Gnat2Why_Opts.Reading.Data_Rep_Files loop
+         begin
+            if Ada.Directories.Exists (File_Name) then
+               Read_JSON (File_Name);
+            end if;
+         exception
+            when E : others =>
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  "error: ill-formed GNAT data representation file at "
+                  & Ada.Exceptions.Exception_Message (E));
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  "error: Try installing a more recent version of GNAT.");
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  "error: As possible workarounds, remove GNAT from your "
+                  & "PATH or use the switch -gnateT=<target.atp> to pass "
+                  & "an explicit target parametrization file.");
+               GNAT.OS_Lib.OS_Exit (1);
+         end;
       end loop;
    end Read_Data_Decomposition_JSON_File;
 

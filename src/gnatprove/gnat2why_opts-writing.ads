@@ -37,13 +37,17 @@ package Gnat2Why_Opts.Writing is
       Obj_Dir         : String;
       Why3_Dir        : String;
       Source_Path_Key : String;
-      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector) return String;
+      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector;
+      Data_Rep_Files  : String_Utils.String_Lists.List) return String;
    --  Create a file with extra options for gnat2why and return its pathname.
    --  Why3_Dir is the directory where gnatwhy3 is intended to run,
    --  and find the why3.conf file.
    --  Source_Path_Key selects the file-specific settings from
    --  File_Specific_Map; it is the source-file key computed by
    --  Configuration.File_Specific_Key, not the Ada unit name.
+   --  Data_Rep_Files lists the data representation files that the analysis of
+   --  this unit may read; it is empty when data representation is not
+   --  generated.
    --  The opt file contains flattened settings (no nested file_specific map).
 
    function Opt_File_Name
@@ -51,7 +55,8 @@ package Gnat2Why_Opts.Writing is
       Obj_Dir         : String;
       Why3_Dir        : String;
       Source_Path_Key : String;
-      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector) return String;
+      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector;
+      Data_Rep_Files  : String_Utils.String_Lists.List) return String;
    --  Compute the pathname that Pass_Extra_Options_To_Gnat2why would use for
    --  the same arguments, without creating or writing any file.
    --  The filename is derived by hashing the option values directly, so

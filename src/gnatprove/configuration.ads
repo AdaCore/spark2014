@@ -348,19 +348,25 @@ package Configuration is
    --  Set of all created opt file paths, for cleanup
 
    function Extra_Args_File_Name_For_Unit
-     (Unit  : GPR2.Build.Compilation_Unit.Object;
-      Phase : Gnat2Why_Opts.Writing.Gnat2Why_Phase) return String;
+     (Unit           : GPR2.Build.Compilation_Unit.Object;
+      Phase          : Gnat2Why_Opts.Writing.Gnat2Why_Phase;
+      Data_Rep_Files : String_Lists.List := String_Lists.Empty_List)
+      return String;
    --  Return the extra args file name for a specific unit's configuration,
    --  without creating the file.
 
    function Extra_Args_File_For_Unit
-     (Unit     : GPR2.Build.Compilation_Unit.Object;
-      Phase    : Gnat2Why_Opts.Writing.Gnat2Why_Phase;
-      Obj_Dir  : String;
-      Why3_Dir : String) return String;
+     (Unit           : GPR2.Build.Compilation_Unit.Object;
+      Phase          : Gnat2Why_Opts.Writing.Gnat2Why_Phase;
+      Obj_Dir        : String;
+      Why3_Dir       : String;
+      Data_Rep_Files : String_Lists.List := String_Lists.Empty_List)
+      return String;
    --  Retrieve the extra args file for a specific unit's configuration. The
    --  file is created if it does not exist yet.
    --  Looks up the unit's File_Specific settings and generates a flat
    --  opt file. Units with identical settings share the same file.
+   --  Data_Rep_Files are the data representation files that the analysis of
+   --  this unit may read.
 
 end Configuration;

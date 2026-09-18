@@ -188,6 +188,14 @@ package body Gnat2Why_Opts.Reading is
             end loop;
          end;
 
+         declare
+            Ar : constant JSON_Array := Get (V, Data_Rep_Files_Name);
+         begin
+            for Var_Index in Positive range 1 .. Length (Ar) loop
+               Data_Rep_Files.Append (Get (Get (Ar, Var_Index)));
+            end loop;
+         end;
+
          Report_Mode :=
            Report_Mode_Type'Value (Get (Get (V, Report_Mode_Name)));
 

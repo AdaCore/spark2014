@@ -1543,10 +1543,12 @@ package body Configuration is
    ---------------------------------
 
    function Extra_Args_File_For_Unit
-     (Unit     : GPR2.Build.Compilation_Unit.Object;
-      Phase    : Gnat2Why_Opts.Writing.Gnat2Why_Phase;
-      Obj_Dir  : String;
-      Why3_Dir : String) return String
+     (Unit           : GPR2.Build.Compilation_Unit.Object;
+      Phase          : Gnat2Why_Opts.Writing.Gnat2Why_Phase;
+      Obj_Dir        : String;
+      Why3_Dir       : String;
+      Data_Rep_Files : String_Lists.List := String_Lists.Empty_List)
+      return String
    is
       Opt_File : constant String :=
         Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
@@ -1554,7 +1556,8 @@ package body Configuration is
            Obj_Dir         => Obj_Dir,
            Why3_Dir        => Why3_Dir,
            Source_Path_Key => File_Specific_Key (Unit),
-           Proof_Manifest  => Proof_Manifest_For_Unit (String (Unit.Name)));
+           Proof_Manifest  => Proof_Manifest_For_Unit (String (Unit.Name)),
+           Data_Rep_Files  => Data_Rep_Files);
    begin
       Opt_File_Set.Include (Opt_File);
       return Opt_File;
@@ -1565,8 +1568,10 @@ package body Configuration is
    -----------------------------------
 
    function Extra_Args_File_Name_For_Unit
-     (Unit  : GPR2.Build.Compilation_Unit.Object;
-      Phase : Gnat2Why_Opts.Writing.Gnat2Why_Phase) return String
+     (Unit           : GPR2.Build.Compilation_Unit.Object;
+      Phase          : Gnat2Why_Opts.Writing.Gnat2Why_Phase;
+      Data_Rep_Files : String_Lists.List := String_Lists.Empty_List)
+      return String
    is
       Source_Path_Key : constant String := File_Specific_Key (Unit);
       Obj_Dir         : constant String :=
@@ -1580,7 +1585,8 @@ package body Configuration is
            Obj_Dir         => Obj_Dir,
            Why3_Dir        => Why3_Dir,
            Source_Path_Key => Source_Path_Key,
-           Proof_Manifest  => Proof_Manifest_For_Unit (String (Unit.Name)));
+           Proof_Manifest  => Proof_Manifest_For_Unit (String (Unit.Name)),
+           Data_Rep_Files  => Data_Rep_Files);
    end Extra_Args_File_Name_For_Unit;
 
    -----------------

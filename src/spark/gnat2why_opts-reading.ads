@@ -150,6 +150,13 @@ package Gnat2Why_Opts.Reading is
 
    Proof_Manifest : Manifest_Subprogram_Vectors.Vector;
 
+   --  Data representation files that this unit may read. They are produced by
+   --  dedicated build actions of gnatprove, which also decides which of them
+   --  apply here, so that gnat2why reads exactly the files that gnatprove
+   --  declared as inputs of this analysis.
+
+   Data_Rep_Files : String_Lists.List;
+
    --  Check counterexamples based on the result from giant-step RAC from
    --  gnatwhy3, and the Ada small-step RAC.
 
