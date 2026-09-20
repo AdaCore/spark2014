@@ -388,13 +388,17 @@ build_docs:
     - publish-pages $CI_PROJECT_DIR/spark/html/lrm --target-subdir doc/lrm/$HTMLTARGETDIR --expires 30
     - publish-pages $CI_PROJECT_DIR/spark/html/ug --target-subdir doc/ug/$HTMLTARGETDIR --expires 30
 
-pre-commit:
-  interruptible: true
-  services:
-     - image:pe-base
-     #Memory is bound to CPU and we need more than the 1Gig that 1 cpu provides
-     - cpu:4
-  before_script:
+# Setup shared by the "pre-commit" and "compile" jobs. Both need a GNAT
+# toolchain, the dependencies of the gnat2why project and the sources generated
+# by "make setup". Installing all of this per job is much cheaper than a full
+# anod build, so both checks reuse this setup.
+#
+# This is a YAML anchor rather than a job to "extends" from: the "pre-commit"
+# job also comes from an included component, and keys inherited through
+# "extends" do not take precedence over the ones the component defines. In
+# particular the "cpu" setting below would be lost, and the job would be
+# killed by the OOM killer.
+.gnat2why_sources_setup: &gnat2why_sources_setup
     - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/toolchain/gnat"
     - generic_anod_ci $GENERIC_ANOD_CI_OPTIONS
     - cat /tmp/ci_env.sh
@@ -425,6 +429,38 @@ pre-commit:
     - cd $CI_PROJECT_DIR
     - ln -s $ACI_SUBPROJECTS_ROOT/gnat gnat2why/gnat_src
     - make -C gnat2why setup
+
+pre-commit:
+  interruptible: true
+  services:
+     - image:pe-base
+     #Memory is bound to CPU and we need more than the 1Gig that 1 cpu provides
+     - cpu:4
+  before_script: *gnat2why_sources_setup
+
+# Compile both projects of the repository, without linking and without
+# coverage instrumentation, to trigger any compilation warnings and style
+# checks, which are missed by the coverage build.
+#
+# Only the compilation phase is run: linking adds time without adding checks,
+# and the regular build job already covers it.
+compile:
+  interruptible: true
+  services:
+     - image:pe-base
+     - cpu:4
+  before_script: *gnat2why_sources_setup
+  stage: check
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+    - when: never
+  script:
+    - gprbuild -c -p -P gnat2why/gnat2why.gpr -j0
+    #  Build=Debug is what the nightly build uses; it is the mode that enables
+    #  -gnatwae, so it is the one that must be checked here.
+    - gprbuild -c -p -P gnatprove.gpr -XBuild=Debug -j0
 
 # Run the commit-message checks against every commit in the merge request.
 # These checks are not exercised by the regular "pre-commit" job, which only
