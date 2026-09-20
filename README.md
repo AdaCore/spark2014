@@ -13,7 +13,7 @@ key requirements.
 This repository provides visibility on the development process. The main line
 of development is in line with the development version of GNAT, which is not
 directly visible to the public (although patches are regularly transferred to
-the FSF repository at ``svn://gcc.gnu.org/svn/gcc/trunk/gcc/ada``), and it will
+the [FSF repository](https://gcc.gnu.org/git/?p=gcc.git;a=tree)), and it will
 probably be impossible to build the master branch of the software with any
 other compiler. However, buildable branches are provided corresponding to
 public compiler releases or the head of the FSF repository, see the section on
