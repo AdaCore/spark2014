@@ -80,6 +80,24 @@ package body Gnat2Why.Types is
    --  If Predeclare is True, only emit a declaration and use a local name for
    --  the type associated to E.
 
+   function Use_User_Eq_Definition (E : Type_Kind_Id) return Boolean
+   is (declare
+         Base : constant Type_Kind_Id := Base_Retysp (E);
+         Eq   : constant Entity_Id := Get_User_Defined_Eq (Base);
+       begin
+         Entity_In_SPARK (Eq)
+         and then
+           (Base_Retysp (Etype (First_Formal (Eq))) = Base
+            or else
+              Nkind (Enclosing_Declaration (Base_Retysp (E)))
+              not in N_Private_Extension_Declaration
+                   | N_Private_Type_Declaration))
+   with Pre => not Use_Predefined_Equality_For_Type (E);
+   --  Return True if the definition of the user defined equality should be
+   --  used for E. If E's base type comes from a private type or private
+   --  extension declaration whose full view is not in SPARK, avoid pulling the
+   --  user defined entity of the full view, even if it is in SPARK.
+
    -------------------------------------
    -- Create_Initialization_Predicate --
    -------------------------------------
@@ -656,7 +674,7 @@ package body Gnat2Why.Types is
          --  the value of the user_eq symbol.
 
          if not Use_Predefined_Equality_For_Type (E)
-           and then Entity_In_SPARK (Eq)
+           and then Use_User_Eq_Definition (E)
          then
             User_Th :=
               Open_Theory
@@ -1216,7 +1234,8 @@ package body Gnat2Why.Types is
             --  To limit the number of checks on hardcoded entities, assume
             --  that hardcoded equality functions are correct here.
 
-            if Entity_In_SPARK (Eq) and then not Is_Hardcoded_Entity (Eq) then
+            if Use_User_Eq_Definition (E) and then not Is_Hardcoded_Entity (Eq)
+            then
                Continuation_Stack.Append
                  (Continuation_Type'
                     (E,
