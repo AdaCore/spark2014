@@ -123,6 +123,7 @@ private
    CWE_Name                           : constant String := "cwe";
    Check_Counterexamples_Name         : constant String :=
      "check_counterexamples";
+   Data_Rep_Files_Name                : constant String := "data_rep_files";
    Debug_Disable_Prover_Feedback_Name : constant String :=
      "debug_disable_prover_feedback";
    Debug_No_Cache_Output_Name         : constant String :=

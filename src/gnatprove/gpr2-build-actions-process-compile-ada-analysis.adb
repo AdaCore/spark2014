@@ -4,8 +4,14 @@ with GNAT.Strings;  use GNAT.Strings;
 with GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
 with GPR2.Build.Artifacts.Source_Files;
 with SPARK_Artifacts;
+with String_Utils;  use String_Utils;
 
 package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
+
+   package Sorting is new String_Lists.Generic_Sorting;
+   --  Data representation files are collected from a hashed set, whose
+   --  iteration order is unspecified. Sorting them keeps the options file
+   --  stable across runs, as its name is a hash of the option values.
 
    ---------------------
    -- Compute_Command --
@@ -30,21 +36,38 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
       --  add special options file; only compute the filename without creating
       --  the file when Signature_Only is True.
       declare
-         Opt_File : constant String :=
-           (if Signature_Only
-            then
-              Configuration.Extra_Args_File_Name_For_Unit
-                (Unit => Self.CU, Phase => Gnat2Why_Opts.Writing.Translation)
-            else
-              Configuration.Extra_Args_File_For_Unit
-                (Unit     => Self.CU,
-                 Phase    => Gnat2Why_Opts.Writing.Translation,
-                 Obj_Dir  =>
-                   String (Self.CU.Owning_View.Object_Directory.Value),
-                 Why3_Dir =>
-                   String (Self.CU.Owning_View.Object_Directory.Value)));
+         Data_Rep_Files : String_Lists.List;
+         --  The data representation files that gnat2why is allowed to read
+         --  for this unit. Passing them explicitly keeps what gnat2why reads
+         --  in sync with the inputs of this action, instead of letting
+         --  gnat2why guess file names in the object search path.
+
       begin
-         Cmd_Line.Add_Argument ("-gnates=" & Opt_File);
+         for JSON_File of Self.Data_Rep_JSON_Files loop
+            Data_Rep_Files.Append (JSON_File.Path.String_Value);
+         end loop;
+         Sorting.Sort (Data_Rep_Files);
+
+         declare
+            Opt_File : constant String :=
+              (if Signature_Only
+               then
+                 Configuration.Extra_Args_File_Name_For_Unit
+                   (Unit           => Self.CU,
+                    Phase          => Gnat2Why_Opts.Writing.Translation,
+                    Data_Rep_Files => Data_Rep_Files)
+               else
+                 Configuration.Extra_Args_File_For_Unit
+                   (Unit           => Self.CU,
+                    Phase          => Gnat2Why_Opts.Writing.Translation,
+                    Obj_Dir        =>
+                      String (Self.CU.Owning_View.Object_Directory.Value),
+                    Why3_Dir       =>
+                      String (Self.CU.Owning_View.Object_Directory.Value),
+                    Data_Rep_Files => Data_Rep_Files));
+         begin
+            Cmd_Line.Add_Argument ("-gnates=" & Opt_File);
+         end;
       end;
 
       --  object path file

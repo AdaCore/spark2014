@@ -271,6 +271,17 @@ described the target with an explicit ``-gnateT`` switch: the compiler at hand
 then generally cannot generate code for that target, so the actions are
 skipped.
 
+Each JSON file is written next to the object files of the project that owns the
+corresponding source, so the files of a withed project are not in the object
+directory where its clients are analyzed. The analysis action therefore passes
+the list of files that apply to a unit to gnat2why through the options file,
+rather than letting gnat2why derive their names. That list is the same one that
+the action declares as its inputs and hashes into its signature, so the build
+graph, the staleness check and what gnat2why reads cannot drift apart; in
+particular units excluded from the analysis, such as those of subprojects under
+``--no-subprojects``, contribute no data representation even when files from an
+earlier run are still lying around.
+
 Passing options to gnat2why
 ===========================
 
