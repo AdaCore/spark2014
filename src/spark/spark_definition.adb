@@ -12751,7 +12751,8 @@ package body SPARK_Definition is
               Is_Subp and then Is_Compilation_Unit (E);
 
             procedure Scan_For_Pragma_Annotate
-              (Preceding_Node, Start_Node : Node_Id);
+              (Preceding_Node, Start_Node : Node_Id;
+               Consider_Next              : Boolean := True);
             --  Mark pragma Annotate occurring from Start_Node (inclusive).
             --  Preceding_Node is used as node immediately before
             --  the scanning range in source code, for later purpose
@@ -12774,14 +12775,15 @@ package body SPARK_Definition is
             ------------------------------
 
             procedure Scan_For_Pragma_Annotate
-              (Preceding_Node, Start_Node : Node_Id)
+              (Preceding_Node, Start_Node : Node_Id;
+               Consider_Next              : Boolean := True)
             is
                Cur : Node_Id := Start_Node;
             begin
                while Present (Cur) loop
                   if Is_Pragma_Annotate_GNATprove (Cur) then
                      Mark_Pragma_Annotate
-                       (Cur, Preceding_Node, Consider_Next => True);
+                       (Cur, Preceding_Node, Consider_Next => Consider_Next);
                   elsif Decl_Starts_Pragma_Annotate_Range (Cur)
                     and then Nkind (Cur) not in N_Pragma | N_Null_Statement
                   then
@@ -12851,6 +12853,42 @@ package body SPARK_Definition is
                      end if;
                   end;
                end if;
+            end if;
+
+            --  Justifications written after the declaration of a generic unit
+            --  are not copied inside instances, so they are never scanned as
+            --  part of an instance. Scan them here, using the generic
+            --  declaration as the annotation range. Checks arising in the
+            --  instance are matched against that range after mapping their
+            --  location back into the template.
+
+            if Is_Subp and then Is_Generic_Instance (E) then
+               declare
+                  Gen_Unit : constant Entity_Id :=
+                    Generic_Parent (Declaration_Node (E));
+               begin
+                  if Present (Gen_Unit)
+                    and then
+                      Nkind (Parent (Declaration_Node (Gen_Unit)))
+                      in N_Generic_Declaration
+                  then
+                     declare
+                        Gen_Decl : constant Node_Id :=
+                          Parent (Declaration_Node (Gen_Unit));
+                     begin
+                        if Nkind (Parent (Gen_Decl)) = N_Compilation_Unit then
+                           Scan_For_Pragma_Annotate
+                             (Gen_Decl,
+                              First
+                                (Pragmas_After
+                                   (Aux_Decls_Node (Parent (Gen_Decl)))),
+                              Consider_Next => False);
+                        else
+                           Scan_For_Pragma_Annotate (Gen_Decl);
+                        end if;
+                     end;
+                  end if;
+               end;
             end if;
          end;
       end if;
@@ -14394,6 +14432,54 @@ package body SPARK_Definition is
                end if;
                Next (Cur);
             end loop;
+
+            --  Justifications written after the declaration of the generic
+            --  package are not copied inside the instance, so they are never
+            --  scanned as part of the instance. Scan them here, using the
+            --  generic declaration as the annotation range. Checks arising in
+            --  the instance are matched against that range after mapping
+            --  their location back into the template.
+
+            if Is_Generic_Instance (E) then
+               declare
+                  Gen_Unit : constant Entity_Id := Generic_Parent (Spec);
+                  Gen_Decl : constant Node_Id :=
+                    (if Present (Gen_Unit)
+                     then Parent (Declaration_Node (Gen_Unit))
+                     else Empty);
+                  Is_Cunit : constant Boolean :=
+                    Present (Gen_Decl)
+                    and then Nkind (Parent (Gen_Decl)) = N_Compilation_Unit;
+               begin
+                  if Present (Gen_Decl)
+                    and then Nkind (Gen_Decl) in N_Generic_Declaration
+                  then
+                     if Is_Cunit then
+                        Cur :=
+                          First
+                            (Pragmas_After
+                               (Aux_Decls_Node (Parent (Gen_Decl))));
+                     elsif Is_List_Member (Gen_Decl) then
+                        Cur := Next (Gen_Decl);
+                     else
+                        Cur := Empty;
+                     end if;
+
+                     while Present (Cur) loop
+                        if Is_Pragma_Annotate_GNATprove (Cur) then
+                           Mark_Pragma_Annotate
+                             (Cur, Gen_Decl, Consider_Next => not Is_Cunit);
+                        elsif Decl_Starts_Pragma_Annotate_Range (Cur)
+                          and then
+                            Nkind (Cur) not in N_Pragma | N_Null_Statement
+                        then
+                           exit;
+                        end if;
+                        Next (Cur);
+                     end loop;
+                  end if;
+               end;
+            end if;
 
             --  For nested packages, we need to mark annotations
             --    of parent packages as well.

@@ -1,0 +1,27 @@
+foo.ads:3:13: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
+foo.ads:8:30: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:6
+foo.ads:8:35: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+foo.ads:8:41: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:6
+foo.ads:8:46: info: overflow check justified
+foo.ads:14:30: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:7
+foo.ads:14:35: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:7
+foo.ads:14:41: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:7
+foo.ads:14:46: info: overflow check justified
+foo.ads:21:33: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:8
+foo.ads:21:38: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:8
+foo.ads:21:44: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:8
+foo.ads:21:49: info: overflow check justified
+foo.ads:28:36: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:9
+foo.ads:28:41: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:9
+foo.ads:28:47: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:9
+foo.ads:28:52: medium: overflow check might fail, cannot prove upper bound for Last + 1, in instantiation at main.adb:9 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lib_pkg.ads:7:14: warning: subprogram "Bar" has no effect, in instantiation at main.adb:11
+lib_pkg.ads:8:19: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:11
+lib_pkg.ads:8:25: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:11
+lib_pkg.ads:8:34: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:11
+lib_pkg.ads:8:40: info: overflow check justified
+lib_subp.ads:7:16: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:10
+lib_subp.ads:7:22: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:10
+lib_subp.ads:7:31: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:10
+lib_subp.ads:7:37: info: overflow check justified
+main.adb:10:14: warning: subprogram "My_Lib_Subp" has no effect
