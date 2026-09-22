@@ -139,6 +139,27 @@ For this reason, one should in general call ``Retysp_In_SPARK`` to query
 whether the `representative` type is in SPARK, rather than calling ``In_SPARK``
 directly on a type.
 
+Recording Justifications
+========================
+
+Marking is also responsible for collecting the pragmas ``Annotate`` which
+justify check messages. Each such pragma is turned into a source location range
+in :file:`spark_definition-annotate.adb`, and a check message is justified when
+its location falls inside one of these ranges and its text matches the pattern
+of the pragma.
+
+Pragmas written after the declaration of a generic unit are not copied inside
+instances, and the generic unit itself is never analyzed. Marking therefore
+scans them when marking an instance, and records their range on the generic
+declaration, in the template. A check arising in an instance is matched against
+that range after mapping its location back into the template. As a consequence,
+a justification on a generic declaration is not reported as useless, since the
+instances it applies to may live in other units.
+
+For a library-level generic declaration, these trailing pragmas are stored in
+``Pragmas_After`` on the compilation unit's auxiliary declarations node. Marking
+scans that list for both generic subprogram and generic package instances.
+
 Recording Violations
 ====================
 

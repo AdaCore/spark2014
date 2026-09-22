@@ -92,6 +92,13 @@ package body SPARK_Definition.Annotate is
    --  This set contains all pragma Annotate Nodes which correspond only to a
    --  proved check.
 
+   Generic_Pragma : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  This set contains all pragma Annotate nodes whose range covers a generic
+   --  declaration. Such pragmas only justify checks arising in instances, so
+   --  they should not be reported as useless in the unit which declares the
+   --  generic.
+
    Annotations : Annot_Ranges.List := Annot_Ranges.Empty_List;
    --  Sorted ranges
 
@@ -3880,66 +3887,100 @@ package body SPARK_Definition.Annotate is
       Check : Boolean;
       Info  : out Annotated_Range)
    is
-      Node_Slc : constant Source_Ptr := Sloc (Node);
-   begin
-      Info := Annotated_Range'(Present => False);
+      procedure Search (Node_Slc : Source_Ptr; Info : out Annotated_Range);
+      --  Search for an annotation range which covers the location Node_Slc
+      --  and whose pattern matches Msg.
 
-      --  This is a simple linear search in a sorted list, the only subtle
-      --  thing is that several entries may match, or entries may include
-      --  other entries.
+      ------------
+      -- Search --
+      ------------
 
-      for E : Annotated_Range of Annotations loop
+      procedure Search (Node_Slc : Source_Ptr; Info : out Annotated_Range) is
+      begin
+         Info := Annotated_Range'(Present => False);
 
-         --  If the current Annotation_Range starts already after the one we
-         --  look for, then we can stop.
+         --  This is a simple linear search in a sorted list, the only subtle
+         --  thing is that several entries may match, or entries may include
+         --  other entries.
 
-         if Node_Slc < E.First then
-            return;
+         for E : Annotated_Range of Annotations loop
 
-         --  This is the case where the ranges match, but we have to check
-         --  whether the pattern matches, too.
+            --  If the current Annotation_Range starts already after the one we
+            --  look for, then we can stop.
 
-         elsif Node_Slc <= E.Last
-           and then
-             Erroutc.Matches
-               (S => Msg, P => '*' & String_Value (E.Pattern) & '*')
-         then
-            Info := E;
+            if Node_Slc < E.First then
+               return;
 
-            --  Deal with useless pragma Annotate; Check = False means a proved
-            --  message.
+            --  This is the case where the ranges match, but we have to check
+            --  whether the pattern matches, too.
 
-            if not Check then
+            elsif Node_Slc <= E.Last
+              and then
+                Erroutc.Matches
+                  (S => Msg, P => '*' & String_Value (E.Pattern) & '*')
+            then
+               Info := E;
 
-               --  If this is the first check which corresponds to this pragma,
-               --  it possibly only corresponds to proved checks.
+               --  Deal with useless pragma Annotate; Check = False means a
+               --  proved message.
 
-               if Pragma_Set.Contains (Info.Prgma) then
-                  Proved_Pragma.Include (Info.Prgma);
+               if not Check then
+
+                  --  If this is the first check which corresponds to this
+                  --  pragma, it possibly only corresponds to proved checks.
+
+                  if Pragma_Set.Contains (Info.Prgma) then
+                     Proved_Pragma.Include (Info.Prgma);
+                  end if;
+
+               --  Check = True means a check message
+
+               else
+
+                  --  A real check means the pragma is useful
+
+                  Proved_Pragma.Exclude (Info.Prgma);
                end if;
 
-            --  Check = True means a check message
+               --  In all cases we have now encountered this pragma and can
+               --  remove it from pragma set.
+
+               Pragma_Set.Exclude (Info.Prgma);
+               return;
+
+            --  There is nothing to do in this case, but there may be other
+            --  ranges later which may still be interesting.
 
             else
-
-               --  A real check means the pragma is useful
-
-               Proved_Pragma.Exclude (Info.Prgma);
+               null;
             end if;
+         end loop;
+      end Search;
 
-            --  In all cases we have now encountered this pragma and can remove
-            --  it from pragma set.
+      Node_Slc : constant Source_Ptr := Sloc (Node);
+      Orig_Slc : constant Source_Ptr := Original_Location (Node_Slc);
 
-            Pragma_Set.Exclude (Info.Prgma);
-            return;
+   begin
+      Search (Node_Slc, Info);
 
-         --  There is nothing to do in this case, but there may be other ranges
-         --  later which may still be interesting.
+      --  For a node inside an instance, justifications written in the generic
+      --  template also apply. Such justifications are only copied inside the
+      --  instance when they come from an aspect, so look them up separately
+      --  using the location in the template. This is also done when a
+      --  justification has already been found inside the instance, so that
+      --  the one in the template is not reported as useless.
 
-         else
-            null;
-         end if;
-      end loop;
+      if Orig_Slc /= Node_Slc then
+         declare
+            Template_Info : Annotated_Range;
+         begin
+            Search (Orig_Slc, Template_Info);
+
+            if not Info.Present then
+               Info := Template_Info;
+            end if;
+         end;
+      end if;
    end Check_Is_Annotated;
 
    -------------------------------
@@ -6256,7 +6297,8 @@ package body SPARK_Definition.Annotate is
       --  Check whether we may issue a warning on the pragma before doing it
 
       for Prag of Pragma_Set loop
-         if May_Issue_Warning_On_Node (Prag)
+         if not Generic_Pragma.Contains (Prag)
+           and then May_Issue_Warning_On_Node (Prag)
            and then not Is_In_Statically_Dead_Branch (Prag)
          then
             Warning_Msg_N_If (Warn_Pragma_Annotate_No_Check, Prag);
@@ -6871,6 +6913,14 @@ package body SPARK_Definition.Annotate is
    begin
       if No (Range_Node) then
          return;
+      end if;
+
+      --  Remember justifications which apply to a generic declaration. They
+      --  can only justify checks arising in instances, which may be located
+      --  in other units.
+
+      if Nkind (Range_Node) in N_Generic_Declaration then
+         Generic_Pragma.Include (Prgma);
       end if;
 
       --  In the case of a pragma on the body, we also need to include the spec
