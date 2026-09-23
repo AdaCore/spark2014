@@ -79,8 +79,8 @@ Johannes Kanig (Team Technical Authority).
 # 5. Community
 
 News about SPARK project are shared primarily on [AdaCore's
-blog](https://blog.adacore.com/). Discussions about SPARK occur on [a public
-mailing-list](https://groups.google.com/a/lists.adacore.com/g/spark2014-discuss/about).
+blog](https://blog.adacore.com/). Questions and bug-reports are welcome
+via the GitHub issue tracker.
 
 # 6. Documentation
 
@@ -91,61 +91,38 @@ and instructions on how to use the tool, together with a tutorial, in the
 
 # 7. Building SPARK
 
-In order to build SPARK, you need to first install the following dependencies
-(and we recommend using the OPAM package manager for these):
+Building gnatprove requires building the two projects `gnat2why` and `gnatprove`
+in this repository, and the `why3` submodule containing the AdaCore fork of
+Why3.
 
-* ocaml compiler
-* ocamlgraph library
-* menhir parser
-* zarith library
-* camlzip library
-* ocplib-simplex library
+## Building `gnatprove` and `gnat2why`
 
-SPARK sources are tied to the sources of GNAT compiler frontend. For this
-reason, you should use a compiler built from sources with a date matching the
-sources of SPARK. There are two options.
+This requires the following sources and libraries:
+- Matching GNAT compiler
+- Matching GNAT front-end sources made available in gnat2why/gnat_src
+- gprbuild
+- VSS
+- sarif-ada
+- libgpr2
+- gnatcoll-core
+- ada_toml
 
-## 7.1 Building SPARK with GNAT Community
+See the build instructions in the Makefile for details on how to build gnat2why
+and gnatprove.
 
-To build SPARK with GNAT Community compiler, you need to use the corresponding
-branch of this repository. For example, to build with GNAT Community 2020, use
-the branch gpl-2020, as follows:
+For FSF compiler and sources, we recommend using the `fsf` branch, or the
+versioned `fsf-xx` branches for specific versions.
 
-```
-git checkout gpl-2020
-```
+## Building Why3 (gnatwhy3)
 
-SPARK repository uses submodules to keep in sync with corresponding versions
-of Why3, Alt-Ergo, CVC4 and Z3, which generally track the main repositories for
-these tools with minor modifications for the integration with SPARK. To
-retrieve the corresponding branch of these submodules, do:
+Why3 needs a working opam setup. The dependencies are documented in the
+AdaCore-maintained [Why3 fork](https://github.com/AdaCore/why3).
 
-```
-git submodule init
-git submodule update
-```
+## Provers
 
-Then follow the instructions in the [Makefile](https://github.com/AdaCore/spark2014/blob/master/Makefile).
-
-## 7.2 Building SPARK with GNAT FSF
-
-To build SPARK with GNAT version from FSF, you need to use the corresponding
-branch of this repository which follows the latest changes pushed at FSF, as
-follows:
-
-```
-git checkout fsf
-```
-
-To retrieve the most recent version of the submodules for Why3, Alt-Ergo, CVC4
-and Z3, which matches the latest changes for SPARK pushed at FSF, do:
-
-```
-git submodule init
-git submodule update
-```
-
-Then follow the instructions in the [Makefile](https://github.com/AdaCore/spark2014/blob/master/Makefile).
+GNATprove expects provers to be available. GNATprove will detect and
+use Z3, cvc5 and alt-ergo when available in PATH, or installed in
+PREFIX/libexec/spark/bin.
 
 # 8 Working with source code
 

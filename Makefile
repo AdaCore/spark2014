@@ -2,22 +2,6 @@
 # sub-components, at the exception of provers (CVC4, Z3, Alt-Ergo) which
 # should be separately built/installed.
 #
-# To build gnat2why, you need:
-#  . a working GNAT compiler
-#  . a symbolic link in gnat2why/gnat_src that points to the GNAT sources
-#  . an installation of the gnatcoll library
-#
-# To build gnatprove, you need:
-#  . an installation of the gnatcoll library
-#  . local checked out repositories of submodules why3.
-#
-# On cygwin, we suggest you work in a folder where cygwin and windows path are
-# the same. You can achieve this by creating a folder e.g. C:\spark as a
-# working space, and mounting it in cygwin by adding the following line to
-# your /etc/fstab file:
-#
-#  c:/spark /spark ntfs binary,posix=0,noacl 0 0
-#
 # The necessary steps to correctly install gnat2why/gnatprove are
 #
 # 1) make setup
