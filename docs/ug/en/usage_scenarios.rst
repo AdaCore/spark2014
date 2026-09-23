@@ -2022,12 +2022,12 @@ the structure bounded, or using a big global array. The second has the
 disadvantage of making it so all subprograms handling data-structures use the
 same memory array, resulting in contracts and proof activities being needed to
 check that modifying an object preserves the others. A somewhat similar result
-can be achieved using the ``SPARK.Pointers.Explicit_Reclamation`` library which
-models pointers as a key in an abstract map of objects. The
-``SPARK.Pointers.Explicit_Reclamation.Global_Memory`` package uses a single
-memory object per designated type, whereas the
-``SPARK.Pointers.Explicit_Reclamation.Separate_Memory`` package allows
-splitting memory into separate maps. In all cases, handling the structure of
+can be achieved using the pointer library of the |SPARK| library (see
+:ref:`Pointers Library`), which provides pointers with aliasing, modelled as
+keys in an abstract map of objects. The memory can either be a single global
+memory per designated type, or be split into separate memory objects. The
+memory cells can be deallocated explicitly by the user, or reclaimed
+automatically using reference counting. In all cases, handling the structure of
 the object usually requires complex invariants and reasoning, so it can be
 heavy. The ``Simple_Allocator`` package below gives
 an example of how a custom allocator can be implemented using indexes inside an

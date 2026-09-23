@@ -1,0 +1,14 @@
+ info: initialization of "X" proved
+--> aliasing.adb:6:04
+
+ info: initialization of "Y" proved
+--> aliasing.adb:6:07
+
+ info: precondition proved
+--> aliasing.adb:12:04
+
+ info: precondition proved
+--> aliasing.adb:13:19
+
+ info: assertion proved
+--> aliasing.adb:13:19

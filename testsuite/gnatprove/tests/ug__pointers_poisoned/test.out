@@ -1,0 +1,43 @@
+ info: absence of resource or memory leak proved
+--> replacing.adb:9:11
+
+ info: precondition proved
+--> replacing.adb:9:14
+
+ info: index check proved
+--> replacing.adb:9:23
+
+ info: index check proved
+--> replacing.adb:12:10
+
+ info: absence of resource or memory leak proved
+--> replacing.adb:12:13
+
+ info: length check proved
+--> replacing.adb:22:69
+      + in reconstructed value at the end of the borrow at replacing.adb:22
+
+ info: precondition proved
+--> replacing.adb:24:07
+
+ info: predicate check proved
+--> replacing.adb:24:31
+      + in value of subprogram parameter after the call at replacing.adb:24
+
+ info: absence of resource or memory leak proved
+--> replacing.adb:24:42
+
+ info: initialization of "Old" proved
+--> replacing.ads:10:07
+
+ info: index check proved
+--> replacing.ads:14:62
+
+ info: postcondition proved
+--> replacing.ads:15:14
+
+ info: index check proved
+--> replacing.ads:15:59
+
+ info: initialization of "Old" proved
+--> replacing.ads:21:07
