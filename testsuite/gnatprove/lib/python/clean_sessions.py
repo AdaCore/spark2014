@@ -117,6 +117,7 @@ def clean_session_file(filepath, prover_map=None):
     - Removes all unsuccessful proof attempts
     - Keeps only one successful proof per goal
     - Prefers provers in order: cvc5, z3, alt-ergo, colibri
+    - Removes prover declarations that are no longer referenced
     """
     tree = ET.parse(filepath)
     root = tree.getroot()
@@ -135,6 +136,7 @@ def clean_session_file(filepath, prover_map=None):
     goals_with_removed_proofs = 0
     removed_unsuccessful_proofs = 0
     removed_duplicate_proofs = 0
+    removed_unused_provers = 0
     goals_with_no_proofs = []
 
     # Process each goal
@@ -184,6 +186,17 @@ def clean_session_file(filepath, prover_map=None):
             goal_name = goal.get("name", "unknown")
             goals_with_no_proofs.append(goal_name)
 
+    # Remove prover declarations that no remaining proof refers to.
+    used_prover_ids = {
+        proof.get("prover")
+        for proof in root.iter("proof")
+        if proof.get("prover") is not None
+    }
+    for prover in root.findall("prover"):
+        if prover.get("id") not in used_prover_ids:
+            root.remove(prover)
+            removed_unused_provers += 1
+
     # Write back to file with proper formatting and DOCTYPE preservation
     write_with_doctype_preserved(tree, filepath)
 
@@ -192,5 +205,6 @@ def clean_session_file(filepath, prover_map=None):
         "goals_with_removed_proofs": goals_with_removed_proofs,
         "removed_unsuccessful_proofs": removed_unsuccessful_proofs,
         "removed_duplicate_proofs": removed_duplicate_proofs,
+        "removed_unused_provers": removed_unused_provers,
         "goals_with_no_proofs": goals_with_no_proofs,
     }
