@@ -9,7 +9,7 @@ steps = 500
 [[rule]]
 path = "GHC_Sort.Cut"
 provers = ["cvc5", "z3"]
-steps = 105000
+steps = 90000
 
 [[rule]]
 path = "GHC_Sort.Merge"
@@ -19,4 +19,4 @@ steps = 3500
 [[rule]]
 path = "GHC_Sort.Sort"
 provers = ["cvc5", "alt-ergo", "z3"]
-steps = 3000
+steps = 6000

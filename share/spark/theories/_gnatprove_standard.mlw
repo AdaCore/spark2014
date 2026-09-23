@@ -2016,7 +2016,7 @@ module Array__1
   meta "remove_unused:dependency" axiom slice_has_bounds, function slice
 
   axiom slice_extensional :
-    forall a b : map, f l : I1.t [slice a f l | slice b f l].
+    forall a b : map, f l : I1.t [slice a f l , slice b f l].
     slice a f l <> slice b f l ->
     (exists i : I1.t. I1.le f i /\ I1.le i l /\ get (slice a f l) i <> get (slice b f l) i)
   meta "remove_unused:dependency" axiom slice_extensional, function slice
