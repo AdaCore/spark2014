@@ -1,0 +1,68 @@
+ info: implicit aspect Always_Terminates on "Max_Prefix" has been proved, subprogram will terminate
+--> array_max.ads:7:13
+
+ info: index check proved
+--> array_max.ads:9:44
+
+ info: implicit aspect Always_Terminates on "Max_All" has been proved, subprogram will terminate
+--> array_max.ads:13:13
+
+ info: index check proved
+--> array_max.ads:14:35
+
+ info: implicit aspect Always_Terminates on "Max" has been proved, subprogram will terminate
+--> array_max.ads:18:13
+
+ info: implicit aspect Always_Terminates on "Max_Element" has been proved, subprogram will terminate
+--> array_max.ads:30:13
+
+ info: precondition proved
+--> array_max.ads:31:16
+
+ info: postcondition proved
+--> array_max.ads:32:17
+
+ info: aspect Always_Terminates on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:35:17
+
+ info: precondition proved, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:38:39
+
+ info: precondition proved, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:39:17
+
+ info: postcondition proved, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:39:17
+
+ info: index check proved, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:39:36
+
+ info: overflow check proved, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:39:46
+
+ info: aspect Always_Terminates on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:42:17
+
+ info: precondition proved, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:45:39
+
+ info: range check proved, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:45:56
+
+ info: postcondition proved, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:46:17
+
+ info: index check proved, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:46:39
+
+ info: precondition proved, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:54:39
+
+ info: range check proved, in instantiation at spark-higher_order-fold.ads:91, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:54:59
+
+ info: precondition proved, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:103:38
+
+ info: range check proved, in instantiation at array_max.ads:21
+--> spark-higher_order-fold.ads:103:58
