@@ -457,9 +457,8 @@ compile:
       when: always
     - when: never
   script:
-    - gprbuild -c -p -P gnat2why/gnat2why.gpr -j0
-    #  Build=Debug is what the nightly build uses; it is the mode that enables
-    #  -gnatwae, so it is the one that must be checked here.
+    # We use Build=Debug as this mode enables -gnatwae
+    - gprbuild -c -p -P gnat2why/gnat2why.gpr -XBuild=Debug -j0
     - gprbuild -c -p -P gnatprove.gpr -XBuild=Debug -j0
 
 # Run the commit-message checks against every commit in the merge request.
