@@ -460,6 +460,85 @@ procedure Illegal_Early_Fail with SPARK_Mode is
 
    end Volatility;
 
+   package Side_Effects is
+
+      package Model_Side_Effects is
+
+         package B0 is new Make_Boolean_Container;
+         type Boolean_Container is (Booleans)
+           with Iterable => (First       => First,
+                             Next        => Next,
+                             Has_Element => Has_Element,
+                             Element     => Element);
+         function First (X : Boolean_Container) return Boolean_Cursor is (0);
+         function Next (X : Boolean_Container; C : Boolean_Cursor)
+                        return Boolean_Cursor
+         is (if C /= 2 then C + 1 else C);
+         function Has_Element (X : Boolean_Container; C : Boolean_Cursor)
+                               return Boolean
+         is (C /= 2);
+         function Model (X : Boolean_Container) return B0.Boolean_Container
+           with Side_Effects, Import;
+         pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
+         function Element (X : Boolean_Container; C : Boolean_Cursor)
+                           return Boolean
+         is (C /= 0);
+         --  FAILS
+
+      end Model_Side_Effects;
+
+      package Contains_Side_Effects is
+
+         package B0 is new Make_Boolean_Container;
+         type Boolean_Container is (Booleans)
+           with Iterable => (First       => First,
+                             Next        => Next,
+                             Has_Element => Has_Element,
+                             Element     => Element);
+         function First (X : Boolean_Container) return Boolean_Cursor is (0);
+         function Next (X : Boolean_Container; C : Boolean_Cursor)
+                        return Boolean_Cursor
+         is (if C /= 2 then C + 1 else C);
+         function Has_Element (X : Boolean_Container; C : Boolean_Cursor)
+                               return Boolean
+         is (C /= 2);
+         function Contains (X : Boolean_Container; Y : Boolean) return Boolean
+           with Import, Side_Effects;
+         pragma Annotate (GNATprove,
+                          Iterable_For_Proof,
+                          "Contains",
+                          Contains);
+         function Element (X : Boolean_Container; C : Boolean_Cursor)
+                           return Boolean
+         is (C /= 0);
+         --  FAILS
+
+      end Contains_Side_Effects;
+
+      package Primitives_Side_Effects is
+         type Boolean_Container is (Booleans)
+           with Iterable => (First       => First,
+                             Next        => Next,
+                             Has_Element => Has_Element,
+                             Element     => Element);
+         --  FAILS (error at every function)
+
+         function First (X : Boolean_Container) return Boolean_Cursor
+           with Import, Side_Effects;
+         function Next (X : Boolean_Container; C : Boolean_Cursor)
+                        return Boolean_Cursor
+           with Import, Side_Effects;
+         function Has_Element (X : Boolean_Container; C : Boolean_Cursor)
+                               return Boolean
+           with Import, Side_Effects;
+         function Element (X : Boolean_Container; C : Boolean_Cursor)
+                           return Boolean
+           with Import, Side_Effects;
+
+      end Primitives_Side_Effects;
+
+   end Side_Effects;
+
 begin
    null;
 end Illegal_Early_Fail;

@@ -13402,11 +13402,11 @@ package body SPARK_Definition is
          if Has_Controlling_Result (Ent) then
             Mark_Violation (Vio_Iterable_Controlling_Result, N);
          end if;
-         if Is_Volatile_Function (Ent) then
-            Mark_Violation (Vio_Iterable_Volatile, N);
-         end if;
          if Is_Function_With_Side_Effects (Ent) then
             Mark_Violation (Vio_Iterable_Side_Effects, N);
+         end if;
+         if Is_Volatile_Function (Ent) then
+            Mark_Violation (Vio_Iterable_Volatile, N);
          end if;
          if Has_Aspect (Ent, Aspect_Potentially_Invalid) then
             Mark_Unsupported (Lim_Potentially_Invalid_Iterable, N);
