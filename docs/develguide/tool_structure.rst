@@ -63,6 +63,11 @@ default. The later merge only combines the expanded detailed switches, so a
 higher-precedence ``--level`` overrides lower-precedence detailed switches in
 the same way as if those detailed switches had been written explicitly.
 
+After command-line switches have been parsed, gnatprove checks ``PATH`` once
+for the supported automatic provers Z3, CVC5, and Colibri. This initializes
+the availability information used when interpreting prover switches in
+project and per-file configurations.
+
 Then, the switches attributes of the entire project tree are parsed
 into records, and merged according to precedence rules, to establish the
 "file-specific" switches, which can be specified on a per-file basis.

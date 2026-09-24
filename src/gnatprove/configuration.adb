@@ -3768,6 +3768,9 @@ package body Configuration is
       --  Parse the Switches and Proof_Switches attributes in project files.
       --  The regular command line is needed to interpret them properly.
 
+      procedure Detect_Installed_Provers;
+      --  Set the availability of supported provers based on PATH.
+
       procedure Postprocess (Parsed : in out Parsed_Switches);
       --  Read the switch variables set by command-line parsing and set the
       --  gnatprove variables.
@@ -3828,6 +3831,34 @@ package body Configuration is
       function Switch_String
         (Parsed : Parsed_Switches; Switch : Switch_Id) return String;
       --  Return the string value for Switch or the empty string when unset
+
+      -----------------------------
+      -- Detect_Installed_Provers --
+      -----------------------------
+
+      procedure Detect_Installed_Provers is
+         function On_Path (Exec : String) return Boolean;
+         --  Return True iff Exec is present on PATH
+
+         -------------
+         -- On_Path --
+         -------------
+
+         function On_Path (Exec : String) return Boolean is
+            Location : String_Access := GNAT.OS_Lib.Locate_Exec_On_Path (Exec);
+
+            Present : constant Boolean := Location /= null;
+
+         begin
+            Free (Location);
+            return Present;
+         end On_Path;
+
+      begin
+         SPARK_Install.Z3_Present := On_Path ("z3");
+         SPARK_Install.CVC5_Present := On_Path ("cvc5");
+         SPARK_Install.Colibri_Present := On_Path ("colibri");
+      end Detect_Installed_Provers;
 
       -----------------------------------
       -- Check_Obsolete_Prove_Switches --
@@ -4220,29 +4251,8 @@ package body Configuration is
       -----------------
 
       procedure Postprocess (Parsed : in out Parsed_Switches) is
-         function On_Path (Exec : String) return Boolean;
-         --  Return True iff Exec is present on PATH
-
-         -------------
-         -- On_Path --
-         -------------
-
-         function On_Path (Exec : String) return Boolean is
-            Location : String_Access := GNAT.OS_Lib.Locate_Exec_On_Path (Exec);
-
-            Present : constant Boolean := Location /= null;
-
-         begin
-            Free (Location);
-            return Present;
-         end On_Path;
-
       begin
          Sanity_Checking (Parsed);
-
-         SPARK_Install.Z3_Present := On_Path ("z3");
-         SPARK_Install.CVC5_Present := On_Path ("cvc5");
-         SPARK_Install.Colibri_Present := On_Path ("colibri");
 
          Debug :=
            Parsed.Values (Sw_D).Boolean_Val
@@ -5148,6 +5158,8 @@ package body Configuration is
 
       Command_Line_Switches :=
         Parse_Switches_Internal (All_Switches, Com_Lin.all);
+
+      Detect_Installed_Provers;
 
       Parse_Analysis_Attributes
         (Command_Line_Switches, Root_Attribute_Switches);
