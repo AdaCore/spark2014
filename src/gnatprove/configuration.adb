@@ -3771,6 +3771,9 @@ package body Configuration is
       procedure Detect_Installed_Provers;
       --  Set the availability of supported provers based on PATH.
 
+      procedure Initialize_Root_Project_Settings;
+      --  Initialize settings derived from the root project.
+
       procedure Postprocess (Parsed : in out Parsed_Switches);
       --  Read the switch variables set by command-line parsing and set the
       --  gnatprove variables.
@@ -3859,6 +3862,22 @@ package body Configuration is
          SPARK_Install.CVC5_Present := On_Path ("cvc5");
          SPARK_Install.Colibri_Present := On_Path ("colibri");
       end Detect_Installed_Provers;
+
+      ------------------------------------
+      -- Initialize_Root_Project_Settings --
+      ------------------------------------
+
+      procedure Initialize_Root_Project_Settings is
+      begin
+         --  Read the compilation switches of the Builder package before
+         --  computing the target configuration, which depends on whether the
+         --  user specified -gnateT there.
+
+         Global_Compilation_Switches :=
+           Read_Global_Compilation_Switches (Tree.Root_Project);
+         GnateT_Switch := new String'(Check_gnateT_Switch (Tree.Root_Project));
+         Set_Proof_Dir (Tree.Root_Project);
+      end Initialize_Root_Project_Settings;
 
       -----------------------------------
       -- Check_Obsolete_Prove_Switches --
@@ -4376,17 +4395,9 @@ package body Configuration is
 
          Process_Limit_Switches (Parsed);
 
-         --  Read the compilation switches of the Builder package before
-         --  computing the target configuration, which depends on whether the
-         --  user specified -gnateT there.
-
-         Global_Compilation_Switches :=
-           Read_Global_Compilation_Switches (Tree.Root_Project);
-         GnateT_Switch := new String'(Check_gnateT_Switch (Tree.Root_Project));
          Set_Output_Mode (Parsed);
          Set_Warning_Mode (Parsed);
          Set_Report_Mode (Parsed);
-         Set_Proof_Dir (Tree.Root_Project);
 
          Use_Semaphores :=
            not Debug and then not Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
@@ -5160,6 +5171,7 @@ package body Configuration is
         Parse_Switches_Internal (All_Switches, Com_Lin.all);
 
       Detect_Installed_Provers;
+      Initialize_Root_Project_Settings;
 
       Parse_Analysis_Attributes
         (Command_Line_Switches, Root_Attribute_Switches);

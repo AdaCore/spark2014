@@ -68,6 +68,15 @@ for the supported automatic provers Z3, CVC5, and Colibri. This initializes
 the availability information used when interpreting prover switches in
 project and per-file configurations.
 
+Before traversing the project tree to derive file-specific settings, gnatprove
+initializes settings that depend on the root project. It reads the global Ada
+compilation switches before checking the target configuration, since that
+check depends on whether ``-gnateT`` was specified there, and resolves the
+root project's ``Prove.Proof_Dir`` relative to the project file when needed.
+These settings are initialized once for the invocation; switch interpretation
+in ``Postprocess`` can then run for project and per-file configurations
+without re-reading root-project settings.
+
 Then, the switches attributes of the entire project tree are parsed
 into records, and merged according to precedence rules, to establish the
 "file-specific" switches, which can be specified on a per-file basis.
