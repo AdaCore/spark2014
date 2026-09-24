@@ -3768,6 +3768,12 @@ package body Configuration is
       --  Parse the Switches and Proof_Switches attributes in project files.
       --  The regular command line is needed to interpret them properly.
 
+      procedure Detect_Installed_Provers;
+      --  Set the availability of supported provers based on PATH.
+
+      procedure Initialize_Root_Project_Settings;
+      --  Initialize settings derived from the root project.
+
       procedure Postprocess (Parsed : in out Parsed_Switches);
       --  Read the switch variables set by command-line parsing and set the
       --  gnatprove variables.
@@ -3829,6 +3835,50 @@ package body Configuration is
         (Parsed : Parsed_Switches; Switch : Switch_Id) return String;
       --  Return the string value for Switch or the empty string when unset
 
+      -----------------------------
+      -- Detect_Installed_Provers --
+      -----------------------------
+
+      procedure Detect_Installed_Provers is
+         function On_Path (Exec : String) return Boolean;
+         --  Return True iff Exec is present on PATH
+
+         -------------
+         -- On_Path --
+         -------------
+
+         function On_Path (Exec : String) return Boolean is
+            Location : String_Access := GNAT.OS_Lib.Locate_Exec_On_Path (Exec);
+
+            Present : constant Boolean := Location /= null;
+
+         begin
+            Free (Location);
+            return Present;
+         end On_Path;
+
+      begin
+         SPARK_Install.Z3_Present := On_Path ("z3");
+         SPARK_Install.CVC5_Present := On_Path ("cvc5");
+         SPARK_Install.Colibri_Present := On_Path ("colibri");
+      end Detect_Installed_Provers;
+
+      ------------------------------------
+      -- Initialize_Root_Project_Settings --
+      ------------------------------------
+
+      procedure Initialize_Root_Project_Settings is
+      begin
+         --  Read the compilation switches of the Builder package before
+         --  computing the target configuration, which depends on whether the
+         --  user specified -gnateT there.
+
+         Global_Compilation_Switches :=
+           Read_Global_Compilation_Switches (Tree.Root_Project);
+         GnateT_Switch := new String'(Check_gnateT_Switch (Tree.Root_Project));
+         Set_Proof_Dir (Tree.Root_Project);
+      end Initialize_Root_Project_Settings;
+
       -----------------------------------
       -- Check_Obsolete_Prove_Switches --
       -----------------------------------
@@ -3888,10 +3938,23 @@ package body Configuration is
          Set_Level_Timeout_Steps_Provers (Parsed, FS);
          Set_Proof_Mode (Parsed, FS);
          Set_Mode (Parsed, FS);
+         if Switch_String (Parsed, Sw_Proof_Warnings) = ""
+           or else Switch_String (Parsed, Sw_Proof_Warnings) = "off"
+         then
+            FS.Proof_Warnings := False;
+         elsif Switch_String (Parsed, Sw_Proof_Warnings) = "on" then
+            FS.Proof_Warnings := True;
+         else
+            Abort_Msg
+              ("error: wrong argument """
+               & Switch_String (Parsed, Sw_Proof_Warnings)
+               & """ for --proof-warnings, "
+               & "must be one of (on, off)",
+               With_Help => False);
+         end if;
          FS.No_Inlining := Parsed.Values (Sw_No_Inlining).Boolean_Val;
          FS.No_Loop_Unrolling :=
            Parsed.Values (Sw_No_Loop_Unrolling).Boolean_Val;
-         FS.Proof_Warnings := Proof_Warnings;
          FS.No_Inlining :=
            Parsed.Values (Sw_No_Inlining).Boolean_Val
            or Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
@@ -4207,29 +4270,8 @@ package body Configuration is
       -----------------
 
       procedure Postprocess (Parsed : in out Parsed_Switches) is
-         function On_Path (Exec : String) return Boolean;
-         --  Return True iff Exec is present on PATH
-
-         -------------
-         -- On_Path --
-         -------------
-
-         function On_Path (Exec : String) return Boolean is
-            Location : String_Access := GNAT.OS_Lib.Locate_Exec_On_Path (Exec);
-
-            Present : constant Boolean := Location /= null;
-
-         begin
-            Free (Location);
-            return Present;
-         end On_Path;
-
       begin
          Sanity_Checking (Parsed);
-
-         SPARK_Install.Z3_Present := On_Path ("z3");
-         SPARK_Install.CVC5_Present := On_Path ("cvc5");
-         SPARK_Install.Colibri_Present := On_Path ("colibri");
 
          Debug :=
            Parsed.Values (Sw_D).Boolean_Val
@@ -4335,21 +4377,6 @@ package body Configuration is
                With_Help => False);
          end if;
 
-         if Switch_String (Parsed, Sw_Proof_Warnings) = ""
-           or else Switch_String (Parsed, Sw_Proof_Warnings) = "off"
-         then
-            Proof_Warnings := False;
-         elsif Switch_String (Parsed, Sw_Proof_Warnings) = "on" then
-            Proof_Warnings := True;
-         else
-            Abort_Msg
-              ("error: wrong argument """
-               & Switch_String (Parsed, Sw_Proof_Warnings)
-               & """ for --proof-warnings, "
-               & "must be one of (on, off)",
-               With_Help => False);
-         end if;
-
          --  Handling of Only_Given and Filelist
 
          Only_Given :=
@@ -4368,17 +4395,9 @@ package body Configuration is
 
          Process_Limit_Switches (Parsed);
 
-         --  Read the compilation switches of the Builder package before
-         --  computing the target configuration, which depends on whether the
-         --  user specified -gnateT there.
-
-         Global_Compilation_Switches :=
-           Read_Global_Compilation_Switches (Tree.Root_Project);
-         GnateT_Switch := new String'(Check_gnateT_Switch (Tree.Root_Project));
          Set_Output_Mode (Parsed);
          Set_Warning_Mode (Parsed);
          Set_Report_Mode (Parsed);
-         Set_Proof_Dir (Tree.Root_Project);
 
          Use_Semaphores :=
            not Debug and then not Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
@@ -5150,6 +5169,9 @@ package body Configuration is
 
       Command_Line_Switches :=
         Parse_Switches_Internal (All_Switches, Com_Lin.all);
+
+      Detect_Installed_Provers;
+      Initialize_Root_Project_Settings;
 
       Parse_Analysis_Attributes
         (Command_Line_Switches, Root_Attribute_Switches);
