@@ -141,7 +141,6 @@ package Configuration is
    Parallel                    : Integer;
    Max_Why3_Processes          : Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
-   Proof_Warnings              : Boolean;
    Report                      : Report_Mode_Type;
    Use_Semaphores              : Boolean;
    Warning_Mode                : Gnat2Why_Opts.SPARK_Warning_Mode_Type;

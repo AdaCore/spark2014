@@ -3888,10 +3888,23 @@ package body Configuration is
          Set_Level_Timeout_Steps_Provers (Parsed, FS);
          Set_Proof_Mode (Parsed, FS);
          Set_Mode (Parsed, FS);
+         if Switch_String (Parsed, Sw_Proof_Warnings) = ""
+           or else Switch_String (Parsed, Sw_Proof_Warnings) = "off"
+         then
+            FS.Proof_Warnings := False;
+         elsif Switch_String (Parsed, Sw_Proof_Warnings) = "on" then
+            FS.Proof_Warnings := True;
+         else
+            Abort_Msg
+              ("error: wrong argument """
+               & Switch_String (Parsed, Sw_Proof_Warnings)
+               & """ for --proof-warnings, "
+               & "must be one of (on, off)",
+               With_Help => False);
+         end if;
          FS.No_Inlining := Parsed.Values (Sw_No_Inlining).Boolean_Val;
          FS.No_Loop_Unrolling :=
            Parsed.Values (Sw_No_Loop_Unrolling).Boolean_Val;
-         FS.Proof_Warnings := Proof_Warnings;
          FS.No_Inlining :=
            Parsed.Values (Sw_No_Inlining).Boolean_Val
            or Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
@@ -4331,21 +4344,6 @@ package body Configuration is
               ("error: wrong argument """
                & Switch_String (Parsed, Sw_Checks_As_Errors)
                & """ for --checks-as-errors, "
-               & "must be one of (on, off)",
-               With_Help => False);
-         end if;
-
-         if Switch_String (Parsed, Sw_Proof_Warnings) = ""
-           or else Switch_String (Parsed, Sw_Proof_Warnings) = "off"
-         then
-            Proof_Warnings := False;
-         elsif Switch_String (Parsed, Sw_Proof_Warnings) = "on" then
-            Proof_Warnings := True;
-         else
-            Abort_Msg
-              ("error: wrong argument """
-               & Switch_String (Parsed, Sw_Proof_Warnings)
-               & """ for --proof-warnings, "
                & "must be one of (on, off)",
                With_Help => False);
          end if;

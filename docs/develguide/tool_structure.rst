@@ -66,6 +66,9 @@ the same way as if those detailed switches had been written explicitly.
 Then, the switches attributes of the entire project tree are parsed
 into records, and merged according to precedence rules, to establish the
 "file-specific" switches, which can be specified on a per-file basis.
+Their effective values are interpreted while constructing each per-file
+configuration record. For example, ``--proof-warnings`` is validated and
+stored directly in that record.
 
 Switch multiplicity
 -------------------
