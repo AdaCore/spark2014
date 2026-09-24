@@ -162,6 +162,16 @@ its parameter ``Analyzed``. In picture, it looks like this: ::
      * Fold [Inner, A, B] with Analyzed => Inner
    * Fold [Outer, Inner, A, B] with Analyzed => Outer
 
+When phase 1 folds or serializes a generic subprogram instance, constants that
+represent formal objects of mode ``in`` are replaced with the inputs of their
+actual expressions. Constants initialized by package elaboration are further
+projected to the package inputs that initialize them. Both steps happen while
+the full AST of the instance is available. Phase 2 preserves the resulting
+proper/refined pair, propagates the proper inputs through calls from other
+compilation units, and selects the proper view for callers outside the
+instance. This prevents instance-only entity names from escaping into a
+caller's generated contract.
+
 You can think of this as a double-level iteration. As it happens, we populate
 the Refined_Global/Global contracts based on the Refined_Global/Global
 contracts of the callees, forget about the callees from the inner contexts, and
