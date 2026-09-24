@@ -1,0 +1,2 @@
+r.ads:3:64: info: postcondition proved (CVC5: 1 VC), in instantiation at r.ads:10, in instantiation at client.ads:3
+r.ads:9:53: info: postcondition proved (CVC5: 1 VC), in instantiation at client.ads:3
