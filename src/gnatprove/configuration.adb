@@ -3020,6 +3020,9 @@ package body Configuration is
       procedure Register_Switch (Switch : Switch_Id);
       --  Register Switch so that Handle_Switch stores its value.
 
+      procedure Warn_Obsolete_Switches (Parsed : Parsed_Switches);
+      --  Issue notices for obsolete switches present in this source.
+
       function GNAT_Command_Line_Short_Switch
         (Switch : Switch_Id) return String
       is
@@ -3059,6 +3062,27 @@ package body Configuration is
                then ""
                else GNAT_Command_Line_Long_Switch (Switch)));
       end Register_Switch;
+
+      ----------------------------
+      -- Warn_Obsolete_Switches --
+      ----------------------------
+
+      procedure Warn_Obsolete_Switches (Parsed : Parsed_Switches) is
+      begin
+         if Parsed.Present (Sw_No_Counterexample) then
+            Ada.Text_IO.Put_Line
+              ("Note: switch ""--no-counterexample"" is ignored.");
+            Ada.Text_IO.Put_Line
+              ("Note: use ""--counterexamples=off"" instead.");
+         end if;
+
+         if Parsed.Present (Sw_No_Axiom_Guard) then
+            Ada.Text_IO.Put_Line
+              ("Note: switch ""--no-axiom-guard"" is ignored.");
+            Ada.Text_IO.Put_Line
+              ("Note: use ""--function-sandboxing=off"" instead.");
+         end if;
+      end Warn_Obsolete_Switches;
 
    begin
       pragma Assert (Switch_Values_Have_Expected_Kinds (Parsed.Values));
@@ -3150,6 +3174,8 @@ package body Configuration is
       end;
 
       Current_Parsed_Switches := null;
+
+      Warn_Obsolete_Switches (Parsed);
 
       Free (Config);
       Free_Topmost (Com_Lin_Access);
@@ -4416,20 +4442,6 @@ package body Configuration is
          else
             Why3_Stagger_Window :=
               Parsed.Values (Sw_Why3_Stagger_Window).Integer_Val;
-         end if;
-
-         if Parsed.Values (Sw_No_Counterexample).Boolean_Val then
-            Ada.Text_IO.Put_Line
-              ("Note: switch ""--no-counterexample"" is ignored.");
-            Ada.Text_IO.Put_Line
-              ("Note: use ""--counterexamples=off"" instead.");
-         end if;
-
-         if Parsed.Values (Sw_No_Axiom_Guard).Boolean_Val then
-            Ada.Text_IO.Put_Line
-              ("Note: switch ""--no-axiom-guard"" is ignored.");
-            Ada.Text_IO.Put_Line
-              ("Note: use ""--function-sandboxing=off"" instead.");
          end if;
 
          if Switch_String (Parsed, Sw_Function_Sandboxing)

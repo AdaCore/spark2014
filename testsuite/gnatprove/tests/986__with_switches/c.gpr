@@ -10,7 +10,10 @@ project C is
   end Compiler;
 
   package Prove is
-     for Proof_Switches ("Ada") use ("--prover=z3");
-     for Proof_Switches ("c.ads") use ("--prover=altergo");
+     for Proof_Switches ("Ada") use
+       ("--prover=z3", "--no-counterexample", "--no-counterexample",
+        "--no-axiom-guard", "--no-axiom-guard");
+     for Proof_Switches ("c.ads") use
+       ("--prover=altergo", "--no-counterexample", "--no-counterexample");
   end Prove;
 end C;

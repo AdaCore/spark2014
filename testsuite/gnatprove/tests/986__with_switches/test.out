@@ -4,3 +4,18 @@ b.ads:3:12: info: implicit aspect Always_Terminates on "Incr" has been proved, s
 b.ads:3:52: info: overflow check proved (Z3: 2 VC)
 c.ads:3:12: info: implicit aspect Always_Terminates on "Incr" has been proved, subprogram will terminate
 c.ads:3:52: info: overflow check proved (altergo: 2 VC)
+Note: switch "--no-axiom-guard" is ignored.
+Note: switch "--no-axiom-guard" is ignored.
+Note: switch "--no-axiom-guard" is ignored.
+Note: switch "--no-counterexample" is ignored.
+Note: switch "--no-counterexample" is ignored.
+Note: switch "--no-counterexample" is ignored.
+Note: switch "--no-counterexample" is ignored.
+Note: use "--counterexamples=off" instead.
+Note: use "--counterexamples=off" instead.
+Note: use "--counterexamples=off" instead.
+Note: use "--counterexamples=off" instead.
+Note: use "--function-sandboxing=off" instead.
+Note: use "--function-sandboxing=off" instead.
+Note: use "--function-sandboxing=off" instead.
+warning: invocation switch "--no-axiom-guard" in attribute "Proof_Switches ("Ada")" of non-root project "a.gpr" is ignored

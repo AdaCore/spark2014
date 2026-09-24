@@ -8,6 +8,7 @@ project B is
   end Compiler;
 
   package Prove is
-     for Proof_Switches ("Ada") use ("--prover=z3");
+     for Proof_Switches ("Ada") use
+       ("--prover=z3", "--no-counterexample", "--no-counterexample");
   end Prove;
 end B;
