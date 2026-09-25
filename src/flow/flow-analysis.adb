@@ -743,7 +743,7 @@ package body Flow.Analysis is
             Subp : constant Entity_Id := Scope (E);
          begin
             return
-              Ekind (Subp) in E_Procedure | E_Function
+              Ekind (Subp) in E_Procedure
               and then Is_Generic_Actual_Subprogram (Subp)
               and then Null_Present (Subprogram_Specification (Subp));
          end;
