@@ -380,10 +380,17 @@ to users of the unit:
    :language: ada
    :lines: 10-16
 
+A justification placed on the declaration of a generic subprogram or generic
+package applies to the check messages issued for all its instances, whether it
+is written as a pragma following the generic declaration or as an aspect on
+that declaration.
+
 Pragmas ``Annotate`` of the form above that do not justify any check message
 are useless and result in a warning by |GNATprove|. Like other warnings emitted
 by |GNATprove|, this warning is treated like an error if the switch
-``--warnings=error`` is set.
+``--warnings=error`` is set. No such warning is emitted for a justification
+placed on a generic declaration, as the checks it justifies may arise in
+instances located in other units.
 
 .. index:: Assume; justifying check messages
 
