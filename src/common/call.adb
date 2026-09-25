@@ -120,24 +120,31 @@ package body Call is
    is
       Local_Status : aliased Integer;
       Arg_List     : Argument_List := Argument_List_Of_String_List (Arguments);
-   begin
-      declare
-         Output : constant String :=
-           GNAT.Expect.Get_Command_Output
-             (Command, Arg_List, "", Local_Status'Access, True);
-         Last   : Natural := Output'Last;
-      begin
-         GNATCOLL.Utils.Free (Arg_List);
-         Status := Local_Status;
 
-         for C in Output'Range loop
-            if Output (C) in ASCII.LF | ASCII.CR then
+      function First_Line (S : String) return String;
+      --  Return the first line of the string in argument
+
+      function First_Line (S : String) return String is
+         Last : Natural := S'Last;
+      begin
+         for C in S'Range loop
+            if S (C) in ASCII.LF | ASCII.CR then
                Last := C - 1;
                exit;
             end if;
          end loop;
 
-         return Output (Output'First .. Last);
+         return S (S'First .. Last);
+      end First_Line;
+   begin
+      declare
+         Output : constant String :=
+           GNAT.Expect.Get_Command_Output
+             (Command, Arg_List, "", Local_Status'Access, True);
+      begin
+         GNATCOLL.Utils.Free (Arg_List);
+         Status := Local_Status;
+         return First_Line (Output);
       end;
    exception
       when GNAT.Expect.Invalid_Process =>
