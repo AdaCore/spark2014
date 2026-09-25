@@ -3891,9 +3891,9 @@ package body Configuration is
       procedure Initialize_Root_Project_Settings;
       --  Initialize settings derived from the root project.
 
-      procedure Postprocess (Parsed : in out Parsed_Switches);
-      --  Read the switch variables set by command-line parsing and set the
-      --  gnatprove variables.
+      procedure Postprocess_Invocation (Parsed : in out Parsed_Switches);
+      --  Interpret the effective switches from the root project's attributes
+      --  and the command line, setting invocation-wide GNATprove state.
 
       procedure Warn_And_Strip_Non_Root_Invocation_Switches
         (View           : Project.View.Object;
@@ -3906,7 +3906,8 @@ package body Configuration is
         (Parsed             : Parsed_Switches;
          Invocation_Options : File_Specific_Invocation_Options;
          FS                 : out File_Specific);
-      --  Same as Postprocess, but for the switches that can be file-specific.
+      --  Same as Postprocess_Invocation, but for the switches that can be
+      --  file-specific.
       --  For example, --level, --timeout are handled here.
 
       procedure Check_Obsolete_Prove_Switches (View : Project.View.Object);
@@ -4427,11 +4428,11 @@ package body Configuration is
          end loop;
       end Parse_Analysis_Attributes;
 
-      -----------------
-      -- Postprocess --
-      -----------------
+      ----------------------------
+      -- Postprocess_Invocation --
+      ----------------------------
 
-      procedure Postprocess (Parsed : in out Parsed_Switches) is
+      procedure Postprocess_Invocation (Parsed : in out Parsed_Switches) is
       begin
          Sanity_Checking (Parsed);
 
@@ -4530,7 +4531,7 @@ package body Configuration is
 
          Use_Semaphores :=
            not Debug and then not Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
-      end Postprocess;
+      end Postprocess_Invocation;
 
       ----------------------------
       -- Process_Limit_Switches --
@@ -5318,7 +5319,7 @@ package body Configuration is
          Invocation_Options : constant File_Specific_Invocation_Options :=
            File_Specific_Options_From_Invocation (Invocation_Switches);
       begin
-         Postprocess (Invocation_Switches);
+         Postprocess_Invocation (Invocation_Switches);
          Parse_Analysis_Attributes
            (Command_Line_Switches,
             Root_Attribute_Switches,
