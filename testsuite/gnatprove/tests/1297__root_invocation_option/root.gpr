@@ -1,0 +1,15 @@
+with "lib.gpr";
+
+project Root is
+   for Source_Dirs use ("root_src");
+   for Object_Dir use "obj_root";
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnatws");
+      for Local_Configuration_Pragmas use "test.adc";
+   end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--output-msg-only");
+   end Prove;
+end Root;
