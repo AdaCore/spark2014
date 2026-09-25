@@ -4057,9 +4057,28 @@ package body Configuration is
                & "must be one of (on, off)",
                With_Help => False);
          end if;
-         FS.No_Inlining := Parsed.Values (Sw_No_Inlining).Boolean_Val;
          FS.No_Loop_Unrolling :=
            Parsed.Values (Sw_No_Loop_Unrolling).Boolean_Val;
+
+         --  Subprograms with no contracts (and a few other criteria) may be
+         --  inlined, as this can help provability. In particular it helps as
+         --  the user does not need to write a pre- or post-condition. As a
+         --  side-effect it also effectively produces a global and depends
+         --  contract.
+         --
+         --  The --no-global-generation switch implies not inlining from two
+         --  points of view:
+         --
+         --     * (logical) By its name, it implies that globals should not be
+         --       generated, and inlining has the effect of generating globals.
+         --
+         --     * (practical) As inlined subprograms are analyzed separately
+         --       anyway in order to check for flow issues, flow would reject
+         --       all but the most trivial subprograms, since a missing global
+         --       generates an error, not a check. Fixing this would require a
+         --       global contract, which in turn would eliminate inlining
+         --       anyway.
+
          FS.No_Inlining :=
            Parsed.Values (Sw_No_Inlining).Boolean_Val
            or Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
@@ -4382,25 +4401,6 @@ package body Configuration is
            Parsed.Values (Sw_D).Boolean_Val
            or Parsed.Values (Sw_Flow_Debug).Boolean_Val;
          Debug_Exec_RAC := Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
-
-         --  Subprograms with no contracts (and a few other criteria) may be
-         --  inlined, as this can help provability. In particular it helps as
-         --  the user does not need to write a pre- or post-condition. As a
-         --  side-effect it also effectively produces a global and depends
-         --  contract.
-         --
-         --  The --no-global-generation switch implies not inlining from two
-         --  points of view:
-         --
-         --     * (logical) By its name, it implies that globals should not be
-         --       generated, and inlining has the effect of generating globals.
-         --
-         --     * (practical) As inlined subprograms are analyzed separately
-         --       anyway in order to check for flow issues, flow would reject
-         --       all but the most trivial subprograms, since a missing global
-         --       generates an error, not a check. Fixing this would require a
-         --       global contract, which in turn would eliminate inlining
-         --       anyway.
 
          --  Adjust the number of parallel processes. If -j0 was used, the
          --  number of processes should be set to the actual number of
