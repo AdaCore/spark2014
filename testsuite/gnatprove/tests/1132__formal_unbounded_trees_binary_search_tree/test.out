@@ -6,15 +6,15 @@ test.adb:11:04: warning: in instantiation at spark-containers-formal-unbounded_t
 test.adb:11:04: warning: in instantiation at spark-containers-formal-unbounded_trees.ads:66
 test.adb:11:04: warning: in instantiation at spark-containers-formal-unbounded_trees.ads:66
 test.adb:11:04: warning: in instantiation at spark-containers-formal-unbounded_trees.ads:66
-test.adb:11:04: warning: in instantiation at spark-containers-functional-trees.ads:125
-test.adb:11:04: warning: in instantiation at spark-containers-functional-trees.ads:140
-test.adb:11:04: warning: in instantiation at spark-containers-functional-trees.ads:233
-test.adb:11:04: warning: in instantiation at spark-containers-functional-trees.ads:78
+test.adb:11:04: warning: in instantiation at spark-containers-functional-trees.ads:134
+test.adb:11:04: warning: in instantiation at spark-containers-functional-trees.ads:149
+test.adb:11:04: warning: in instantiation at spark-containers-functional-trees.ads:242
+test.adb:11:04: warning: in instantiation at spark-containers-functional-trees.ads:87
 test.adb:11:04: warning: its contract might be missing
 test.adb:11:04: warning: its contract might be missing
-test.adb:11:04: warning: potentially missing automatically instanciated lemma "Lemma_Count_Children_Tail" declared at spark-containers-functional-trees.ads:249, instance at spark-containers-formal-unbounded_trees.ads:66, instance at line 11
-test.adb:11:04: warning: potentially missing contract for "Count" declared at spark-containers-functional-trees.ads:140, instance at spark-containers-formal-unbounded_trees.ads:66, instance at line 11
-test.adb:11:04: warning: potentially missing contract for "Count_Children" declared at spark-containers-functional-trees.ads:233, instance at spark-containers-formal-unbounded_trees.ads:66, instance at line 11
+test.adb:11:04: warning: potentially missing automatically instanciated lemma "Lemma_Count_Children_Tail" declared at spark-containers-functional-trees.ads:258, instance at spark-containers-formal-unbounded_trees.ads:66, instance at line 11
+test.adb:11:04: warning: potentially missing contract for "Count" declared at spark-containers-functional-trees.ads:149, instance at spark-containers-formal-unbounded_trees.ads:66, instance at line 11
+test.adb:11:04: warning: potentially missing contract for "Count_Children" declared at spark-containers-functional-trees.ads:242, instance at spark-containers-formal-unbounded_trees.ads:66, instance at line 11
 test.adb:15:14: warning: subprogram "Test_Tree" has no effect
 test.adb:18:07: info: precondition proved (CVC5: 1 VC)
 test.adb:19:07: info: precondition proved (CVC5: 3 VC)
