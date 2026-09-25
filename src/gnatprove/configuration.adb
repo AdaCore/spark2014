@@ -4366,7 +4366,6 @@ package body Configuration is
                   --  Use the merge helper for a deep copy
                   Merge_Parsed_Switches (Effective, Project_Switches);
                   Merge_Parsed_Switches (Effective, Command_Line);
-                  Postprocess (Effective);
                   File_Specific_Postprocess
                     (Effective, Invocation_Options, FS);
                end;
@@ -4407,7 +4406,6 @@ package body Configuration is
                         --  override file-specific project switches.
 
                         Merge_Parsed_Switches (Effective, Command_Line);
-                        Postprocess (Effective);
                         File_Specific_Postprocess
                           (Effective, Invocation_Options, FS);
                         File_Specific_Map.Include
@@ -5320,14 +5318,13 @@ package body Configuration is
          Invocation_Options : constant File_Specific_Invocation_Options :=
            File_Specific_Options_From_Invocation (Invocation_Switches);
       begin
+         Postprocess (Invocation_Switches);
          Parse_Analysis_Attributes
            (Command_Line_Switches,
             Root_Attribute_Switches,
             Invocation_Options);
       end;
 
-      --  Derive the invocation-wide semantic configuration
-      Postprocess (Invocation_Switches);
       Verbosity := Parse_Result.Verbosity;
 
       --  Publish the final invocation settings for legacy consumers
