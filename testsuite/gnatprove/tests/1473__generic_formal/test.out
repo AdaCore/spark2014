@@ -1,0 +1,2 @@
+test.adb:7:21: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate, in instantiation at test.adb:11
+test.adb:7:35: warning: unused variable "X", in instantiation at test.adb:11
