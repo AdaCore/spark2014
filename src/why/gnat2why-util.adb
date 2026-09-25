@@ -2007,10 +2007,10 @@ package body Gnat2Why.Util is
             end if;
 
          --  Every global variable referenced inside a package elaboration must
-         --  be initialized. In the same way, tasks can only access
+         --  be initialized. In the same way, concurrent types can only access
          --  synchronized or Part_Of objects, which are always initialized.
 
-         when E_Package | E_Task_Type            =>
+         when E_Package | Concurrent_Kind        =>
             return not Obj_Has_Relaxed_Init (Obj);
 
          when others                             =>

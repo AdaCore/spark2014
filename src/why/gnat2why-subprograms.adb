@@ -4726,6 +4726,136 @@ package body Gnat2Why.Subprograms is
            Transform_Declarations_Block (Vis_Decls, Why_Body, Body_Params);
       end if;
 
+      --  We assume that objects used in the protected type are in range, if
+      --  they are of a dynamic type. Do a simple traversal of pragmas and
+      --  protected components for now. We could use a flow query when there is
+      --  one, like for tasks, packages, and subprograms.
+
+      declare
+         Inputs : Node_Sets.Set;
+
+         procedure Collect_Objects (Vars : Flow_Id_Sets.Set);
+         --  For all direct mapping in Vars, add the object's node to Inputs
+
+         procedure Collect_Inputs_From_Components;
+         --  Collect objects referenced in the initial value of components
+
+         procedure Collect_Inputs_From_Decls (Decls : List_Id);
+         --  Collect objects referenced in priority and attach handler pragmas
+
+         ------------------------------------
+         -- Collect_Inputs_From_Components --
+         ------------------------------------
+
+         procedure Collect_Inputs_From_Components is
+            Vars : Flow_Id_Sets.Set;
+         begin
+            for Field of Get_Component_Set (E) loop
+               if Ekind (Field) in E_Component | E_Discriminant then
+
+                  if Present (Expression (Enclosing_Declaration (Field))) then
+                     Collect_Objects
+                       (Get_Variables_For_Proof
+                          (Expression (Enclosing_Declaration (Field)), E));
+                  else
+                     Variables_In_Default_Init (Etype (Field), Vars);
+                  end if;
+               end if;
+            end loop;
+            Collect_Objects (Vars);
+         end Collect_Inputs_From_Components;
+
+         -------------------------------
+         -- Collect_Inputs_From_Decls --
+         -------------------------------
+
+         procedure Collect_Inputs_From_Decls (Decls : List_Id) is
+            Decl : Node_Id := First (Decls);
+         begin
+            while Present (Decl) loop
+               case Nkind (Decl) is
+                  when N_Pragma           =>
+                     case Get_Pragma_Id (Decl) is
+                        when Pragma_Interrupt_Priority | Pragma_Priority =>
+                           declare
+                              Assoc : constant Node_Id :=
+                                First (Pragma_Argument_Associations (Decl));
+                           begin
+                              if Present (Assoc) then
+                                 Collect_Objects
+                                   (Get_Variables_For_Proof
+                                      (Expression (Assoc), E));
+                              end if;
+                           end;
+
+                        when Pragma_Attach_Handler                       =>
+                           Collect_Objects
+                             (Get_Variables_For_Proof
+                                (Expression
+                                   (Next
+                                      (First
+                                         (Pragma_Argument_Associations
+                                            (Decl)))),
+                                 E));
+
+                        when others                                      =>
+                           null;
+                     end case;
+
+                  when N_Subprogram_Declaration
+                     | N_Entry_Declaration
+                     | N_Component_Declaration
+                     | N_Ignored_In_SPARK =>
+                     null;
+
+                  when others             =>
+                     pragma Assert (False);
+               end case;
+               Next (Decl);
+            end loop;
+         end Collect_Inputs_From_Decls;
+
+         ---------------------
+         -- Collect_Objects --
+         ---------------------
+
+         procedure Collect_Objects (Vars : Flow_Id_Sets.Set) is
+         begin
+            for V of Vars loop
+               case V.Kind is
+                  when Direct_Mapping =>
+                     Inputs.Insert (V.Node);
+
+                  when Magic_String   =>
+                     null;
+
+                  when others         =>
+                     raise Program_Error;
+               end case;
+            end loop;
+         end Collect_Objects;
+
+      begin
+         if Present (Priv_Decls) and then Private_Spec_In_SPARK (E) then
+            Collect_Inputs_From_Decls (Priv_Decls);
+            Collect_Inputs_From_Components;
+         end if;
+
+         Collect_Inputs_From_Decls (Vis_Decls);
+
+         Prepend
+           (Assume_Dynamic_Invariant_For_Variables
+              (Vars        => Inputs,
+               Params      => Body_Params,
+               Scope       => E,
+               Initialized => False),
+            Why_Body);
+      end;
+
+      --  Assume values of constants
+
+      Assume_Value_Of_Constants (Why_Body, E, Body_Params);
+
       Wrap_Discr (Why_Body);
 
       Emit
