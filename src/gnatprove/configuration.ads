@@ -337,6 +337,13 @@ package Configuration is
    --  Compute the list of arguments of gnatwhy3. This list is passed first to
    --  gnat2why, which then passes it to gnatwhy3.
 
+   function Target_Name return String;
+   --  Name of the target that the analyzed code would be compiled for, as
+   --  reported by the Ada compiler of the project. Return the empty string
+   --  when it could not be determined. It is passed on to gnat2why, so that
+   --  attribute Target_Name has the same value during analysis as during
+   --  compilation.
+
    function Has_gnateT_Switch return Boolean;
    --  Determine if the project has -gnateT switch specified explicitly in
    --  the Global_Compilation_Switches of the Builder package. This is the

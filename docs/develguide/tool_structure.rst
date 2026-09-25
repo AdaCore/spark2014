@@ -312,6 +312,10 @@ the reading and writing of that file.
 The switch ``Global_Gen_Mode`` dictates if gnat2why is in global-generation
 mode or in analysis mode.
 
+gnatprove passes the target name, as obtained by running the compiler with
+``-dumpmachine``, to gnat2why, so that Standard.Target_Name is properly
+defined.
+
 Proof manifests are named after, and matched to, the unit they describe by that
 unit's *manifest stem*: its dot-separated Ada name, lower-cased, with the dots
 written as dashes (so ``Foo.Bar`` becomes ``foo-bar``). The Ada unit name is

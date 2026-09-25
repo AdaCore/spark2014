@@ -164,6 +164,7 @@ package body Gnat2Why_Opts.Reading is
       Global_Gen_Mode := Get_Opt (V, Global_Gen_Mode_Name);
       Output_Mode := Output_Mode_Type'Value (Get (Get (V, Output_Mode_Name)));
       Exclude_Line := Get_Opt (V, Exclude_Line_Name);
+      Target_Name := Get_Opt (V, Target_Name_Name);
 
       Debug_Exec_RAC := Get_Opt (V, Debug_Exec_RAC_Name);
       Debug_Disable_Prover_Feedback :=

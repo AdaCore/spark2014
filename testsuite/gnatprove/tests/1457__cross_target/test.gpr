@@ -1,0 +1,13 @@
+--  GNATprove obtains the target name from the Ada compiler driver of the
+--  project, so a stand-in driver that only answers -dumpmachine is enough to
+--  check that a cross target reaches attribute Target_Name.
+
+project Test is
+
+   for Target use "arm-eabi";
+
+   package Compiler is
+      for Driver ("Ada") use "./fake-gcc";
+   end Compiler;
+
+end Test;

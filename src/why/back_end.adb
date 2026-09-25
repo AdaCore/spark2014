@@ -25,8 +25,9 @@
 
 --  This is the Why target-dependent version of the Back_End package
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Adabkend;
-with Debug; use Debug;
+with Debug;                 use Debug;
 with Elists;
 with Errout;
 with Erroutc;
@@ -37,6 +38,7 @@ with Inline;
 with Namet;
 with Opt;
 with SPARK_Definition;
+with SPARK_Target;
 with System;
 with VC_Kinds;
 
@@ -130,6 +132,16 @@ package body Back_End is
       --  Read extra options for gnat2why
 
       Gnat2Why_Args.Load (Opt.SPARK_Switches_File_Name.all);
+
+      --  Make the front end use the target name of the toolchain that would
+      --  compile the analyzed code, instead of the one that gnat2why was built
+      --  with. This is what attribute Target_Name is rewritten into. The
+      --  trailing directory separator is the convention of the front end.
+
+      if Length (Gnat2Why_Args.Target_Name) > 0 then
+         SPARK_Target.Target_Name :=
+           new String'(To_String (Gnat2Why_Args.Target_Name) & '/');
+      end if;
 
       --  For the pretty output mode, we set -gnatdF to force alternative
       --  display of messages in Errout.

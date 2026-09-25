@@ -36,7 +36,6 @@ with GNATCOLL.Tribooleans;
 with GNATCOLL.VFS;          use GNATCOLL.VFS;
 with GNAT.Command_Line;     use GNAT.Command_Line;
 with GNAT.Directory_Operations;
-with GNAT.Expect;
 with GNAT.OS_Lib;
 with GNAT.Regpat;           use GNAT.Regpat;
 with GNAT.Strings;          use GNAT.Strings;
@@ -259,6 +258,16 @@ package body Configuration is
    --  Try to compute the gnateT switch to be used for gnat2why. If there is
    --  a target and runtime set, but we can't compute the switch, a warning
    --  is issued.
+
+   function Compute_Target_Name (Tree : Project.Tree.Object) return String;
+   --  Query the Ada compiler of the project for the name of its target, and
+   --  return it. Return the empty string if there is no such compiler or if it
+   --  cannot be run. The normalized target name of the project is not usable
+   --  here, because it differs from the name that the compiler itself reports
+   --  and exposes through attribute Target_Name.
+
+   Target_Name_Value : GNAT.Strings.String_Access;
+   --  Value returned by Target_Name, computed once by Read_Command_Line
 
    function Read_Global_Compilation_Switches
      (View : Project.View.Object) return String_Lists.List;
@@ -1228,6 +1237,90 @@ package body Configuration is
          return Artifact_Dir (Tree).String_Value;
       end if;
    end Compute_Socket_Dir;
+
+   -------------------------
+   -- Compute_Target_Name --
+   -------------------------
+
+   function Compute_Target_Name (Tree : Project.Tree.Object) return String is
+      Ada_Index : constant GPR2.Project.Attribute_Index.Object :=
+        GPR2.Project.Attribute_Index.Create (GPR2.Ada_Language);
+
+      function Dump_Machine (Driver : String) return String;
+      --  Return the target name that Driver reports for itself, or the empty
+      --  string if it cannot be obtained
+
+      function Is_Target_Name (S : String) return Boolean;
+      --  Check that S has the shape of a target name. A driver that does not
+      --  understand -dumpmachine may print something else and still exit with
+      --  a zero status, and using that as a target name would be worse than
+      --  falling back on the default one.
+
+      ------------------
+      -- Dump_Machine --
+      ------------------
+
+      function Dump_Machine (Driver : String) return String is
+         Args   : String_Lists.List;
+         Status : Integer;
+      begin
+         Args.Append ("-dumpmachine");
+
+         declare
+            Output : constant String :=
+              First_Line_Of_Command_Output (Driver, Args, Status);
+         begin
+            return
+              (if Status = 0 and then Is_Target_Name (Output)
+               then Output
+               else "");
+         end;
+      end Dump_Machine;
+
+      --------------------
+      -- Is_Target_Name --
+      --------------------
+
+      function Is_Target_Name (S : String) return Boolean is
+      begin
+         return
+           S'Length > 0
+           and then
+             (for all C of S =>
+                C
+                in '0' .. '9'
+                 | 'a' .. 'z'
+                 | 'A' .. 'Z'
+                 | '-'
+                 | '_'
+                 | '.'
+                 | '+');
+      end Is_Target_Name;
+
+   begin
+      --  All views share the same Ada compiler, so the first one that defines
+      --  a driver is as good as any other.
+
+      for View of Tree.Ordered_Views loop
+         if View.Kind in GPR2.With_Source_Dirs_Kind
+           and then not View.Is_Externally_Built
+           and then View.Language_Ids.Contains (GPR2.Ada_Language)
+         then
+            declare
+               Driver : constant Project.Attribute.Object :=
+                 View.Attribute
+                   (Project.Registry.Attribute.Compiler.Driver,
+                    Index => Ada_Index);
+            begin
+               if Driver.Is_Defined then
+                  return Dump_Machine (Driver.Value.Text);
+               end if;
+            end;
+         end if;
+      end loop;
+
+      return "";
+   end Compute_Target_Name;
 
    ---------------------------
    -- Merge_Parsed_Switches --
@@ -3662,23 +3755,9 @@ package body Configuration is
       procedure Print_First_Line_Of_Output
         (Command : String; Arguments : String_Lists.List; Status : out Integer)
       is
-         Local_Status : aliased Integer;
-         Arg_List     : GNAT.OS_Lib.Argument_List :=
-           Argument_List_Of_String_List (Arguments);
-         Output       : constant String :=
-           GNAT.Expect.Get_Command_Output
-             (Command, Arg_List, "", Local_Status'Access, True);
-         Last         : Integer := Output'Last;
       begin
-         Status := Local_Status;
-         GNATCOLL.Utils.Free (Arg_List);
-         for C in Output'Range loop
-            if Output (C) in ASCII.LF | ASCII.CR then
-               Last := C - 1;
-               exit;
-            end if;
-         end loop;
-         Ada.Text_IO.Put_Line (Output (Output'First .. Last));
+         Ada.Text_IO.Put_Line
+           (First_Line_Of_Command_Output (Command, Arguments, Status));
       end Print_First_Line_Of_Output;
 
       Gnatwhy3          : constant String :=
@@ -5137,6 +5216,11 @@ package body Configuration is
 
       Check_Toolchain (Tree);
 
+      --  Computing the target name runs the Ada compiler of the project, so
+      --  only do it after all the modes that exit early have been ruled out.
+
+      Target_Name_Value := new String'(Compute_Target_Name (Tree));
+
       declare
          L : String_List_Access :=
            List_From_Attr
@@ -5529,6 +5613,16 @@ package body Configuration is
    begin
       raise GNATprove_Success with "";
    end Succeed;
+
+   -----------------
+   -- Target_Name --
+   -----------------
+
+   function Target_Name return String is
+   begin
+      pragma Assert (Target_Name_Value /= null);
+      return Target_Name_Value.all;
+   end Target_Name;
 
    -----------------------
    -- Compute_Why3_Args --
