@@ -1,0 +1,40 @@
+global_params.ads:22:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+global_params.ads:33:13: info: implicit aspect Always_Terminates on "Copy_Reads_Global" has been proved, subprogram will terminate
+global_params.ads:35:09: info: data dependencies proved
+global_params.ads:44:13: info: implicit aspect Always_Terminates on "Create_Reads_Global" has been proved, subprogram will terminate
+global_params.ads:46:09: info: data dependencies proved
+spark-pointers-abstract_maps.ads:70:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_maps.ads:72:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_maps.ads:91:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_maps.ads:94:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_maps.ads:96:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_maps.ads:99:06: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_maps.ads:123:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_maps.ads:125:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_maps.ads:127:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_maps.ads:129:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_maps.ads:136:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_maps.ads:138:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at global_params.ads:25
+spark-pointers-abstract_sets.ads:62:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at global_params.ads:25
+spark-pointers-abstract_sets.ads:64:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at global_params.ads:25
+spark-pointers-abstract_sets.ads:129:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at global_params.ads:25
+spark-pointers-abstract_sets.ads:131:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at global_params.ads:25
+spark-pointers-explicit_reclamation-global_memory.ads:146:16: info: implicit aspect Always_Terminates on "Writes" has been proved, subprogram will terminate, in instantiation at global_params.ads:25
+spark-pointers-explicit_reclamation-global_memory.ads:150:29: info: data dependencies proved, in instantiation at global_params.ads:25
+spark-pointers-explicit_reclamation-global_memory.ads:152:16: info: implicit aspect Always_Terminates on "Allocates" has been proved, subprogram will terminate, in instantiation at global_params.ads:25
+spark-pointers-explicit_reclamation-global_memory.ads:158:29: info: data dependencies proved, in instantiation at global_params.ads:25
+spark-pointers-explicit_reclamation-global_memory.ads:160:16: info: implicit aspect Always_Terminates on "Deallocates" has been proved, subprogram will terminate, in instantiation at global_params.ads:25
+spark-pointers-explicit_reclamation-global_memory.ads:166:29: info: data dependencies proved, in instantiation at global_params.ads:25
+spark-pointers-explicit_reclamation-global_memory.ads:180:04: info: initialization of "Memory" proved, in instantiation at global_params.ads:25
+spark-pointers-explicit_reclamation-global_memory.ads:197:09: error: "State" is referenced in Post but missing from the Global, in instantiation at global_params.ads:37
+spark-pointers-explicit_reclamation-global_memory.ads:214:09: error: "State" is referenced in Post but missing from the Global, in instantiation at global_params.ads:37
+spark-pointers-explicit_reclamation-global_memory.ads:224:09: error: "State" is referenced in Post but missing from the Global, in instantiation at global_params.ads:37
+spark-pointers-explicit_reclamation-global_memory.ads:224:09: error: "State" is referenced in Pre but missing from the Global, in instantiation at global_params.ads:37
+spark-pointers-explicit_reclamation-global_memory.ads:244:06: error: "State" is referenced in Post but missing from the Global, in instantiation at global_params.ads:48
+spark-pointers-explicit_reclamation-global_memory.ads:259:06: error: "State" is referenced in Pre but missing from the Global, in instantiation at global_params.ads:25
+spark-pointers-explicit_reclamation-global_memory.ads:292:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at global_params.ads:25
+spark-pointers-explicit_reclamation-global_memory.ads:294:16: info: data dependencies proved, in instantiation at global_params.ads:25
+spark-pointers-parameter_checks.adb:50:12: error: "State" is referenced in Post but missing from the Global, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:35, in instantiation at global_params.ads:25
+spark-pointers-parameter_checks.ads:28:17: info: aspect Always_Terminates on "Check_Reclamation" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:35, in instantiation at global_params.ads:25
+spark-pointers-parameter_checks.ads:29:12: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:35, in instantiation at global_params.ads:25
+gnatprove: error during flow analysis and proof

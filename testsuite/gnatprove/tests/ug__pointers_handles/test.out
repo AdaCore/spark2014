@@ -1,0 +1,53 @@
+ info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
+--> int_lists.ads:8:13
+
+ info: precondition proved
+--> int_lists.ads:11:25
+
+ info: subprogram variant proved
+--> int_lists.ads:12:20
+
+ info: precondition proved
+--> int_lists.ads:12:32
+
+ info: precondition proved
+--> int_lists.ads:12:43
+
+ info: data dependencies proved
+--> int_lists.ads:15:06
+
+ info: range check proved
+--> int_lists.ads:16:49
+
+ info: implicit aspect Always_Terminates on "Cons" has been proved, subprogram will terminate
+--> int_lists.ads:18:13
+
+ info: data dependencies proved
+--> int_lists.ads:21:06
+
+ info: postcondition proved
+--> int_lists.ads:23:27
+
+ info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
+--> int_lists.ads:25:13
+
+ info: precondition proved
+--> int_lists.ads:28:11
+
+ info: precondition proved
+--> int_lists.ads:29:19
+
+ info: subprogram variant proved
+--> int_lists.ads:29:19
+
+ info: precondition proved
+--> int_lists.ads:29:29
+
+ info: precondition proved
+--> int_lists.ads:29:40
+
+ info: data dependencies proved
+--> int_lists.ads:31:06
+
+ info: range check proved
+--> int_lists.ads:33:60

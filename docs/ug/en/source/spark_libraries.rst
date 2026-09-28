@@ -717,6 +717,562 @@ functional containers used as models, the models themselves are not executable.
 As a result, it is not possible to execute ghost code or assertions that mention
 these model functions.
 
+.. index:: pointers
+
+Pointers Library
+----------------
+
+The ownership policy of |SPARK| (see :ref:`Memory Ownership Policy`) makes it
+possible to verify programs using pointers without reasoning about aliasing.
+In general, this allows |GNATprove| to verify pointer-based programs in a
+scalable way, with few user-supplied annotations. However, in some cases, the
+ownership policy may be considered too constraining. In particular, it does
+not permit data structures in which a memory cell is designated by several
+pointers, like doubly linked lists or graphs, and it restricts the places where
+pointers can be moved. The pointer library, which is part of the |SPARK|
+library (see :ref:`SPARK Library`), provides generic units lifting these
+restrictions while still allowing |GNATprove| to verify their usage. Programs
+which do not need them should use regular access types.
+
+There are 5 generic units providing pointers with aliasing:
+
+* ``SPARK.Pointers.Explicit_Reclamation.Global_Memory``
+* ``SPARK.Pointers.Explicit_Reclamation.Separate_Memory``
+* ``SPARK.Pointers.Auto_Reclaimed.Immutable``
+* ``SPARK.Pointers.Auto_Reclaimed.Global_Memory``
+* ``SPARK.Pointers.Auto_Reclaimed.Separate_Memory``
+
+Units in ``Explicit_Reclamation`` model the memory explicitly as a map from
+pointers to designated values. A memory cell stays valid until it is
+deallocated by a call to ``Dealloc``. Units in ``Auto_Reclaimed`` use
+reference counting: a memory cell is reclaimed automatically when the last
+pointer designating it disappears, and reclamation does not appear in the
+model. As reference counting does not reclaim cycles, cyclic structures should
+use weak handles (see below). In ``Auto_Reclaimed.Immutable``, the designated
+data cannot be modified, so a pointer can be considered as the value it
+designates and there is no memory to reason about.
+
+Units named ``Global_Memory`` use a single memory for all the pointers of an
+instance. Units named ``Separate_Memory`` split the memory into objects of type
+``Memory_Type``, typically one per data structure. Memory cells can be moved
+from one memory object to another using ``Move_Memory``. As memory objects are
+subject to ownership, they are necessarily disjoint, so modifying a data
+structure is known to preserve the others. With a global memory, contracts are
+simpler, but this preservation must be proved by the user. In
+``Explicit_Reclamation.Separate_Memory``, a memory object which is not empty at
+the end of its scope is reported as a memory leak.
+
+The following table summarizes the main differences between these units:
+
+.. csv-table::
+   :header: "Unit", "Reclamation", "Designated data", "Memory"
+   :widths: 3, 2, 1, 2
+
+   "``Explicit_Reclamation.Global_Memory``", "``Dealloc``", "mutable", "one global memory"
+   "``Explicit_Reclamation.Separate_Memory``", "``Dealloc``, leaks detected", "mutable", "memory objects"
+   "``Auto_Reclaimed.Immutable``", "automatic", "immutable", "none"
+   "``Auto_Reclaimed.Global_Memory``", "automatic", "mutable", "one global memory"
+   "``Auto_Reclaimed.Separate_Memory``", "automatic", "mutable", "memory objects"
+
+Pointers with aliasing cannot be used directly as components of their
+designated type, as a generic cannot be instantiated with an incomplete type.
+To build recursive data structures, the designated type can instead contain
+handles, declared in one of the following units, and converted to and from
+pointers by the ``Handle_Operations`` package nested in each unit above:
+
+* ``SPARK.Pointers.Handles.Plain_Handles``
+* ``SPARK.Pointers.Handles.Owning_Handles``
+* ``SPARK.Pointers.Handles.Auto_Reclaimed_Handles``
+
+Handles of ``Auto_Reclaimed_Handles`` can be weak, that is, not counted as
+references. They should be used to break cycles.
+
+Other restrictions of the ownership policy concern the places where a pointer
+can be moved. Some are language restrictions, intended to make verification
+simpler. For example, an ``in out`` parameter or a global variable cannot be
+left moved on subprogram return. Others are tool limitations. For
+example, the borrow checker is imprecise on arrays, and does not know which
+component has been moved. These restrictions can be lifted using poisoned
+pointers, which can represent a value that has been moved out of and cannot be
+read, so that |GNATprove| can reason about partially moved structures. There
+are 2 generic units providing them:
+
+* ``SPARK.Pointers.Poisoned.Views`` can be used to lift the restrictions
+  locally. It provides a view of an existing object, subject to ownership,
+  through traversal functions.
+* ``SPARK.Pointers.Poisoned.Pointers`` defines a new pointer type, so that the
+  restrictions are lifted for all objects of the type.
+
+Finally, the ``SPARK.Pointers.Abstract_Maps``, ``SPARK.Pointers.Abstract_Sets``
+and ``SPARK.Pointers.Abstract_Reachability`` units provide helpers to write
+the models and contracts of data structures built using the pointer library.
+
+Units instantiating one of the ``Auto_Reclaimed`` generics should enable GNAT
+extensions using ``pragma Extensions_Allowed (On)``. In the light runtime, the
+``Handle_Operations`` generic packages of these units can only be instantiated
+at library level, as they take the ``'Access`` attribute of a subprogram
+declared in their private part.
+
+Pointers with Explicit Reclamation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The units ``SPARK.Pointers.Explicit_Reclamation.Global_Memory`` and
+``SPARK.Pointers.Explicit_Reclamation.Separate_Memory`` provide pointers with
+aliasing whose designated memory cells are deallocated by the user. They are
+generic in the type ``Object`` of the designated values, which can be
+indefinite and might be subject to ownership, and in a ghost function
+``Is_Reclaimed``:
+
+.. code-block:: ada
+
+   generic
+      type Object (<>) is private;
+      with function Is_Reclaimed (X : Object) return Boolean
+        with Ghost => Static;
+
+The function ``Is_Reclaimed`` should only return True on values which do not
+own any memory. It is used to ensure that no memory is leaked when a memory
+cell is deallocated or overwritten. If ``Object`` is not subject to ownership,
+it can always return True.
+
+The type ``Pointer`` is not subject to ownership: copying a pointer creates an
+alias. Pointers are initialized to ``Null_Pointer`` by default and their
+equality is the logical equality. The memory is modelled as a ``Memory_Map``, a
+map from pointers to values of type ``Object``. Function
+``In_Memory`` returns whether the memory holds a cell for a given pointer, and
+function ``Get`` gives access to its value:
+
+.. code-block:: ada
+
+   function In_Memory (M : Memory_Map; P : Pointer) return Boolean;
+   function Get
+     (M : Memory_Map; P : Pointer) return not null access constant Object;
+
+Pointers can only be dereferenced if they designate a cell of the memory,
+which ensures that dangling pointers are never dereferenced. The contracts of
+the operations use three ghost functions to describe how the memory is
+modified, in terms of footprints, which are sets of pointers:
+
+* ``Allocates (M1, M2, Target)`` states that the cells of ``M2`` which are
+  not in ``M1`` are exactly the ones designated by ``Target``;
+
+* ``Deallocates (M1, M2, Target)`` states that the cells of ``M1`` which are
+  not in ``M2`` are exactly the ones designated by ``Target``;
+
+* ``Writes (M1, M2, Target)`` states that cells which are both in ``M1`` and
+  ``M2`` and are not designated by ``Target`` are unchanged.
+
+The functions ``None`` and ``Only (P)`` return the empty footprint and the
+footprint containing only ``P``. These functions can also be used in the
+contracts of user subprograms. As an example, here is the contract of the
+procedure ``Dealloc`` of ``Global_Memory``, which deallocates the cell
+designated by ``P`` if ``P`` is not null, and resets ``P`` to
+``Null_Pointer``:
+
+.. code-block:: ada
+
+   procedure Dealloc (P : in out Pointer)
+   with
+     Global  => (In_Out => Memory),
+     Pre     =>
+       P = Null_Pointer
+       or else
+         (In_Memory (Model (Memory), P)
+          and then Is_Reclaimed (Get (Model (Memory), P).all)),
+     Post    =>
+       P = Null_Pointer
+       and then Allocates (Model (Memory)'Old, Model (Memory), None)
+       and then
+         (if P'Old = Null_Pointer
+          then Deallocates (Model (Memory)'Old, Model (Memory), None)
+          else Deallocates (Model (Memory)'Old, Model (Memory), Only (P'Old)))
+       and then Writes (Model (Memory)'Old, Model (Memory), None);
+
+Cells are allocated by instances of the generic procedure ``Create``, which
+builds the designated value from an input using the ``Create_Object``
+function. The generic package ``Copy_Operations`` provides operations which
+copy the designated value using its ``Copy`` function: ``Create_Copy``
+allocates a cell holding a copy of its object parameter, ``Deref`` returns a
+copy of the designated value, and ``Assign`` replaces it by a copy of its
+object parameter:
+
+.. code-block:: ada
+
+   generic
+      type Input (<>) is private;
+      with function Create_Object (X : Input) return Object;
+   procedure Create (X : Input; P : out Pointer);
+
+   generic
+      with function Copy (O : Object) return Object;
+   package Copy_Operations is
+      procedure Create_Copy (O : Object; P : out Pointer);
+      function Deref (P : Pointer) return Object;
+      procedure Assign (P : Pointer; O : Object);
+   end Copy_Operations;
+
+The designated value can also be accessed in place, without copies, using the
+traversal functions ``Constant_Reference`` and ``Reference``, which observe or
+borrow the memory:
+
+.. code-block:: ada
+
+   function Constant_Reference
+     (Memory : Memory_Type; P : Pointer) return not null access constant Object;
+   function Reference
+     (Memory : Memory_Type; P : Pointer) return not null access Object;
+
+In ``Global_Memory``, all the cells are stored in a single object ``Memory``,
+declared in the instance and initially empty. It is used as a global variable
+by all the operations, except ``Constant_Reference`` and ``Reference`` which
+take it as a parameter, so users do not need to declare memory objects. The
+model of the memory is given by the function ``Model``. Reclamation is not
+checked: no leak is reported when a cell is no longer reachable, or even when
+the instance goes out of scope.
+
+In ``Separate_Memory``, memory objects of type ``Memory_Type`` are declared by
+the user and passed as parameters to all the operations. The model of a memory
+object is given by the function ``"+"``. As memory objects are subject to
+ownership, they are necessarily disjoint, so an operation can only modify the
+memory it is given. Cells can be moved from one memory object to another
+using ``Move_Memory``:
+
+.. code-block:: ada
+
+   procedure Move_Memory (Source, Target : in out Memory_Type; F : Footprint);
+
+A memory object which is not empty when it goes out of scope is reported as a
+memory leak.
+
+In both units, the nested package ``Handle_Operations`` provides conversions
+between pointers and plain handles, to build recursive data structures (see
+below).
+
+As an example, the following package instantiates ``Global_Memory`` for
+integers:
+
+.. literalinclude:: /examples/ug__pointers_explicit_reclamation/int_pointers.ads
+   :language: ada
+   :linenos:
+
+In the procedure ``Aliasing`` below, ``X`` and ``Y`` designate the same memory
+cell. Modifying the cell through ``X`` modifies the value designated by
+``Y``, and after the cell is deallocated through ``X``, ``Y`` can no longer be
+dereferenced:
+
+.. literalinclude:: /examples/ug__pointers_explicit_reclamation/aliasing.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves all the checks of ``Aliasing``:
+
+.. literalinclude:: /examples/ug__pointers_explicit_reclamation/test.out
+   :language: none
+
+Auto-Reclaimed Pointers
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The units ``SPARK.Pointers.Auto_Reclaimed.Immutable``,
+``SPARK.Pointers.Auto_Reclaimed.Global_Memory`` and
+``SPARK.Pointers.Auto_Reclaimed.Separate_Memory`` provide pointers with
+aliasing whose designated memory cells are reclaimed automatically. They are
+generic in the type ``Object`` of the designated values, which can be
+indefinite and might be subject to ownership, and in a procedure ``Reclaim``:
+
+.. code-block:: ada
+
+   generic
+      type Object (<>) is private;
+      with procedure Reclaim (X : in out Object) is null;
+
+The procedure ``Reclaim`` should reclaim all the memory owned by its
+parameter. If ``Object`` is not subject to ownership, the default null
+procedure can be used. The designated values are reference counted: a memory
+cell is reclaimed, calling ``Reclaim`` on its value, when the last pointer
+designating it disappears. Reclamation does not appear in the model, so no
+memory leak is ever reported. However, reference counting does not reclaim
+cycles. For a cyclic data structure to be reclaimed, one edge of each cycle
+should use a weak handle (see below). This is not verified by |GNATprove|.
+
+In ``Immutable``, the designated values cannot be modified. As a result, there
+is no memory to reason about: a pointer is modelled by the value it designates,
+and two pointers designating equal values are logically equal. Pointers can
+only be compared to ``Null_Pointer`` using ``"="``. Pointers are created by
+instances of the generic function ``Create``, or by ``Create_Copy`` in the
+generic package ``Copy_Operations``. The designated value can be copied
+using ``Deref``, or accessed in place using ``Constant_Reference``:
+
+.. code-block:: ada
+
+   generic
+      type Input (<>) is private;
+      with function Create_Object (X : Input) return Object;
+   function Create (X : Input) return Pointer;
+
+   generic
+      with function Copy (O : Object) return Object;
+   package Copy_Operations is
+      function Create_Copy (O : Object) return Pointer;
+      function Deref (P : Pointer) return Object;
+   end Copy_Operations;
+
+   function Constant_Reference
+     (P : Pointer) return not null access constant Object;
+
+The units ``Auto_Reclaimed.Global_Memory`` and
+``Auto_Reclaimed.Separate_Memory`` have the same model and API as their
+counterparts in ``Explicit_Reclamation`` (see :ref:`Pointers with Explicit
+Reclamation`), except that there is no ``Dealloc`` procedure, and cells never
+disappear from the model. As a consequence, a memory object of
+``Separate_Memory`` which is not empty when it goes out of scope is not
+reported as a leak. In ``Global_Memory``, the memory is an abstract state,
+whose model is given by the function ``Model``.
+
+In all three units, the generic package ``Handle_Operations`` provides
+conversions between pointers and auto-reclaimed handles, to build recursive
+data structures (see below).
+
+As an example, the following package instantiates ``Global_Memory`` for
+integers:
+
+.. literalinclude:: /examples/ug__pointers_auto_reclaimed/int_pointers.ads
+   :language: ada
+   :linenos:
+
+As in the example of ``Explicit_Reclamation``, ``X`` and ``Y`` designate the
+same memory cell in the procedure ``Aliasing`` below, so modifying the cell
+through ``X`` modifies the value designated by ``Y``. There is no need to
+deallocate the cell, which is reclaimed when ``X`` and ``Y`` go out of scope:
+
+.. literalinclude:: /examples/ug__pointers_auto_reclaimed/aliasing.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves all the checks of ``Aliasing``:
+
+.. literalinclude:: /examples/ug__pointers_auto_reclaimed/test.out
+   :language: none
+
+Poisoned Pointers
+^^^^^^^^^^^^^^^^^
+
+The units ``SPARK.Pointers.Poisoned.Views`` and
+``SPARK.Pointers.Poisoned.Pointers`` lift restrictions on moves of the
+ownership policy of |SPARK| (see :ref:`Pointers Library`). Instead of
+rejecting a move, they represent the value that has been moved out of as
+poisoned: it cannot be read, but it is part of the model. As a result, a
+partially moved object is an ordinary value, which can be passed as a
+parameter, returned from a subprogram, and described in contracts. |GNATprove|
+verifies, by proof rather than by the borrow checker, that poisoned values are
+never read.
+
+Both units are generic in the type ``Object`` of the values, which might be
+subject to ownership, and in a ghost function ``Is_Reclaimed``, as the units of
+``Explicit_Reclamation`` (see :ref:`Pointers with Explicit Reclamation`). The
+ghost function ``Is_Poisoned`` returns whether a value is poisoned, and
+``Peek`` gives the value of a value which is not. The subtypes
+``Readable_View`` and ``Readable_Pointer`` only contain values which are not
+poisoned. Values of both units are subject to ownership and need reclamation:
+at the end of its scope, a value should either be poisoned or hold a
+reclaimed value. The procedure ``Move`` moves a value from its source to its
+target, which should be reclaimed, and the function ``Take`` returns the value
+of its parameter. Both leave the source poisoned:
+
+.. code-block:: ada
+
+   function Take (Source : in out View) return View;
+   procedure Move (Source : in out View; Target : in out View);
+
+Values which are not poisoned can be accessed in place using the traversal
+functions ``Constant_Reference`` and ``Reference``. The generic package
+``Array_Operations`` provides moves of elements and slices of arrays. As the
+source and the target of ``Move`` are both ``in out`` parameters, it cannot be
+used to move an element inside a single array. The procedure ``Relocate`` can be
+used instead:
+
+.. code-block:: ada
+
+   procedure Relocate
+     (A : in out View_Array; Source : Index_Type; Target : Index_Type);
+
+The unit ``Poisoned.Views`` lifts the restrictions locally, on an existing
+object or array, which should be definite. The function ``Get_View`` borrows it
+as a readable view:
+
+.. code-block:: ada
+
+   function Get_View
+     (X : aliased in out Object) return not null access Readable_View;
+
+The view should be readable again when the borrow ends. As the subtype
+predicate of ``Readable_View`` is checked after each call, the view can only be
+broken temporarily inside a subprogram with a formal parameter of type
+``View``, which should restore it before returning. Instances of the generic
+function ``Create`` build views of new values. They can be used to fill a
+poisoned view, or to build local views which do not correspond to an existing
+object.
+Versions of ``Take`` and ``Move`` move the value of a view out to an object,
+for example to insert it into another data structure:
+
+.. code-block:: ada
+
+   function Take (Source : in out View) return Object;
+   procedure Move (Source : in out View; Target : in out Object);
+
+There are no moves in the other direction, as the source object would still
+own its value. Views of new values are built using ``Create`` instead.
+
+The unit ``Poisoned.Pointers`` lifts the restrictions for all the objects of a
+type. It defines a new type ``Pointer`` of owning pointers, whose designated
+type can be indefinite. The null pointer ``Null_Pointer`` is never poisoned.
+Pointers are created by instances of the generic function ``Create`` and
+deallocated using the procedure ``Reclaim``. The generic package
+``Copy_Operations`` provides the functions ``Create_Copy`` and ``Deref``, and
+the procedure ``Assign``, which copy the designated value using its ``Copy``
+function. The package ``Handle_Operations`` provides conversions between
+pointers and owning handles, to build recursive data structures (see below).
+
+As an example, consider a procedure ``Replace`` which replaces the element at
+index ``I`` of an array ``A`` of access values by a new value, and returns the
+element which has been moved out in ``Old``. Written with regular access
+types, by moving ``A (I)`` to ``Old`` and assigning a new value to ``A (I)``,
+it is rejected by |GNATprove|: the borrow checker does not know which component
+of ``A`` is designated by ``I``, so assigning ``A (I)`` does not restore the
+component which has been moved out of ``A``. It can be written using
+``Poisoned.Views`` instead. The following package instantiates
+``Poisoned.Views`` for the access type, as well as its ``Array_Operations``
+package and its ``Create`` function:
+
+.. literalinclude:: /examples/ug__pointers_poisoned/acc_views.ads
+   :language: ada
+   :linenos:
+
+The procedure ``Replace`` below takes the view of the array ``A``. The moves
+are done in the procedure ``Replace_In_View``, whose parameter is of type
+``View_Array``, so that the view is readable again when the borrow ends:
+
+.. literalinclude:: /examples/ug__pointers_poisoned/replacing.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__pointers_poisoned/replacing.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves all the checks of ``Replacing``:
+
+.. literalinclude:: /examples/ug__pointers_poisoned/test.out
+   :language: none
+
+Handles
+^^^^^^^
+
+The designated type of a pointer unit must be complete when the unit is
+instantiated, so it cannot contain a component of the ``Pointer`` type of the
+instance. To build recursive data structures, the designated type can instead
+contain handles, declared before the instantiation. The package
+``Handle_Operations`` of the instance provides conversions between handles
+and pointers. The ghost function ``Valid_Handle`` states that a handle was
+obtained from a pointer of the instance. It is the precondition of the
+conversions from handles to pointers. Equality on handles is abstract.
+Handles should be compared using the ``"="`` function of
+``Handle_Operations``, when there is one. Handles are not initialized by
+default: a handle which does not designate anything can be obtained by
+converting ``Null_Pointer``.
+
+There are 3 units defining handles, each corresponding to a kind of pointer
+units:
+
+* ``SPARK.Pointers.Handles.Plain_Handles`` is used by the units of
+  ``Explicit_Reclamation``. The package ``Handle_Operations`` is a nested
+  package of the instance, providing the conversion functions ``To_Handle``
+  and ``Of_Handle``.
+
+* ``SPARK.Pointers.Handles.Owning_Handles`` is used by
+  ``Poisoned.Pointers``. Handles are subject to ownership and should be
+  reclaimed. The package ``Handle_Operations`` is a nested package of the
+  instance. It provides the traversal functions ``Constant_Reference`` and
+  ``Reference`` to access the pointer designated by a handle in place, which
+  requires handle components to be ``aliased``, and the generic function
+  ``Create_Handle`` to create a new handle.
+
+* ``SPARK.Pointers.Handles.Auto_Reclaimed_Handles`` is used by the units of
+  ``Auto_Reclaimed``. It provides two generic packages,
+  ``Without_Weak_Handles`` for ``Auto_Reclaimed.Immutable`` and
+  ``With_Weak_Handles`` for ``Auto_Reclaimed.Global_Memory`` and
+  ``Auto_Reclaimed.Separate_Memory``. The package ``Handle_Operations`` is a
+  generic package taking an instance of one of them as a parameter. The two
+  instances should have the same accessibility level.
+
+In ``With_Weak_Handles``, handles can be strong or weak. Strong handles are
+counted as references to the designated cell, but weak handles are not. As a
+result, weak handles can be used to break cycles in data structures, like the
+back pointers of a doubly linked list, so that they can be reclaimed
+automatically (see :ref:`Auto-Reclaimed Pointers`). As the cell designated by
+a weak handle might have been reclaimed, converting it back to a pointer or to
+a strong handle using ``Of_Weak_Handle`` or ``To_Strong_Handle`` might fail.
+In this case, these functions return ``Null_Pointer``. They are volatile
+functions, as reclamation is not part of the model. The generic package
+``Witnessed_Conversions`` provides deterministic versions of these functions,
+which cannot fail, by taking as a parameter a ``Witness`` function returning
+the pointer designated by the handle. This function is never called: being
+able to provide it shows that the designated cell is still alive.
+
+In ``Auto_Reclaimed.Immutable``, the package ``Handle_Operations`` also
+provides the generic packages ``Structural_Variant`` and
+``Multiway_Structural_Variant``. They are instantiated with a function
+``Next`` returning the handle components of a cell, and provide a ghost
+function ``Weight`` which decreases along the structure. It can be used in
+subprogram variants to prove the termination of recursive subprograms
+traversing the structure. It is correct because immutable structures cannot
+contain cycles.
+
+As an example, the following package instantiates ``Immutable`` for list
+cells containing a handle designating the next cell of the list, together
+with ``Structural_Variant``:
+
+.. literalinclude:: /examples/ug__pointers_handles/list_pointers.ads
+   :language: ada
+   :linenos:
+
+The package ``Int_Lists`` below uses these instances to define immutable
+lists of integers. The ghost function ``Valid_List`` states that all the
+handles of a list are valid. Its termination, and the termination of the
+function ``Contains``, are proved using the ``Weight`` function of
+``Structural_Variant``:
+
+.. literalinclude:: /examples/ug__pointers_handles/int_lists.ads
+   :language: ada
+   :linenos:
+
+|GNATprove| proves all the checks of ``Int_Lists``, including the subprogram
+variants of ``Valid_List`` and ``Contains``:
+
+.. literalinclude:: /examples/ug__pointers_handles/test.out
+   :language: none
+
+Model Helpers
+^^^^^^^^^^^^^
+
+The units ``SPARK.Pointers.Abstract_Maps`` and ``SPARK.Pointers.Abstract_Sets``
+define the maps and sets used in the models of the pointer library, like the
+memory maps and the footprints. Their types are null records, so they take no
+memory space and can be used in objects and parameters which cannot be ghost,
+like the memory objects. Only their constructors are executable, and they do
+nothing at run time. The functions querying their content are ghost and not
+executable. Abstract sets can also be constructed by comprehension: the
+function ``Elements`` returns the set of all the elements for which a given
+function returns True. Such a set might not be finite.
+
+The unit ``SPARK.Pointers.Abstract_Reachability`` is the counterpart of the
+``SPARK.Higher_Order.Reachability`` package (see
+:ref:`Linked Structures in Arrays`) for linked structures stored in an abstract
+map. It provides the
+same functions and lemmas. Its generic parameters are an instance of
+``Abstract_Maps``, the equality on keys, and a ghost function ``Next``
+returning the key of the next cell. Its formal set and sequence packages are
+ghost, so they should be instantiated in a ghost package.
+
 .. index:: lemma library
 
 SPARK Lemma Library

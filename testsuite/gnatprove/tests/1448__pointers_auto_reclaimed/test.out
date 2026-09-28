@@ -1,0 +1,24 @@
+test_auto_reclaimed.adb:24:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+test_auto_reclaimed.adb:39:14: info: aspect Always_Terminates on "Reclaim" has been proved, subprogram will terminate
+test_auto_reclaimed.adb:40:09: info: data dependencies proved
+test_auto_reclaimed.adb:40:52: info: postcondition proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:49:13: info: implicit aspect Always_Terminates on "Make" has been proved, subprogram will terminate
+test_auto_reclaimed.adb:62:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:63:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:64:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:64:22: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:65:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:65:22: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:69:32: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:70:32: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:71:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:71:22: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:79:35: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:92:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:92:22: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:93:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:93:22: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:93:47: info: pointer dereference check proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:94:22: info: assertion proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:94:22: info: precondition proved (CVC5: 1 VC)
+test_auto_reclaimed.adb:94:47: info: pointer dereference check proved (CVC5: 1 VC)

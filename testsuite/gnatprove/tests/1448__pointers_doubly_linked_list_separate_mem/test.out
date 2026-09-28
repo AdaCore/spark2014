@@ -1,0 +1,311 @@
+doubly_linked_list_separate_mem.adb:27:11: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:27:11: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list_separate_mem.adb:56:13: info: implicit aspect Always_Terminates on "Copy_Cell" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:66:13: info: implicit aspect Always_Terminates on "Cell_Next" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:67:38: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:68:26: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:104
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:114
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:130
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:157
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:176
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:227
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:231
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:245
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:249
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:273
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:277
+doubly_linked_list_separate_mem.adb:82:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:97
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:104, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:104, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-pointers-abstract_reachability.ads:176, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-pointers-abstract_reachability.ads:176, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:130, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:130, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:231, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:231, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-pointers-abstract_reachability.ads:277, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-pointers-abstract_reachability.ads:277, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:249, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:249, instance at line 82
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:82:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list_separate_mem.adb:97:06: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:99:16: info: postcondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:99:24: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:99:47: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:105:27: info: assertion proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:105:35: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:105:66: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:108:13: info: implicit aspect Always_Terminates on "Valid_Sublist" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:108:13: warning: "Valid_Sublist" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+doubly_linked_list_separate_mem.adb:113:34: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:115:17: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:115:35: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:118:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:118:49: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:120:33: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:120:41: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:120:59: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:122:19: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:122:25: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:122:33: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:122:51: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:124:19: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:124:19: info: subprogram variant proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:124:34: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:124:52: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:127:06: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:130:58: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:132:22: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:134:08: info: postcondition proved (CVC5: 6 VC; Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:140:24: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:141:19: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:141:37: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:143:32: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:144:30: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:144:65: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:146:30: info: range check proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:146:44: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:153:06: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:158:22: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:162:28: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:162:69: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:163:17: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:165:29: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:167:36: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:168:22: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:168:39: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:168:41: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:172:32: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:173:27: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:173:44: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:173:46: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:175:08: info: postcondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:175:13: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:175:42: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:177:30: info: range check proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:177:44: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:184:18: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:184:36: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:186:10: info: precondition proved (CVC5: 11 VC; Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:186:10: info: subprogram variant proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:187:13: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:187:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:195:06: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:203:22: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:204:22: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:205:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:206:17: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:207:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:208:17: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:209:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:210:17: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:210:23: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:211:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:212:17: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:212:35: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:214:29: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:216:36: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:217:39: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:217:56: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:217:58: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:218:36: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:219:22: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:219:39: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:219:41: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:221:29: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:223:36: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:224:22: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:224:39: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:224:41: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:225:36: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:226:39: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:226:56: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:226:58: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:228:12: info: postcondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:228:17: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:228:47: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:230:34: info: range check proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:230:48: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:237:15: info: precondition proved (CVC5: 6 VC)
+doubly_linked_list_separate_mem.adb:238:10: info: precondition proved (CVC5: 11 VC; Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:240:10: info: precondition proved (CVC5: 20 VC; Trivial: 2 VC)
+doubly_linked_list_separate_mem.adb:240:10: info: subprogram variant proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:241:13: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:241:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:245:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:248:22: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:252:28: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:253:23: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:253:29: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:255:17: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:255:41: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:256:48: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:257:26: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:271:13: info: implicit aspect Always_Terminates on "In_List" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:274:22: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:275:26: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:277:13: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:279:06: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:280:62: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:281:27: info: postcondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:281:27: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:283:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:285:06: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:289:11: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:289:25: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:289:43: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:290:29: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:294:21: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:294:35: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:295:23: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:295:37: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:298:13: info: implicit aspect Always_Terminates on "Previous" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:300:06: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:304:11: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:304:29: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:304:35: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:311:27: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:312:27: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:313:29: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:313:43: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:319:43: info: loop invariant initialization proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:319:43: info: loop invariant preservation proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:321:38: info: loop invariant initialization proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:321:38: info: loop invariant preservation proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:321:43: info: precondition proved (CVC5: 6 VC)
+doubly_linked_list_separate_mem.adb:321:69: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:325:28: info: loop variant proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:326:28: info: range check proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:326:42: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list_separate_mem.adb:331:18: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:334:38: info: assertion proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:334:38: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:335:38: info: assertion proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:335:43: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:339:37: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:341:18: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list_separate_mem.adb:342:38: info: assertion proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:343:38: info: assertion proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:343:43: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:343:69: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:352:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:352:49: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:354:12: info: precondition proved (CVC5: 7 VC)
+doubly_linked_list_separate_mem.adb:354:50: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:355:12: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list_separate_mem.adb:357:15: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list_separate_mem.adb:365:06: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:368:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:370:22: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:371:17: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:373:22: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:376:08: info: postcondition proved (CVC5: 4 VC)
+doubly_linked_list_separate_mem.adb:376:22: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:377:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:377:37: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:378:22: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:378:40: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:378:46: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:379:28: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:379:36: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:379:42: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:381:30: info: range check proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:381:44: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:385:26: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:386:10: info: precondition proved (CVC5: 8 VC)
+doubly_linked_list_separate_mem.adb:386:10: info: subprogram variant proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:386:42: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:393:10: info: precondition proved (CVC5: 8 VC)
+doubly_linked_list_separate_mem.adb:393:40: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:396:38: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:396:55: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:399:18: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list_separate_mem.adb:400:18: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list_separate_mem.adb:412:06: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:417:11: info: postcondition proved (CVC5: 5 VC; Z3: 4 VC)
+doubly_linked_list_separate_mem.adb:425:07: info: initialization of "New_Head" proved
+doubly_linked_list_separate_mem.adb:438:36: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:440:13: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:450:15: info: precondition proved (CVC5: 6 VC)
+doubly_linked_list_separate_mem.adb:451:10: info: precondition proved (CVC5: 11 VC; Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:451:51: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:461:13: info: implicit aspect Always_Terminates on "Sum_Forward" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:462:09: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:469:43: info: loop invariant initialization proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:469:43: info: loop invariant preservation proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:473:28: info: loop variant proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:474:28: info: range check proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:474:42: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list_separate_mem.adb:475:15: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:475:35: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:476:15: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:481:13: info: implicit aspect Always_Terminates on "Sum_Backward" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:482:09: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:486:26: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:489:15: info: precondition proved (CVC5: 10 VC)
+doubly_linked_list_separate_mem.adb:490:10: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:491:18: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list_separate_mem.adb:492:18: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list_separate_mem.adb:493:43: info: loop invariant initialization proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:493:43: info: loop invariant preservation proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:497:28: info: loop variant proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:498:28: info: predicate check proved (Trivial: 2 VC)
+doubly_linked_list_separate_mem.adb:498:42: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list_separate_mem.adb:499:20: info: range check proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:499:30: info: predicate check proved (Trivial: 2 VC)
+doubly_linked_list_separate_mem.adb:499:44: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list_separate_mem.adb:500:15: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list_separate_mem.adb:500:35: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:501:15: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:526:06: info: data dependencies proved
+doubly_linked_list_separate_mem.adb:533:11: medium: in inlined expression function body at doubly_linked_list_separate_mem.adb:256
+doubly_linked_list_separate_mem.adb:533:11: medium: postcondition might fail, cannot prove Reach.Reachable (L.First, +L.Memory, A)
+doubly_linked_list_separate_mem.adb:537:16: info: implicit aspect Always_Terminates on "In_L2_From" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:537:16: warning: "In_L2_From" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+doubly_linked_list_separate_mem.adb:543:14: info: postcondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:545:31: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:549:25: info: range check proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:549:39: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:554:15: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list_separate_mem.adb:555:15: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list_separate_mem.adb:563:15: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:563:33: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:569:18: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list_separate_mem.adb:571:13: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:572:21: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:573:21: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:574:20: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:574:20: info: subprogram variant proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:578:16: info: implicit aspect Always_Terminates on "In_L2" has been proved, subprogram will terminate
+doubly_linked_list_separate_mem.adb:580:20: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:584:22: info: postcondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:586:31: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list_separate_mem.adb:603:10: info: initialization of "M_Old" proved
+doubly_linked_list_separate_mem.adb:604:43: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list_separate_mem.adb:610:10: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:610:45: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:610:55: info: precondition of target is strong enough to imply precondition of source (CVC5: 7 VC)
+doubly_linked_list_separate_mem.adb:611:15: info: precondition proved (CVC5: 6 VC)
+doubly_linked_list_separate_mem.adb:612:10: info: precondition proved (CVC5: 10 VC; Trivial: 1 VC; Z3: 1 VC)
+doubly_linked_list_separate_mem.adb:613:15: info: precondition proved (CVC5: 3 VC; Z3: 3 VC)
+doubly_linked_list_separate_mem.adb:614:10: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC; Z3: 8 VC)
+doubly_linked_list_separate_mem.adb:614:51: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:617:10: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:620:14: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list_separate_mem.adb:622:10: info: precondition proved (Z3: 1 VC)
+doubly_linked_list_separate_mem.adb:625:14: info: precondition proved (Z3: 1 VC)
+doubly_linked_list_separate_mem.adb:628:15: info: precondition proved (CVC5: 5 VC; Trivial: 1 VC; Z3: 7 VC)
+doubly_linked_list_separate_mem.adb:630:10: medium: precondition might fail
+doubly_linked_list_separate_mem.adb:631:41: info: precondition proved (CVC5: 1 VC)

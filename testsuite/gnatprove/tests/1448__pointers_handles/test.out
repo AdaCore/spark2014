@@ -1,0 +1,27 @@
+test_handles.adb:35:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+test_handles.adb:50:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+test_handles.adb:60:13: info: implicit aspect Always_Terminates on "Leaf" has been proved, subprogram will terminate
+test_handles.adb:62:06: info: data dependencies proved
+test_handles.adb:63:16: info: postcondition proved (CVC5: 2 VC)
+test_handles.adb:65:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_handles.adb:65:07: info: initialization of "C" proved
+test_handles.adb:93:32: info: assertion proved (CVC5: 1 VC)
+test_handles.adb:94:32: info: assertion proved (CVC5: 1 VC)
+test_handles.adb:95:32: info: assertion proved (CVC5: 1 VC)
+test_handles.adb:100:57: info: precondition proved (CVC5: 1 VC)
+test_handles.adb:102:25: info: assertion proved (CVC5: 1 VC)
+test_handles.adb:103:25: info: assertion proved (CVC5: 1 VC)
+test_handles.adb:103:37: info: precondition proved (CVC5: 1 VC)
+test_handles.adb:109:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_handles.adb:109:07: info: initialization of "C" proved
+test_handles.adb:113:32: info: assertion proved (CVC5: 1 VC)
+test_handles.adb:114:32: info: assertion proved (CVC5: 1 VC)
+test_handles.adb:116:20: info: assertion proved (CVC5: 1 VC)
+test_handles.adb:122:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_handles.adb:124:32: info: assertion proved (CVC5: 1 VC)
+test_handles.adb:128:10: info: assertion proved (CVC5: 1 VC)
+test_handles.adb:128:21: info: precondition proved (CVC5: 1 VC)
+test_handles.adb:128:42: info: precondition proved (CVC5: 1 VC)
+test_handles.adb:128:65: info: predicate check proved (CVC5: 1 VC)
+test_handles.adb:134:62: info: precondition proved (CVC5: 1 VC)
+test_handles.adb:136:21: info: precondition proved (CVC5: 2 VC)

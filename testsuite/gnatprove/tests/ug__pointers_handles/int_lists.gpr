@@ -1,0 +1,17 @@
+with "sparklib";
+
+project Int_Lists is
+
+   package Builder is
+      for Global_Configuration_Pragmas use "test.adc";
+   end Builder;
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnat2022");
+   end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--report=all", "-u", "int_lists.ads");
+   end Prove;
+
+end Int_Lists;

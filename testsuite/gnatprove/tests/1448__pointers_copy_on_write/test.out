@@ -1,0 +1,80 @@
+copy_on_write.adb:22:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+copy_on_write.adb:23:26: info: data dependencies proved
+copy_on_write.adb:30:13: info: implicit aspect Always_Terminates on "Copy_Cell" has been proved, subprogram will terminate
+copy_on_write.adb:30:58: info: data dependencies proved
+copy_on_write.adb:43:13: info: implicit aspect Always_Terminates on "In_Memory" has been proved, subprogram will terminate
+copy_on_write.adb:45:26: info: data dependencies proved
+copy_on_write.adb:47:13: info: implicit aspect Always_Terminates on "Value" has been proved, subprogram will terminate
+copy_on_write.adb:48:08: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:49:26: info: data dependencies proved
+copy_on_write.adb:51:13: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate
+copy_on_write.adb:52:08: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:53:26: info: data dependencies proved
+copy_on_write.adb:55:13: info: implicit aspect Always_Terminates on "Shares" has been proved, subprogram will terminate
+copy_on_write.adb:57:26: info: data dependencies proved
+copy_on_write.adb:66:56: info: initialization of "C" proved
+copy_on_write.adb:68:06: info: data dependencies proved
+copy_on_write.adb:71:11: info: postcondition proved (CVC5: 10 VC; Trivial: 1 VC)
+copy_on_write.adb:72:20: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:73:20: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:74:56: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:78:60: info: initialization of "D" proved
+copy_on_write.adb:80:06: info: data dependencies proved
+copy_on_write.adb:81:54: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:84:11: info: postcondition proved (CVC5: 11 VC; Trivial: 1 VC)
+copy_on_write.adb:86:20: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:86:36: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:87:20: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:87:36: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:87:67: info: overflow check proved (CVC5: 2 VC)
+copy_on_write.adb:90:53: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:96:06: info: data dependencies proved
+copy_on_write.adb:100:11: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC; Z3: 2 VC)
+copy_on_write.adb:101:20: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:102:20: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:108:29: info: precondition proved (Z3: 1 VC)
+copy_on_write.adb:109:31: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:113:12: info: contract case proved (CVC5: 5 VC; Trivial: 2 VC)
+copy_on_write.adb:113:12: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:117:51: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:118:12: info: contract case proved (CVC5: 6 VC; Trivial: 2 VC)
+copy_on_write.adb:122:54: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:123:51: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:125:18: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:126:20: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:130:06: info: data dependencies proved
+copy_on_write.adb:131:06: info: flow dependencies proved
+copy_on_write.adb:133:35: info: postcondition proved (CVC5: 1 VC)
+copy_on_write.adb:136:12: info: contract case proved (CVC5: 7 VC; Trivial: 2 VC)
+copy_on_write.adb:136:12: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:138:52: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:141:12: info: contract case proved (CVC5: 7 VC; Trivial: 2 VC)
+copy_on_write.adb:144:51: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:157:46: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:159:30: info: overflow check proved (CVC5: 2 VC)
+copy_on_write.adb:166:30: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:170:52: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:180:55: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:182:39: info: range check proved (CVC5: 2 VC)
+copy_on_write.adb:190:30: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:193:10: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:196:52: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:198:36: info: range check proved (CVC5: 2 VC)
+copy_on_write.adb:211:06: info: data dependencies proved
+copy_on_write.adb:213:27: info: postcondition proved (CVC5: 1 VC)
+copy_on_write.adb:215:07: info: initialization of "A" proved
+copy_on_write.adb:215:10: info: initialization of "B" proved
+copy_on_write.adb:218:07: info: precondition proved (CVC5: 2 VC)
+copy_on_write.adb:221:32: info: assertion proved (CVC5: 1 VC)
+copy_on_write.adb:222:32: info: assertion proved (CVC5: 1 VC)
+copy_on_write.adb:222:32: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:224:07: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:227:32: info: assertion proved (CVC5: 1 VC)
+copy_on_write.adb:228:32: info: assertion proved (CVC5: 1 VC)
+copy_on_write.adb:228:32: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:229:32: info: assertion proved (CVC5: 1 VC)
+copy_on_write.adb:229:32: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:230:32: info: assertion proved (CVC5: 1 VC)
+copy_on_write.adb:230:32: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:232:07: info: precondition proved (CVC5: 1 VC)
+copy_on_write.adb:233:07: info: precondition proved (CVC5: 1 VC)

@@ -1,0 +1,92 @@
+persistent_tree.adb:40:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+persistent_tree.adb:40:61: info: data dependencies proved
+persistent_tree.adb:43:13: info: implicit aspect Always_Terminates on "Child_Of" has been proved, subprogram will terminate
+persistent_tree.adb:45:22: info: dynamic accessibility check proved (Trivial)
+persistent_tree.adb:46:09: info: data dependencies proved
+persistent_tree.adb:48:04: warning: "Weight" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+persistent_tree.adb:48:04: warning: in instantiation at spark-pointers-auto_reclaimed-immutable.ads:215
+persistent_tree.adb:53:13: info: implicit aspect Always_Terminates on "Valid_Tree" has been proved, subprogram will terminate
+persistent_tree.adb:53:13: warning: "Valid_Tree" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
+persistent_tree.adb:57:37: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:57:64: info: pointer dereference check proved (CVC5: 1 VC)
+persistent_tree.adb:58:22: info: subprogram variant proved (CVC5: 1 VC)
+persistent_tree.adb:59:25: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:59:46: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:59:73: info: pointer dereference check proved (CVC5: 1 VC)
+persistent_tree.adb:62:06: info: data dependencies proved
+persistent_tree.adb:63:49: info: range check proved (CVC5: 1 VC)
+persistent_tree.adb:65:13: info: implicit aspect Always_Terminates on "Child" has been proved, subprogram will terminate
+persistent_tree.adb:66:08: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:66:29: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:66:56: info: pointer dereference check proved (CVC5: 1 VC)
+persistent_tree.adb:68:06: info: data dependencies proved
+persistent_tree.adb:70:27: info: postcondition proved (CVC5: 1 VC)
+persistent_tree.adb:72:13: info: implicit aspect Always_Terminates on "Value_Of" has been proved, subprogram will terminate
+persistent_tree.adb:73:08: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:74:09: info: data dependencies proved
+persistent_tree.adb:79:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
+persistent_tree.adb:79:13: warning: "Size" is recursive; its body and implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+persistent_tree.adb:81:26: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+persistent_tree.adb:82:13: info: predicate check proved (Trivial: 1 VC)
+persistent_tree.adb:82:17: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:82:17: info: predicate check proved (Trivial: 1 VC)
+persistent_tree.adb:82:17: info: subprogram variant proved (CVC5: 1 VC)
+persistent_tree.adb:82:23: info: precondition proved (CVC5: 2 VC)
+persistent_tree.adb:82:40: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+persistent_tree.adb:82:42: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:82:42: info: predicate check proved (Trivial: 1 VC)
+persistent_tree.adb:82:42: info: subprogram variant proved (CVC5: 1 VC)
+persistent_tree.adb:82:48: info: precondition proved (CVC5: 2 VC)
+persistent_tree.adb:85:06: info: data dependencies proved
+persistent_tree.adb:87:49: info: range check proved (CVC5: 1 VC)
+persistent_tree.adb:92:13: info: implicit aspect Always_Terminates on "Member" has been proved, subprogram will terminate
+persistent_tree.adb:92:13: warning: "Member" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
+persistent_tree.adb:94:18: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:95:26: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:95:26: info: subprogram variant proved (CVC5: 1 VC)
+persistent_tree.adb:95:34: info: precondition proved (CVC5: 2 VC)
+persistent_tree.adb:96:26: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:96:26: info: subprogram variant proved (CVC5: 1 VC)
+persistent_tree.adb:96:34: info: precondition proved (CVC5: 2 VC)
+persistent_tree.adb:98:06: info: data dependencies proved
+persistent_tree.adb:100:60: info: range check proved (CVC5: 1 VC)
+persistent_tree.adb:104:13: info: implicit aspect Always_Terminates on "Leaf" has been proved, subprogram will terminate
+persistent_tree.adb:109:06: info: data dependencies proved
+persistent_tree.adb:111:20: info: postcondition proved (CVC5: 2 VC)
+persistent_tree.adb:114:13: info: implicit aspect Always_Terminates on "Node_Of" has been proved, subprogram will terminate
+persistent_tree.adb:119:06: info: data dependencies proved
+persistent_tree.adb:122:20: info: postcondition proved (CVC5: 5 VC)
+persistent_tree.adb:125:20: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:126:32: info: precondition proved (CVC5: 2 VC)
+persistent_tree.adb:127:32: info: precondition proved (CVC5: 2 VC)
+persistent_tree.adb:134:06: info: data dependencies proved
+persistent_tree.adb:138:32: info: precondition proved (CVC5: 2 VC)
+persistent_tree.adb:139:32: info: precondition proved (CVC5: 2 VC)
+persistent_tree.adb:141:32: info: assertion proved (CVC5: 1 VC)
+persistent_tree.adb:141:44: info: precondition proved (CVC5: 2 VC)
+persistent_tree.adb:142:32: info: assertion proved (CVC5: 1 VC)
+persistent_tree.adb:142:44: info: precondition proved (CVC5: 2 VC)
+persistent_tree.adb:143:32: info: assertion proved (CVC5: 1 VC)
+persistent_tree.adb:144:32: info: assertion proved (CVC5: 1 VC)
+persistent_tree.adb:144:32: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:144:32: info: predicate check proved (Trivial: 1 VC)
+persistent_tree.adb:144:44: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:144:44: info: predicate check proved (Trivial: 1 VC)
+persistent_tree.adb:144:55: info: predicate check proved (Trivial: 1 VC)
+persistent_tree.adb:145:32: info: assertion proved (CVC5: 1 VC)
+persistent_tree.adb:145:32: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:145:32: info: predicate check proved (Trivial: 1 VC)
+persistent_tree.adb:145:44: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:145:44: info: predicate check proved (Trivial: 1 VC)
+persistent_tree.adb:145:55: info: predicate check proved (Trivial: 1 VC)
+persistent_tree.adb:148:28: info: precondition proved (CVC5: 2 VC)
+persistent_tree.adb:151:29: info: assertion proved (CVC5: 1 VC)
+persistent_tree.adb:152:29: info: assertion proved (CVC5: 1 VC)
+persistent_tree.adb:152:29: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:152:29: info: predicate check proved (Trivial: 1 VC)
+persistent_tree.adb:152:40: info: predicate check proved (Trivial: 1 VC)
+persistent_tree.adb:153:19: info: assertion proved (CVC5: 1 VC)
+persistent_tree.adb:153:19: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:154:19: info: assertion proved (CVC5: 1 VC)
+persistent_tree.adb:154:23: info: precondition proved (CVC5: 1 VC)
+persistent_tree.adb:155:04: info: precondition proved (CVC5: 2 VC)

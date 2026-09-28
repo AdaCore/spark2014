@@ -1,0 +1,74 @@
+persistent_list.adb:41:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+persistent_list.adb:41:55: info: data dependencies proved
+persistent_list.adb:48:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+persistent_list.adb:49:40: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:50:09: info: data dependencies proved
+persistent_list.adb:52:13: info: implicit aspect Always_Terminates on "Head" has been proved, subprogram will terminate
+persistent_list.adb:53:08: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:54:09: info: data dependencies proved
+persistent_list.adb:59:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
+persistent_list.adb:59:13: warning: "Valid_List" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
+persistent_list.adb:61:31: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:62:34: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:62:45: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:64:26: info: subprogram variant proved (CVC5: 1 VC)
+persistent_list.adb:64:38: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:64:49: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:67:06: info: data dependencies proved
+persistent_list.adb:70:13: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
+persistent_list.adb:71:08: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:71:19: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:73:06: info: data dependencies proved
+persistent_list.adb:83:13: info: implicit aspect Always_Terminates on "Shares_Tail" has been proved, subprogram will terminate
+persistent_list.adb:84:08: info: precondition proved (CVC5: 2 VC)
+persistent_list.adb:84:24: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:85:24: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:88:06: info: data dependencies proved
+persistent_list.adb:99:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
+persistent_list.adb:101:09: info: data dependencies proved
+persistent_list.adb:101:33: info: postcondition proved (CVC5: 1 VC)
+persistent_list.adb:103:13: info: implicit aspect Always_Terminates on "Cons" has been proved, subprogram will terminate
+persistent_list.adb:105:06: info: data dependencies proved
+persistent_list.adb:111:11: info: postcondition proved (CVC5: 5 VC)
+persistent_list.adb:112:54: info: overflow check proved (CVC5: 2 VC)
+persistent_list.adb:113:20: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:116:32: info: precondition proved (CVC5: 2 VC)
+persistent_list.adb:120:40: info: overflow check proved (CVC5: 2 VC)
+persistent_list.adb:126:13: info: implicit aspect Always_Terminates on "Nth" has been proved, subprogram will terminate
+persistent_list.adb:128:06: info: data dependencies proved
+persistent_list.adb:137:13: info: implicit aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+persistent_list.adb:137:13: warning: "Append" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+persistent_list.adb:139:06: info: data dependencies proved
+persistent_list.adb:141:54: info: overflow check proved (CVC5: 2 VC)
+persistent_list.adb:145:11: info: postcondition proved (CVC5: 2 VC)
+persistent_list.adb:145:48: info: overflow check proved (CVC5: 2 VC)
+persistent_list.adb:155:30: info: loop invariant initialization proved (CVC5: 2 VC)
+persistent_list.adb:155:30: info: loop invariant preservation proved (CVC5: 2 VC)
+persistent_list.adb:156:23: info: loop invariant initialization proved (CVC5: 1 VC)
+persistent_list.adb:156:23: info: loop invariant preservation proved (CVC5: 1 VC)
+persistent_list.adb:157:31: info: loop variant proved (CVC5: 1 VC)
+persistent_list.adb:158:15: info: precondition proved (CVC5: 2 VC)
+persistent_list.adb:159:17: info: range check proved (CVC5: 2 VC)
+persistent_list.adb:161:14: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:167:13: info: precondition proved (CVC5: 2 VC)
+persistent_list.adb:167:19: info: precondition proved (CVC5: 1 VC)
+persistent_list.adb:167:30: info: precondition proved (CVC5: 3 VC)
+persistent_list.adb:167:30: info: subprogram variant proved (CVC5: 1 VC)
+persistent_list.adb:167:38: info: precondition proved (CVC5: 2 VC)
+persistent_list.adb:178:06: info: data dependencies proved
+persistent_list.adb:183:32: info: precondition proved (CVC5: 2 VC)
+persistent_list.adb:184:32: info: precondition proved (CVC5: 2 VC)
+persistent_list.adb:186:33: info: assertion proved (CVC5: 1 VC)
+persistent_list.adb:186:58: info: overflow check proved (CVC5: 2 VC)
+persistent_list.adb:187:33: info: assertion proved (CVC5: 1 VC)
+persistent_list.adb:187:58: info: overflow check proved (CVC5: 2 VC)
+persistent_list.adb:190:32: info: assertion proved (CVC5: 1 VC)
+persistent_list.adb:190:44: info: precondition proved (CVC5: 2 VC)
+persistent_list.adb:191:32: info: assertion proved (CVC5: 1 VC)
+persistent_list.adb:191:44: info: precondition proved (CVC5: 2 VC)
+persistent_list.adb:195:32: info: assertion proved (CVC5: 1 VC)
+persistent_list.adb:195:32: info: precondition proved (CVC5: 4 VC)
+persistent_list.adb:198:32: info: assertion proved (CVC5: 1 VC)
+persistent_list.adb:215:06: info: data dependencies proved
+persistent_list.adb:220:20: info: precondition proved (CVC5: 2 VC)
+persistent_list.adb:223:32: info: assertion proved (CVC5: 1 VC)

@@ -1,332 +1,362 @@
-example_recursive.adb:20:13: info: implicit aspect Always_Terminates on "Valid_Memory" has been proved, subprogram will terminate
-example_recursive.adb:21:25: info: precondition proved
-example_recursive.adb:31:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
-example_recursive.adb:31:13: warning: "Valid_List" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
-example_recursive.adb:35:18: info: precondition proved
-example_recursive.adb:35:18: info: subprogram variant proved
-example_recursive.adb:35:47: info: precondition proved
-example_recursive.adb:35:47: info: tag check proved
-example_recursive.adb:35:65: info: range check proved
-example_recursive.adb:37:06: info: data dependencies proved
-example_recursive.adb:47:06: info: data dependencies proved
-example_recursive.adb:48:39: info: precondition proved
-example_recursive.adb:48:70: info: precondition proved
-example_recursive.adb:49:14: info: postcondition proved
-example_recursive.adb:55:10: info: precondition proved
-example_recursive.adb:55:10: info: subprogram variant proved
-example_recursive.adb:55:53: info: precondition proved
-example_recursive.adb:55:53: info: tag check proved
-example_recursive.adb:55:72: info: range check proved
-example_recursive.adb:55:80: info: range check proved
-example_recursive.adb:59:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
-example_recursive.adb:60:07: info: precondition proved
-example_recursive.adb:61:09: info: data dependencies proved
-example_recursive.adb:65:13: info: implicit aspect Always_Terminates on "Reachable" has been proved, subprogram will terminate
-example_recursive.adb:65:13: warning: "Reachable" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
-example_recursive.adb:68:18: info: precondition proved
-example_recursive.adb:68:18: info: subprogram variant proved
-example_recursive.adb:68:46: info: precondition proved
-example_recursive.adb:68:46: info: tag check proved
-example_recursive.adb:68:64: info: range check proved
-example_recursive.adb:70:06: info: data dependencies proved
-example_recursive.adb:72:39: info: precondition proved
-example_recursive.adb:80:06: info: data dependencies proved
-example_recursive.adb:81:39: info: precondition proved
-example_recursive.adb:81:71: info: precondition proved
-example_recursive.adb:82:15: info: precondition proved
-example_recursive.adb:83:15: info: precondition proved
-example_recursive.adb:84:14: info: postcondition proved
-example_recursive.adb:84:14: info: precondition proved
-example_recursive.adb:90:10: info: precondition proved
-example_recursive.adb:93:10: info: precondition proved
-example_recursive.adb:93:10: info: subprogram variant proved
-example_recursive.adb:93:51: info: precondition proved
-example_recursive.adb:93:51: info: tag check proved
-example_recursive.adb:93:78: info: range check proved
-example_recursive.adb:102:06: info: data dependencies proved
-example_recursive.adb:103:67: info: precondition proved
-example_recursive.adb:105:22: info: precondition proved
-example_recursive.adb:106:47: info: precondition proved
-example_recursive.adb:106:61: info: precondition proved
-example_recursive.adb:107:14: info: postcondition proved
-example_recursive.adb:107:14: info: precondition proved
-example_recursive.adb:113:10: info: precondition proved
-example_recursive.adb:113:10: info: subprogram variant proved
-example_recursive.adb:113:50: info: precondition proved
-example_recursive.adb:113:50: info: tag check proved
-example_recursive.adb:113:69: info: range check proved
-example_recursive.adb:122:06: info: data dependencies proved
-example_recursive.adb:123:67: info: precondition proved
-example_recursive.adb:125:22: info: precondition proved
-example_recursive.adb:126:47: info: precondition proved
-example_recursive.adb:126:61: info: precondition proved
-example_recursive.adb:127:14: info: postcondition proved
-example_recursive.adb:127:44: info: precondition proved
-example_recursive.adb:127:70: info: precondition proved
-example_recursive.adb:131:10: info: precondition proved
-example_recursive.adb:131:10: info: subprogram variant proved
-example_recursive.adb:131:50: info: precondition proved
-example_recursive.adb:131:50: info: tag check proved
-example_recursive.adb:131:69: info: range check proved
-example_recursive.adb:133:07: info: precondition proved
-example_recursive.adb:141:06: info: data dependencies proved
-example_recursive.adb:143:15: info: precondition proved
-example_recursive.adb:143:48: info: precondition proved
-example_recursive.adb:144:15: info: precondition proved
-example_recursive.adb:145:19: info: precondition proved
-example_recursive.adb:146:15: info: precondition proved
-example_recursive.adb:150:15: info: precondition proved
-example_recursive.adb:151:32: info: precondition proved
-example_recursive.adb:151:32: info: tag check proved
-example_recursive.adb:152:28: info: overflow check proved
-example_recursive.adb:153:14: info: postcondition proved
-example_recursive.adb:153:14: info: precondition proved
-example_recursive.adb:153:33: info: overflow check proved
-example_recursive.adb:157:10: info: precondition proved
-example_recursive.adb:159:10: info: precondition proved
-example_recursive.adb:159:10: info: subprogram variant proved
-example_recursive.adb:159:47: info: precondition proved
-example_recursive.adb:159:47: info: tag check proved
-example_recursive.adb:159:75: info: range check proved
-example_recursive.adb:160:25: info: assertion proved
-example_recursive.adb:160:25: info: precondition proved
-example_recursive.adb:160:44: info: overflow check proved
-example_recursive.adb:170:06: info: data dependencies proved
-example_recursive.adb:172:15: info: precondition proved
-example_recursive.adb:172:48: info: precondition proved
-example_recursive.adb:173:15: info: precondition proved
-example_recursive.adb:174:19: info: precondition proved
-example_recursive.adb:175:15: info: precondition proved
-example_recursive.adb:179:15: info: precondition proved
-example_recursive.adb:180:32: info: precondition proved
-example_recursive.adb:180:32: info: tag check proved
-example_recursive.adb:181:28: info: overflow check proved
-example_recursive.adb:182:14: info: postcondition proved
-example_recursive.adb:182:44: info: precondition proved
-example_recursive.adb:182:62: info: overflow check proved
-example_recursive.adb:183:16: info: precondition proved
-example_recursive.adb:183:45: info: precondition proved
-example_recursive.adb:187:10: info: precondition proved
-example_recursive.adb:189:10: info: precondition proved
-example_recursive.adb:189:10: info: subprogram variant proved
-example_recursive.adb:189:47: info: precondition proved
-example_recursive.adb:189:47: info: tag check proved
-example_recursive.adb:189:75: info: range check proved
-example_recursive.adb:191:07: info: precondition proved
-example_recursive.adb:194:13: info: implicit aspect Always_Terminates on "Disjoint" has been proved, subprogram will terminate
-example_recursive.adb:196:13: info: precondition proved
-example_recursive.adb:197:19: info: precondition proved
-example_recursive.adb:198:09: info: data dependencies proved
-example_recursive.adb:200:44: info: precondition proved
-example_recursive.adb:200:69: info: precondition proved
-example_recursive.adb:202:13: info: implicit aspect Always_Terminates on "Reachable_Locations" has been proved, subprogram will terminate
-example_recursive.adb:203:33: info: precondition proved
-example_recursive.adb:205:39: info: precondition proved
-example_recursive.adb:209:13: info: implicit aspect Always_Terminates on "Reachable_Locations" has been proved, subprogram will terminate
+example_recursive.adb:19:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+example_recursive.adb:23:13: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
+example_recursive.adb:31:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+example_recursive.adb:33:20: info: precondition proved
+example_recursive.adb:37:13: info: implicit aspect Always_Terminates on "Valid_Memory" has been proved, subprogram will terminate
+example_recursive.adb:38:39: info: precondition proved
+example_recursive.adb:49:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
+example_recursive.adb:49:13: warning: "Valid_List" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
+example_recursive.adb:53:18: info: precondition proved
+example_recursive.adb:53:18: info: subprogram variant proved
+example_recursive.adb:53:30: info: precondition proved
+example_recursive.adb:53:41: info: precondition proved
+example_recursive.adb:53:58: info: range check proved
+example_recursive.adb:55:06: info: data dependencies proved
+example_recursive.adb:65:06: info: data dependencies proved
+example_recursive.adb:66:39: info: precondition proved
+example_recursive.adb:66:70: info: precondition proved
+example_recursive.adb:67:14: info: postcondition proved
+example_recursive.adb:73:10: info: precondition proved
+example_recursive.adb:73:10: info: subprogram variant proved
+example_recursive.adb:73:36: info: precondition proved
+example_recursive.adb:73:47: info: precondition proved
+example_recursive.adb:73:65: info: range check proved
+example_recursive.adb:73:73: info: range check proved
+example_recursive.adb:77:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
+example_recursive.adb:78:07: info: precondition proved
+example_recursive.adb:79:09: info: data dependencies proved
+example_recursive.adb:83:13: info: implicit aspect Always_Terminates on "Reachable" has been proved, subprogram will terminate
+example_recursive.adb:83:13: warning: "Reachable" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+example_recursive.adb:86:18: info: precondition proved
+example_recursive.adb:86:18: info: subprogram variant proved
+example_recursive.adb:86:29: info: precondition proved
+example_recursive.adb:86:40: info: precondition proved
+example_recursive.adb:86:57: info: range check proved
+example_recursive.adb:88:06: info: data dependencies proved
+example_recursive.adb:90:39: info: precondition proved
+example_recursive.adb:91:14: info: postcondition proved
+example_recursive.adb:101:06: info: data dependencies proved
+example_recursive.adb:102:39: info: precondition proved
+example_recursive.adb:102:71: info: precondition proved
+example_recursive.adb:103:15: info: precondition proved
+example_recursive.adb:104:15: info: precondition proved
+example_recursive.adb:105:14: info: postcondition proved
+example_recursive.adb:105:14: info: precondition proved
+example_recursive.adb:111:10: info: precondition proved
+example_recursive.adb:114:10: info: precondition proved
+example_recursive.adb:114:10: info: subprogram variant proved
+example_recursive.adb:114:34: info: precondition proved
+example_recursive.adb:114:45: info: precondition proved
+example_recursive.adb:114:71: info: range check proved
+example_recursive.adb:123:06: info: data dependencies proved
+example_recursive.adb:124:67: info: precondition proved
+example_recursive.adb:126:22: info: precondition proved
+example_recursive.adb:127:51: info: precondition proved
+example_recursive.adb:127:55: info: precondition proved
+example_recursive.adb:127:72: info: precondition proved
+example_recursive.adb:128:14: info: postcondition proved
+example_recursive.adb:128:14: info: precondition proved
+example_recursive.adb:134:10: info: precondition proved
+example_recursive.adb:134:10: info: subprogram variant proved
+example_recursive.adb:134:33: info: precondition proved
+example_recursive.adb:134:44: info: precondition proved
+example_recursive.adb:134:62: info: range check proved
+example_recursive.adb:143:06: info: data dependencies proved
+example_recursive.adb:144:67: info: precondition proved
+example_recursive.adb:146:22: info: precondition proved
+example_recursive.adb:147:51: info: precondition proved
+example_recursive.adb:147:55: info: precondition proved
+example_recursive.adb:147:72: info: precondition proved
+example_recursive.adb:148:14: info: postcondition proved
+example_recursive.adb:148:34: info: precondition proved
+example_recursive.adb:148:60: info: precondition proved
+example_recursive.adb:152:10: info: precondition proved
+example_recursive.adb:152:10: info: subprogram variant proved
+example_recursive.adb:152:33: info: precondition proved
+example_recursive.adb:152:44: info: precondition proved
+example_recursive.adb:152:62: info: range check proved
+example_recursive.adb:154:07: info: precondition proved
+example_recursive.adb:162:06: info: data dependencies proved
+example_recursive.adb:164:15: info: precondition proved
+example_recursive.adb:164:48: info: precondition proved
+example_recursive.adb:165:15: info: precondition proved
+example_recursive.adb:166:19: info: precondition proved
+example_recursive.adb:167:15: info: precondition proved
+example_recursive.adb:170:31: info: precondition proved
+example_recursive.adb:171:15: info: precondition proved
+example_recursive.adb:171:26: info: precondition proved
+example_recursive.adb:172:28: info: overflow check proved
+example_recursive.adb:173:14: info: postcondition proved
+example_recursive.adb:173:14: info: precondition proved
+example_recursive.adb:173:33: info: overflow check proved
+example_recursive.adb:177:10: info: precondition proved
+example_recursive.adb:179:10: info: precondition proved
+example_recursive.adb:179:10: info: subprogram variant proved
+example_recursive.adb:179:30: info: precondition proved
+example_recursive.adb:179:41: info: precondition proved
+example_recursive.adb:179:68: info: range check proved
+example_recursive.adb:180:25: info: assertion proved
+example_recursive.adb:180:25: info: precondition proved
+example_recursive.adb:180:44: info: overflow check proved
+example_recursive.adb:190:06: info: data dependencies proved
+example_recursive.adb:192:15: info: precondition proved
+example_recursive.adb:192:48: info: precondition proved
+example_recursive.adb:193:15: info: precondition proved
+example_recursive.adb:194:19: info: precondition proved
+example_recursive.adb:195:15: info: precondition proved
+example_recursive.adb:198:31: info: precondition proved
+example_recursive.adb:199:15: info: precondition proved
+example_recursive.adb:199:26: info: precondition proved
+example_recursive.adb:200:28: info: overflow check proved
+example_recursive.adb:201:14: info: postcondition proved
+example_recursive.adb:201:34: info: precondition proved
+example_recursive.adb:201:52: info: overflow check proved
+example_recursive.adb:202:16: info: precondition proved
+example_recursive.adb:202:45: info: precondition proved
+example_recursive.adb:206:10: info: precondition proved
+example_recursive.adb:208:10: info: precondition proved
+example_recursive.adb:208:10: info: subprogram variant proved
+example_recursive.adb:208:30: info: precondition proved
+example_recursive.adb:208:41: info: precondition proved
+example_recursive.adb:208:68: info: range check proved
 example_recursive.adb:210:07: info: precondition proved
-example_recursive.adb:212:44: info: precondition proved
-example_recursive.adb:219:06: info: data dependencies proved
-example_recursive.adb:222:15: info: precondition proved
-example_recursive.adb:222:40: info: precondition proved
-example_recursive.adb:224:15: info: precondition proved
-example_recursive.adb:226:28: info: overflow check proved
-example_recursive.adb:228:14: info: postcondition proved
-example_recursive.adb:230:15: info: precondition proved
-example_recursive.adb:232:41: info: overflow check proved
-example_recursive.adb:234:45: info: precondition proved
-example_recursive.adb:235:19: info: precondition proved
-example_recursive.adb:236:22: info: precondition proved
-example_recursive.adb:241:43: info: precondition proved
-example_recursive.adb:255:39: info: loop invariant initialization proved
-example_recursive.adb:255:39: info: loop invariant preservation proved
-example_recursive.adb:256:39: info: loop invariant initialization proved
-example_recursive.adb:256:39: info: loop invariant preservation proved
-example_recursive.adb:256:39: info: precondition proved
-example_recursive.adb:257:39: info: loop invariant initialization proved
-example_recursive.adb:257:39: info: loop invariant preservation proved
-example_recursive.adb:257:39: info: precondition proved
-example_recursive.adb:262:27: info: precondition proved
-example_recursive.adb:262:58: info: tag check proved
-example_recursive.adb:268:53: info: precondition proved
-example_recursive.adb:270:22: info: tag check proved
-example_recursive.adb:270:36: info: pointer dereference check proved
-example_recursive.adb:272:19: info: precondition proved
-example_recursive.adb:272:19: medium: call to ghost subprogram "Prove_Append_Valid" might be nonterminating [possible fix: annotate "Prove_Append_Valid" with aspect Always_Terminates]
-example_recursive.adb:273:19: info: precondition proved
-example_recursive.adb:273:19: medium: call to ghost subprogram "Prove_Append_Reach" might be nonterminating [possible fix: annotate "Prove_Append_Reach" with aspect Always_Terminates]
-example_recursive.adb:274:42: info: overflow check proved
-example_recursive.adb:277:16: info: precondition proved
-example_recursive.adb:277:91: info: precondition proved
-example_recursive.adb:277:91: info: tag check proved
-example_recursive.adb:278:29: info: precondition proved
-example_recursive.adb:278:60: info: tag check proved
-example_recursive.adb:279:27: info: range check proved
-example_recursive.adb:286:47: info: initialization of "L" proved
-example_recursive.adb:288:14: info: postcondition proved
-example_recursive.adb:289:27: info: range check proved
-example_recursive.adb:290:10: info: precondition proved
-example_recursive.adb:291:41: info: precondition proved
-example_recursive.adb:295:07: info: initialization of "M" proved
-example_recursive.adb:301:10: info: precondition proved
-example_recursive.adb:301:10: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
-example_recursive.adb:302:30: info: precondition proved
-example_recursive.adb:302:30: info: tag check proved
-example_recursive.adb:302:64: info: overflow check proved
-example_recursive.adb:302:64: info: range check proved
-example_recursive.adb:303:10: info: precondition proved
-example_recursive.adb:303:10: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
-example_recursive.adb:304:30: info: precondition proved
-example_recursive.adb:304:30: info: tag check proved
-example_recursive.adb:304:64: info: overflow check proved
-example_recursive.adb:304:64: info: range check proved
-example_recursive.adb:305:33: info: loop invariant initialization proved
-example_recursive.adb:305:33: info: loop invariant preservation proved
-example_recursive.adb:307:13: info: loop invariant initialization proved
-example_recursive.adb:307:13: info: loop invariant preservation proved
-example_recursive.adb:307:13: info: precondition proved
-example_recursive.adb:307:57: info: overflow check proved
-example_recursive.adb:307:61: info: overflow check proved
-example_recursive.adb:307:61: info: range check proved
-example_recursive.adb:309:13: info: loop invariant initialization proved
-example_recursive.adb:309:13: info: loop invariant preservation proved
-example_recursive.adb:310:13: info: precondition proved
-example_recursive.adb:310:66: info: overflow check proved
-example_recursive.adb:310:70: info: overflow check proved
-example_recursive.adb:310:70: info: range check proved
-example_recursive.adb:312:13: info: loop invariant initialization proved
-example_recursive.adb:312:13: info: loop invariant preservation proved
-example_recursive.adb:314:13: info: loop invariant initialization proved
-example_recursive.adb:314:13: info: loop invariant preservation proved
-example_recursive.adb:316:25: info: range check proved
-example_recursive.adb:322:07: info: initialization of "L1" proved
-example_recursive.adb:323:07: info: initialization of "L2" proved
-example_recursive.adb:324:07: info: initialization of "L3" proved
-example_recursive.adb:325:07: info: initialization of "M" proved
-example_recursive.adb:327:07: info: precondition proved
-example_recursive.adb:328:07: info: precondition proved
-example_recursive.adb:329:07: info: precondition proved
-example_recursive.adb:330:22: info: assertion proved
-example_recursive.adb:330:22: info: precondition proved
-example_recursive.adb:331:22: info: assertion proved
-example_recursive.adb:331:22: info: precondition proved
-example_recursive.adb:332:22: info: assertion proved
-example_recursive.adb:332:22: info: precondition proved
-example_recursive.adb:333:22: info: assertion proved
-example_recursive.adb:333:22: info: precondition proved
-example_recursive.adb:334:22: info: assertion proved
-example_recursive.adb:334:22: info: precondition proved
-example_recursive.adb:335:22: info: assertion proved
-example_recursive.adb:335:22: info: precondition proved
-example_recursive.adb:338:07: info: precondition proved
-example_recursive.adb:339:07: info: precondition proved
-example_recursive.adb:339:07: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
-example_recursive.adb:340:07: info: precondition proved
-example_recursive.adb:340:07: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
-example_recursive.adb:341:07: info: precondition proved
-example_recursive.adb:341:07: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
-example_recursive.adb:342:07: info: precondition proved
-example_recursive.adb:342:07: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
-example_recursive.adb:344:10: info: no contextual analysis of "Rand" (body not seen yet)
-example_recursive.adb:344:10: warning: assuming "Rand" has no effect on global items
-example_recursive.adb:344:10: warning: no Global contract available for "Rand" [assumed-global-null]
-example_recursive.adb:345:10: info: precondition proved
-example_recursive.adb:345:18: warning: "L1" is set by "Append" but not used after the call
-example_recursive.adb:346:25: info: precondition proved
-example_recursive.adb:346:25: medium: assertion might fail
-example_recursive.adb:347:13: info: no contextual analysis of "Rand" (body not seen yet)
-example_recursive.adb:347:13: warning: assuming "Rand" has no effect on global items
-example_recursive.adb:347:13: warning: no Global contract available for "Rand" [assumed-global-null]
-example_recursive.adb:349:10: info: precondition proved
-example_recursive.adb:349:18: warning: "L3" is set by "Append" but not used after the call
-example_recursive.adb:350:10: info: precondition proved
-example_recursive.adb:350:10: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
-example_recursive.adb:351:25: info: assertion proved
-example_recursive.adb:351:25: info: precondition proved
-example_recursive.adb:352:13: info: no contextual analysis of "Rand" (body not seen yet)
-example_recursive.adb:352:13: warning: assuming "Rand" has no effect on global items
-example_recursive.adb:352:13: warning: no Global contract available for "Rand" [assumed-global-null]
-example_recursive.adb:353:10: medium: in inlined expression function body at example_recursive.adb:197
-example_recursive.adb:353:10: medium: precondition might fail, cannot prove not Reachable (Address (L2.Values), L2.Length, A, Memory)
-example_recursive.adb:353:18: warning: "L1" is set by "Append" but not used after the call
-example_tagged_obj.adb:15:04: info: initialization of "X1" proved
-example_tagged_obj.adb:16:04: info: initialization of "X2" proved
-example_tagged_obj.adb:17:04: info: initialization of "X3" proved
-example_tagged_obj.adb:18:04: info: initialization of "X1_B" proved
-example_tagged_obj.adb:21:14: info: postcondition proved
-example_tagged_obj.adb:31:14: info: postcondition proved
-example_tagged_obj.adb:31:14: info: precondition proved
-example_tagged_obj.adb:31:26: info: precondition proved
-example_tagged_obj.adb:31:44: info: precondition proved
-example_tagged_obj.adb:31:56: info: precondition proved
-example_tagged_obj.adb:36:38: info: precondition proved
-example_tagged_obj.adb:38:07: info: precondition proved
-example_tagged_obj.adb:38:18: info: precondition proved
-example_tagged_obj.adb:39:07: info: precondition proved
-example_tagged_obj.adb:45:50: info: precondition proved
-example_tagged_obj.adb:48:09: info: postcondition proved
-example_tagged_obj.adb:48:09: info: precondition proved
-example_tagged_obj.adb:48:39: info: precondition proved
-example_tagged_obj.adb:48:39: info: tag check proved
-example_tagged_obj.adb:48:67: info: precondition proved
-example_tagged_obj.adb:48:67: info: tag check proved
-example_tagged_obj.adb:53:42: info: precondition proved
-example_tagged_obj.adb:55:07: info: tag check proved
-example_tagged_obj.adb:55:24: info: pointer dereference check proved
-example_tagged_obj.adb:63:19: info: assertion proved
-example_tagged_obj.adb:63:26: info: precondition proved
-example_tagged_obj.adb:63:26: info: tag check proved
-example_tagged_obj.adb:65:04: info: precondition proved
-example_tagged_obj.adb:66:19: info: assertion proved
-example_tagged_obj.adb:66:26: info: precondition proved
-example_tagged_obj.adb:66:26: info: tag check proved
-example_tagged_obj.adb:67:19: info: assertion proved
-example_tagged_obj.adb:67:26: info: precondition proved
-example_tagged_obj.adb:67:26: info: tag check proved
-example_tagged_obj.adb:68:19: info: assertion proved
-example_tagged_obj.adb:68:26: info: precondition proved
-example_tagged_obj.adb:68:26: info: tag check proved
-example_tagged_obj.adb:69:19: info: assertion proved
-example_tagged_obj.adb:69:26: info: precondition proved
-example_tagged_obj.adb:69:26: info: tag check proved
-example_tagged_obj.adb:70:04: info: precondition proved
-example_tagged_obj.adb:71:19: info: assertion proved
-example_tagged_obj.adb:71:26: info: precondition proved
-example_tagged_obj.adb:71:26: info: tag check proved
-example_tagged_obj.adb:72:19: info: assertion proved
-example_tagged_obj.adb:72:26: info: precondition proved
-example_tagged_obj.adb:72:26: info: tag check proved
-example_untagged_obj.adb:15:04: info: initialization of "X1" proved
-example_untagged_obj.adb:16:04: info: initialization of "X2" proved
-example_untagged_obj.adb:17:04: info: initialization of "X3" proved
-example_untagged_obj.adb:18:04: info: initialization of "X1_B" proved
-example_untagged_obj.adb:21:14: info: postcondition proved
-example_untagged_obj.adb:31:14: info: postcondition proved
-example_untagged_obj.adb:31:14: info: precondition proved
-example_untagged_obj.adb:31:26: info: precondition proved
-example_untagged_obj.adb:31:44: info: precondition proved
-example_untagged_obj.adb:31:56: info: precondition proved
-example_untagged_obj.adb:36:32: info: precondition proved
-example_untagged_obj.adb:38:07: info: precondition proved
-example_untagged_obj.adb:38:18: info: precondition proved
-example_untagged_obj.adb:39:07: info: precondition proved
-example_untagged_obj.adb:44:14: info: postcondition proved
-example_untagged_obj.adb:44:14: info: precondition proved
-example_untagged_obj.adb:44:27: info: precondition proved
-example_untagged_obj.adb:49:36: info: precondition proved
-example_untagged_obj.adb:51:16: info: pointer dereference check proved
-example_untagged_obj.adb:58:19: info: assertion proved
-example_untagged_obj.adb:58:19: info: precondition proved
-example_untagged_obj.adb:60:04: info: precondition proved
-example_untagged_obj.adb:61:19: info: assertion proved
-example_untagged_obj.adb:61:19: info: precondition proved
-example_untagged_obj.adb:62:19: info: assertion proved
-example_untagged_obj.adb:62:19: info: precondition proved
-example_untagged_obj.adb:63:19: info: assertion proved
-example_untagged_obj.adb:63:19: info: precondition proved
-example_untagged_obj.adb:64:19: info: assertion proved
-example_untagged_obj.adb:64:19: info: precondition proved
-example_untagged_obj.adb:65:04: info: precondition proved
-example_untagged_obj.adb:66:19: info: assertion proved
-example_untagged_obj.adb:66:19: info: precondition proved
-example_untagged_obj.adb:67:19: info: assertion proved
-example_untagged_obj.adb:67:19: info: precondition proved
+example_recursive.adb:213:13: info: implicit aspect Always_Terminates on "Disjoint" has been proved, subprogram will terminate
+example_recursive.adb:215:13: info: precondition proved
+example_recursive.adb:216:19: info: precondition proved
+example_recursive.adb:217:09: info: data dependencies proved
+example_recursive.adb:219:52: info: precondition proved
+example_recursive.adb:219:77: info: precondition proved
+example_recursive.adb:226:13: info: implicit aspect Always_Terminates on "Walk" has been proved, subprogram will terminate
+example_recursive.adb:226:13: warning: "Walk" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+example_recursive.adb:229:06: info: data dependencies proved
+example_recursive.adb:231:23: info: precondition proved
+example_recursive.adb:232:14: info: postcondition proved
+example_recursive.adb:232:28: info: precondition proved
+example_recursive.adb:235:13: info: implicit aspect Always_Terminates on "Reachable_Locations" has been proved, subprogram will terminate
+example_recursive.adb:237:06: info: data dependencies proved
+example_recursive.adb:239:23: info: precondition proved
+example_recursive.adb:240:14: info: postcondition proved
+example_recursive.adb:241:17: info: precondition proved
+example_recursive.adb:244:23: info: precondition proved
+example_recursive.adb:251:13: info: implicit aspect Always_Terminates on "Reachable_Locations" has been proved, subprogram will terminate
+example_recursive.adb:252:07: info: precondition proved
+example_recursive.adb:253:09: info: data dependencies proved
+example_recursive.adb:254:52: info: precondition proved
+example_recursive.adb:265:17: info: precondition proved
+example_recursive.adb:265:17: info: subprogram variant proved
+example_recursive.adb:265:23: info: precondition proved
+example_recursive.adb:265:34: info: precondition proved
+example_recursive.adb:265:71: info: range check proved
+example_recursive.adb:271:16: info: implicit aspect Always_Terminates on "Is_Reach" has been proved, subprogram will terminate
+example_recursive.adb:273:09: info: data dependencies proved
+example_recursive.adb:275:26: info: precondition proved
+example_recursive.adb:276:17: info: postcondition proved
+example_recursive.adb:276:35: info: precondition proved
+example_recursive.adb:278:58: info: precondition proved
+example_recursive.adb:281:14: info: precondition proved
+example_recursive.adb:281:24: info: precondition of target is strong enough to imply precondition of source
+example_recursive.adb:287:06: info: data dependencies proved
+example_recursive.adb:290:15: info: precondition proved
+example_recursive.adb:290:40: info: precondition proved
+example_recursive.adb:292:15: info: precondition proved
+example_recursive.adb:294:28: info: overflow check proved
+example_recursive.adb:296:14: info: postcondition proved
+example_recursive.adb:298:15: info: precondition proved
+example_recursive.adb:300:41: info: overflow check proved
+example_recursive.adb:302:47: info: precondition proved
+example_recursive.adb:303:19: info: precondition proved
+example_recursive.adb:304:22: info: precondition proved
+example_recursive.adb:309:59: info: precondition proved
+example_recursive.adb:323:39: info: loop invariant initialization proved
+example_recursive.adb:323:39: info: loop invariant preservation proved
+example_recursive.adb:324:39: info: loop invariant initialization proved
+example_recursive.adb:324:39: info: loop invariant preservation proved
+example_recursive.adb:324:39: info: precondition proved
+example_recursive.adb:325:39: info: loop invariant initialization proved
+example_recursive.adb:325:39: info: loop invariant preservation proved
+example_recursive.adb:325:39: info: precondition proved
+example_recursive.adb:330:19: info: precondition proved
+example_recursive.adb:330:30: info: precondition proved
+example_recursive.adb:336:47: info: precondition proved
+example_recursive.adb:338:27: info: pointer dereference check proved
+example_recursive.adb:340:19: info: precondition proved
+example_recursive.adb:341:19: info: precondition proved
+example_recursive.adb:342:42: info: overflow check proved
+example_recursive.adb:345:16: info: precondition proved
+example_recursive.adb:345:54: info: precondition proved
+example_recursive.adb:345:65: info: precondition proved
+example_recursive.adb:346:21: info: precondition proved
+example_recursive.adb:346:32: info: precondition proved
+example_recursive.adb:347:27: info: range check proved
+example_recursive.adb:354:47: info: initialization of "L" proved
+example_recursive.adb:356:14: info: postcondition proved
+example_recursive.adb:357:27: info: range check proved
+example_recursive.adb:358:10: info: precondition proved
+example_recursive.adb:359:57: info: precondition proved
+example_recursive.adb:363:07: info: initialization of "M" proved
+example_recursive.adb:370:10: info: precondition proved
+example_recursive.adb:371:13: info: precondition proved
+example_recursive.adb:371:24: info: precondition proved
+example_recursive.adb:371:57: info: overflow check proved
+example_recursive.adb:371:57: info: range check proved
+example_recursive.adb:372:10: info: precondition proved
+example_recursive.adb:373:13: info: precondition proved
+example_recursive.adb:373:24: info: precondition proved
+example_recursive.adb:373:57: info: overflow check proved
+example_recursive.adb:373:57: info: range check proved
+example_recursive.adb:374:33: info: loop invariant initialization proved
+example_recursive.adb:374:33: info: loop invariant preservation proved
+example_recursive.adb:376:13: info: loop invariant initialization proved
+example_recursive.adb:376:13: info: loop invariant preservation proved
+example_recursive.adb:376:13: info: precondition proved
+example_recursive.adb:376:47: info: overflow check proved
+example_recursive.adb:376:51: info: overflow check proved
+example_recursive.adb:376:51: info: range check proved
+example_recursive.adb:378:13: info: loop invariant initialization proved
+example_recursive.adb:378:13: info: loop invariant preservation proved
+example_recursive.adb:379:13: info: precondition proved
+example_recursive.adb:379:56: info: overflow check proved
+example_recursive.adb:379:60: info: overflow check proved
+example_recursive.adb:379:60: info: range check proved
+example_recursive.adb:381:13: info: loop invariant initialization proved
+example_recursive.adb:381:13: info: loop invariant preservation proved
+example_recursive.adb:383:13: info: loop invariant initialization proved
+example_recursive.adb:383:13: info: loop invariant preservation proved
+example_recursive.adb:385:25: info: range check proved
+example_recursive.adb:391:07: info: initialization of "L1" proved
+example_recursive.adb:392:07: info: initialization of "L2" proved
+example_recursive.adb:393:07: info: initialization of "L3" proved
+example_recursive.adb:394:07: info: initialization of "M" proved
+example_recursive.adb:396:07: info: precondition proved
+example_recursive.adb:397:07: info: precondition proved
+example_recursive.adb:398:07: info: precondition proved
+example_recursive.adb:399:22: info: assertion proved
+example_recursive.adb:399:22: info: precondition proved
+example_recursive.adb:400:22: info: assertion proved
+example_recursive.adb:400:22: info: precondition proved
+example_recursive.adb:401:22: info: assertion proved
+example_recursive.adb:401:22: info: precondition proved
+example_recursive.adb:402:22: info: assertion proved
+example_recursive.adb:402:22: info: precondition proved
+example_recursive.adb:403:22: info: assertion proved
+example_recursive.adb:403:22: info: precondition proved
+example_recursive.adb:404:22: info: assertion proved
+example_recursive.adb:404:22: info: precondition proved
+example_recursive.adb:407:07: info: precondition proved
+example_recursive.adb:408:07: info: precondition proved
+example_recursive.adb:409:07: info: precondition proved
+example_recursive.adb:410:07: info: precondition proved
+example_recursive.adb:411:07: info: precondition proved
+example_recursive.adb:413:10: info: no contextual analysis of "Rand" (body not seen yet)
+example_recursive.adb:413:10: warning: assuming "Rand" has no effect on global items
+example_recursive.adb:413:10: warning: no Global contract available for "Rand" [assumed-global-null]
+example_recursive.adb:414:10: info: precondition proved
+example_recursive.adb:414:18: warning: "L1" is set by "Append" but not used after the call
+example_recursive.adb:415:25: info: precondition proved
+example_recursive.adb:415:25: medium: assertion might fail
+example_recursive.adb:416:13: info: no contextual analysis of "Rand" (body not seen yet)
+example_recursive.adb:416:13: warning: assuming "Rand" has no effect on global items
+example_recursive.adb:416:13: warning: no Global contract available for "Rand" [assumed-global-null]
+example_recursive.adb:418:10: info: precondition proved
+example_recursive.adb:418:18: warning: "L3" is set by "Append" but not used after the call
+example_recursive.adb:419:10: info: precondition proved
+example_recursive.adb:420:25: info: assertion proved
+example_recursive.adb:420:25: info: precondition proved
+example_recursive.adb:421:13: info: no contextual analysis of "Rand" (body not seen yet)
+example_recursive.adb:421:13: warning: assuming "Rand" has no effect on global items
+example_recursive.adb:421:13: warning: no Global contract available for "Rand" [assumed-global-null]
+example_recursive.adb:422:10: medium: in inlined expression function body at example_recursive.adb:216
+example_recursive.adb:422:10: medium: precondition might fail, cannot prove not Reachable (L2.Values, L2.Length, A, Model (Memory))
+example_recursive.adb:422:18: warning: "L1" is set by "Append" but not used after the call
+example_tagged_obj.adb:10:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+example_tagged_obj.adb:16:13: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
+example_tagged_obj.adb:24:04: info: initialization of "X1" proved
+example_tagged_obj.adb:25:04: info: initialization of "X2" proved
+example_tagged_obj.adb:26:04: info: initialization of "X3" proved
+example_tagged_obj.adb:27:04: info: initialization of "X1_B" proved
+example_tagged_obj.adb:30:14: info: postcondition proved
+example_tagged_obj.adb:41:25: info: postcondition proved
+example_tagged_obj.adb:41:25: info: precondition proved
+example_tagged_obj.adb:41:37: info: precondition proved
+example_tagged_obj.adb:41:55: info: precondition proved
+example_tagged_obj.adb:41:67: info: precondition proved
+example_tagged_obj.adb:44:54: info: precondition proved
+example_tagged_obj.adb:44:59: info: precondition proved
+example_tagged_obj.adb:46:38: info: precondition proved
+example_tagged_obj.adb:48:07: info: precondition proved
+example_tagged_obj.adb:48:18: info: precondition proved
+example_tagged_obj.adb:49:07: info: precondition proved
+example_tagged_obj.adb:56:23: info: precondition proved
+example_tagged_obj.adb:59:09: info: postcondition proved
+example_tagged_obj.adb:59:09: info: precondition proved
+example_tagged_obj.adb:59:39: info: precondition proved
+example_tagged_obj.adb:59:39: info: tag check proved
+example_tagged_obj.adb:59:67: info: precondition proved
+example_tagged_obj.adb:59:67: info: tag check proved
+example_tagged_obj.adb:62:54: info: precondition proved
+example_tagged_obj.adb:64:42: info: precondition proved
+example_tagged_obj.adb:66:07: info: tag check proved
+example_tagged_obj.adb:66:24: info: pointer dereference check proved
+example_tagged_obj.adb:74:19: info: assertion proved
+example_tagged_obj.adb:74:26: info: precondition proved
+example_tagged_obj.adb:74:26: info: tag check proved
+example_tagged_obj.adb:76:04: info: precondition proved
+example_tagged_obj.adb:77:19: info: assertion proved
+example_tagged_obj.adb:77:26: info: precondition proved
+example_tagged_obj.adb:77:26: info: tag check proved
+example_tagged_obj.adb:78:19: info: assertion proved
+example_tagged_obj.adb:78:26: info: precondition proved
+example_tagged_obj.adb:78:26: info: tag check proved
+example_tagged_obj.adb:79:19: info: assertion proved
+example_tagged_obj.adb:79:26: info: precondition proved
+example_tagged_obj.adb:79:26: info: tag check proved
+example_tagged_obj.adb:80:19: info: assertion proved
+example_tagged_obj.adb:80:26: info: precondition proved
+example_tagged_obj.adb:80:26: info: tag check proved
+example_tagged_obj.adb:81:04: info: precondition proved
+example_tagged_obj.adb:82:19: info: assertion proved
+example_tagged_obj.adb:82:26: info: precondition proved
+example_tagged_obj.adb:82:26: info: tag check proved
+example_tagged_obj.adb:83:19: info: assertion proved
+example_tagged_obj.adb:83:26: info: precondition proved
+example_tagged_obj.adb:83:26: info: tag check proved
+example_untagged_obj.adb:10:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+example_untagged_obj.adb:16:13: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
+example_untagged_obj.adb:24:04: info: initialization of "X1" proved
+example_untagged_obj.adb:25:04: info: initialization of "X2" proved
+example_untagged_obj.adb:26:04: info: initialization of "X3" proved
+example_untagged_obj.adb:27:04: info: initialization of "X1_B" proved
+example_untagged_obj.adb:30:14: info: postcondition proved
+example_untagged_obj.adb:41:25: info: postcondition proved
+example_untagged_obj.adb:41:25: info: precondition proved
+example_untagged_obj.adb:41:37: info: precondition proved
+example_untagged_obj.adb:41:55: info: precondition proved
+example_untagged_obj.adb:41:67: info: precondition proved
+example_untagged_obj.adb:44:54: info: precondition proved
+example_untagged_obj.adb:44:59: info: precondition proved
+example_untagged_obj.adb:46:32: info: precondition proved
+example_untagged_obj.adb:48:07: info: precondition proved
+example_untagged_obj.adb:48:18: info: precondition proved
+example_untagged_obj.adb:49:07: info: precondition proved
+example_untagged_obj.adb:54:25: info: postcondition proved
+example_untagged_obj.adb:54:25: info: precondition proved
+example_untagged_obj.adb:54:38: info: precondition proved
+example_untagged_obj.adb:57:54: info: precondition proved
+example_untagged_obj.adb:59:36: info: precondition proved
+example_untagged_obj.adb:61:16: info: pointer dereference check proved
+example_untagged_obj.adb:68:19: info: assertion proved
+example_untagged_obj.adb:68:19: info: precondition proved
+example_untagged_obj.adb:70:04: info: precondition proved
+example_untagged_obj.adb:71:19: info: assertion proved
+example_untagged_obj.adb:71:19: info: precondition proved
+example_untagged_obj.adb:72:19: info: assertion proved
+example_untagged_obj.adb:72:19: info: precondition proved
+example_untagged_obj.adb:73:19: info: assertion proved
+example_untagged_obj.adb:73:19: info: precondition proved
+example_untagged_obj.adb:74:19: info: assertion proved
+example_untagged_obj.adb:74:19: info: precondition proved
+example_untagged_obj.adb:75:04: info: precondition proved
+example_untagged_obj.adb:76:19: info: assertion proved
+example_untagged_obj.adb:76:19: info: precondition proved
+example_untagged_obj.adb:77:19: info: assertion proved
+example_untagged_obj.adb:77:19: info: precondition proved
