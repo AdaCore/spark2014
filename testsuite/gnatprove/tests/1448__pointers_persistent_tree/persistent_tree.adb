@@ -104,7 +104,7 @@ procedure Persistent_Tree with SPARK_Mode is
    function Leaf (X : Integer) return Pointer
    is (New_Node
          ((Value    => X,
-           Children => [others => To_Handle (Null_Pointer)])))
+           Children => [others => Null_Handle])))
    with
      Global => null,
      Post   =>

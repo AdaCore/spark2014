@@ -4,7 +4,7 @@ persistent_tree.adb:43:13: info: implicit aspect Always_Terminates on "Child_Of"
 persistent_tree.adb:45:22: info: dynamic accessibility check proved (Trivial)
 persistent_tree.adb:46:09: info: data dependencies proved
 persistent_tree.adb:48:04: warning: "Weight" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
-persistent_tree.adb:48:04: warning: in instantiation at spark-pointers-auto_reclaimed-immutable.ads:215
+persistent_tree.adb:48:04: warning: in instantiation at spark-pointers-auto_reclaimed-immutable.ads:224
 persistent_tree.adb:53:13: info: implicit aspect Always_Terminates on "Valid_Tree" has been proved, subprogram will terminate
 persistent_tree.adb:53:13: warning: "Valid_Tree" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 persistent_tree.adb:57:37: info: precondition proved (CVC5: 1 VC)

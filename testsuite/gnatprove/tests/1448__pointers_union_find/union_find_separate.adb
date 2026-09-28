@@ -246,7 +246,7 @@ procedure Union_Find_Separate with SPARK_Mode is
 
    procedure Make_Set (M : in out Memory_Type; P : out Pointer) is
    begin
-      Create_Copy (M, (Parent => To_Handle (Null_Pointer), Size => 1), P);
+      Create_Copy (M, (Parent => Null_Handle, Size => 1), P);
    end Make_Set;
 
    function Find (M : Memory_Type; P : Pointer) return Pointer is
@@ -286,12 +286,12 @@ procedure Union_Find_Separate with SPARK_Mode is
          if Size_P < Size_Q then
             Assign
               (M, RQ,
-               (Parent => To_Handle (Null_Pointer), Size => Size_P + Size_Q));
+               (Parent => Null_Handle, Size => Size_P + Size_Q));
             Assign (M, RP, (Parent => To_Handle (RQ), Size => Size_P));
          else
             Assign
               (M, RP,
-               (Parent => To_Handle (Null_Pointer), Size => Size_P + Size_Q));
+               (Parent => Null_Handle, Size => Size_P + Size_Q));
             Assign (M, RQ, (Parent => To_Handle (RP), Size => Size_Q));
          end if;
       end;
