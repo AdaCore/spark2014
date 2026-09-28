@@ -1,0 +1,71 @@
+ info: loop invariant initialization proved
+--> linked_lists.adb:8:33
+
+ info: loop invariant preservation proved
+--> linked_lists.adb:8:33
+
+ info: precondition proved
+--> linked_lists.adb:8:55
+
+ info: precondition proved
+--> linked_lists.adb:9:33
+
+ info: loop invariant initialization proved
+--> linked_lists.adb:9:33
+
+ info: loop invariant preservation proved
+--> linked_lists.adb:9:33
+
+ info: precondition proved
+--> linked_lists.adb:9:57
+
+ info: loop invariant initialization proved
+--> linked_lists.adb:11:13
+
+ info: loop invariant preservation proved
+--> linked_lists.adb:11:13
+
+ info: precondition proved
+--> linked_lists.adb:11:26
+
+ info: index check proved
+--> linked_lists.adb:12:22
+
+ info: precondition proved
+--> linked_lists.adb:12:50
+
+ info: loop variant proved
+--> linked_lists.adb:13:31
+
+ info: range check proved
+--> linked_lists.adb:13:44
+
+ info: precondition proved
+--> linked_lists.adb:13:52
+
+ info: index check proved
+--> linked_lists.adb:15:16
+
+ info: index check proved
+--> linked_lists.adb:18:18
+
+ info: assertion proved
+--> linked_lists.adb:20:22
+
+ info: precondition proved
+--> linked_lists.adb:20:32
+
+ info: implicit aspect Always_Terminates on "Contains_Value" has been proved, subprogram will terminate
+--> linked_lists.ads:7:13
+
+ info: precondition proved
+--> linked_lists.ads:10:60
+
+ info: postcondition proved
+--> linked_lists.ads:12:08
+
+ info: precondition proved
+--> linked_lists.ads:13:25
+
+ info: index check proved
+--> linked_lists.ads:13:52

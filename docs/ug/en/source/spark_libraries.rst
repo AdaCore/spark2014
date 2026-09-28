@@ -834,7 +834,9 @@ Higher Order Function Library
 
 The SPARK product also includes a library of higher order functions
 for unconstrained arrays. It is available using the |SPARK| library
-(see :ref:`SPARK Library`).
+(see :ref:`SPARK Library`). Higher order functions over functional containers
+are provided in child packages of the functional containers instead (see
+:ref:`Functional Containers Library`).
 
 This library consists of a set of generic entities defining usual operations on
 arrays. As an example, here is a generic function for the map higher-level
@@ -851,7 +853,7 @@ array, returning an array of results in the same order.
       type Element_Out is private;
       type Array_Out is array (Index_Type range <>) of Element_Out;
 
-      with function Init_Prop (A : Element_In) return Boolean;
+      with function Init_Prop (A : Element_In) return Boolean with Ghost;
       --  Potential additional constraint on values of the array to allow Map
 
       with function F (X : Element_In) return Element_Out;
@@ -876,9 +878,10 @@ be instantiated with an always ``True`` function.
    type Nat_Array is array (Positive range <>) of Natural;
 
    function Small_Enough (X : Natural) return Boolean is
-     (X < Integer'Last);
+     (X < Integer'Last)
+   with Ghost;
 
-   function Increment_One (X : Integer) return Integer is (X + 1) with
+   function Increment_One (X : Natural) return Natural is (X + 1) with
      Pre => X < Integer'Last;
 
    function Increment_All is new SPARK.Higher_Order.Map
@@ -903,44 +906,332 @@ containing the result of incrementing each number by one:
      and then (for all I in A'Range =>
                  Increment_All'Result (I) = Increment_One (A (I)));
 
-Currently, the higher-order function library provides the following functions:
-
-* Map functions over unconstrained one-dimensional arrays in file
-  ``spark-higher_order.ads``. These include both in place and functional
-  map subprograms, with and without an additional position parameter.
-
-* Fold functions over unconstrained one-dimensional and two-dimensional arrays
-  in file ``spark-higher_order-fold.ads``. Both left to right and right to left
-  fold functions are available for one-dimensional arrays. For two-dimensional
-  arrays, fold functions go on a line by line, left-to-right, top-to-bottom
-  way. For ease of use, these functions have been instantiated for the most
-  common cases. ``Sum`` and ``Sum_2`` respectively compute the sum of all the
-  elements of a one-dimensional or two-dimensional array, and ``Count`` and
-  ``Count_2`` the number of elements with a given ``Choose`` property.
-
-* Functions for reasoning about linked structures in an array in
-  ``spark-higher_order-reachability.ads``. They work on arrays that store
-  one or several linked structures using a ``Next`` function: for each cell in
-  the array, the index of the next cell is returned by ``Next``. The
-  ``Reachability`` package defines three properties over these structures, along
-  with some lemmas that can be used to reason over them. The function
-  ``Is_Acyclic`` returns True if the linked structure starting at a given index
-  in an array does not contain cycles. The function ``Reachable_Set`` returns
-  the functional set of all the indices in the array that can be reached from
-  a given index by calling ``Next`` repeatedly. Finally, the function ``Model``
-  computes a functional sequence that stores the indices reachable from a given
-  index ``X`` in the reverse of the order in which they occur: the first
-  element of the sequence is the last index of the structure, the one whose
-  ``Next`` is ``No_Index``, and the last element is ``X`` itself. This reverse
-  order is what makes the model of a cell reachable from ``X`` a prefix of the
-  model of ``X``.
-
 .. note::
 
-   Unlike the :ref:`SPARK Lemma Library`, these generic functions are
-   not verified once and for all as their correction depends on the functions
-   provided at each instance. As a result, each instance should be verified by
-   running the SPARK tools.
+   Unlike the :ref:`SPARK Lemma Library`, this library cannot be verified once
+   and for all, as its correctness depends on the actual parameters of each
+   instance. Each instance should be verified with |GNATprove|. This includes
+   the ghost procedures documented as axioms, which state properties that the
+   actual parameters should have (see :ref:`Fold Functions` for an example).
+
+Map Functions
+^^^^^^^^^^^^^
+
+The ``Map`` function presented above is declared in file
+``spark-higher_order.ads``, together with three variants:
+
+* ``Map_I`` takes a function ``F`` with an additional parameter for the index
+  of the element in the array. ``Init_Prop`` also takes this index as a
+  parameter.
+
+* ``Map_Proc`` modifies an array in place instead of returning a new array.
+  The type of the elements is therefore the same before and after the
+  application of ``F``.
+
+* ``Map_I_Proc`` modifies an array in place and passes the index of the element
+  to ``F`` and ``Init_Prop``.
+
+As an example, here is the declaration of ``Map_Proc``:
+
+.. code-block:: ada
+
+   generic
+      type Index_Type is range <>;
+      type Element is private;
+      type Array_Type is array (Index_Type range <>) of Element;
+
+      with function Init_Prop (A : Element) return Boolean with Ghost;
+      --  Potential additional constraint on values of the array to allow Map
+
+      with function F (X : Element) return Element;
+      --  Function that should be applied to elements of Array_Type
+
+   procedure Map_Proc (A : in out Array_Type) with
+     Pre  => (for all I in A'Range => Init_Prop (A (I))),
+     Post => (for all I in A'Range => A (I) = F (A'Old (I)));
+
+Fold Functions
+^^^^^^^^^^^^^^
+
+Fold functions over unconstrained one-dimensional arrays are defined in file
+``spark-higher_order-fold.ads``. They are declared as functions ``Fold`` inside
+generic packages. The function ``Fold`` of package ``Fold_Left`` takes as
+parameters an array ``A`` and an initial value ``Init`` and applies ``F``
+repeatedly to the elements of ``A`` from left to right, starting from ``Init``.
+On an array indexed from 1 to 3, it computes
+``F (A (3), F (A (2), F (A (1), Init)))``. Package ``Fold_Right`` provides the
+same function going from right to left, and packages ``Fold_Left_I`` and
+``Fold_Right_I`` provide variants where ``F`` also takes the index of the
+element as a parameter.
+
+Here is the declaration of ``Fold_Left``, without the postcondition of
+``Fold``:
+
+.. code-block:: ada
+
+   generic
+      type Index_Type is range <>;
+      type Element_In is private;
+      type Array_Type is array (Index_Type range <>) of Element_In;
+      type Element_Out is private;
+
+      with function Ind_Prop
+        (A : Array_Type; X : Element_Out; I : Index_Type) return Boolean
+      with Ghost;
+      --  Potential inductive property that should be maintained during fold
+
+      with function Final_Prop (A : Array_Type; X : Element_Out) return Boolean
+      with Ghost;
+      --  Potential inductive property at the last iteration
+
+      with function F (X : Element_In; I : Element_Out) return Element_Out;
+      --  Function that should be applied to elements of Array_Type
+
+   package Fold_Left is
+
+      function Fold (A : Array_Type; Init : Element_Out) return Element_Out
+      with
+        Pre => A'Length = 0 or else Ind_Prop (A, Init, A'First);
+
+   end Fold_Left;
+
+The two ghost functions ``Ind_Prop`` and ``Final_Prop`` are used to describe
+the intermediate values of the fold. ``Ind_Prop (A, X, I)`` should hold when
+``X`` is the value accumulated before processing the element at index ``I``. It
+can be used to show that the precondition of ``F`` is respected, for example to
+rule out overflows. ``Final_Prop (A, X)`` should hold when ``X`` is the final
+result. It can be used to state properties of the result of the fold. The
+precondition of ``Fold`` requires ``Ind_Prop`` to hold for ``Init`` on the
+first index of the array, if any. The instance of ``Fold_Left`` then contains
+two ghost procedures ``Prove_Ind`` and ``Prove_Last`` which state respectively
+that applying ``F`` preserves ``Ind_Prop`` and that applying ``F`` on the last
+element establishes ``Final_Prop``:
+
+.. code-block:: ada
+
+   procedure Prove_Ind (A : Array_Type; X : Element_Out; I : Index_Type)
+   with
+     Ghost,
+     Pre  => I in A'Range and then Ind_Prop (A, X, I) and then I /= A'Last,
+     Post => Ind_Prop (A, F (A (I), X), I + 1);
+   --  Axiom: Ind_Prop should be preserved when going to next index
+
+   procedure Prove_Last (A : Array_Type; X : Element_Out)
+   with
+     Ghost,
+     Pre  => A'Length > 0 and then Ind_Prop (A, X, A'Last),
+     Post => Final_Prop (A, F (A (A'Last), X));
+   --  Axiom: Final_Prop should be provable at the last iteration from
+   --  Ind_Prop.
+
+These procedures have null bodies, which are verified when the instance is
+analyzed. If no such properties are needed, ``Ind_Prop`` and ``Final_Prop`` can
+be instantiated with functions which always return ``True``.
+
+Packages ``Fold_Left``, ``Fold_Right``, ``Fold_Left_I``, and ``Fold_Right_I``
+are defined using auxiliary packages with the ``_Acc`` suffix, which compute
+the array of all intermediate values of the fold. They are only used to define
+and verify the fold functions and should not be used directly.
+
+As an example, here is how ``Fold_Left`` can be used to compute the maximal
+element of an array of integers:
+
+.. literalinclude:: /examples/ug__higher_order_fold/array_max.ads
+   :language: ada
+   :linenos:
+
+``Max_Prefix (A, X, I)`` states that ``X`` is greater than or equal to all
+the elements of ``A`` before index ``I``. It trivially holds for
+``Integer'First`` on the first index of ``A``, as there are no elements before
+it. |GNATprove| verifies that applying ``Max`` preserves ``Max_Prefix`` and
+that it establishes ``Max_All`` on the last element of the array, which is
+enough to prove the postcondition of ``Max_Element``.
+
+Fold functions are also provided for two-dimensional arrays in packages
+``Fold_2``. They traverse the array row by row, from left to right and from
+top to bottom. ``Ind_Prop`` then takes as parameters both the row and the
+column of the next element. Two ghost procedures ``Prove_Ind_Col`` and
+``Prove_Ind_Row`` state that ``Ind_Prop`` is preserved when going to the next
+column and to the next row respectively.
+
+Sum and Count
+^^^^^^^^^^^^^
+
+For ease of use, the fold functions are instantiated in
+``spark-higher_order-fold.ads`` for the most common cases. Packages ``Sum`` and
+``Sum_2`` compute the sum of all the elements of a one-dimensional or a
+two-dimensional array, and ``Count`` and ``Count_2`` the number of elements
+with a given ``Choose`` property. These functions are defined recursively, so
+reasoning about them generally requires induction. To avoid it, these packages
+also provide ghost procedures, or lemmas, which state their most useful
+properties.
+
+The generic package ``Count`` takes as parameters an array type and a function
+``Choose`` on its elements. It provides a function ``Count`` returning the
+number of elements of an array for which ``Choose`` returns ``True``, as well as
+the following lemmas:
+
+* ``Update_Count`` states how the result of ``Count`` changes when a single
+  element of the array is modified.
+
+* ``Count_Zero`` states that ``Count`` returns 0 if and only if ``Choose``
+  returns ``False`` on all the elements of the array.
+
+* ``Count_Length`` states that ``Count`` returns the length of the array if
+  and only if ``Choose`` returns ``True`` on all the elements of the array.
+
+As an example, here is a procedure that sets an element of an array of integers
+to zero, with a postcondition stating how the number of zeros in the array is
+affected:
+
+.. literalinclude:: /examples/ug__higher_order_sum_count/count_zeros.ads
+   :language: ada
+   :linenos:
+
+To verify this postcondition, a copy of the array before the modification is
+saved in a ghost constant ``Old`` and the lemma ``Update_Count`` is called after
+the modification:
+
+.. literalinclude:: /examples/ug__higher_order_sum_count/count_zeros.adb
+   :language: ada
+   :linenos:
+
+The generic package ``Sum`` takes as parameters an array type, a type
+``Element_Out`` for the result, and a function ``Value`` computing the value of
+each element of the array as an ``Element_Out``. ``Element_Out`` is a private
+type so that the package can be instantiated both with integer types and with
+big integers. As a result, the addition ``Add`` on ``Element_Out`` and its
+neutral element ``Zero`` are also provided at instantiation, along with two
+ghost functions to express the absence of overflows: ``To_Big`` converts an
+``Element_Out`` into a big integer, and ``In_Range`` returns ``True`` on big
+integers which can be represented in ``Element_Out``.
+
+The package provides a function ``Sum`` whose precondition ``No_Overflows``
+ensures that no intermediate result of the summation overflows. Its
+postcondition relates its result to the sum on big integers
+``Big_Integer_Sum.Sum``. The ghost package ``Big_Integer_Sum`` also provides the
+following lemmas:
+
+* ``Update_Sum`` states how the sum changes when a single element of the array
+  is modified.
+
+* ``Sum_Cst`` gives the value of the sum on an array whose elements all have
+  the same value.
+
+Here is an instance of ``Sum`` which computes the sum of the elements of an
+array of integers:
+
+.. literalinclude:: /examples/ug__higher_order_sum_count/sum_ints.ads
+   :language: ada
+   :linenos:
+
+Packages ``Sum_2`` and ``Count_2`` provide the same functions and lemmas on
+two-dimensional arrays.
+
+Linked Structures in Arrays
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The generic package ``SPARK.Higher_Order.Reachability`` in file
+``spark-higher_order-reachability.ads`` provides functions for reasoning about
+acyclic linked structures stored in an array. They work on arrays that store
+one or several linked structures using a ``Next`` function: for each cell in
+the array, the index of the next cell is returned by ``Next``. The end of a
+structure is marked by a special value ``No_Index``, which should not be a
+valid index in the array. As an example, consider lists of integers stored in
+an array, where the value 0 is used for ``No_Index``:
+
+.. literalinclude:: /examples/ug__higher_order_reachability/memory_lists.ads
+   :language: ada
+   :lines: 7-15
+
+In addition to the types of the indexes, of the cells, and of the array, the
+package takes as parameters instances of functional sets and sequences of
+indexes, which are used to describe the structures:
+
+.. literalinclude:: /examples/ug__higher_order_reachability/memory_lists.ads
+   :language: ada
+   :lines: 17-21
+
+The ``Reachability`` package can then be instantiated for our lists:
+
+.. literalinclude:: /examples/ug__higher_order_reachability/memory_lists.ads
+   :language: ada
+   :lines: 23-30
+
+The ``Reachability`` package defines three functions over these structures,
+along with some lemmas that can be used to reason over them. Here are their
+declarations, without their postconditions:
+
+.. code-block:: ada
+
+   function Is_Acyclic (X : Extended_Index; M : Memory_Type) return Boolean
+   with
+     Pre => X in M'Range | No_Index and then Valid_Memory (M);
+
+   function Reachable_Set
+     (X : Extended_Index; M : Memory_Type) return Memory_Index_Set
+   with
+     Pre => X in M'Range | No_Index and then Valid_Memory (M);
+
+   function Model (X : Extended_Index; M : Memory_Type) return Sequence
+   with
+     Pre =>
+       X in M'Range | No_Index
+       and then Valid_Memory (M)
+       and then Is_Acyclic (X, M);
+
+They all take as parameters an index ``X``, which may be ``No_Index``, and an
+array ``M``, which should be well formed, as expressed by the function
+``Valid_Memory``: ``M`` should start at ``Index_Type'First`` and the ``Next``
+value of each of its cells should be either a valid index in ``M`` or
+``No_Index``. The function ``Is_Acyclic`` returns True if the linked
+structure starting at ``X`` in ``M`` does not contain cycles. The function
+``Reachable_Set`` returns the functional set of all the indices in the array
+that can be reached from ``X`` by calling ``Next`` repeatedly. Finally, the
+function ``Model`` computes a functional sequence that stores the indices
+reachable from ``X`` in the reverse of the order in which they occur: the first
+element of the sequence is the last index of the structure, the one whose
+``Next`` is ``No_Index``, and the last element is ``X`` itself.
+
+The recursive definitions of these functions are given by lemmas which are
+instantiated automatically by default, as in the instance ``Lists`` above. As
+this might lead to instantiation loops, causing the context to grow too much for
+complex proofs, it can be disabled by setting the generic parameter
+``Automatically_Instantiate_Definitions`` to ``False``. The definitions can
+then be made available for the verification of a subprogram by calling the
+``Disclose_*`` procedures of the package inside it.
+
+The other lemmas of the package fall into two categories:
+
+* Lemmas stating general properties of reachability, for example that it is
+  transitive (``Lemma_Reachable_Transitive``) or that the model of a
+  reachable cell is a prefix of the model of the head of the structure
+  (``Lemma_Model_Is_Prefix``).
+
+* Lemmas computing the new values of ``Is_Acyclic``, ``Reachable_Set``, and
+  ``Model`` after a modification of the array. Lemmas with the ``_Preserved``
+  suffix handle the case where a whole structure is left unchanged, lemmas
+  with the ``_Preserved_Until`` suffix the case where a segment of a structure
+  is left unchanged, and lemmas with the ``_After_Set`` suffix the case where
+  the ``Next`` value of a single cell is updated.
+
+As an example, the function ``Contains_Value`` below searches for a value in the
+list starting at index ``X`` in our array of cells. Its postcondition is
+expressed using ``Reachable_Set``:
+
+.. literalinclude:: /examples/ug__higher_order_reachability/linked_lists.ads
+   :language: ada
+   :linenos:
+
+Thanks to the automatic instantiation of the recursive definition of
+``Reachable_Set``, the loop invariants and the loop variant are verified
+without calling any lemma. When the loop exits, ``C`` is ``No_Index``, so its
+reachable set is empty. The assertion after the loop states this fact, from
+which the postcondition follows using the loop invariant:
+
+.. literalinclude:: /examples/ug__higher_order_reachability/linked_lists.adb
+   :language: ada
+   :linenos:
 
 .. index:: input-output
 
