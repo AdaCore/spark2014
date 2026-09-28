@@ -27,8 +27,9 @@ repos:
     -   id: mixed-line-ending
     -   id: trailing-whitespace
   - repo: git-adacore:eng/spark/support
-    rev: "v1.1.0"
+    rev: "v1.2.0"
     hooks:
+    -   id: check-attribution
     -   id: check-submodules
     -   id: check-empty-testoutopt
     -   id: check-testsuite-markers

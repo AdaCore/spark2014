@@ -476,11 +476,9 @@ compile:
     - gprbuild -c -p -P gnat2why/gnat2why.gpr -XBuild=Debug -j0
     - gprbuild -c -p -P gnatprove.gpr -XBuild=Debug -j0
 
-# Run the commit-message checks against every commit in the merge request.
-# These checks are not exercised by the regular "pre-commit" job, which only
-# runs the default-stage hooks over the file diff. The Issue-trailer check is
-# intentionally CI-only (it is not registered as a local git hook), so it is
-# invoked directly here rather than through pre-commit.
+# Run the selected commit message checks against every commit in the merge
+# request. "commit-msg" checks are *not* exercised by the regular "pre-commit"
+# job, which only runs the default-stage hooks over the file diff.
 commit-level-checks:
   interruptible: true
   services:
@@ -499,15 +497,24 @@ commit-level-checks:
       set -eu
 
       base="${CI_MERGE_REQUEST_DIFF_BASE_SHA:?CI_MERGE_REQUEST_DIFF_BASE_SHA is not set}"
+      head="${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA:-${CI_COMMIT_SHA:?CI_COMMIT_SHA is not set}}"
+      commits="$(git rev-list --reverse "${base}..${head}")"
 
-      for commit in $(git rev-list --reverse "$base"..HEAD); do
+      for commit in $commits; do
         echo "Checking commit message for $commit"
         git log -1 --format=%B "$commit" > .gitlab_commit_msg
+
+        pre-commit run check-attribution \
+            --hook-stage commit-msg \
+            --commit-msg-filename .gitlab_commit_msg
 
         CHECK_DOC_SRC_REFS_COMMIT_SHA="$commit" \
           pre-commit run check-doc-src-refs \
             --hook-stage commit-msg \
             --commit-msg-filename .gitlab_commit_msg
 
+        # The Issue-trailer check is intentionally CI-only (it is not
+        # registered as a local git hook), so it is invoked directly here
+        # rather than through pre-commit.
         python scripts/check_issue_trailer.py .gitlab_commit_msg
       done
