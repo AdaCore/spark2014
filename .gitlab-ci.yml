@@ -211,6 +211,28 @@ build:
     paths:
       - $PACKAGE_BASE_NAME
 
+build_windows:
+  services:
+     - image:e3-windows-2022
+     - platform:x86_64-windows-2022
+     - cpu:8
+     - mem:16
+     - disk:100
+  stage: build
+  interruptible: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "web"
+      when: manual
+      allow_failure: true
+    - when: never
+  script:
+    - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/sparklib
+                               --add-dep eng/spark/spark-internal-testsuite
+                               --add-dep eng/toolchain/gnat"
+    - *setup_repos
+    - export ANOD_ENABLE_DOC=false
+    - anod run build
+
 ########
 # Test #
 ########
