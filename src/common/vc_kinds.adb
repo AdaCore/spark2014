@@ -1606,6 +1606,8 @@ package body VC_Kinds is
            "traversal function with side effects",
          when Vio_Storage_Size                             =>
            "access type with Storage_Size",
+         when Vio_Structural_Instantiation                 =>
+           "structural instantiation",
          when Vio_Subp_Variant_Structural                  =>
            "structural subprogram variant which is not a parameter of the "
            & "subprogram",
@@ -3926,6 +3928,8 @@ package body VC_Kinds is
          when Vio_Side_Effects_Traversal                   =>
            "side-effects-traversal",
          when Vio_Storage_Size                             => "storage-size",
+         when Vio_Structural_Instantiation                 =>
+           "structural-instantiation",
          when Vio_Subp_Variant_Structural                  =>
            "subp-variant-structural",
          when Vio_Tagged_Extension_Local                   =>
@@ -4231,6 +4235,8 @@ package body VC_Kinds is
            "traversal function with side effects",
          when Vio_Storage_Size                                       =>
            "access type with Storage_Size",
+         when Vio_Structural_Instantiation                           =>
+           "structural instantiation",
          when Vio_Subp_Variant_Structural                            =>
            "structural subprogram variant which is not a parameter of the "
            & "subprogram",

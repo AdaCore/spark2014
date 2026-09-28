@@ -427,6 +427,7 @@ violation-side-effects-call-context - violation-side-effects-call-context - call
 violation-side-effects-eq - violation-side-effects-eq - function with side effects as user-defined equality on record type - HIGH
 violation-side-effects-traversal - violation-side-effects-traversal - traversal function with side effects - HIGH
 violation-storage-size - violation-storage-size - access type with Storage_Size - HIGH
+violation-structural-instantiation - violation-structural-instantiation - structural instantiation - HIGH
 violation-subp-variant-structural - violation-subp-variant-structural - structural subprogram variant which is not a parameter of the subprogram - HIGH
 violation-tagged-extension-local - violation-tagged-extension-local - local derived type from non-local parent or interface - HIGH
 violation-target-name-in-call-with-side-effects - violation-target-name-in-call-with-side-effects - use of @ inside a call to a function with side effects - HIGH

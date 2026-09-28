@@ -302,6 +302,9 @@ package body SPARK_Definition is
    function Type_Might_Be_Invalid (E : Type_Kind_Id) return Boolean
    is (Potentially_Invalid.Contains (Base_Retysp (E)));
 
+   function In_Structural_Instance (E : Entity_Id) return Boolean;
+   --  Return True if E is defined in a structural generic instance
+
    function Is_Valid_Allocating_Context (Alloc : Node_Id) return Boolean;
    --  Return True if node Alloc is a valid allocating context (SPARK RM 4.8).
    --  i.e. the newly allocated memory is stored in an object as part of an
@@ -2480,6 +2483,26 @@ package body SPARK_Definition is
       Mark_Entity (E);
       return Entities_In_SPARK.Contains (E);
    end In_SPARK;
+
+   ---------------------------------
+   -- In_Structural_Instantiation --
+   ---------------------------------
+
+   function In_Structural_Instance (E : Entity_Id) return Boolean is
+      Context : Entity_Id := E;
+   begin
+      while Present (Context) loop
+         if Is_Link_Once (Context) then
+            return True;
+         elsif Context = Standard_Standard then
+            return False;
+         else
+            Context := Scope (Context);
+         end if;
+      end loop;
+
+      raise Program_Error;
+   end In_Structural_Instance;
 
    ----------------------
    -- Is_Clean_Context --
@@ -12633,6 +12656,11 @@ package body SPARK_Definition is
       --  Include entity E in the set of marked entities
 
       Entity_Set.Insert (E);
+
+      if In_Structural_Instance (E) then
+         Mark_Violation (Vio_Structural_Instantiation, E);
+         goto Restore;
+      end if;
 
       --  If the entity is declared in the scope of SPARK_Mode => Off, then do
       --  not consider whether it could be in SPARK or not. Restore SPARK_Mode
