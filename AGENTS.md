@@ -18,7 +18,8 @@ Assume the environment is already set up.
 - Useful test commands:
   - `./run-tests <test_name1> <test_name2> ...`
   - `./run-tests -j8`
-  - `./run-tests --discriminants=large`
+  - `./run-tests --disc=large` to also run tests marked as large (skipped by
+    default)
   - `./run-tests <test_name> -d temp` to keep the generated work directory for manual inspection
 - Do not start multiple `./run-tests` processes concurrently, instead pass all
   test names to a single `./run-tests` invocation and use the parallelism flag
