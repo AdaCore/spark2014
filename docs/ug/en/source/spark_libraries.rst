@@ -994,6 +994,15 @@ memory leak is ever reported. However, reference counting does not reclaim
 cycles. For a cyclic data structure to be reclaimed, one edge of each cycle
 should use a weak handle (see below). This is not verified by |GNATprove|.
 
+.. note::
+
+   Modelling the memory as if reclamation never happened is sound, even though
+   cells are physically reclaimed. A cell is only reclaimed once the last pointer
+   designating it disappears, so by construction no pointer to a reclaimed cell is
+   ever left in the program. As executable code can only reach a cell through a
+   pointer that designates it, a reclaimed cell can never be dereferenced, and the
+   model's claim that the cell is still there can never be observed to be wrong.
+
 In ``Immutable``, the designated values cannot be modified. As a result, there
 is no memory to reason about: a pointer is modelled by the value it designates,
 and two pointers designating equal values are logically equal. Pointers can
@@ -1019,6 +1028,15 @@ using ``Deref``, or accessed in place using ``Constant_Reference``:
    function Constant_Reference
      (P : Pointer) return not null access constant Object;
 
+.. note::
+
+   ``Auto_Reclaimed.Immutable`` can be used in place of an access-to-constant
+   type whose designated data is dynamically allocated and should later be
+   reclaimed. As of now, |SPARK| provides no way to reclaim the memory designated
+   by an access-to-constant type, so such allocations leak. ``Immutable`` offers
+   the same guarantee that the designated value cannot be modified, while
+   reclaiming the memory automatically through reference counting.
+
 The units ``Auto_Reclaimed.Global_Memory`` and
 ``Auto_Reclaimed.Separate_Memory`` have the same model and API as their
 counterparts in ``Explicit_Reclamation`` (see :ref:`Pointers with Explicit
@@ -1027,6 +1045,20 @@ disappear from the model. As a consequence, a memory object of
 ``Separate_Memory`` which is not empty when it goes out of scope is not
 reported as a leak. In ``Global_Memory``, the memory is an abstract state,
 whose model is given by the function ``Model``.
+
+.. note::
+
+   In ``Global_Memory`` the memory only ever grows: reclamation is invisible in
+   the model, so a cell never leaves it (this is captured by
+   ``Monotonous_Memory``). By construction, any pointer that has been created
+   therefore stays in the memory: every non-null ``Pointer`` value satisfies
+   ``In_Memory (Model, P)`` for the rest of the program. |GNATprove| cannot track
+   this by itself, however -- the ``In_Memory`` precondition of operations such as
+   ``Assign`` and ``Deref`` must still be discharged at each call. A client that
+   relies on the property therefore has to thread it through its own contracts:
+   requiring ``In_Memory (Model, P)`` where a pointer is used, ensuring it where
+   one is created, and propagating ``Monotonous_Memory (Model'Old, Model)`` across
+   operations that modify the memory, as the library operations do.
 
 In all three units, the generic package ``Handle_Operations`` provides
 conversions between pointers and auto-reclaimed handles, to build recursive
