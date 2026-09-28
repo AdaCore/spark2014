@@ -321,12 +321,16 @@ are in |SPARK|.
   * Ada.Dispatching.Yield.
 
 
-18. For purposes of determining global inputs and outputs, a delay
-    statement is considered to reference the state abstraction
-    Ada.Real_Time.Clock_Time as an input.
+18. For purposes of determining global inputs and outputs, a relative
+    delay statement is considered to reference the state abstraction
+    Ada.Real_Time.Clock_Time as an input. An absolute delay statement
+    is considered to reference the state abstraction
+    Ada.Calendar.Clock_Time as an input if its expression is of type
+    Ada.Calendar.Time, and Ada.Real_Time.Clock_Time as an input otherwise.
     [In other words, a delay statement can be treated like a call to
     a procedure which takes the delay expression as an actual parameter
-    and references the Clock_Time state abstraction as an Input global.]
+    and references the corresponding Clock_Time state abstraction as an
+    Input global.]
 
 
 19. For purposes of determining global inputs and outputs, a use of
