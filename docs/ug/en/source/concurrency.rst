@@ -36,18 +36,19 @@ restrictions defined by the standard Ravenscar profile. Notably, these relaxed
 constraints allow multiple protected entries per protected object, multiple
 queued callers per entry, and more expressive protected entry barrier
 expressions. The profile also allows the use of relative delay statements in
-addition to the absolute delay statements allowed by Ravenscar. The two forms
-of delay statement are processed by GNATprove based on the type of their
-expression, as follows (absolute and relative delays, respectively):
+addition to the absolute delay statements allowed by Ravenscar. For the
+purposes of determining global inputs and outputs, delay statements are
+processed by GNATprove as follows:
 
-* If the expression is of the type Ada.Real_Time.Time then for the purposes of
-  determining global inputs and outputs the absolute delay statement is considered
-  just like the relative delay statement, i.e., to reference the state abstraction
-  Ada.Real_Time.Clock_Time as an input (see SPARK RM 9(17) for details).
+* A relative delay statement ``delay X;`` is considered to reference the state
+  abstraction Ada.Real_Time.Clock_Time as an input, whatever the type of its
+  expression (see SPARK RM 9(18) for details).
 
-* If the expression is of the type Ada.Calendar.Time then it is considered to
-  reference the state abstraction Ada.Calendar.Clock_Time, which is defined
-  similarly to Ada.Real_Time.Clock_Time but represents a different time base.
+* An absolute delay statement ``delay until X;`` is considered to reference the
+  state abstraction Ada.Calendar.Clock_Time as an input if its expression is of
+  the type Ada.Calendar.Time, and Ada.Real_Time.Clock_Time as an input
+  otherwise. Ada.Calendar.Clock_Time is defined similarly to
+  Ada.Real_Time.Clock_Time but represents a different time base.
 
 .. index:: tasking, data race
 
