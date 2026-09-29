@@ -607,7 +607,7 @@ def capture_prove_all(**kwargs):
     return stream.getvalue()
 
 
-def run_command(command, cwd=None, timeout=None):
+def run_command(command, cwd=None, timeout=None, env=None):
     """
     Executes a command in a subprocess with a timeout.
 
@@ -620,6 +620,7 @@ def run_command(command, cwd=None, timeout=None):
         command (list): The command to run.
         cwd (str, optional): Current working directory.
         timeout (int, optional): Timeout in seconds.
+        env (dict, optional): Environment for this subprocess.
 
     Returns:
         An instance of e3.process.Run if the process completed before timeout.
@@ -632,6 +633,7 @@ def run_command(command, cwd=None, timeout=None):
         command,
         cwd=cwd,
         timeout=timeout,
+        env=env,
     )
 
     # e3.process.Run executes the command through a custom rlimit tool. On
@@ -1477,9 +1479,9 @@ def sparklib_project_dir():
     """Return the directory containing sparklib_internal.gpr, which the
     test-local sparklib.gpr extends.
 
-    Callers add it to the project path with "-aP" on the command line rather
-    than mutating the shared GPR_PROJECT_PATH, which would let concurrent tests
-    pick up each other's SPARKlib location.
+    Callers add it to the project path for their subprocess rather than
+    mutating the shared GPR_PROJECT_PATH, which would let concurrent tests pick
+    up each other's SPARKlib location.
     """
     project_dir, _ = resolve_sparklib_location()
     return project_dir
@@ -1489,8 +1491,8 @@ def create_sparklib(cwd=None, logger=None):
     """Create the test-local sparklib.gpr extending sparklib_internal.
 
     The file is identical in both modes; the SPARKlib location is added with
-    "-aP" by the tools (see sparklib_project_dir). It is placed in `cwd` if
-    provided, otherwise in the current working directory.
+    a subprocess-local project path (see sparklib_project_dir). It is placed
+    in `cwd` if provided, otherwise in the current working directory.
     """
     base_path = _base_path(cwd)
     project_file = base_path / "sparklib.gpr"
@@ -2203,9 +2205,15 @@ def sparklib_exec_test(
     cov_mode = coverage_mode()
     mode_switch = sparklib_body_mode_switch(sparklib_bodymode)
     if cov_mode:
+        instrument_env = os.environ.copy()
+        project_path = instrument_env.get("GPR_PROJECT_PATH")
+        instrument_env["GPR_PROJECT_PATH"] = sparklib_project_dir()
+        if project_path:
+            instrument_env["GPR_PROJECT_PATH"] += os.pathsep + project_path
         run_command(
             ["gnatcov", "instrument", "-P", project_file, "--level=stmt"] + mode_switch,
             cwd=cwd,
+            env=instrument_env,
         )
     opt = ["-P", project_file]
     if cov_mode:
