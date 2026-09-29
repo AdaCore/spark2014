@@ -2210,6 +2210,36 @@ that is:
 * ``To_Address`` is forbidden in |SPARK| because it does not handle
   addresses.
 
+Conversions Between Access Types
+--------------------------------
+
+The package ``SPARK.Conversions.Access_Conversions`` provides generic functions
+to convert between access types in |SPARK|. A conversion reinterprets the
+designated object as an object of the target type, much like an
+``Unchecked_Conversion`` between the two object types, and is subject to the same
+rules (see :ref:`Data Validity`): on an instantiation, |GNATprove| emits the
+checks that ensure the reinterpretation is safe.
+
+The unit provides four generic packages, each parameterized by a source and a
+target object type:
+
+* ``Access_Constant_Conversions`` and ``Access_Variable_Conversions`` handle
+  respectively access-to-constant and access-to-variable values, for target
+  types whose values are always valid. The former provides
+  ``Convert_Constant_Access``; the latter also provides ``Convert_Access``, whose
+  result borrows its argument and can be used to modify the designated object.
+
+* ``Access_Constant_Conversions_Potentially_Invalid`` and
+  ``Access_Variable_Conversions_Potentially_Invalid`` are the counterparts for a
+  target type that may have invalid values (see :ref:`Aspect
+  Potentially_Invalid`). A conversion then requires, at the ``SPARKlib_Defensive``
+  assertion level (see :ref:`Assertion Levels in the SPARK Library`), that the
+  reinterpreted value be valid.
+
+In each case the result designates the same object as the argument, seen as the
+target type, and the two are known to be equal through the postcondition of the
+conversion function.
+
 Cut Operations
 --------------
 
