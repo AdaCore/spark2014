@@ -255,6 +255,7 @@ splitting the contract into one or more parts associated with an assertion level
    Syntax
 
 ::
+
    level_and_expression ::= assertion_level => boolean_expression
    level_and_expression_list ::= level_and_expression[, level_and_expression_list]
 
