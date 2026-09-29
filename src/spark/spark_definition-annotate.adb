@@ -768,6 +768,7 @@ package body SPARK_Definition.Annotate is
                Asp : constant Node_Id := Find_Aggregate_Aspect (Ent);
 
                Empty_Subp          : Node_Id := Empty;
+               Count_Discriminant  : Node_Id := Empty;
                Add_Named_Subp      : Node_Id := Empty;
                Add_Unnamed_Subp    : Node_Id := Empty;
                New_Indexed_Subp    : Node_Id := Empty;
@@ -844,6 +845,7 @@ package body SPARK_Definition.Annotate is
                Parse_Aspect_Aggregate
                  (N                   => Asp,
                   Empty_Subp          => Empty_Subp,
+                  Count_Discriminant  => Count_Discriminant,
                   Add_Named_Subp      => Add_Named_Subp,
                   Add_Unnamed_Subp    => Add_Unnamed_Subp,
                   New_Indexed_Subp    => New_Indexed_Subp,
@@ -5984,6 +5986,7 @@ package body SPARK_Definition.Annotate is
                   Source_Asp            : constant Node_Id :=
                     Find_Aggregate_Aspect (Typ);
                   Source_Empty          : Node_Id := Empty;
+                  Source_Count_Discrim  : Node_Id := Empty;
                   Source_Add_Named      : Node_Id := Empty;
                   Source_Add_Unnamed    : Node_Id := Empty;
                   Source_New_Indexed    : Node_Id := Empty;
@@ -5992,6 +5995,7 @@ package body SPARK_Definition.Annotate is
                   Target_Asp            : constant Node_Id :=
                     Find_Aggregate_Aspect (Etype (Annot.Model));
                   Target_Empty          : Node_Id := Empty;
+                  Target_Count_Discrim  : Node_Id := Empty;
                   Target_Add_Named      : Node_Id := Empty;
                   Target_Add_Unnamed    : Node_Id := Empty;
                   Target_New_Indexed    : Node_Id := Empty;
@@ -6011,6 +6015,7 @@ package body SPARK_Definition.Annotate is
                   Parse_Aspect_Aggregate
                     (N                   => Source_Asp,
                      Empty_Subp          => Source_Empty,
+                     Count_Discriminant  => Source_Count_Discrim,
                      Add_Named_Subp      => Source_Add_Named,
                      Add_Unnamed_Subp    => Source_Add_Unnamed,
                      New_Indexed_Subp    => Source_New_Indexed,
@@ -6019,6 +6024,7 @@ package body SPARK_Definition.Annotate is
                   Parse_Aspect_Aggregate
                     (N                   => Target_Asp,
                      Empty_Subp          => Target_Empty,
+                     Count_Discriminant  => Target_Count_Discrim,
                      Add_Named_Subp      => Target_Add_Named,
                      Add_Unnamed_Subp    => Target_Add_Unnamed,
                      New_Indexed_Subp    => Target_New_Indexed,
