@@ -201,6 +201,25 @@ computations on real numbers.
       --  are not too big.
    end;
 
+For the most common numeric types, the |SPARK| library provides ready-made
+instances of these conversion packages, so that they need not be instantiated
+by hand: ``SPARK.Conversions.Float_Conversions`` and
+``SPARK.Conversions.Long_Float_Conversions`` for ``Float`` and ``Long_Float``
+(instances of ``SPARK.Big_Reals.Float_Conversions``), and
+``SPARK.Conversions.Long_Integer_Conversions`` for ``Long_Integer`` (an
+instance of ``Signed_Conversions``).
+
+The unit ``SPARK.Big_Intervals`` provides a type ``Interval``, a pair of
+``Big_Integer`` bounds with an ``Iterable`` aspect. As there is no
+native range type over big integers, it is the standard way to iterate or
+quantify over a range of big integers, typically in an annotation:
+
+.. code-block:: ada
+
+   Max : constant Big_Integer := ...;
+
+   pragma Assert (for all K in Interval'(0, Max) => Property (K));
+
 .. index:: functional containers
 
 Functional Containers Library
@@ -415,10 +434,10 @@ correct usage in client code as per the restrictions of |SPARK| (in particular
 
 The formal containers are a variation of the standard containers with API
 changes that allow adding suitable contracts, so that |GNATprove| can prove
-that client code manipulates containers correctly. There are 12 formal
+that client code manipulates containers correctly. There are 14 formal
 containers, which are part of the |SPARK| library.
 
-Among them, 6 are bounded and definite:
+Among them, 7 are bounded and definite:
 
 * ``SPARK.Containers.Formal.Vectors``
 * ``SPARK.Containers.Formal.Doubly_Linked_Lists``
@@ -426,8 +445,9 @@ Among them, 6 are bounded and definite:
 * ``SPARK.Containers.Formal.Ordered_Sets``
 * ``SPARK.Containers.Formal.Hashed_Maps``
 * ``SPARK.Containers.Formal.Ordered_Maps``
+* ``SPARK.Containers.Formal.Trees``
 
-The 6 others are unbounded and indefinite, and are controlled:
+The 7 others are unbounded and indefinite, and are controlled:
 
 * ``SPARK.Containers.Formal.Unbounded_Vectors``
 * ``SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists``
@@ -435,6 +455,7 @@ The 6 others are unbounded and indefinite, and are controlled:
 * ``SPARK.Containers.Formal.Unbounded_Ordered_Sets``
 * ``SPARK.Containers.Formal.Unbounded_Hashed_Maps``
 * ``SPARK.Containers.Formal.Unbounded_Ordered_Maps``
+* ``SPARK.Containers.Formal.Unbounded_Trees``
 
 Bounded definite formal containers can only contain definite objects (objects
 for which the compiler can compute the size in memory, hence not ``String`` nor
@@ -444,6 +465,19 @@ grow beyond the bound defined at object creation.
 Unbounded indefinite formal containers can contain indefinite objects. They use
 dynamic allocation both to allocate memory for their elements, and to expand
 their internal block of memory when it is full.
+
+Unlike the standard Ada containers, the |SPARK| library also offers an n-ary
+tree container, in the bounded definite variant
+``SPARK.Containers.Formal.Trees`` and the unbounded indefinite variant
+``SPARK.Containers.Formal.Unbounded_Trees``. In an n-ary tree, each node has at
+a possibly empty child per value of a discrete formal ``Way_Type``: the children
+form a map indexed by ``Way_Type``, in which any way may be empty. The child of
+a node in a given direction is reached through ``Child``. Nodes are designated
+by cursors, and the usual navigation and modification operations are provided,
+such as ``Root``, ``Parent``, ``First_Child``, ``Next_Sibling``,
+``Insert_Root``, ``Insert_Child`` and ``Delete``. This is different from a
+multiway tree such as ``Ada.Containers.Multiway_Trees``, whose nodes hold a
+sequence of children rather than one child per way.
 
 .. note::
 
