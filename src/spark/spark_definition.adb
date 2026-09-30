@@ -5287,6 +5287,7 @@ package body SPARK_Definition is
      (Aggregate_Aspect : N_Aspect_Specification_Id)
    is
       Empty_Subp          : Node_Id := Empty;
+      Count_Discriminant  : Node_Id := Empty;
       Add_Named_Subp      : Node_Id := Empty;
       Add_Unnamed_Subp    : Node_Id := Empty;
       New_Indexed_Subp    : Node_Id := Empty;
@@ -5300,6 +5301,7 @@ package body SPARK_Definition is
       Sem_Ch13.Parse_Aspect_Aggregate
         (N                   => Expression (Aggregate_Aspect),
          Empty_Subp          => Empty_Subp,
+         Count_Discriminant  => Count_Discriminant,
          Add_Named_Subp      => Add_Named_Subp,
          Add_Unnamed_Subp    => Add_Unnamed_Subp,
          New_Indexed_Subp    => New_Indexed_Subp,
