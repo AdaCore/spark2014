@@ -44,6 +44,7 @@ with Gnatprove_Build;       use Gnatprove_Build;
 with Platform;              use Platform;
 with Print_Table;           use Print_Table;
 with Report_Database;       use Report_Database;
+with SPARK_Report_Data;
 with SPARK2014VSN;          use SPARK2014VSN;
 with SPARK_Artifacts;
 with String_Utils;          use String_Utils;
@@ -52,6 +53,8 @@ with System.Storage_Elements;
 with VC_Kinds;              use VC_Kinds;
 
 package body Spark_Report is
+
+   use type SPARK_Report_Data.Suppression_Kind;
 
    type SPARK_File_Data is record
       File : Unbounded_String;
@@ -136,23 +139,31 @@ package body Spark_Report is
       --  Parsed .spark_error files from phase 1, carrying frontend
       --  diagnostics.
 
-      procedure Handle_SPARK_File (Fn : String; Dict : JSON_Value);
+      procedure Handle_SPARK_File
+        (Fn : String; Dict : SPARK_Report_Data.Unit_Data);
       --  Extract all information from a single SPARK file
 
-      procedure Handle_Flow_Items (V : JSON_Array; Unit : Unit_Type);
-      --  Parse and extract all information from a flow result array
+      procedure Handle_Flow_Items
+        (V    : SPARK_Report_Data.Diagnostic_Vectors.Vector;
+         Unit : Unit_Type;
+         Data : SPARK_Report_Data.Unit_Data);
+      --  Extract all information from decoded flow results
 
-      procedure Handle_Pragma_Assume_Items (V : JSON_Array; Unit : Unit_Type);
-      --  Parse and extract all information from a pragma assume result array
+      procedure Handle_Pragma_Assume_Items
+        (V    : SPARK_Report_Data.Location_Vectors.Vector;
+         Unit : Unit_Type;
+         Data : SPARK_Report_Data.Unit_Data);
+      --  Extract all information from decoded pragma assume locations
 
-      procedure Handle_Manifest_Items (V : JSON_Array);
+      procedure Handle_Manifest_Items
+        (V : SPARK_Report_Data.Diagnostic_Vectors.Vector);
       --  Print proof-manifest diagnostics emitted during analysis
 
-      procedure Handle_Proof_Items (V : JSON_Array; Unit : Unit_Type);
-      --  Parse and extract all information from a proof result array
-
-      procedure Handle_Assume_Items (V : JSON_Array; Unit : Unit_Type);
-      --  Parse and extract all information from an assume result array
+      procedure Handle_Proof_Items
+        (V    : SPARK_Report_Data.Diagnostic_Vectors.Vector;
+         Unit : Unit_Type;
+         Data : SPARK_Report_Data.Unit_Data);
+      --  Extract all information from decoded proof results
 
       procedure Print_Analysis_Report (Handle : Ada.Text_IO.File_Type);
       --  Print the proof report in the given file
@@ -469,22 +480,15 @@ package body Spark_Report is
          end case;
       end Flow_Kind_To_Summary;
 
-      -------------------------
-      -- Handle_Assume_Items --
-      -------------------------
-
-      procedure Handle_Assume_Items (V : JSON_Array; Unit : Unit_Type) is
-         pragma Unreferenced (Unit);
-         RL : constant Rule_Lists.List := From_JSON (V);
-      begin
-         Import (RL);
-      end Handle_Assume_Items;
-
       -----------------------
       -- Handle_Flow_Items --
       -----------------------
 
-      procedure Handle_Flow_Items (V : JSON_Array; Unit : Unit_Type) is
+      procedure Handle_Flow_Items
+        (V    : SPARK_Report_Data.Diagnostic_Vectors.Vector;
+         Unit : Unit_Type;
+         Data : SPARK_Report_Data.Unit_Data)
+      is
 
          function Severity_To_Msg_Kind (S : String) return Flow_Message_Kind;
 
@@ -506,31 +510,33 @@ package body Spark_Report is
             end if;
          end Severity_To_Msg_Kind;
 
-         --  Start of Processing for Handle_Flow_Items
-
       begin
-         for Index in 1 .. Length (V) loop
+         for Result of V loop
             declare
-               Result   : constant JSON_Value := Get (V, Index);
-               Severe   : constant String := Get (Get (Result, "severity"));
+               Severe   : constant String := To_String (Result.Severity);
                Subp     : constant Subp_Type :=
-                 From_JSON (Get (Result, "entity"));
+                 SPARK_Report_Data.Subprogram (Data, Result.Sloc.Entity);
                Kind     : constant Flow_Tag_Kind :=
-                 Flow_Tag_Kind'Value (Get (Get (Result, "rule")));
+                 Flow_Tag_Kind'Value (To_String (Result.Rule));
                Category : constant Possible_Entries :=
                  Flow_Kind_To_Summary (Kind);
             begin
-               if Has_Field (Result, "suppressed") then
-                  if Severe /= "warning" then
+               if Result.Suppression.Kind /= SPARK_Report_Data.No_Suppression
+               then
+                  if Result.Suppression.Kind
+                    = SPARK_Report_Data.Check_Suppression
+                  then
                      Add_Suppressed_Check
                        (Unit       => Unit,
                         Subp       => Subp,
-                        Justif_Msg => Get (Get (Result, "justif_msg")),
-                        Kind       => Get (Get (Result, "annot_kind")),
-                        Reason     => Get (Get (Result, "suppressed")),
-                        File       => Get (Get (Result, "file")),
-                        Line       => Get (Get (Result, "line")),
-                        Column     => Get (Get (Result, "col")));
+                        Justif_Msg =>
+                          To_String (Result.Suppression.Justification),
+                        Kind       =>
+                          To_String (Result.Suppression.Annotation),
+                        Reason     => To_String (Result.Suppression.Reason),
+                        File       => To_String (Result.Sloc.File),
+                        Line       => Result.Sloc.Line,
+                        Column     => Result.Sloc.Column);
                      if Category /= No_Entry then
                         Increment (Summary (Category).Justified);
                      end if;
@@ -556,20 +562,19 @@ package body Spark_Report is
       -- Handle_Manifest_Items --
       ---------------------------
 
-      procedure Handle_Manifest_Items (V : JSON_Array) is
+      procedure Handle_Manifest_Items
+        (V : SPARK_Report_Data.Diagnostic_Vectors.Vector) is
       begin
          if Verbosity = Quiet_Level then
             return;
          end if;
 
-         for Index in 1 .. Length (V) loop
+         for Result of V loop
             declare
-               Result : constant JSON_Value := Get (V, Index);
-               Msg    : constant String :=
-                 Get (Get (Get (Result, "message"), "text"));
-               File   : constant String := Get (Get (Result, "file"));
-               Line   : constant Natural := Get (Get (Result, "line"));
-               Column : constant Natural := Get (Get (Result, "col"));
+               Msg    : constant String := To_String (Result.Text);
+               File   : constant String := To_String (Result.Sloc.File);
+               Line   : constant Natural := Result.Sloc.Line;
+               Column : constant Natural := Result.Sloc.Column;
             begin
                Ada.Text_IO.Put_Line
                  (Ada.Text_IO.Standard_Error,
@@ -588,25 +593,18 @@ package body Spark_Report is
       -- Handle_Pragma_Assume_Items --
       --------------------------------
 
-      procedure Handle_Pragma_Assume_Items (V : JSON_Array; Unit : Unit_Type)
-      is
+      procedure Handle_Pragma_Assume_Items
+        (V    : SPARK_Report_Data.Location_Vectors.Vector;
+         Unit : Unit_Type;
+         Data : SPARK_Report_Data.Unit_Data) is
       begin
-         for Index in 1 .. Length (V) loop
-            declare
-               Result : constant JSON_Value := Get (V, Index);
-               File   : constant String := Get (Result, "file");
-               Line   : constant Positive := Get (Result, "line");
-               Column : constant Positive := Get (Result, "col");
-               Subp   : constant Subp_Type :=
-                 From_JSON (Get (Result, "entity"));
-            begin
-               Add_Pragma_Assume_Result
-                 (Unit   => Unit,
-                  File   => File,
-                  Line   => Line,
-                  Column => Column,
-                  Subp   => Subp);
-            end;
+         for Result of V loop
+            Add_Pragma_Assume_Result
+              (Unit   => Unit,
+               File   => To_String (Result.File),
+               Line   => Result.Line,
+               Column => Result.Column,
+               Subp   => SPARK_Report_Data.Subprogram (Data, Result.Entity));
          end loop;
       end Handle_Pragma_Assume_Items;
 
@@ -614,33 +612,38 @@ package body Spark_Report is
       -- Handle_Proof_Items --
       ------------------------
 
-      procedure Handle_Proof_Items (V : JSON_Array; Unit : Unit_Type) is
+      procedure Handle_Proof_Items
+        (V    : SPARK_Report_Data.Diagnostic_Vectors.Vector;
+         Unit : Unit_Type;
+         Data : SPARK_Report_Data.Unit_Data) is
       begin
-         for Index in 1 .. Length (V) loop
+         for Result of V loop
             declare
-               Result   : constant JSON_Value := Get (V, Index);
-               Severe   : constant String := Get (Get (Result, "severity"));
+               Severe   : constant String := To_String (Result.Severity);
                Kind     : constant VC_Kind :=
-                 VC_Kind'Value (Get (Get (Result, "rule")));
+                 VC_Kind'Value (To_String (Result.Rule));
                Subp     : constant Subp_Type :=
-                 From_JSON (Get (Result, "entity"));
+                 SPARK_Report_Data.Subprogram (Data, Result.Sloc.Entity);
                Category : constant Possible_Entries :=
                  VC_Kind_To_Summary (Kind);
                Proved   : constant Boolean := Severe = "info";
-               File     : constant String := Get (Get (Result, "file"));
-               Line     : constant Positive := Get (Get (Result, "line"));
-               Column   : constant Positive := Get (Get (Result, "col"));
+               File     : constant String := To_String (Result.Sloc.File);
+               Line     : constant Positive := Result.Sloc.Line;
+               Column   : constant Positive := Result.Sloc.Column;
             begin
                if Category = Warnings then
                   null;
-               elsif Has_Field (Result, "suppressed") then
+               elsif Result.Suppression.Kind
+                 = SPARK_Report_Data.Check_Suppression
+               then
                   Increment (Summary (Category).Justified);
                   Add_Suppressed_Check
                     (Unit       => Unit,
                      Subp       => Subp,
-                     Justif_Msg => Get (Get (Result, "justif_msg")),
-                     Kind       => Get (Get (Result, "annot_kind")),
-                     Reason     => Get (Get (Result, "suppressed")),
+                     Justif_Msg =>
+                       To_String (Result.Suppression.Justification),
+                     Kind       => To_String (Result.Suppression.Annotation),
+                     Reason     => To_String (Result.Suppression.Reason),
                      File       => File,
                      Line       => Line,
                      Column     => Column);
@@ -649,8 +652,7 @@ package body Spark_Report is
                     (Unit => Unit, Subp => Subp, Proved => Proved);
                   if Proved then
                      declare
-                        Cat : constant Prover_Category :=
-                          From_JSON (Get (Result, "how_proved"));
+                        Cat : constant Prover_Category := Result.How_Proved;
                      begin
                         case Cat is
                            when PC_Trivial =>
@@ -669,11 +671,11 @@ package body Spark_Report is
                               end;
 
                            when PC_Prover  =>
-                              if Has_Field (Result, "stats") then
+                              if Result.Has_Stats then
                                  declare
                                     Stats     :
                                       constant Prover_Stat_Maps.Map :=
-                                        From_JSON (Get (Result, "stats"));
+                                        Result.Stats;
                                     Max_Steps : Natural;
                                     Max_Time  : Float;
                                  begin
@@ -712,7 +714,9 @@ package body Spark_Report is
       -- Handle_SPARK_File --
       -----------------------
 
-      procedure Handle_SPARK_File (Fn : String; Dict : JSON_Value) is
+      procedure Handle_SPARK_File
+        (Fn : String; Dict : SPARK_Report_Data.Unit_Data)
+      is
 
          function Unit_Key return String;
          --  Keep the traditional basename key unless aggregate projects
@@ -752,73 +756,39 @@ package body Spark_Report is
 
          Unit : constant Unit_Type := Mk_Unit (Unit_Key);
 
-         procedure Handle_SPARK_Status
-           (Name : UTF8_String; Value : JSON_Value);
-         --  Handle one entry of the "spark" status map
-
-         -------------------------
-         -- Handle_SPARK_Status --
-         -------------------------
-
-         procedure Handle_SPARK_Status (Name : UTF8_String; Value : JSON_Value)
-         is
-            SPARK_Status : constant SPARK_Mode_Status := From_JSON (Value);
-         begin
+      begin
+         if not (Dict.Has_Entities
+                 and Dict.Has_Progress
+                 and Dict.Has_Stop_Reason)
+         then
+            raise GNATCOLL.JSON.Invalid_JSON_Stream
+              with "missing .spark unit metadata";
+         end if;
+         Add_Analysis_Progress (Unit, Dict.Progress, Dict.Stop_Reason);
+         for Item of Dict.Statuses loop
             Add_SPARK_Status
               (Unit         => Unit,
-               Subp         => From_Key (Name),
-               SPARK_Status => SPARK_Status);
-
-            if SPARK_Status = All_In_SPARK then
+               Subp         =>
+                 SPARK_Report_Data.Subprogram (Dict, Item.Entity),
+               SPARK_Status => Item.Status);
+            if Item.Status = All_In_SPARK then
                SPARK_Mode_OK := True;
             end if;
-
-         end Handle_SPARK_Status;
-
-         Has_Flow              : constant Boolean := Has_Field (Dict, "flow");
-         Has_Assumes           : constant Boolean :=
-           Has_Field (Dict, "pragma_assume");
-         Has_Proof             : constant Boolean := Has_Field (Dict, "proof");
-         Has_Manifest_Warnings : constant Boolean :=
-           Has_Field (Dict, "manifest_warnings");
-
-         Analysis    : constant Analysis_Progress :=
-           Analysis_Progress'Value (String'(Get (Dict, "progress")));
-         Stop_Reason : constant Stop_Reason_Type :=
-           Stop_Reason_Type'Value (String'(Get (Dict, "stop_reason")));
-
-         SPARK_Status_Dict        : constant JSON_Value := Get (Dict, "spark");
-         Skip_Flow_And_Proof_List : constant JSON_Array :=
-           Get (Dict, "skip_flow_proof");
-         Skip_Proof_List          : constant JSON_Array :=
-           Get (Dict, "skip_proof");
-      begin
-         Parse_Entity_Table (Get (Dict, "entities"));
-         Add_Analysis_Progress (Unit, Analysis, Stop_Reason);
-         Map_JSON_Object (SPARK_Status_Dict, Handle_SPARK_Status'Access);
-         for Index in 1 .. Length (Skip_Flow_And_Proof_List) loop
+         end loop;
+         for Entity of Dict.Skip_Flow_Proof loop
             Add_Skip_Flow_And_Proof
-              (From_JSON (Get (Skip_Flow_And_Proof_List, Index)));
+              (SPARK_Report_Data.Subprogram (Dict, Entity));
          end loop;
-         for Index in 1 .. Length (Skip_Proof_List) loop
-            Add_Skip_Proof (From_JSON (Get (Skip_Proof_List, Index)));
+         for Entity of Dict.Skip_Proof loop
+            Add_Skip_Proof (SPARK_Report_Data.Subprogram (Dict, Entity));
          end loop;
-         Max_Progress := Analysis_Progress'Max (Max_Progress, Analysis);
-         if Has_Flow then
-            Handle_Flow_Items (Get (Get (Dict, "flow")), Unit);
-         end if;
-         if Has_Assumes then
-            Handle_Pragma_Assume_Items
-              (Get (Get (Dict, "pragma_assume")), Unit);
-         end if;
-         if Has_Proof then
-            Handle_Proof_Items (Get (Get (Dict, "proof")), Unit);
-         end if;
-         if Has_Manifest_Warnings then
-            Handle_Manifest_Items (Get (Get (Dict, "manifest_warnings")));
-         end if;
-         if Assumptions and then Has_Field (Dict, "assumptions") then
-            Handle_Assume_Items (Get (Get (Dict, "assumptions")), Unit);
+         Max_Progress := Analysis_Progress'Max (Max_Progress, Dict.Progress);
+         Handle_Flow_Items (Dict.Flow, Unit, Dict);
+         Handle_Pragma_Assume_Items (Dict.Pragma_Assume, Unit, Dict);
+         Handle_Proof_Items (Dict.Proof, Unit, Dict);
+         Handle_Manifest_Items (Dict.Manifest_Warnings);
+         if Assumptions then
+            Import (SPARK_Report_Data.Resolve_Assumptions (Dict));
          end if;
       end Handle_SPARK_File;
 
@@ -1470,7 +1440,10 @@ package body Spark_Report is
 
       for File_Data of Parsed_Files loop
          begin
-            Handle_SPARK_File (To_String (File_Data.File), File_Data.Data);
+            Handle_SPARK_File
+              (To_String (File_Data.File),
+               SPARK_Report_Data.Decode
+                 (File_Data.Data, Read_Assumptions => Assumptions));
          exception
             when others =>
                Ada.Text_IO.Put_Line
