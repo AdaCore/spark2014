@@ -36,7 +36,7 @@ with Assumption_Types;      use Assumption_Types;
 with Call;                  use Call;
 with Configuration;         use Configuration;
 with GNAT.Calendar.Time_IO;
-with GNATCOLL.JSON;         use GNATCOLL.JSON;
+with GNATCOLL.JSON;
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
 with GPR2.Project.Attribute;
 with Gnat2Why_Opts;         use Gnat2Why_Opts;
@@ -58,7 +58,7 @@ package body Spark_Report is
 
    type SPARK_File_Data is record
       File : Unbounded_String;
-      Data : JSON_Value;
+      Data : SPARK_Report_Data.Unit_Data;
    end record;
 
    package SPARK_File_Lists is new
@@ -133,10 +133,10 @@ package body Spark_Report is
         Configuration.Output = GPO_Pretty_Color;
 
       Parsed_Files : SPARK_File_Lists.List;
-      --  Subset of SPARK_Files that actually exist on disk, with parsed JSON
+      --  Existing SPARK files with decoded application data
 
       Parsed_Error_Files : SPARK_File_Lists.List;
-      --  Parsed .spark_error files from phase 1, carrying frontend
+      --  Decoded .spark_error files from phase 1, carrying frontend
       --  diagnostics.
 
       procedure Handle_SPARK_File
@@ -1380,7 +1380,9 @@ package body Spark_Report is
                Parsed_Files.Append
                  (SPARK_File_Data'
                     (File => To_Unbounded_String (Filename),
-                     Data => Read_File_Into_JSON (Filename)));
+                     Data =>
+                       SPARK_Report_Data.Read_File
+                         (Filename, Read_Assumptions => Assumptions)));
             exception
                when others =>
                   Ada.Text_IO.Put_Line
@@ -1400,17 +1402,16 @@ package body Spark_Report is
          if Ada.Directories.Exists (SPARK_Error_File) then
             begin
                declare
-                  Data   : constant JSON_Value :=
-                    Read_File_Into_JSON (SPARK_Error_File);
-                  Errors : constant JSON_Array :=
-                    Get (Get (Data, "warn_error"));
+                  Data : constant SPARK_Report_Data.Unit_Data :=
+                    SPARK_Report_Data.Read_File
+                      (SPARK_Error_File, Read_Assumptions => False);
                begin
                   --  When the corresponding .spark file exists, the
                   --  .spark_error should have no messages (they would be
                   --  redundant with what is already in .spark).
                   pragma
                     Assert
-                      (Length (Errors) = 0
+                      (Data.Warn_Error.Is_Empty
                        or else
                          not Ada.Directories.Exists
                                (Ada.Directories.Compose
@@ -1420,7 +1421,7 @@ package body Spark_Report is
                                      (SPARK_Error_File),
                                    "spark")));
 
-                  if Length (Errors) > 0 then
+                  if not Data.Warn_Error.Is_Empty then
                      Parsed_Error_Files.Append
                        (SPARK_File_Data'
                           (File => To_Unbounded_String (SPARK_Error_File),
@@ -1440,10 +1441,7 @@ package body Spark_Report is
 
       for File_Data of Parsed_Files loop
          begin
-            Handle_SPARK_File
-              (To_String (File_Data.File),
-               SPARK_Report_Data.Decode
-                 (File_Data.Data, Read_Assumptions => Assumptions));
+            Handle_SPARK_File (To_String (File_Data.File), File_Data.Data);
          exception
             when others =>
                Ada.Text_IO.Put_Line

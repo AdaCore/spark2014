@@ -47,6 +47,8 @@ procedure Generate_SARIF_Report
    Error_Code         : Integer;
    Tree               : GPR2.Project.Tree.Object)
 is
+   use type SPARK_Report_Data.Entity_Reference;
+
    Root                 : SARIF.Types.Root;
    My_Run               : run;
    My_Results           : SARIF.Types.result_Vector;
@@ -479,13 +481,16 @@ is
             Suppressions : SARIF.Types.suppression_Vector;
             Rel_Locs     : SARIF.Types.location_Vector;
          begin
-            if Result.Suppressed.Present then
+            if Result.Suppression.Kind /= SPARK_Report_Data.No_Suppression then
                declare
                   Suppr_Object : SARIF.Types.suppression :=
                     SARIF.Types.suppression'
                       (kind => SARIF.Types.Enum.external, others => <>);
                   Reason       : constant String :=
-                    To_String (Result.Suppressed.Value);
+                    (if Result.Suppression.Kind
+                       = SPARK_Report_Data.Check_Suppression
+                     then To_String (Result.Suppression.Reason)
+                     else "");
                begin
                   if Reason /= "" then
                      Suppr_Object.justification := To_Virtual_String (Reason);
@@ -542,9 +547,7 @@ is
    begin
       for File_Data of SPARK_Files loop
          begin
-            Handle_SPARK_File
-              (SPARK_Report_Data.Decode
-                 (File_Data.Data, Read_Assumptions => False));
+            Handle_SPARK_File (File_Data.Data);
          exception
             when others =>
                Ada.Text_IO.Put_Line
@@ -567,13 +570,8 @@ is
    begin
       for SPARK_Error_File of SPARK_Error_Files loop
          begin
-            declare
-               Data : constant SPARK_Report_Data.Unit_Data :=
-                 SPARK_Report_Data.Decode
-                   (SPARK_Error_File.Data, Read_Assumptions => False);
-            begin
-               Handle_Items (Data.Warn_Error, Data);
-            end;
+            Handle_Items
+              (SPARK_Error_File.Data.Warn_Error, SPARK_Error_File.Data);
          exception
             when others =>
                Ada.Text_IO.Put_Line
@@ -632,7 +630,7 @@ is
    begin
       --  ??? the vc_sloc (check_file, check_line etc) might be more
       --  appropriate, if present.
-      if V.Sloc.Entity /= 0 then
+      if V.Sloc.Entity /= SPARK_Report_Data.No_Entity_Reference then
          Logical_Locations.Append
            (Logical_Location
               (Subp_Name

@@ -29,6 +29,8 @@ with SPARK_JSON_Entities;
 
 package body SPARK_Report_Data is
 
+   function Decode
+     (Value : JSON_Value; Read_Assumptions : Boolean := True) return Unit_Data;
    function Read_Optional
      (Value : JSON_Value; Name : String) return Optional_Text;
    function Read_Strings (Value : JSON_Value) return String_Lists.List;
