@@ -56,7 +56,9 @@ repo_root = os.path.normpath(os.path.join(script_dir, "..", ".."))
 
 
 def parse_options():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument(
         "--no-wait",
