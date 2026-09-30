@@ -2754,7 +2754,8 @@ package body SPARK_Util.Types is
                      Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
                   begin
                      while Present (Comp) loop
-                        if Component_Is_Visible_In_SPARK (Comp)
+                        if not Is_Tag (Comp)
+                          and then Component_Is_Visible_In_SPARK (Comp)
                           and then
                             (not Is_Tagged_Type (Rep_Ty)
                              or else
