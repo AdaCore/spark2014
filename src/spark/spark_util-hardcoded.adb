@@ -23,8 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with SPARK_Util.Types; use SPARK_Util.Types;
-with Stand;            use Stand;
+with Stand; use Stand;
 
 package body SPARK_Util.Hardcoded is
 
@@ -210,28 +209,6 @@ package body SPARK_Util.Hardcoded is
             return False;
       end case;
    end Has_Imprecise_Precondition;
-
-   -----------------------
-   -- Has_Stoele_Offset --
-   -----------------------
-
-   function Has_Stoele_Offset (E : Type_Kind_Id) return Boolean is
-      R : Type_Kind_Id := E;
-      T : Type_Kind_Id;
-   begin
-      loop
-         if Is_From_Hardcoded_Unit (R, System_Storage_Elements)
-           and then Get_Name_String (Chars (R)) = "storage_offset"
-         then
-            return True;
-         end if;
-         T := Parent_Type (R);
-         if T = R then
-            return False;
-         end if;
-         R := T;
-      end loop;
-   end Has_Stoele_Offset;
 
    ------------------------------------
    -- Is_From_Hardcoded_Generic_Unit --
@@ -475,17 +452,5 @@ package body SPARK_Util.Hardcoded is
          return False;
       end if;
    end Is_Literal_Function;
-
-   -----------------------
-   -- Is_System_Address --
-   -----------------------
-
-   function Is_System_Address (E : Type_Kind_Id) return Boolean is
-      R : constant Type_Kind_Id := Retysp (E);
-   begin
-      return
-        Is_From_Hardcoded_Unit (R, System)
-        and then Get_Name_String (Chars (R)) = "address";
-   end Is_System_Address;
 
 end SPARK_Util.Hardcoded;

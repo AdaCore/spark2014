@@ -170,14 +170,6 @@ package SPARK_Util.Hardcoded is
    with Pre => Is_Hardcoded_Entity (E);
    --  Returns the unit in which the hardcoded entity E is defined
 
-   function Has_Stoele_Offset (E : Type_Kind_Id) return Boolean;
-   --  Return true if the entity is (a derived type of) the type
-   --  System.Storage_Elements.Storage_Offset.
-
-   function Is_System_Address (E : Type_Kind_Id) return Boolean;
-   --  Return true if the entity is (a subtype of) the type
-   --  System.Address;
-
    function Get_Real_Time_Time_Unit (E : Entity_Id) return Ureal
    with Pre => Is_From_Hardcoded_Unit (E, Real_Time);
    --  Return the value of Time_Unit from an entity of the package
