@@ -1,63 +1,60 @@
 explicit_soundness.adb:15:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
-explicit_soundness.adb:23:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
-explicit_soundness.adb:31:06: info: data dependencies proved
-explicit_soundness.adb:35:07: info: initialization of "P" proved
-explicit_soundness.adb:36:07: info: initialization of "C" proved
-explicit_soundness.adb:39:07: info: precondition proved (CVC5: 1 VC)
-explicit_soundness.adb:40:12: medium: precondition might fail
-explicit_soundness.adb:41:22: info: assertion proved (Trivial: 1 VC)
-explicit_soundness.adb:51:06: info: data dependencies proved
-explicit_soundness.adb:55:07: info: initialization of "P" proved
-explicit_soundness.adb:58:07: medium: precondition might fail
-pointers_soundness.adb:29:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
-pointers_soundness.adb:37:09: info: data dependencies proved
-pointers_soundness.adb:39:07: info: initialization of "C" proved
-pointers_soundness.adb:41:12: medium: precondition might fail [possible fix: subprogram at line 36 should mention P and Pointers_Soundness.Ptrs.Memory in a precondition]
-pointers_soundness.adb:42:22: info: assertion proved (Trivial: 1 VC)
-pointers_soundness.adb:51:06: info: data dependencies proved
-pointers_soundness.adb:54:36: info: precondition proved (CVC5: 1 VC)
-pointers_soundness.adb:56:07: info: precondition proved (CVC5: 1 VC)
-pointers_soundness.adb:57:22: info: precondition proved (CVC5: 1 VC)
-pointers_soundness.adb:57:22: medium: assertion might fail
-pointers_soundness.adb:65:09: info: data dependencies proved
-pointers_soundness.adb:67:07: info: initialization of "P" proved
-pointers_soundness.adb:69:12: medium: precondition might fail [possible fix: subprogram at line 64 should mention H in a precondition]
-pointers_soundness.adb:70:22: info: assertion proved (Trivial: 1 VC)
-pointers_soundness.adb:78:06: info: data dependencies proved
-pointers_soundness.adb:81:31: info: precondition proved (CVC5: 1 VC)
-pointers_soundness.adb:83:22: medium: assertion might fail
-pointers_soundness.adb:92:06: info: data dependencies proved
-pointers_soundness.adb:95:31: info: precondition proved (CVC5: 1 VC)
-pointers_soundness.adb:97:32: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Peek" or turning it into an expression function in its unit spec]
-pointers_soundness.adb:97:36: info: precondition proved (CVC5: 1 VC)
-poisoned_soundness.adb:19:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
-poisoned_soundness.adb:26:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
-poisoned_soundness.adb:33:04: warning: analyzing unreferenced procedure "Read_After_Take" [unreferenced-procedure]
-poisoned_soundness.adb:33:14: warning: subprogram "Read_After_Take" has no effect
-poisoned_soundness.adb:34:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-poisoned_soundness.adb:35:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-poisoned_soundness.adb:35:07: info: initialization of "G" proved
-poisoned_soundness.adb:38:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-poisoned_soundness.adb:38:12: info: precondition proved (CVC5: 1 VC)
-poisoned_soundness.adb:39:12: info: precondition proved (CVC5: 1 VC)
-poisoned_soundness.adb:39:32: medium: predicate check might fail
-poisoned_soundness.adb:40:22: info: assertion proved (Trivial)
-poisoned_soundness.adb:41:07: info: precondition proved (CVC5: 2 VC)
-poisoned_soundness.adb:48:04: warning: analyzing unreferenced procedure "Read_Null" [unreferenced-procedure]
-poisoned_soundness.adb:48:14: warning: subprogram "Read_Null" has no effect
-poisoned_soundness.adb:49:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-poisoned_soundness.adb:49:07: info: initialization of "H" proved
-poisoned_soundness.adb:52:12: medium: precondition might fail
-poisoned_soundness.adb:52:32: info: predicate check proved (CVC5: 1 VC)
-poisoned_soundness.adb:53:22: info: assertion proved (Trivial)
-poisoned_soundness.adb:67:06: info: data dependencies proved
-poisoned_soundness.adb:72:73: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:73:23: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:75:43: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:75:59: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:78:07: info: precondition proved (CVC5: 12 VC)
-poisoned_soundness.adb:79:32: info: assertion proved (CVC5: 1 VC)
-poisoned_soundness.adb:79:48: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:80:32: medium: assertion might fail
-poisoned_soundness.adb:80:35: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:90:29: info: assertion proved (CVC5: 1 VC)
+explicit_soundness.adb:30:06: info: data dependencies proved
+explicit_soundness.adb:34:07: info: initialization of "P" proved
+explicit_soundness.adb:35:07: info: initialization of "C" proved
+explicit_soundness.adb:38:07: info: precondition proved (CVC5: 1 VC)
+explicit_soundness.adb:39:12: medium: precondition might fail
+explicit_soundness.adb:40:22: info: assertion proved (Trivial: 1 VC)
+explicit_soundness.adb:50:06: info: data dependencies proved
+explicit_soundness.adb:54:07: info: initialization of "P" proved
+explicit_soundness.adb:57:07: medium: precondition might fail
+pointers_soundness.adb:36:09: info: data dependencies proved
+pointers_soundness.adb:38:07: info: initialization of "C" proved
+pointers_soundness.adb:40:12: medium: precondition might fail [possible fix: subprogram at line 35 should mention P and Pointers_Soundness.Ptrs.Memory in a precondition]
+pointers_soundness.adb:41:22: info: assertion proved (Trivial: 1 VC)
+pointers_soundness.adb:50:06: info: data dependencies proved
+pointers_soundness.adb:53:36: info: precondition proved (CVC5: 1 VC)
+pointers_soundness.adb:55:07: info: precondition proved (CVC5: 1 VC)
+pointers_soundness.adb:56:22: info: precondition proved (CVC5: 1 VC)
+pointers_soundness.adb:56:22: medium: assertion might fail
+pointers_soundness.adb:64:09: info: data dependencies proved
+pointers_soundness.adb:66:07: info: initialization of "P" proved
+pointers_soundness.adb:68:12: medium: precondition might fail [possible fix: subprogram at line 63 should mention H in a precondition]
+pointers_soundness.adb:69:22: info: assertion proved (Trivial: 1 VC)
+pointers_soundness.adb:77:06: info: data dependencies proved
+pointers_soundness.adb:80:31: info: precondition proved (CVC5: 1 VC)
+pointers_soundness.adb:82:22: medium: assertion might fail
+pointers_soundness.adb:91:06: info: data dependencies proved
+pointers_soundness.adb:94:31: info: precondition proved (CVC5: 1 VC)
+pointers_soundness.adb:96:32: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Peek" or turning it into an expression function in its unit spec]
+pointers_soundness.adb:96:36: info: precondition proved (CVC5: 1 VC)
+poisoned_soundness.adb:23:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+poisoned_soundness.adb:30:04: warning: analyzing unreferenced procedure "Read_After_Take" [unreferenced-procedure]
+poisoned_soundness.adb:30:14: warning: subprogram "Read_After_Take" has no effect
+poisoned_soundness.adb:31:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+poisoned_soundness.adb:32:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+poisoned_soundness.adb:32:07: info: initialization of "G" proved
+poisoned_soundness.adb:35:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+poisoned_soundness.adb:35:12: info: precondition proved (CVC5: 1 VC)
+poisoned_soundness.adb:36:12: info: precondition proved (CVC5: 1 VC)
+poisoned_soundness.adb:36:32: medium: predicate check might fail
+poisoned_soundness.adb:37:22: info: assertion proved (Trivial)
+poisoned_soundness.adb:38:07: info: precondition proved (CVC5: 2 VC)
+poisoned_soundness.adb:45:04: warning: analyzing unreferenced procedure "Read_Null" [unreferenced-procedure]
+poisoned_soundness.adb:45:14: warning: subprogram "Read_Null" has no effect
+poisoned_soundness.adb:46:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+poisoned_soundness.adb:46:07: info: initialization of "H" proved
+poisoned_soundness.adb:49:12: medium: precondition might fail
+poisoned_soundness.adb:49:32: info: predicate check proved (CVC5: 1 VC)
+poisoned_soundness.adb:50:22: info: assertion proved (Trivial)
+poisoned_soundness.adb:64:06: info: data dependencies proved
+poisoned_soundness.adb:69:73: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:70:23: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:72:43: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:72:59: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:75:07: info: precondition proved (CVC5: 12 VC)
+poisoned_soundness.adb:76:32: info: assertion proved (CVC5: 1 VC)
+poisoned_soundness.adb:76:48: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:77:32: medium: assertion might fail
+poisoned_soundness.adb:77:35: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:87:29: info: assertion proved (CVC5: 1 VC)

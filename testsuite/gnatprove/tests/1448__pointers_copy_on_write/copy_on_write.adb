@@ -19,16 +19,12 @@ procedure Copy_On_Write with SPARK_Mode is
       Value : Data;
    end record;
 
-   function Is_Reclaimed (Unused : Cell) return Boolean is (True)
-   with Ghost => Static, Global => null;
-
    package Ptrs is new
-     SPARK.Pointers.Explicit_Reclamation.Separate_Memory (Cell, Is_Reclaimed);
+     SPARK.Pointers.Explicit_Reclamation.Separate_Memory (Cell);
    use Ptrs;
    use Memory_Model;
 
-   function Copy_Cell (C : Cell) return Cell is (C) with Global => null;
-   package Ops is new Ptrs.Copy_Operations (Copy_Cell);
+   package Ops is new Ptrs.Copy_Operations;
    use Ops;
 
    type Container is record

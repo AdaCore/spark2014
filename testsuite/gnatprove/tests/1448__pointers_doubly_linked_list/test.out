@@ -1,230 +1,229 @@
 doubly_linked_list.adb:27:11: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
 doubly_linked_list.adb:27:11: info: precondition proved (CVC5: 4 VC)
-doubly_linked_list.adb:52:13: info: implicit aspect Always_Terminates on "Copy_Cell" has been proved, subprogram will terminate
-doubly_linked_list.adb:62:13: info: implicit aspect Always_Terminates on "Cell_Next" has been proved, subprogram will terminate
-doubly_linked_list.adb:63:38: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:64:26: info: data dependencies proved
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:104
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:114
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:130
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:157
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:176
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:227
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:231
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:245
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:249
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:273
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:277
-doubly_linked_list.adb:78:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:97
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:104, instance at line 78
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:104, instance at line 78
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-pointers-abstract_reachability.ads:176, instance at line 78
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-pointers-abstract_reachability.ads:176, instance at line 78
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:130, instance at line 78
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:130, instance at line 78
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:231, instance at line 78
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:231, instance at line 78
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-pointers-abstract_reachability.ads:277, instance at line 78
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-pointers-abstract_reachability.ads:277, instance at line 78
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:249, instance at line 78
-doubly_linked_list.adb:78:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:249, instance at line 78
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:78:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-doubly_linked_list.adb:93:06: info: data dependencies proved
-doubly_linked_list.adb:95:16: info: postcondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:95:24: info: predicate check proved (Trivial: 1 VC)
-doubly_linked_list.adb:95:47: info: predicate check proved (Trivial: 1 VC)
-doubly_linked_list.adb:101:27: info: assertion proved (CVC5: 1 VC)
-doubly_linked_list.adb:101:35: info: predicate check proved (Trivial: 1 VC)
-doubly_linked_list.adb:101:66: info: predicate check proved (Trivial: 1 VC)
-doubly_linked_list.adb:104:13: info: implicit aspect Always_Terminates on "Valid_Sublist" has been proved, subprogram will terminate
-doubly_linked_list.adb:104:13: warning: "Valid_Sublist" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
-doubly_linked_list.adb:109:34: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:111:17: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:111:35: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:114:31: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:114:49: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:60:13: info: implicit aspect Always_Terminates on "Cell_Next" has been proved, subprogram will terminate
+doubly_linked_list.adb:61:38: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:62:26: info: data dependencies proved
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:104
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:114
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:130
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:157
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:176
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:227
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:231
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:245
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:249
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:273
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:277
+doubly_linked_list.adb:76:04: warning: in instantiation at spark-pointers-abstract_reachability.ads:97
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:104, instance at line 76
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:104, instance at line 76
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-pointers-abstract_reachability.ads:176, instance at line 76
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-pointers-abstract_reachability.ads:176, instance at line 76
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:130, instance at line 76
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:130, instance at line 76
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:231, instance at line 76
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-pointers-abstract_reachability.ads:231, instance at line 76
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-pointers-abstract_reachability.ads:277, instance at line 76
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-pointers-abstract_reachability.ads:277, instance at line 76
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:249, instance at line 76
+doubly_linked_list.adb:76:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-pointers-abstract_reachability.ads:249, instance at line 76
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:76:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+doubly_linked_list.adb:91:06: info: data dependencies proved
+doubly_linked_list.adb:93:16: info: postcondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:93:24: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list.adb:93:47: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list.adb:99:27: info: assertion proved (CVC5: 1 VC)
+doubly_linked_list.adb:99:35: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list.adb:99:66: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list.adb:102:13: info: implicit aspect Always_Terminates on "Valid_Sublist" has been proved, subprogram will terminate
+doubly_linked_list.adb:102:13: warning: "Valid_Sublist" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+doubly_linked_list.adb:107:34: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:109:17: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:109:35: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:112:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:112:49: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:114:33: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:114:41: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:114:59: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:116:19: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:116:25: info: precondition proved (CVC5: 1 VC)
 doubly_linked_list.adb:116:33: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:116:41: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:116:59: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:118:19: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:118:25: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:118:33: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:118:51: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:120:19: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:120:19: info: subprogram variant proved (CVC5: 1 VC)
-doubly_linked_list.adb:120:34: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:120:52: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:123:06: info: data dependencies proved
-doubly_linked_list.adb:126:58: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:128:22: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:130:08: info: postcondition proved (CVC5: 6 VC; Trivial: 1 VC)
-doubly_linked_list.adb:136:24: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:137:19: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:137:37: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:139:32: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:140:30: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:140:65: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:142:30: info: range check proved (CVC5: 1 VC)
-doubly_linked_list.adb:142:44: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:149:06: info: data dependencies proved
-doubly_linked_list.adb:154:22: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:158:28: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:158:69: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:159:17: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:161:29: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:163:36: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:164:33: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:164:63: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:168:32: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:169:27: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:169:44: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:169:46: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:171:08: info: postcondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:171:13: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:171:42: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:173:30: info: range check proved (CVC5: 1 VC)
-doubly_linked_list.adb:173:44: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:179:12: info: precondition proved (CVC5: 6 VC)
-doubly_linked_list.adb:180:48: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:182:15: info: precondition proved (CVC5: 5 VC)
-doubly_linked_list.adb:182:58: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:183:10: info: precondition proved (CVC5: 11 VC; Trivial: 1 VC)
-doubly_linked_list.adb:183:10: info: subprogram variant proved (CVC5: 1 VC)
-doubly_linked_list.adb:184:24: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:188:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
-doubly_linked_list.adb:191:22: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:195:28: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:196:23: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:196:29: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:198:17: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:198:41: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:199:26: info: data dependencies proved
-doubly_linked_list.adb:213:13: info: implicit aspect Always_Terminates on "In_List" has been proved, subprogram will terminate
-doubly_linked_list.adb:216:22: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:217:26: info: data dependencies proved
-doubly_linked_list.adb:219:13: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
-doubly_linked_list.adb:221:06: info: data dependencies proved
-doubly_linked_list.adb:222:62: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:223:27: info: postcondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:223:27: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:225:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
-doubly_linked_list.adb:227:06: info: data dependencies proved
-doubly_linked_list.adb:231:11: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
-doubly_linked_list.adb:231:25: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:231:43: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:232:29: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:236:21: info: predicate check proved (Trivial: 1 VC)
-doubly_linked_list.adb:236:35: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:237:23: info: predicate check proved (Trivial: 1 VC)
-doubly_linked_list.adb:237:37: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:240:13: info: implicit aspect Always_Terminates on "Previous" has been proved, subprogram will terminate
-doubly_linked_list.adb:242:06: info: data dependencies proved
-doubly_linked_list.adb:246:11: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
-doubly_linked_list.adb:246:29: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:246:35: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:253:27: info: predicate check proved (Trivial: 1 VC)
-doubly_linked_list.adb:254:27: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:255:29: info: predicate check proved (Trivial: 1 VC)
-doubly_linked_list.adb:255:43: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:261:43: info: loop invariant initialization proved (CVC5: 3 VC)
-doubly_linked_list.adb:261:43: info: loop invariant preservation proved (CVC5: 3 VC)
-doubly_linked_list.adb:263:38: info: loop invariant initialization proved (CVC5: 1 VC)
-doubly_linked_list.adb:263:38: info: loop invariant preservation proved (CVC5: 1 VC)
-doubly_linked_list.adb:263:43: info: precondition proved (CVC5: 6 VC)
-doubly_linked_list.adb:263:65: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:267:28: info: loop variant proved (CVC5: 1 VC)
-doubly_linked_list.adb:268:28: info: range check proved (CVC5: 2 VC)
-doubly_linked_list.adb:268:42: info: precondition proved (CVC5: 4 VC)
-doubly_linked_list.adb:273:18: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:276:38: info: assertion proved (CVC5: 1 VC)
-doubly_linked_list.adb:276:38: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:277:38: info: assertion proved (CVC5: 1 VC)
-doubly_linked_list.adb:277:43: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:281:37: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:283:18: info: precondition proved (CVC5: 5 VC)
-doubly_linked_list.adb:284:38: info: assertion proved (CVC5: 1 VC)
-doubly_linked_list.adb:285:38: info: assertion proved (CVC5: 1 VC)
-doubly_linked_list.adb:285:43: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:285:65: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:294:31: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:294:49: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:296:12: info: precondition proved (CVC5: 7 VC)
-doubly_linked_list.adb:296:50: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:297:12: info: precondition proved (CVC5: 5 VC)
-doubly_linked_list.adb:299:15: info: precondition proved (CVC5: 5 VC)
-doubly_linked_list.adb:307:06: info: data dependencies proved
-doubly_linked_list.adb:310:31: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:312:22: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:313:17: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:315:22: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:318:08: info: postcondition proved (CVC5: 4 VC)
-doubly_linked_list.adb:318:22: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:319:31: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:319:37: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:320:22: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:320:40: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:320:46: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:321:28: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:321:36: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:321:42: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:323:30: info: range check proved (CVC5: 1 VC)
-doubly_linked_list.adb:323:44: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:327:26: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:328:10: info: precondition proved (CVC5: 8 VC)
-doubly_linked_list.adb:328:10: info: subprogram variant proved (CVC5: 1 VC)
-doubly_linked_list.adb:328:42: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:335:10: info: precondition proved (CVC5: 8 VC)
-doubly_linked_list.adb:335:40: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:338:38: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:338:55: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:341:18: info: precondition proved (CVC5: 5 VC)
-doubly_linked_list.adb:342:18: info: precondition proved (CVC5: 5 VC)
-doubly_linked_list.adb:354:06: info: data dependencies proved
-doubly_linked_list.adb:359:11: info: postcondition proved (CVC5: 5 VC; Z3: 3 VC)
-doubly_linked_list.adb:367:07: info: initialization of "New_Head" proved
-doubly_linked_list.adb:379:36: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:381:13: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:116:51: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:118:19: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:118:19: info: subprogram variant proved (CVC5: 1 VC)
+doubly_linked_list.adb:118:34: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:118:52: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:121:06: info: data dependencies proved
+doubly_linked_list.adb:124:58: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:126:22: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:128:08: info: postcondition proved (CVC5: 6 VC; Trivial: 1 VC)
+doubly_linked_list.adb:134:24: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:135:19: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:135:37: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:137:32: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:138:30: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:138:65: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:140:30: info: range check proved (CVC5: 1 VC)
+doubly_linked_list.adb:140:44: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:147:06: info: data dependencies proved
+doubly_linked_list.adb:152:22: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:156:28: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:156:69: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:157:17: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:159:29: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:161:36: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:162:33: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:162:63: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:166:32: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:167:27: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:167:44: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:167:46: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:169:08: info: postcondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:169:13: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:169:42: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:171:30: info: range check proved (CVC5: 1 VC)
+doubly_linked_list.adb:171:44: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:177:12: info: precondition proved (CVC5: 6 VC)
+doubly_linked_list.adb:178:48: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:180:15: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list.adb:180:58: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:181:10: info: precondition proved (CVC5: 11 VC; Trivial: 1 VC)
+doubly_linked_list.adb:181:10: info: subprogram variant proved (CVC5: 1 VC)
+doubly_linked_list.adb:182:24: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:186:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
+doubly_linked_list.adb:189:22: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:193:28: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:194:23: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:194:29: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:196:17: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:196:41: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:197:26: info: data dependencies proved
+doubly_linked_list.adb:211:13: info: implicit aspect Always_Terminates on "In_List" has been proved, subprogram will terminate
+doubly_linked_list.adb:214:22: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:215:26: info: data dependencies proved
+doubly_linked_list.adb:217:13: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
+doubly_linked_list.adb:219:06: info: data dependencies proved
+doubly_linked_list.adb:220:62: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:221:27: info: postcondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:221:27: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:223:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+doubly_linked_list.adb:225:06: info: data dependencies proved
+doubly_linked_list.adb:229:11: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
+doubly_linked_list.adb:229:25: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:229:43: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:230:29: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:234:21: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list.adb:234:35: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:235:23: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list.adb:235:37: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:238:13: info: implicit aspect Always_Terminates on "Previous" has been proved, subprogram will terminate
+doubly_linked_list.adb:240:06: info: data dependencies proved
+doubly_linked_list.adb:244:11: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+doubly_linked_list.adb:244:29: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:244:35: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:251:27: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list.adb:252:27: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:253:29: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list.adb:253:43: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:259:43: info: loop invariant initialization proved (CVC5: 3 VC)
+doubly_linked_list.adb:259:43: info: loop invariant preservation proved (CVC5: 3 VC)
+doubly_linked_list.adb:261:38: info: loop invariant initialization proved (CVC5: 1 VC)
+doubly_linked_list.adb:261:38: info: loop invariant preservation proved (CVC5: 1 VC)
+doubly_linked_list.adb:261:43: info: precondition proved (CVC5: 6 VC)
+doubly_linked_list.adb:261:65: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:265:28: info: loop variant proved (CVC5: 1 VC)
+doubly_linked_list.adb:266:28: info: range check proved (CVC5: 2 VC)
+doubly_linked_list.adb:266:42: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list.adb:271:18: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:274:38: info: assertion proved (CVC5: 1 VC)
+doubly_linked_list.adb:274:38: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:275:38: info: assertion proved (CVC5: 1 VC)
+doubly_linked_list.adb:275:43: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:279:37: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:281:18: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list.adb:282:38: info: assertion proved (CVC5: 1 VC)
+doubly_linked_list.adb:283:38: info: assertion proved (CVC5: 1 VC)
+doubly_linked_list.adb:283:43: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:283:65: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:292:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:292:49: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:294:12: info: precondition proved (CVC5: 7 VC)
+doubly_linked_list.adb:294:50: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:295:12: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list.adb:297:15: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list.adb:305:06: info: data dependencies proved
+doubly_linked_list.adb:308:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:310:22: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:311:17: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:313:22: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:316:08: info: postcondition proved (CVC5: 4 VC)
+doubly_linked_list.adb:316:22: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:317:31: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:317:37: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:318:22: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:318:40: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:318:46: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:319:28: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:319:36: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:319:42: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:321:30: info: range check proved (CVC5: 1 VC)
+doubly_linked_list.adb:321:44: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:325:26: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:326:10: info: precondition proved (CVC5: 8 VC)
+doubly_linked_list.adb:326:10: info: subprogram variant proved (CVC5: 1 VC)
+doubly_linked_list.adb:326:42: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:333:10: info: precondition proved (CVC5: 8 VC)
+doubly_linked_list.adb:333:40: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:336:38: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:336:55: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:339:18: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list.adb:340:18: info: precondition proved (CVC5: 5 VC)
+doubly_linked_list.adb:352:06: info: data dependencies proved
+doubly_linked_list.adb:357:11: info: postcondition proved (CVC5: 5 VC; Z3: 3 VC)
+doubly_linked_list.adb:365:07: info: initialization of "New_Head" proved
+doubly_linked_list.adb:377:36: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:379:13: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:388:15: info: precondition proved (CVC5: 6 VC)
+doubly_linked_list.adb:389:15: info: precondition proved (CVC5: 6 VC)
 doubly_linked_list.adb:390:15: info: precondition proved (CVC5: 6 VC)
-doubly_linked_list.adb:391:15: info: precondition proved (CVC5: 6 VC)
-doubly_linked_list.adb:392:15: info: precondition proved (CVC5: 6 VC)
-doubly_linked_list.adb:393:10: info: precondition proved (CVC5: 11 VC; Trivial: 1 VC)
-doubly_linked_list.adb:393:51: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:403:13: info: implicit aspect Always_Terminates on "Sum_Forward" has been proved, subprogram will terminate
-doubly_linked_list.adb:404:09: info: data dependencies proved
-doubly_linked_list.adb:411:43: info: loop invariant initialization proved (CVC5: 3 VC)
-doubly_linked_list.adb:411:43: info: loop invariant preservation proved (CVC5: 3 VC)
-doubly_linked_list.adb:415:28: info: loop variant proved (CVC5: 1 VC)
-doubly_linked_list.adb:416:28: info: range check proved (CVC5: 2 VC)
-doubly_linked_list.adb:416:42: info: precondition proved (CVC5: 4 VC)
-doubly_linked_list.adb:417:15: info: predicate check proved (Trivial: 1 VC)
-doubly_linked_list.adb:417:35: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:418:15: info: precondition proved (CVC5: 3 VC)
-doubly_linked_list.adb:423:13: info: implicit aspect Always_Terminates on "Sum_Backward" has been proved, subprogram will terminate
-doubly_linked_list.adb:424:09: info: data dependencies proved
-doubly_linked_list.adb:428:26: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:431:15: info: precondition proved (CVC5: 10 VC)
-doubly_linked_list.adb:432:10: info: precondition proved (CVC5: 2 VC)
-doubly_linked_list.adb:433:18: info: precondition proved (CVC5: 4 VC)
-doubly_linked_list.adb:434:18: info: precondition proved (CVC5: 4 VC)
-doubly_linked_list.adb:435:43: info: loop invariant initialization proved (CVC5: 3 VC)
-doubly_linked_list.adb:435:43: info: loop invariant preservation proved (CVC5: 3 VC)
-doubly_linked_list.adb:439:28: info: loop variant proved (CVC5: 1 VC)
-doubly_linked_list.adb:440:28: info: predicate check proved (Trivial: 2 VC)
-doubly_linked_list.adb:440:42: info: precondition proved (CVC5: 4 VC)
-doubly_linked_list.adb:441:20: info: range check proved (CVC5: 2 VC)
-doubly_linked_list.adb:441:30: info: predicate check proved (Trivial: 2 VC)
-doubly_linked_list.adb:441:44: info: precondition proved (CVC5: 4 VC)
-doubly_linked_list.adb:442:15: info: predicate check proved (Trivial: 1 VC)
-doubly_linked_list.adb:442:35: info: precondition proved (CVC5: 1 VC)
-doubly_linked_list.adb:443:15: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:391:10: info: precondition proved (CVC5: 11 VC; Trivial: 1 VC)
+doubly_linked_list.adb:391:51: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:401:13: info: implicit aspect Always_Terminates on "Sum_Forward" has been proved, subprogram will terminate
+doubly_linked_list.adb:402:09: info: data dependencies proved
+doubly_linked_list.adb:409:43: info: loop invariant initialization proved (CVC5: 3 VC)
+doubly_linked_list.adb:409:43: info: loop invariant preservation proved (CVC5: 3 VC)
+doubly_linked_list.adb:413:28: info: loop variant proved (CVC5: 1 VC)
+doubly_linked_list.adb:414:28: info: range check proved (CVC5: 2 VC)
+doubly_linked_list.adb:414:42: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list.adb:415:15: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list.adb:415:35: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:416:15: info: precondition proved (CVC5: 3 VC)
+doubly_linked_list.adb:421:13: info: implicit aspect Always_Terminates on "Sum_Backward" has been proved, subprogram will terminate
+doubly_linked_list.adb:422:09: info: data dependencies proved
+doubly_linked_list.adb:426:26: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:429:15: info: precondition proved (CVC5: 10 VC)
+doubly_linked_list.adb:430:10: info: precondition proved (CVC5: 2 VC)
+doubly_linked_list.adb:431:18: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list.adb:432:18: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list.adb:433:43: info: loop invariant initialization proved (CVC5: 3 VC)
+doubly_linked_list.adb:433:43: info: loop invariant preservation proved (CVC5: 3 VC)
+doubly_linked_list.adb:437:28: info: loop variant proved (CVC5: 1 VC)
+doubly_linked_list.adb:438:28: info: predicate check proved (Trivial: 2 VC)
+doubly_linked_list.adb:438:42: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list.adb:439:20: info: range check proved (CVC5: 2 VC)
+doubly_linked_list.adb:439:30: info: predicate check proved (Trivial: 2 VC)
+doubly_linked_list.adb:439:44: info: precondition proved (CVC5: 4 VC)
+doubly_linked_list.adb:440:15: info: predicate check proved (Trivial: 1 VC)
+doubly_linked_list.adb:440:35: info: precondition proved (CVC5: 1 VC)
+doubly_linked_list.adb:441:15: info: precondition proved (CVC5: 3 VC)

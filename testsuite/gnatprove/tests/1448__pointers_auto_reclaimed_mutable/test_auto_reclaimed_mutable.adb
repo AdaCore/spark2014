@@ -25,8 +25,7 @@ procedure Test_Auto_Reclaimed_Mutable with SPARK_Mode is
    use Plain_Pointers;
    use Plain_Pointers.Memory_Model;
 
-   function Id (O : Plain_Object) return Plain_Object is (O);
-   package Plain_Ops is new Plain_Pointers.Copy_Operations (Id);
+   package Plain_Ops is new Plain_Pointers.Copy_Operations;
    use Plain_Ops;
 
    ------------------------------------------------

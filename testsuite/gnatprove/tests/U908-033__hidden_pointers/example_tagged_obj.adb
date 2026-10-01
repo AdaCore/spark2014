@@ -13,9 +13,8 @@ procedure Example_Tagged_Obj with SPARK_Mode is
    package Pointers_To_Obj is new
      SPARK.Pointers.Explicit_Reclamation.Global_Memory (Object'Class, Is_Reclaimed);
 
-   function Copy (O : Object'Class) return Object'Class is (O);
    package Pointers_To_Obj_Copy_Operations is new
-     Pointers_To_Obj.Copy_Operations (Copy);
+     Pointers_To_Obj.Copy_Operations;
 
    use Pointers_To_Obj;
    use Pointers_To_Obj_Copy_Operations;

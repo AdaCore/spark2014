@@ -33,8 +33,7 @@ procedure Union_Find_Global with SPARK_Mode is
    package UF is new
      SPARK.Pointers.Explicit_Reclamation.Global_Memory (UF_Cell, Is_Reclaimed);
 
-   function Copy (C : UF_Cell) return UF_Cell is (C) with Global => null;
-   package UF_Copy is new UF.Copy_Operations (Copy);
+   package UF_Copy is new UF.Copy_Operations;
 
    use UF;
    use UF_Copy;

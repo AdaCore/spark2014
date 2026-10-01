@@ -62,11 +62,8 @@ procedure Test_Poisoned with SPARK_Mode is
       V : Natural;
    end record;
 
-   function Is_Reclaimed (Unused : Plain_Object) return Boolean is (True)
-   with Ghost => Static;
-
    package Plain_Pointers is new
-     SPARK.Pointers.Poisoned.Pointers (Plain_Object, Is_Reclaimed);
+     SPARK.Pointers.Poisoned.Pointers (Plain_Object);
    use Plain_Pointers;
 
    function Id (X : Plain_Object) return Plain_Object is (X);
@@ -106,7 +103,7 @@ procedure Test_Poisoned with SPARK_Mode is
    ---------------------------------------------------------------
 
    package Plain_Views is new
-     SPARK.Pointers.Poisoned.Views (Plain_Object, Is_Reclaimed);
+     SPARK.Pointers.Poisoned.Views (Plain_Object);
    use Plain_Views;
    --  Array_Operations names Is_Poisoned in the predicate of Readable_Array, so
    --  the parent instance has to be use-visible where it is instantiated.

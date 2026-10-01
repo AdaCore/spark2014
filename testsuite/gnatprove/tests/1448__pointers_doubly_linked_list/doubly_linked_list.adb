@@ -49,9 +49,7 @@ procedure Doubly_Linked_List with SPARK_Mode is
    package Ops is new Cells.Handle_Operations (Cell_Handles);
    use Ops;
 
-   function Copy_Cell (C : D_Cell) return D_Cell
-   is (C);
-   package Cell_Ops is new Cells.Copy_Operations (Copy_Cell);
+   package Cell_Ops is new Cells.Copy_Operations;
    use Cell_Ops;
 
    --  Reachability along the Next edge.
