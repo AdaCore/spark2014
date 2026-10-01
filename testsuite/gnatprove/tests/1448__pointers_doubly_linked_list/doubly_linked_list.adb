@@ -369,7 +369,7 @@ procedure Doubly_Linked_List with SPARK_Mode is
       Create_Copy
         ((Value => V,
           Next  => To_Strong_Handle (Old_Head),
-          Prev  => To_Weak_Handle (Null_Pointer)),
+          Prev  => Null_Weak_Handle),
          New_Head);
 
       if Old_Head = Null_Pointer then
