@@ -683,6 +683,7 @@ package VC_Kinds is
       Vio_Side_Effects_Eq,
       Vio_Side_Effects_Traversal,
       Vio_Storage_Size,
+      Vio_Structural_Instantiation,
       Vio_Subp_Variant_Structural,
       Vio_Tagged_Extension_Local,
       Vio_Target_Name_In_Call_With_Side_Effets,
