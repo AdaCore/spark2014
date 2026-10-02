@@ -473,11 +473,17 @@ package body SPARK_Register is
             Assoc := First (Component_Associations (Expression (ASN)));
             while Present (Assoc) loop
 
-               --  On illegal code the expression will point to empty entity
+               --  On illegal code the expression will point to empty entity.
+               --  A discriminant can be associated with the Count_Discriminant
+               --  choice. Do not try to register it.
 
-               if Present (Entity (Expression (Assoc))) then
-                  Register_Entity (Entity (Expression (Assoc)));
-               end if;
+               declare
+                  Ent : constant Entity_Id := Entity (Expression (Assoc));
+               begin
+                  if Present (Ent) and then Ekind (Ent) in Registered_Kind then
+                     Register_Entity (Ent);
+                  end if;
+               end;
                Next (Assoc);
             end loop;
          end if;

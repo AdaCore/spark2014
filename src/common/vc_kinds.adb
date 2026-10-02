@@ -1036,6 +1036,8 @@ package body VC_Kinds is
            "a reference to the ""Address"" attribute occurring within a "
            & "subtype indication, a range constraint, or a quantified"
            & " expression",
+         when Lim_Aggregate_Count_Discriminant                            =>
+           "association for ""Count_Discriminant"" in ""Aggregate"" aspect",
          when Lim_Alloc_With_Type_Constraints                             =>
            "an uninitialized allocator whose subtype indication has a type "
            & "constraint",
@@ -3498,6 +3500,8 @@ package body VC_Kinds is
            "access-to-subp-with-prog-exit",
          when Lim_Address_Attr_In_Unsupported_Context                     =>
            "address-attr-in-unsupported-context",
+         when Lim_Aggregate_Count_Discriminant                            =>
+           "aggregate-count-discriminant",
          when Lim_Alloc_With_Type_Constraints                             =>
            "alloc-with-type-constraints",
          when Lim_Array_Conv_Different_Size_Modular_Index                 =>

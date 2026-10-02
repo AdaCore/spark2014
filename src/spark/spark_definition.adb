@@ -5330,6 +5330,11 @@ package body SPARK_Definition is
          New_Indexed_Subp    => New_Indexed_Subp,
          Assign_Indexed_Subp => Assign_Indexed_Subp);
 
+      if Present (Count_Discriminant) then
+         Mark_Unsupported
+           (Lim_Aggregate_Count_Discriminant, Count_Discriminant);
+      end if;
+
       Empty_Function := Ultimate_Alias (Entity (Empty_Subp));
       if Present (Add_Unnamed_Subp) then
          Add_Procedure := Ultimate_Alias (Entity (Add_Unnamed_Subp));

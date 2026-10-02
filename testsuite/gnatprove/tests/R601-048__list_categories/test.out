@@ -211,6 +211,7 @@ unsupported-access-to-relaxed-init-subp - unsupported-access-to-relaxed-init-sub
 unsupported-access-to-subp-with-exc - unsupported-access-to-subp-with-exc - access attribute on a procedure which might raise exceptions - HIGH
 unsupported-access-to-subp-with-prog-exit - unsupported-access-to-subp-with-prog-exit - access to procedure which might exit the program - HIGH
 unsupported-address-attr-in-unsupported-context - unsupported-address-attr-in-unsupported-context - a reference to the "Address" attribute occurring within a subtype indication, a range constraint, or a quantified expression - HIGH
+unsupported-aggregate-count-discriminant - unsupported-aggregate-count-discriminant - association for "Count_Discriminant" in "Aggregate" aspect - HIGH
 unsupported-alloc-with-type-constraints - unsupported-alloc-with-type-constraints - an uninitialized allocator whose subtype indication has a type constraint - HIGH
 unsupported-array-conv-different-size-modular-index - unsupported-array-conv-different-size-modular-index - a conversion between array types if some matching index types are modular types of different sizes - HIGH
 unsupported-array-conv-signed-modular-index - unsupported-array-conv-signed-modular-index - a conversion between array types if some matching index types are not both signed or both modular - HIGH

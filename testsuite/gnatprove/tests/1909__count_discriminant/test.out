@@ -1,0 +1,2 @@
+main.adb:10:71: error: association for "Count_Discriminant" in "Aggregate" aspect is not yet supported
+gnatprove: error during flow analysis and proof
