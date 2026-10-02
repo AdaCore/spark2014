@@ -20,8 +20,7 @@ procedure Example_Recursive with SPARK_Mode is
    package List_Pointers is new
      SPARK.Pointers.Explicit_Reclamation.Global_Memory (L_Cell, Is_Reclaimed);
 
-   function Copy (L : L_Cell) return L_Cell is (L);
-   package List_Pointers_Copy_Operations is new List_Pointers.Copy_Operations (Copy);
+   package List_Pointers_Copy_Operations is new List_Pointers.Copy_Operations;
 
    use List_Pointers;
    use List_Pointers_Copy_Operations;

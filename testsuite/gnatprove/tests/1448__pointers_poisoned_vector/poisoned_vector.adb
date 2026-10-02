@@ -34,19 +34,14 @@ procedure Poisoned_Vector with SPARK_Mode is
       Val : Integer;
    end record;
 
-   function Is_Reclaimed (Unused : Element_Type) return Boolean is (True)
-   with Ghost => Static, Global => null;
-
    package Cells is new
-     SPARK.Pointers.Poisoned.Pointers (Element_Type, Is_Reclaimed);
+     SPARK.Pointers.Poisoned.Pointers (Element_Type);
    use Cells;
 
    package Arrays is new Cells.Array_Operations (Index_Type);
    use Arrays;
 
-   function Id (E : Element_Type) return Element_Type is (E)
-   with Global => null;
-   package Values is new Cells.Copy_Operations (Id);
+   package Values is new Cells.Copy_Operations;
    use Values;
 
    type Vector is record

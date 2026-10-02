@@ -2,6 +2,7 @@ pragma Extensions_Allowed (On);
 
 with SPARK.Pointers.Auto_Reclaimed.Immutable;
 with SPARK.Pointers.Explicit_Reclamation.Global_Memory;
+with SPARK.Pointers.Explicit_Reclamation.Separate_Memory;
 with SPARK.Pointers.Poisoned.Views;
 
 --  The generic actuals of the pointer library are checked inside the library
@@ -28,12 +29,8 @@ package Bad_Params with SPARK_Mode is
    --  value that owes nothing. This one holds of every value.   --
    ---------------------------------------------------------------
 
-   function Claims_Reclaimed (Unused : Owning) return Boolean is (True)
-   with Ghost => Static;
-
    package Bad_Is_Reclaimed is new
-     SPARK.Pointers.Explicit_Reclamation.Global_Memory
-       (Owning, Claims_Reclaimed);
+     SPARK.Pointers.Explicit_Reclamation.Separate_Memory (Owning);
 
    --------------------------------------------------------------
    --  Reclamation_Checks: Reclaim shall reclaim its argument.  --

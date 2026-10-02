@@ -40,10 +40,9 @@ bad_eq.ads:48:04: warning: references between entities introduce a cycle in proo
 bad_eq.ads:48:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 bad_eq.ads:48:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 bad_eq.ads:48:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-bad_params.ads:31:13: info: implicit aspect Always_Terminates on "Claims_Reclaimed" has been proved, subprogram will terminate
-bad_params.ads:55:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
-bad_params.ads:61:13: info: implicit aspect Always_Terminates on "Copy_With_Pre" has been proved, subprogram will terminate
-bad_params.ads:77:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+bad_params.ads:52:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
+bad_params.ads:58:13: info: implicit aspect Always_Terminates on "Copy_With_Pre" has been proved, subprogram will terminate
+bad_params.ads:74:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
 spark-containers-functional-infinite_sequences.ads:32:16: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:42
 spark-containers-functional-infinite_sequences.ads:39:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:42
 spark-containers-functional-infinite_sequences.ads:42:16: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:42
@@ -199,68 +198,68 @@ spark-containers-parameter_checks.ads:110:17: info: aspect Always_Terminates on 
 spark-containers-parameter_checks.ads:111:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at bad_eq.ads:42
 spark-containers-parameter_checks.ads:111:68: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at bad_eq.ads:42
 spark-pointers-abstract_maps.ads:39:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:39:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:39:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:39:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:39:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:53:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:53:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:53:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:53:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:53:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:53:13: info: precondition proved (Trivial: 1 VC), in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:53:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:53:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:53:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:53:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:65:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:65:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:65:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:65:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:65:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:65:13: info: precondition proved (Trivial: 1 VC), in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:65:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:65:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:65:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:65:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:67:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:67:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:67:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:67:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:67:13: info: during checks for quantification at spark-pointers-abstract_maps.ads:26, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:67:13: info: precondition proved (Trivial: 1 VC), in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:67:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:67:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:67:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:67:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:70:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:70:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:70:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:70:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:70:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:72:09: info: data dependencies proved, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:72:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:72:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:72:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:72:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:85:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:85:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:85:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:85:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:85:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:91:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:91:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:91:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:91:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:91:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:94:09: info: data dependencies proved, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:94:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:94:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:94:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:94:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:96:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:96:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:96:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:96:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:96:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:99:06: info: data dependencies proved, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:99:06: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:99:06: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:99:06: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:99:06: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:118:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:118:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:118:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:118:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:118:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:123:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:123:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:123:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:123:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:123:13: info: implicit aspect Always_Terminates on "Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:125:09: info: data dependencies proved, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:125:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:125:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:125:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:125:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:127:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:127:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:127:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:127:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:127:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:129:09: info: data dependencies proved, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:129:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:129:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:129:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:129:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:136:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:136:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:136:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:136:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:136:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_maps.ads:138:09: info: data dependencies proved, in instantiation at bad_eq.ads:37
-spark-pointers-abstract_maps.ads:138:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:34
-spark-pointers-abstract_maps.ads:138:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:97, in instantiation at bad_params.ads:58
+spark-pointers-abstract_maps.ads:138:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:102, in instantiation at bad_params.ads:55
+spark-pointers-abstract_maps.ads:138:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:101, in instantiation at bad_params.ads:32
 spark-pointers-abstract_reachability.ads:88:13: info: implicit aspect Always_Terminates on "Valid_Memory" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:48
 spark-pointers-abstract_reachability.ads:90:16: info: precondition proved (CVC5: 1 VC), in instantiation at bad_eq.ads:48
 spark-pointers-abstract_reachability.ads:91:36: info: precondition proved (CVC5: 1 VC), in instantiation at bad_eq.ads:48
@@ -360,74 +359,76 @@ spark-pointers-abstract_reachability.ads:685:24: info: precondition proved (CVC5
 spark-pointers-abstract_reachability.ads:686:21: info: precondition proved (CVC5: 3 VC), in instantiation at bad_eq.ads:48
 spark-pointers-abstract_reachability.ads:689:31: info: precondition proved (CVC5: 1 VC), in instantiation at bad_eq.ads:48
 spark-pointers-abstract_reachability.ads:689:56: info: precondition proved (CVC5: 1 VC), in instantiation at bad_eq.ads:48
-spark-pointers-abstract_sets.ads:38:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:38:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:43:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:43:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:43:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:43:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:45:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:45:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:45:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:45:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:48:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:48:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:48:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:48:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:62:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:62:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:64:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:64:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:103:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:103:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:112:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:112:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:129:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:129:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-abstract_sets.ads:131:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:34
-spark-pointers-abstract_sets.ads:131:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:136, in instantiation at bad_params.ads:58
-spark-pointers-auto_reclaimed-immutable.ads:24:19: info: aspect Always_Terminates on "Reclaim" has been proved, subprogram will terminate, in instantiation at bad_params.ads:43
-spark-pointers-explicit_reclamation-global_memory.ads:146:16: info: implicit aspect Always_Terminates on "Writes" has been proved, subprogram will terminate, in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:146:16: info: implicit aspect Always_Terminates on "Writes" has been proved, subprogram will terminate, in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:149:39: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:149:39: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:149:56: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:149:56: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:150:29: info: data dependencies proved, in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:150:29: info: data dependencies proved, in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:152:16: info: implicit aspect Always_Terminates on "Allocates" has been proved, subprogram will terminate, in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:152:16: info: implicit aspect Always_Terminates on "Allocates" has been proved, subprogram will terminate, in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:158:29: info: data dependencies proved, in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:158:29: info: data dependencies proved, in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:160:16: info: implicit aspect Always_Terminates on "Deallocates" has been proved, subprogram will terminate, in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:160:16: info: implicit aspect Always_Terminates on "Deallocates" has been proved, subprogram will terminate, in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:166:29: info: data dependencies proved, in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:166:29: info: data dependencies proved, in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:180:04: info: initialization of "Memory" proved, in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:180:04: info: initialization of "Memory" proved, in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:228:37: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:65
-spark-pointers-explicit_reclamation-global_memory.ads:266:37: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:266:37: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:292:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:292:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:293:08: info: dynamic accessibility check proved (Trivial), in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:293:08: info: dynamic accessibility check proved (Trivial), in instantiation at bad_params.ads:58
-spark-pointers-explicit_reclamation-global_memory.ads:294:16: info: data dependencies proved, in instantiation at bad_params.ads:34
-spark-pointers-explicit_reclamation-global_memory.ads:294:16: info: data dependencies proved, in instantiation at bad_params.ads:58
-spark-pointers-parameter_checks.adb:28:25: medium: assertion might fail, in instantiation at spark-pointers-poisoned-views.ads:33, in instantiation at bad_params.ads:80 [possible fix: you should consider adding a postcondition to function "Logical_Eq" or turning it into an expression function in its unit spec]
-spark-pointers-parameter_checks.adb:53:10: medium: resource or memory leak might occur at end of scope, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:35, in instantiation at bad_params.ads:34
-spark-pointers-parameter_checks.adb:79:10: medium: resource or memory leak might occur at end of scope, in instantiation at spark-pointers-auto_reclaimed-immutable.ads:33, in instantiation at bad_params.ads:43
-spark-pointers-parameter_checks.ads:28:17: info: aspect Always_Terminates on "Check_Reclamation" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:35, in instantiation at bad_params.ads:34
-spark-pointers-parameter_checks.ads:28:17: info: aspect Always_Terminates on "Check_Reclamation" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:35, in instantiation at bad_params.ads:58
-spark-pointers-parameter_checks.ads:28:17: info: aspect Always_Terminates on "Check_Reclamation" has been proved, subprogram will terminate, in instantiation at spark-pointers-poisoned-views.ads:26, in instantiation at bad_params.ads:80
-spark-pointers-parameter_checks.ads:29:12: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:35, in instantiation at bad_params.ads:34
-spark-pointers-parameter_checks.ads:29:12: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:35, in instantiation at bad_params.ads:58
-spark-pointers-parameter_checks.ads:29:12: info: data dependencies proved, in instantiation at spark-pointers-poisoned-views.ads:26, in instantiation at bad_params.ads:80
-spark-pointers-parameter_checks.ads:43:17: info: aspect Always_Terminates on "Check_Reclamation" has been proved, subprogram will terminate, in instantiation at spark-pointers-auto_reclaimed-immutable.ads:33, in instantiation at bad_params.ads:43
-spark-pointers-parameter_checks.ads:44:12: info: data dependencies proved, in instantiation at spark-pointers-auto_reclaimed-immutable.ads:33, in instantiation at bad_params.ads:43
-spark-pointers-parameter_checks.ads:59:17: info: aspect Always_Terminates on "Check_Assignment" has been proved, subprogram will terminate, in instantiation at spark-pointers-poisoned-views.ads:33, in instantiation at bad_params.ads:80
-spark-pointers-parameter_checks.ads:60:12: info: data dependencies proved, in instantiation at spark-pointers-poisoned-views.ads:33, in instantiation at bad_params.ads:80
-spark-pointers-poisoned-views.ads:189:66: info: predicate check proved (CVC5: 1 VC), in instantiation at bad_params.ads:80
-spark-pointers-poisoned-views.ads:204:61: info: predicate check proved (CVC5: 1 VC), in instantiation at bad_params.ads:80
-spark-pointers-poisoned-views.ads:221:59: info: predicate check proved (CVC5: 1 VC), in instantiation at bad_params.ads:80
-spark-pointers-poisoned-views.ads:233:54: info: predicate check proved (CVC5: 1 VC), in instantiation at bad_params.ads:80
+spark-pointers-abstract_sets.ads:38:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:38:13: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:43:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:43:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:43:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:43:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:45:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:45:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:45:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:45:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:48:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:48:13: info: during checks for quantification at spark-pointers-abstract_sets.ads:25, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:48:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:48:13: info: precondition proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:62:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:62:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:64:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:64:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:103:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:103:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:112:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:112:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:129:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:129:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-abstract_sets.ads:131:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:141, in instantiation at bad_params.ads:55
+spark-pointers-abstract_sets.ads:131:09: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:134, in instantiation at bad_params.ads:32
+spark-pointers-auto_reclaimed-immutable.ads:24:19: info: aspect Always_Terminates on "Reclaim" has been proved, subprogram will terminate, in instantiation at bad_params.ads:40
+spark-pointers-explicit_reclamation-global_memory.ads:151:16: info: implicit aspect Always_Terminates on "Writes" has been proved, subprogram will terminate, in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:154:39: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:154:56: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:155:29: info: data dependencies proved, in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:157:16: info: implicit aspect Always_Terminates on "Allocates" has been proved, subprogram will terminate, in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:163:29: info: data dependencies proved, in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:165:16: info: implicit aspect Always_Terminates on "Deallocates" has been proved, subprogram will terminate, in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:171:29: info: data dependencies proved, in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:185:04: info: initialization of "Memory" proved, in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:235:37: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:62
+spark-pointers-explicit_reclamation-global_memory.ads:273:37: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:299:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:300:08: info: dynamic accessibility check proved (Trivial), in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-global_memory.ads:301:16: info: data dependencies proved, in instantiation at bad_params.ads:55
+spark-pointers-explicit_reclamation-separate_memory.ads:26:15: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate, in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:144:16: info: implicit aspect Always_Terminates on "Writes" has been proved, subprogram will terminate, in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:147:39: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:147:56: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:148:29: info: data dependencies proved, in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:150:16: info: implicit aspect Always_Terminates on "Allocates" has been proved, subprogram will terminate, in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:156:29: info: data dependencies proved, in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:158:16: info: implicit aspect Always_Terminates on "Deallocates" has been proved, subprogram will terminate, in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:164:29: info: data dependencies proved, in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:242:37: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:290:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:291:08: info: dynamic accessibility check proved (Trivial), in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:292:16: info: data dependencies proved, in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:294:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_params.ads:32
+spark-pointers-explicit_reclamation-separate_memory.ads:296:16: info: data dependencies proved, in instantiation at bad_params.ads:32
+spark-pointers-parameter_checks.adb:28:25: medium: assertion might fail, in instantiation at spark-pointers-poisoned-views.ads:36, in instantiation at bad_params.ads:77 [possible fix: you should consider adding a postcondition to function "Logical_Eq" or turning it into an expression function in its unit spec]
+spark-pointers-parameter_checks.adb:53:10: medium: resource or memory leak might occur at end of scope, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:39, in instantiation at bad_params.ads:32
+spark-pointers-parameter_checks.adb:79:10: medium: resource or memory leak might occur at end of scope, in instantiation at spark-pointers-auto_reclaimed-immutable.ads:33, in instantiation at bad_params.ads:40
+spark-pointers-parameter_checks.ads:28:17: info: aspect Always_Terminates on "Check_Reclamation" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:40, in instantiation at bad_params.ads:55
+spark-pointers-parameter_checks.ads:28:17: info: aspect Always_Terminates on "Check_Reclamation" has been proved, subprogram will terminate, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:39, in instantiation at bad_params.ads:32
+spark-pointers-parameter_checks.ads:28:17: info: aspect Always_Terminates on "Check_Reclamation" has been proved, subprogram will terminate, in instantiation at spark-pointers-poisoned-views.ads:29, in instantiation at bad_params.ads:77
+spark-pointers-parameter_checks.ads:29:12: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-global_memory.ads:40, in instantiation at bad_params.ads:55
+spark-pointers-parameter_checks.ads:29:12: info: data dependencies proved, in instantiation at spark-pointers-explicit_reclamation-separate_memory.ads:39, in instantiation at bad_params.ads:32
+spark-pointers-parameter_checks.ads:29:12: info: data dependencies proved, in instantiation at spark-pointers-poisoned-views.ads:29, in instantiation at bad_params.ads:77
+spark-pointers-parameter_checks.ads:43:17: info: aspect Always_Terminates on "Check_Reclamation" has been proved, subprogram will terminate, in instantiation at spark-pointers-auto_reclaimed-immutable.ads:33, in instantiation at bad_params.ads:40
+spark-pointers-parameter_checks.ads:44:12: info: data dependencies proved, in instantiation at spark-pointers-auto_reclaimed-immutable.ads:33, in instantiation at bad_params.ads:40
+spark-pointers-parameter_checks.ads:59:17: info: aspect Always_Terminates on "Check_Assignment" has been proved, subprogram will terminate, in instantiation at spark-pointers-poisoned-views.ads:36, in instantiation at bad_params.ads:77
+spark-pointers-parameter_checks.ads:60:12: info: data dependencies proved, in instantiation at spark-pointers-poisoned-views.ads:36, in instantiation at bad_params.ads:77
+spark-pointers-poisoned-views.ads:192:66: info: predicate check proved (CVC5: 1 VC), in instantiation at bad_params.ads:77
+spark-pointers-poisoned-views.ads:207:61: info: predicate check proved (CVC5: 1 VC), in instantiation at bad_params.ads:77
+spark-pointers-poisoned-views.ads:224:59: info: predicate check proved (CVC5: 1 VC), in instantiation at bad_params.ads:77
+spark-pointers-poisoned-views.ads:236:54: info: predicate check proved (CVC5: 1 VC), in instantiation at bad_params.ads:77

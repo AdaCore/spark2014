@@ -26,8 +26,7 @@ procedure Pointers_Soundness with SPARK_Mode is
    package Ops is new Ptrs.Handle_Operations (My_Handles);
    use Ops;
 
-   function Id (C : Cell) return Cell is (C);
-   package Cell_Ops is new Ptrs.Copy_Operations (Id);
+   package Cell_Ops is new Ptrs.Copy_Operations;
    use Cell_Ops;
 
    --  Dereferencing a pointer the model does not say is valid. A Pointer

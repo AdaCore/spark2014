@@ -16,11 +16,8 @@ procedure Poisoned_Soundness with SPARK_Mode is
       V : Natural;
    end record;
 
-   function Is_Reclaimed (Unused : Object) return Boolean is (True)
-   with Ghost => Static;
-
    package Pointers is new
-     SPARK.Pointers.Poisoned.Pointers (Object, Is_Reclaimed);
+     SPARK.Pointers.Poisoned.Pointers (Object);
    use Pointers;
 
    function Id (O : Object) return Object is (O);

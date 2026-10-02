@@ -20,8 +20,7 @@ procedure Explicit_Soundness with SPARK_Mode is
    use Ptrs;
    use Ptrs.Memory_Model;
 
-   function Id (C : Cell) return Cell is (C);
-   package Ops is new Ptrs.Copy_Operations (Id);
+   package Ops is new Ptrs.Copy_Operations;
    use Ops;
 
    --  Reading a pointer after the cell it designated has been deallocated.

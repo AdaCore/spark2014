@@ -22,15 +22,10 @@ procedure Union_Find_Separate with SPARK_Mode is
       Size   : Positive;
    end record;
 
-   function Is_Reclaimed (Unused : UF_Cell) return Boolean is (True)
-   with Ghost => Static, Global => null;
-
    package UF is new
-     SPARK.Pointers.Explicit_Reclamation.Separate_Memory
-       (UF_Cell, Is_Reclaimed);
+     SPARK.Pointers.Explicit_Reclamation.Separate_Memory (UF_Cell);
 
-   function Copy (C : UF_Cell) return UF_Cell is (C) with Global => null;
-   package UF_Copy is new UF.Copy_Operations (Copy);
+   package UF_Copy is new UF.Copy_Operations;
 
    use UF;
    use UF_Copy;
