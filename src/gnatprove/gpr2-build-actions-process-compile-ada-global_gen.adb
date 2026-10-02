@@ -318,7 +318,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
                if not Success then
                   Self.Tree.Reporter.Report
                     (GPR2.Message.Create
-                       (GPR2.Message.Error,
+                       (GPR2.Message.Critical_Error,
                         "failed to copy the ALI file to the library directory",
                         GPR2.Source_Reference.Object
                           (GPR2.Source_Reference.Create
@@ -337,7 +337,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
          if not Self.ALI_Object.Parse then
             Self.Tree.Reporter.Report
               (GPR2.Message.Create
-                 (GPR2.Message.Error,
+                 (GPR2.Message.Critical_Error,
                   "failed to analyze the ALI file",
                   GPR2.Source_Reference.Object
                     (GPR2.Source_Reference.Create
@@ -351,7 +351,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
             if not Add_Global_Gen_Dep (Dep) then
                Self.Tree.Reporter.Report
                  (GPR2.Message.Create
-                    (GPR2.Message.Error,
+                    (GPR2.Message.Critical_Error,
                      "failed to create a Global_Gen action for the"
                      & " dependency unit "
                      & String (Dep)
@@ -367,7 +367,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
             if not Add_Data_Rep_Dep (Dep) then
                Self.Tree.Reporter.Report
                  (GPR2.Message.Create
-                    (GPR2.Message.Error,
+                    (GPR2.Message.Critical_Error,
                      "failed to create a Data_Rep action for the"
                      & " dependency unit "
                      & String (Dep)
