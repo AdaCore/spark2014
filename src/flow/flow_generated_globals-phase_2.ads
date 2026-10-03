@@ -140,6 +140,10 @@ package Flow_Generated_Globals.Phase_2 is
    --  Checks if the Globals Graph has been generated
    --  @return True iff the Globals Graph has been generated
 
+   function GG_Has_Generic_In_Formal (E : Entity_Id) return Boolean;
+   --  Return True if E's refined Globals contain a generic formal object of
+   --  mode IN.
+
    function GG_State_Constituents_Map_Is_Ready return Boolean
    with Ghost;
    --  Returns True iff the mapping between abstract states and their
