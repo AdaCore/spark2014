@@ -248,17 +248,9 @@ package Why.Inter is
    --  Return the most general base type for Left and Right
    --  (e.g. real in Left=int and Right=real).
 
-   function Get_EW_Type (T : Node_Id) return EW_Type;
-   --  Return the EW_Type of the given entity
-
    function Get_EW_Term_Type (N : Node_Id) return W_Type_Id;
    --  If the node is of some scalar type, return the corresponding Why
    --  representation type. Otherwise return the empty node.
-
-   function Eq_In_Why (Left, Right : W_Type_Id) return Boolean;
-   --  @param Left Type Id to be compared with
-   --  @param Right
-   --  @return Returns True if the type output in Why is the same
 
    function Eq_Base (Left, Right : W_Type_Id) return Boolean;
    --  @param Left Type Id to be compared with

@@ -789,40 +789,6 @@ package body Why.Inter is
       end if;
    end Eq_Base;
 
-   ---------------
-   -- Eq_In_Why --
-   ---------------
-
-   function Eq_In_Why (Left, Right : W_Type_Id) return Boolean is
-   begin
-      if Left = Right then
-         return True;
-      end if;
-      declare
-         N1 : constant W_Name_Id := Get_Name (+Left);
-         N2 : constant W_Name_Id := Get_Name (+Right);
-      begin
-         if N1 = N2 then
-            return True;
-         end if;
-         declare
-            M1 : constant W_Module_Id := Get_Module (N1);
-            M2 : constant W_Module_Id := Get_Module (N2);
-         begin
-            if M1 = M2
-              or else
-                (M1 /= Why_Empty
-                 and then M2 /= Why_Empty
-                 and then Get_Name (M1) = Get_Name (M2))
-            then
-               return Get_Symb (N1) = Get_Symb (N2);
-            else
-               return False;
-            end if;
-         end;
-      end;
-   end Eq_In_Why;
-
    -----------------
    -- EW_Abstract --
    -----------------
@@ -915,20 +881,6 @@ package body Why.Inter is
    begin
       return Symbol_To_Theory_Map.Element (S);
    end Find_Decl;
-
-   -----------------
-   -- Get_EW_Type --
-   -----------------
-
-   function Get_EW_Type (T : Node_Id) return EW_Type is
-      E : constant W_Type_Id := Get_EW_Term_Type (T);
-   begin
-      if E = Why_Empty then
-         return EW_Abstract;
-      else
-         return Get_Type_Kind (E);
-      end if;
-   end Get_EW_Type;
 
    ----------------------
    -- Get_EW_Term_Type --
