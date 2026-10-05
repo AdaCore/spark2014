@@ -273,7 +273,6 @@ package Gnat2Why.Expr is
    with
      Pre =>
        Can_Be_Default_Initialized (Retysp (E))
-       and then not Is_Inherently_Limited_Type (Retysp (E))
        and then Ekind (Retysp (E)) /= E_String_Literal_Subtype;
    --  Expression for the default value of an object of type E. In the term
    --  domain, the values of uninitialized components are set arbitrarily,
