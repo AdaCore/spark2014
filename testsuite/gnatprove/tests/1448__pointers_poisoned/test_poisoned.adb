@@ -69,7 +69,9 @@ procedure Test_Poisoned with SPARK_Mode is
    function Id (X : Plain_Object) return Plain_Object is (X);
    function Create_Plain is new Plain_Pointers.Create (Plain_Object, Id);
 
-   package Pointer_Arrays is new Plain_Pointers.Array_Operations (Index);
+   type Pointer_Array is array (Index range <>) of Pointer;
+   package Pointer_Arrays is new
+     Plain_Pointers.Array_Operations (Index, Pointer_Array);
    use Pointer_Arrays;
 
    --  Swap two elements of a holder array, going through the poisoned state
