@@ -38,7 +38,8 @@ procedure Poisoned_Vector with SPARK_Mode is
      SPARK.Pointers.Poisoned.Pointers (Element_Type);
    use Cells;
 
-   package Arrays is new Cells.Array_Operations (Index_Type);
+   type Pointer_Array is array (Index_Type range <>) of Pointer;
+   package Arrays is new Cells.Array_Operations (Index_Type, Pointer_Array);
    use Arrays;
 
    package Values is new Cells.Copy_Operations;

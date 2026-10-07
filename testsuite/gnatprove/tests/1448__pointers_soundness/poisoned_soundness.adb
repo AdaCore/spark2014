@@ -50,7 +50,8 @@ procedure Poisoned_Soundness with SPARK_Mode is
       pragma Assert (N = N);
    end Read_Null;
 
-   package Arrays is new Pointers.Array_Operations (Index);
+   type Pointer_Array is array (Index range <>) of Pointer;
+   package Arrays is new Pointers.Array_Operations (Index, Pointer_Array);
    use Arrays;
 
    --  Relocate poisons the cells it moves out of, it does not null them. The

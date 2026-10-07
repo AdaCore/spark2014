@@ -47,14 +47,14 @@ poisoned_soundness.adb:46:07: info: initialization of "H" proved
 poisoned_soundness.adb:49:12: medium: precondition might fail
 poisoned_soundness.adb:49:32: info: predicate check proved (CVC5: 1 VC)
 poisoned_soundness.adb:50:22: info: assertion proved (Trivial)
-poisoned_soundness.adb:64:06: info: data dependencies proved
-poisoned_soundness.adb:69:73: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:70:23: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:72:43: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:72:59: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:75:07: info: precondition proved (CVC5: 12 VC)
-poisoned_soundness.adb:76:32: info: assertion proved (CVC5: 1 VC)
-poisoned_soundness.adb:76:48: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:77:32: medium: assertion might fail
-poisoned_soundness.adb:77:35: info: index check proved (CVC5: 2 VC)
-poisoned_soundness.adb:87:29: info: assertion proved (CVC5: 1 VC)
+poisoned_soundness.adb:65:06: info: data dependencies proved
+poisoned_soundness.adb:70:73: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:71:23: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:73:43: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:73:59: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:76:07: info: precondition proved (CVC5: 12 VC)
+poisoned_soundness.adb:77:32: info: assertion proved (CVC5: 1 VC)
+poisoned_soundness.adb:77:48: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:78:32: medium: assertion might fail
+poisoned_soundness.adb:78:35: info: index check proved (CVC5: 2 VC)
+poisoned_soundness.adb:88:29: info: assertion proved (CVC5: 1 VC)
