@@ -741,10 +741,6 @@ package Why.Gen.Expr is
    function Get_Type (E : W_Expr_Id) return W_Type_Id;
    --  extract the type of a given expression
 
-   function New_Havoc_Call (Id : W_Identifier_Id) return W_Prog_Id;
-   --  @param Id Identifier of a variable
-   --  @result Program havocing the value of Id
-
    function Validity_Wrapper_Type (Ty : Type_Kind_Id) return W_Type_Id
    with Pre => Type_Might_Be_Invalid (Ty);
    --  Type for the validity wrapper used for the result of functions with

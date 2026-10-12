@@ -1451,11 +1451,10 @@ package body Gnat2Why.Types is
       --  type E and another module for the dispatching equality on E if it is
       --  the root of a tagged hierarchy.
 
-      procedure Generate_Ref_Type_And_Havoc_Fun
+      procedure Generate_Ref_Type
         (Th : Theory_UC; E : Entity_Id; Relaxed_Init : Boolean);
-      --  Generate a record type containing only one mutable field of
-      --  type t. This is used to store mutable variables of type t.
-      --  Also generate a havoc function for this type.
+      --  Generate a record type containing only one mutable field of type t.
+      --  This is used to store mutable variables of type t.
 
       procedure Translate_Underlying_Type (Th : Theory_UC; E : Entity_Id);
       --  Translate a non-private type entity E
@@ -1546,11 +1545,11 @@ package body Gnat2Why.Types is
          end if;
       end Create_Additional_Equality_Theories;
 
-      -------------------------------------
-      -- Generate_Ref_Type_And_Havoc_Fun --
-      -------------------------------------
+      -----------------------
+      -- Generate_Ref_Type --
+      -----------------------
 
-      procedure Generate_Ref_Type_And_Havoc_Fun
+      procedure Generate_Ref_Type
         (Th : Theory_UC; E : Entity_Id; Relaxed_Init : Boolean) is
       begin
          --  We do not generate these declarations for array or record types
@@ -1581,16 +1580,8 @@ package body Gnat2Why.Types is
               (Th,
                To_Why_Type
                  (Retysp (E), Local => True, Relaxed_Init => Relaxed_Init));
-            Emit
-              (Th,
-               New_Havoc_Declaration
-                 (Name =>
-                    To_Why_Type
-                      (Retysp (E),
-                       Local        => True,
-                       Relaxed_Init => Relaxed_Init)));
          end if;
-      end Generate_Ref_Type_And_Havoc_Fun;
+      end Generate_Ref_Type;
 
       -------------------------------
       -- Translate_Underlying_Type --
@@ -1696,7 +1687,7 @@ package body Gnat2Why.Types is
                     +New_Named_Type (Name => To_Why_Type (E, Local => True))));
          end if;
 
-         Generate_Ref_Type_And_Havoc_Fun (Th, E, Relaxed_Init => False);
+         Generate_Ref_Type (Th, E, Relaxed_Init => False);
 
          --  If E is the full view of a private type, use its partial view as
          --  the filtering entity, as it is the entity used everywhere in AST.
@@ -1789,22 +1780,21 @@ package body Gnat2Why.Types is
 
          Declare_Init_Wrapper (Th, E);
 
-         --  We declare a reference type and an havoc function for the init
-         --  wrapper as well as move functions. For record types, the init
-         --  wrapper module might have been cloned if E has a parent with the
-         --  same fields. In this case, we should not regenerate the move
-         --  predicates. It is still necessary to regenerate the reference type
-         --  and havoc function if the types have different names as those
-         --  are named after the type.
+         --  We declare a reference type for the init wrapper as well as move
+         --  functions. For record types, the init wrapper module might have
+         --  been cloned if E has a parent with the same fields. In this case,
+         --  we should not regenerate the move predicates. It is still
+         --  necessary to regenerate the reference type if the types have
+         --  different names, as it is named after the type.
 
          if not Is_Record_Type_In_Why (Retysp (E))
            or else Oldest_Parent_With_Same_Fields (Retysp (E)) = Retysp (E)
          then
-            Generate_Ref_Type_And_Havoc_Fun (Th, E, Relaxed_Init => True);
+            Generate_Ref_Type (Th, E, Relaxed_Init => True);
          elsif Short_Name (Retysp (E))
            /= Short_Name (Oldest_Parent_With_Same_Fields (Retysp (E)))
          then
-            Generate_Ref_Type_And_Havoc_Fun (Th, E, Relaxed_Init => True);
+            Generate_Ref_Type (Th, E, Relaxed_Init => True);
          end if;
 
          if Has_Predeclared_Init_Predicate (E) then

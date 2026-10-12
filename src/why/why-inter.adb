@@ -1103,14 +1103,14 @@ package body Why.Inter is
      (E : Entity_Id; Kind : EW_Type; Relaxed_Init : Boolean) return W_Type_Id
    is
    begin
-      --  We avoid having renaming of types in Why to allow using the same
-      --  reference type.
-
       if Is_Static_Array_Type (Retysp (E))
         or else (Kind = EW_Split and then Has_Array_Type (E))
       then
 
-         --  Static array types and arrays split forms are in fact Why3 maps
+         --  Use the array theory's map type directly. Its reference type and
+         --  mutable field are named map__ref and map__content. A new alias
+         --  named t would make reference uses expect t__ref and t__content,
+         --  which are not declared in the array theory.
 
          return
            New_Type

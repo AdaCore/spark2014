@@ -4837,7 +4837,8 @@ package body Gnat2Why.Expr is
                         Name    =>
                           New_Temp_Identifier
                             (Typ => EW_Unit_Type, Base_Name => "havoc"),
-                        Value   => +New_Havoc_Call (+Why_Args (Arg_Cnt))));
+                        Value   =>
+                          +New_Havoc_Statement (Id => +Why_Args (Arg_Cnt))));
                end if;
             end if;
 
@@ -24574,7 +24575,7 @@ package body Gnat2Why.Expr is
                   --  If we have an object with Async_Writers, we must havoc it
                   --  before dereferencing it. Given a ref term t, this
                   --  produces the sequence:
-                  --     (__havoc(t); !t)
+                  --     (any unit writes {t}; !t)
                   --  It is sound (and necessary) to only do that in the
                   --  program domain. We can be sure that the relevant Ada code
                   --  will pass this point at least once in program domain.

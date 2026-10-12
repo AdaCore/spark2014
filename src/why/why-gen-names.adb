@@ -553,21 +553,6 @@ package body Why.Gen.Names is
                when Refine             => WNE_Func_Guard))
        else Get_Logic_Function_Guard (E));
 
-   ------------------
-   -- Havoc_Append --
-   ------------------
-
-   function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id is
-   begin
-      return
-        Append_Num
-          (S        => Img (Get_Symb (Base)) & To_String (WNE_Havoc),
-           Count    => 1,
-           Typ      => Why_Empty,
-           Module   => Get_Module (Base),
-           Ada_Node => Get_Ada_Node (+Base));
-   end Havoc_Append;
-
    ----------------
    -- Initialize --
    ----------------
@@ -958,7 +943,6 @@ package body Why.Gen.Names is
          when WNE_Extract_Prefix              => "extract__",
          when WNE_Fixed_Point_Prefix          => "Fixed_Point",
          when WNE_Fixed_Point_Mult_Div_Prefix => "Fixed_Point_Mult_Div",
-         when WNE_Havoc                       => "__havoc",
          when WNE_Hidden_Extension            => "rec__hidden_ext__",
          when WNE_Hide_Extension              => "hide_ext__",
          when WNE_Init_Wrapper_Suffix         => "__init_wrapper",

@@ -69,19 +69,6 @@ module Main
   meta "model_projection" function __private__ref___projection
   meta "inline:no" function __private__ref___projection
 
-  (* Program function that sets the value of its parameter to any possible
-     value allowed by its type. *)
-  val int__havoc (x : int__ref) : unit
-     writes { x }
-  val bool__havoc (x : bool__ref) : unit
-     writes { x }
-  val real__havoc (x : real__ref) : unit
-     writes { x }
-  val __private__havoc (x : __private__ref) : unit
-     writes { x }
-  val __fixed__havoc (x : __fixed__ref) : unit
-     writes { x }
-
   (* Counterexample branching-if variable. The model_trace is intentionally not
      a node_id. We use another label to recognize the node_id corresponding to
      values but we still need to trigger counterexample on this.  *)
@@ -144,9 +131,6 @@ module Boolean__init_wrapper
 
   meta "inline:no" function boolean__init_wrapper__ref_boolean__init_wrapper__content__projection
 
-  val boolean__init_wrapper__havoc (x: boolean__init_wrapper__ref) :
-    unit
-    writes { x }
 end
 
 (* Functions reading built-in values from __image *)
@@ -1346,8 +1330,6 @@ module Float32
   meta "remove_unused:dependency" axiom one_of_int, function one
 
   type t__ref = { mutable t__content [@model_trace:] : t }
-  val t__havoc (x : t__ref) : unit
-     writes { x }
 end
 
 module Float64
@@ -1373,8 +1355,6 @@ module Float64
   meta "remove_unused:dependency" axiom one_of_int, function one
 
   type t__ref = { mutable t__content [@model_trace:] : t }
-  val t__havoc (x : t__ref) : unit
-     writes { x }
 end
 
 module Float80
@@ -1400,8 +1380,6 @@ module Float80
   meta "remove_unused:dependency" axiom one_of_int, function one
 
   type t__ref = { mutable t__content [@model_trace:] : t }
-  val t__havoc (x : t__ref) : unit
-     writes { x }
 end
 
 module Float32_operations
@@ -1900,8 +1878,6 @@ module Array__1
   meta "model_projection" function projection_to_array
 
   type map__ref = { mutable map__content [@model_trace:] : map }
-  val map__havoc (x : map__ref) : unit
-     writes { x }
 
   predicate has_bounds map I1.t I1.t
 
@@ -2157,8 +2133,6 @@ module Array__2
 
   type map
   type map__ref = { mutable map__content [@model_trace:] : map }
-  val map__havoc (x : map__ref) : unit
-     writes { x }
 
   predicate has_bounds map I1.t I1.t I2.t I2.t
 
@@ -2296,8 +2270,6 @@ module Array__3
 
   type map
   type map__ref = { mutable map__content [@model_trace:] : map }
-  val map__havoc (x : map__ref) : unit
-     writes { x }
 
   predicate has_bounds map I1.t I1.t I2.t I2.t I3.t I3.t
 
@@ -2447,8 +2419,6 @@ module Array__4
 
   type map
   type map__ref = { mutable map__content [@model_trace:] : map }
-  val map__havoc (x : map__ref) : unit
-     writes { x }
 
   predicate has_bounds map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t
 
@@ -2702,8 +2672,6 @@ module BV8
   use export bv.BV8
 
   type t__ref = { mutable t__content [@model_trace:] : t }
-  val t__havoc (x : t__ref) : unit
-     writes { x }
 
   clone export BVAda with
     type t = t,
@@ -2743,8 +2711,6 @@ module BV16
   use export bv.BV16
 
   type t__ref = { mutable t__content [@model_trace:] : t }
-  val t__havoc (x : t__ref) : unit
-     writes { x }
 
   clone export BVAda with
     type t = t,
@@ -2784,8 +2750,6 @@ module BV32
   use export bv.BV32
 
   type t__ref = { mutable t__content [@model_trace:] : t }
-  val t__havoc (x : t__ref) : unit
-     writes { x }
 
   clone export BVAda with
     type t = t,
@@ -2825,8 +2789,6 @@ module BV64
   use export bv.BV64
 
   type t__ref = { mutable t__content [@model_trace:] : t }
-  val t__havoc (x : t__ref) : unit
-     writes { x }
 
   clone export BVAda with
     type t = t,
@@ -2866,8 +2828,6 @@ module BV128
   use export bv.BV128
 
   type t__ref = { mutable t__content [@model_trace:] : t }
-  val t__havoc (x : t__ref) : unit
-     writes { x }
 
   clone export BVAda with
     type t = t,
@@ -3009,8 +2969,6 @@ module Subprogram_Pointer_Rep
   type __rep__ref = {
     mutable __rep__content : __rep
   }
-
-  val __rep__havoc (x: __rep__ref) : unit writes { x }
 
   function bool_eq (a: __rep) (b: __rep) : bool =
     a.__is_null_pointer = b.__is_null_pointer &&

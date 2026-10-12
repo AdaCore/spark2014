@@ -4487,17 +4487,6 @@ package body Why.Gen.Expr is
        then New_Modular_Constant (Ada_Node, Value, Typ)
        else New_Integer_Constant (Ada_Node, Value));
 
-   --------------------
-   -- New_Havoc_Call --
-   --------------------
-
-   function New_Havoc_Call (Id : W_Identifier_Id) return W_Prog_Id is
-      Havoc_Fun : constant W_Identifier_Id :=
-        Havoc_Append (Get_Name (Get_Typ (Id)));
-   begin
-      return New_Call (Name => Havoc_Fun, Args => (1 => +Id));
-   end New_Havoc_Call;
-
    ------------------------------------------
    -- New_Is_Valid_Call_For_Constrained_Ty --
    ------------------------------------------
