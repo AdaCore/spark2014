@@ -492,6 +492,7 @@ gnat2why has many tasks:
    just for that);
  - It identifies SPARK code (in a phase called Marking);
  - It does flow analysis;
+ - It checks ownership and borrowing permissions in a separate analysis;
  - It does (part of) proof;
  - It produces analysis results in the form of check messages.
 

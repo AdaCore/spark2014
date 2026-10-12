@@ -57,6 +57,7 @@ Assume the environment is already set up.
 - Legality rules and marking: `docs/develguide/legality_checking.rst`
 - Flow analysis: `docs/develguide/flow_analysis.rst`
 - Generated globals: `docs/develguide/gg.rst`
+- Ownership and borrow checking: `docs/develguide/ownership_checking.rst`
 - Ada to Why3 translation: `docs/develguide/translation_why3.rst`
 - `gnatwhy3/` and prover pipeline: `docs/develguide/gnatwhy3.rst`
 - Counterexamples, RAC, and model handling:
