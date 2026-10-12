@@ -406,7 +406,6 @@ package Why.Gen.Names is
       --  Suffixes for handling of references
       WNE_Ref,
       WNE_Content,
-      WNE_Havoc,
 
       --  Prefix for temporaries introduced for entity names for Modifies
       WNE_Modifies_Prefix,
@@ -523,8 +522,6 @@ package Why.Gen.Names is
      (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id;
 
    function Init_Append (Base : W_Identifier_Id) return W_Identifier_Id;
-
-   function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id;
 
    function Valid_Append
      (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id;

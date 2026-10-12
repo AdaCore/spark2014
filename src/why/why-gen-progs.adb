@@ -192,6 +192,12 @@ package body Why.Gen.Progs is
            Return_Type => EW_Unit_Type);
    end New_Havoc_Statement;
 
+   function New_Havoc_Statement (Id : W_Identifier_Id) return W_Prog_Id is
+   begin
+      return
+        New_Havoc_Statement (Effects => New_Effects (Writes => (1 => Id)));
+   end New_Havoc_Statement;
+
    ----------------
    -- New_Ignore --
    ----------------

@@ -1278,7 +1278,6 @@ package body Why.Gen.Arrays is
         (Th, New_Type_Decl (Name => Ty_Name, Labels => Symbol_Sets.Empty_Set));
 
       Emit_Ref_Type_Definition (Th => Th, Name => Ty_Name);
-      Emit (Th, New_Havoc_Declaration (Name => Ty_Name));
 
       Declare_Getter_And_Setter
         (Th       => Th,

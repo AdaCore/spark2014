@@ -2086,8 +2086,8 @@ package body Why.Gen.Hardcoded is
                  Tmp      => +T_Arg,
                  Context  =>
                    Sequence
-                     ((1 => New_Havoc_Call (Sc_Id),
-                       2 => New_Havoc_Call (Ts_Id),
+                     ((1 => New_Havoc_Statement (Id => Sc_Id),
+                       2 => New_Havoc_Statement (Id => Ts_Id),
                        3 =>
                          New_Assume_Statement
                            (Pred =>

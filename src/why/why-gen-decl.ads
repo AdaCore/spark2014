@@ -42,10 +42,6 @@ package Why.Gen.Decl is
    --  @return Declaration of a logic type named Name which is transparently
    --      equal to Alias.
 
-   function New_Havoc_Declaration (Name : W_Name_Id) return W_Declaration_Id;
-   --  @param  Name name of the type for which we want a havoc function
-   --  @return Definition of a val havocing its only argument of type name__ref
-
    procedure Emit (Th : Theory_UC; Decl : W_Declaration_Id)
    with Pre => not Th.Finished;
    --  Append Decl to the list of declarations from the current theory in S
@@ -79,8 +75,10 @@ package Why.Gen.Decl is
    --      name of the field to the variable being projected.
 
    procedure Emit_Ref_Type_Definition (Th : Theory_UC; Name : W_Name_Id);
-   --  Emit definition of a record type with one mutable field of type Name and
-   --  counterexample projection from this type to this field.
+   --  For a type named t, emit a record type t__ref in Th with one mutable
+   --  field t__content of type t. The reference and field names are derived
+   --  from Name, including its module.
+   --  Also emit a counterexample projection from the reference to its field.
    --  For more information about counterexample projections see documentation
    --  of Emit_Record_Declaration.
    --  @param  Theory the theory where the reference type will be emitted

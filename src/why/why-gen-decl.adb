@@ -31,7 +31,6 @@ with Types;               use Types;
 with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Expr;        use Why.Gen.Expr;
@@ -244,29 +243,6 @@ package body Why.Gen.Decl is
                Mutable => True,
                others  => <>)));
    end Emit_Ref_Type_Definition;
-
-   ---------------------------
-   -- New_Havoc_Declaration --
-   ---------------------------
-
-   function New_Havoc_Declaration (Name : W_Name_Id) return W_Declaration_Id is
-      Typ       : constant W_Type_Id :=
-        New_Type (Type_Kind => EW_Abstract, Name => Ref_Append (Name));
-      Havoc_Fun : constant W_Identifier_Id := Havoc_Append (Name);
-      X         : constant W_Identifier_Id :=
-        New_Identifier (Domain => EW_Prog, Name => "x", Typ => Typ);
-   begin
-      return
-        Why.Atree.Builders.New_Function_Decl
-          (Domain      => EW_Prog,
-           Name        => Havoc_Fun,
-           Binders     =>
-             (1 => New_Binder (Domain => EW_Prog, Name => X, Arg_Type => Typ)),
-           Effects     => New_Effects (Writes => (1 => X)),
-           Return_Type => EW_Unit_Type,
-           Labels      => Symbol_Sets.Empty_Set,
-           Location    => No_Location);
-   end New_Havoc_Declaration;
 
    -------------------
    -- New_Type_Decl --

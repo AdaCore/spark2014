@@ -146,6 +146,11 @@ package Why.Gen.Progs is
 
    function New_Havoc_Statement
      (Ada_Node : Node_Id := Empty; Effects : W_Effects_Id) return W_Prog_Id;
+   --  Build a unit-valued any expression with the given effects and no
+   --  precondition or postcondition. No dynamic invariant is assumed.
+
+   function New_Havoc_Statement (Id : W_Identifier_Id) return W_Prog_Id;
+   --  Havoc the reference Id using an any expression with a writes effect
 
    function New_Ignore
      (Ada_Node : Node_Id := Empty; Prog : W_Prog_Id) return W_Prog_Id;

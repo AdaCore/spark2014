@@ -1472,7 +1472,6 @@ package body Why.Gen.Records is
            (Th => Th, Name => Ty_Name, Binders => Binders_F (1 .. Index));
 
          Emit_Ref_Type_Definition (Th => Th, Name => Ty_Name);
-         Emit (Th, New_Havoc_Declaration (Name => Ty_Name));
 
          --  Define Valid_Value
 
@@ -3194,10 +3193,9 @@ package body Why.Gen.Records is
                      SPARK_Record => True);
 
                   --  Generate a mutable record to hold elements of type
-                  --  __split_discrs, as well as an havoc function for it.
+                  --  __split_discrs.
 
                   Emit_Ref_Type_Definition (Th => Th, Name => Discr_Name);
-                  Emit (Th, New_Havoc_Declaration (Name => Discr_Name));
                end if;
 
                Binders_A (Index_All) :=
@@ -3279,11 +3277,10 @@ package body Why.Gen.Records is
                SPARK_Record => True);
 
             --  Generate a mutable record to hold elements of type
-            --  __split_fields, as well as an havoc function for it.
+            --  __split_fields.
 
             Emit_Ref_Type_Definition
               (Th => Th, Name => To_Name (WNE_Rec_Split_Fields));
-            Emit (Th, New_Havoc_Declaration (To_Name (WNE_Rec_Split_Fields)));
 
             Binders_A (Index_All) :=
               (B_Name =>

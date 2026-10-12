@@ -1573,8 +1573,6 @@ package body Why.Gen.Pointers is
 
          Emit_Ref_Type_Definition (Th => Th, Name => Ty_Name);
 
-         Emit (Th, New_Havoc_Declaration (Ty_Name));
-
          --  Declare a symbol for the dynamic property of E. It fixes the value
          --  of value if the pointer is null.
 
