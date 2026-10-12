@@ -46,22 +46,28 @@ package Gnat2Why.Tables is
    -- Component Info Maps --
    -------------------------
 
-   --  For the implementation details: This is one place where we look
-   --  at the declaration node to find which discriminant values imply the
-   --  presence of which components. We traverse the N_Component_List of the
-   --  type declaration, and for each component, and for each N_Variant_Part,
-   --  we store a record of type [Component_Info] which contains the N_Variant
-   --  node to which the component/variant part belongs, and the N_Variant_Part
-   --  to which this N_Variant node belongs. In this way, we can easily access
-   --  the discriminant (the Name of the N_Variant_Part) and the discrete
-   --  choice (the Discrete_Choices of the N_Variant) of that component or
-   --  variant part.
-
-   --  The map [Comp_Info] maps the component entities and N_Variant_Part nodes
-   --  to their information record. This map is populated during marking.
-
-   --  We ignore "completely hidden" components of derived record types (see
-   --  also the discussion in einfo.ads and sem_ch3.adb)
+   --  The tables are populated during marking for types modeled as records.
+   --  Proof translation retrieves their component sets only through
+   --  Get_Component_Set, which preserves inherited components that Ada privacy
+   --  has removed from the frontend's component list. Parts hidden from SPARK
+   --  are represented by type entities, and Part_Of constituents of single
+   --  protected objects are included as components. The set is separate from
+   --  visibility information, so hidden or removed components retain their
+   --  identity and the most precise available type.
+   --
+   --  GNAT's "completely hidden" stored discriminants of derived untagged
+   --  records are ignored. First_Discriminant and Next_Discriminant skip them;
+   --  they are distinct from components hidden by Ada privacy. See
+   --  Is_Completely_Hidden in einfo.ads and the discussion of stored
+   --  discriminants in sem_ch3.adb.
+   --
+   --  Get_Variant_Info returns a map from components, discriminants, and
+   --  N_Variant_Part nodes to Component_Info. Parent_Variant and
+   --  Parent_Var_Part identify the enclosing variant and its variant part.
+   --  They are Empty when there is no enclosing variant. The Name of
+   --  Parent_Var_Part identifies the discriminant, and the Discrete_Choices of
+   --  Parent_Variant specify the values that select its components. Following
+   --  these links gives the conditions for presence in nested variant parts.
 
    type Component_Info is record
       Parent_Variant  : Node_Id;
@@ -151,7 +157,7 @@ package Gnat2Why.Tables is
    --  @param E entity of a type translated as a record in why
    --  @return E a map from E's components to their visibility. A component has
    --      visibility Regular if it is visible, Hidden if it has been hidden by
-   --      a private definition, Duplicate if it is Hidden and some other
+   --      a private definition, Duplicated if it is Hidden and some other
    --      regular field has the same name, and Removed if it was removed by
    --      a static constraint.
 

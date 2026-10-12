@@ -61,9 +61,9 @@ package body Gnat2Why.Tables is
 
    Comp_Info : Component_Info_Map_Maps.Map :=
      Component_Info_Map_Maps.Empty_Map;
-   --  This map maps record types and protected types to a map mapping each
-   --  component and each N_Variant node to a Component_Info record. This map
-   --  is populated through calls to Init_Component_Info and
+   --  This map stores component sets, variant nesting, and visibility for
+   --  types modeled as records. It is populated through Init_Component_Info,
+   --  Init_Component_Info_For_Subtypes, and
    --  Init_Component_Info_For_Protected_Types.
 
    Descendants : Node_Set_Maps.Map;
@@ -356,6 +356,8 @@ package body Gnat2Why.Tables is
 
       procedure Mark_Component_List
         (N : Node_Id; Parent_Var_Part : Node_Id; Parent_Variant : Node_Id);
+      --  Store the enclosing N_Variant and N_Variant_Part for each component
+      --  in the list. Process nested variant parts through Mark_Variant_Part.
 
       procedure Mark_Variant_Part
         (N : Node_Id; Parent_Var_Part : Node_Id; Parent_Variant : Node_Id);

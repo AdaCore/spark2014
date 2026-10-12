@@ -218,24 +218,17 @@ abstract:
 Dummy values
 """"""""""""
 
-Type encodings provide a dummy value. It is used to
-give a value to components which are not present in record types due
-to discriminant constraints (see following section about record
-types):
+Type encodings provide a dummy value to fill fields that do not represent
+an Ada value in the current object:
 
 .. code-block:: whyml
 
     function dummy : t
 
-Why3 record values contain all fields, including those of inactive variants.
-A dummy value fills these fields without representing an Ada component that
-can be read. Field accesses must check that the component is present, and
-record equality only compares the active components. The choice of dummy value
-must therefore not affect the Ada result.
-
-The same principle applies to the designated-value field of a null access
-value. Dummy values are placeholders in the encoding, not Ada default
-initialization values.
+Examples are inactive record components and the designated-value field of a
+null access value. Dummy values are placeholders in the encoding, not Ada
+default initialization values. The record model and its tradeoffs are explained
+under :ref:`Logical equality and inactive components`.
 
 Scalar Types
 ^^^^^^^^^^^^
@@ -816,7 +809,8 @@ elements for out-of-bounds indexes. The predicate ``has_bounds`` is introduced
 and maintained over arrays so that these elements do not prevent proof of
 logical equality. It stands for the property that values outside the given
 bounds are fixed. Intuitively, they contain a dummy value, as for inactive
-record components; the choice of that value does not matter.
+record components (see :ref:`Logical equality and inactive components`);
+the choice of that value does not matter.
 An extensionality axiom allows Why3 to prove that two arrays with the same
 bounds are logically equal if they agree on the value of elements within the
 bounds:
@@ -1212,17 +1206,14 @@ them would require conversion functions that also convert the indexes.
 Record Types, Private Types, and Concurrent Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Types that are allowed to have discriminants (record types, task
-types, protected types, private types…) are translated as record types
-in Why using a single mechanism (see
-``Gnat2why.Util.Is_Record_Type_In_Why``). The translation is done in two
-phases, first a representative record theory is declared for the type
-(see Why.Gen.Records.Declare_Rep_Record_Type), and then a specific
-theory is declared, which uses this representative theory (see
-Why.Gen.Records.Declare_Ada_Record). This allows sharing a
-representative type between record types of a given hierarchy which
-have the same components to avoid conversions (see
-Oldest_Parent_With_Same_Fields).
+Record types, task types, protected types, and private types use a common
+record model (see ``Gnat2why.Util.Is_Record_Type_In_Why``). A representative
+module describes the stored data and operations shared by types with the same
+representation. A type-specific module uses that representation and adds
+declarations specific to the Ada type, such as its tag. Sharing a
+representative type between types of a hierarchy with the same components
+avoids unnecessary conversions. The declaration and sharing conventions are
+documented in :file:`src/why/why-gen-records.ads`.
 
 Representative Type
 """""""""""""""""""
@@ -1232,11 +1223,25 @@ why record type with immutable fields. Mutation of components is
 handled by modifying the whole object. A representative why record
 type has a layered structure.
 
+Variant records also use this structure, with fields for every variant,
+including inactive ones. An algebraic datatype with a constructor for each
+variant would make Why3 generate checks on accesses to fields that are not
+present in every constructor. GNATprove needs to generate these checks itself
+to track them precisely. Pattern matching would avoid those implicit checks,
+but would introduce cases that previous checks have already ruled out, making
+the VCs more complex. The record representation allows field access without
+another check or case split. This fits the common translation pattern for
+contracts and assertions:
+first generate the checks for an expression, then translate its logical value.
+
 At the top-level, a field is defined for each kind of information that
-needs to be stored in the object (discriminants, components, tag…)
-(see ``Gnat2why.Util.Count_Why_Top_Level_Fields``). Fields for components
-or discriminants are themselves records holding the values of the
-actual components.
+needs to be stored in the value (discriminants, components, tag...). Fields for
+components or discriminants are themselves records holding the values of the
+actual components. This separation lets the object and subprogram encodings
+treat each top-level field according to its mutability. For example, a call that
+cannot change discriminants can receive them by value while receiving the
+ordinary components by reference. See :ref:`Record Objects` for the split
+object model.
 
 As an example, consider the following record type:
 
@@ -1260,39 +1265,41 @@ discriminants and one for the components:
       type __rep = { __split_discrs : __split_discrs;
 		     __split_fields : __split_fields }
 
-The field __split_discrs contains every discriminant of the type. As
-no discriminant can be added to a record hierarchy, all types of a
-given hierarchy have the same discriminants. The field __split_fields
+The field __split_discrs contains every discriminant of the type. SPARK does not
+allow adding discriminants in a derivation, so all types of a given hierarchy
+share this top-level field. The field __split_fields
 contains every component of the type that can be visible in SPARK as
-well as Part_Of variables for single protected objects. Note that some
-components that are hidden by private derivation may be removed by the
-frontend from the component list of record types. As we still want
-them in SPARK, we use a table which stores every component of a record
-(see ``Gnat2why.Tables.Get_Component_Set``). In the case of tagged types,
-these hidden fields can have the same names as other (visible or not)
-components. To differentiate them, record fields in Why are prefixed
-by the full name of the first type in which they occur (rec__my_rec__h
-and not only rec__h).
+well as ``Part_Of`` variables for single protected objects. Components hidden
+by Ada privacy remain in the proof representation when their declarations are
+in SPARK. For all types modeled as records, proof translation retrieves
+the component set only through ``Gnat2why.Tables.Get_Component_Set``.
+The frontend's component list is insufficient, since Ada privacy can remove
+inherited components from it. The tables and their conventions are documented in
+:file:`src/why/gnat2why-tables.ads`; field naming conventions are in
+:file:`src/why/why-gen-records.ads`.
 
 When the type is derived, or when a subtype is defined, the
-representative type is preserved if both no new components are added
-(untagged derivation) and there are no component whose type changes in
-the derivation (discriminant dependent components). As it is the case
-in our example, the following My_Rec_100 subtype will have the same
+representative type can be preserved when no components are added and no
+component type changes, for example because of a discriminant constraint.
+In our example, the following My_Rec_100 subtype will have the same
 representative type as My_Rec:
 
 .. code-block:: ada
 
       subtype My_Rec_100 is My_Rec (100);
 
-Let us consider a slightly different example where My_Rec contains a
-discriminant dependent component:
+.. _why3-discriminant-dependent-record-example:
 
-.. code-block:: whyml
+Let us consider a slightly different example where My_Rec contains a
+discriminant-dependent component:
+
+.. code-block:: ada
 
      type My_Rec (L : Natural) is record
         C : My_Array (1 .. L);
      end record;
+
+     subtype My_Rec_100 is My_Rec (100);
 
 Here, My_Rec_100 will define a new representative type in which the C
 component has the more precise My_Array (1 .. 100) type. However, as
@@ -1313,14 +1320,13 @@ Discriminant checks
 
 There are two kinds of discriminant checks for types with
 discriminants. First, components that are under a variant require a
-check when accessed. In Gnat2why, information about record variants is
-computed once and for all and then stored in Gnat2why.Tables. It can
-be retrieved using Has_Variant_Info and Get_Variant_Info.
+check when accessed. Why3 records contain fields for every variant, so a field
+access in the encoding is possible even when the Ada component is absent.
+The discriminant check prevents the program from reading such a field.
 
-For all components of a record type, a predicate is defined that
+For components that may need a discriminant check, a predicate is defined that
 checks whether the component is present in a record object depending
-on the value of its discriminants if any. In the simplest case, if the
-record has no discriminant or if the component is not nested in a
+on the value of its discriminants. If the component is not nested in a
 variant part, this predicate simply returns True.
 
 As an example, let us consider a record type with a variant part:
@@ -1341,19 +1347,24 @@ zero. This is expressed in its associated discriminant predicate:
 
 .. code-block:: whyml
 
-     predicate types__c__pred (a : __rep)  =
-         not (to_rep a.__split_discrs.rec__my_rec__l = 0)
+     predicate types__c__pred (d : __split_discrs) =
+       not (to_rep d.rec__my_rec__l = 0)
+
+The predicate takes the value of the top-level field for discriminants. The
+type of this field can be shared even when component types differ between
+record views.
 
 A discriminant check is also needed for types and subtypes with
-discriminant constraints to check inclusion of a record in the type /
-subtype. If a type or a subtype is constrained, a range predicate is
-defined for this check. As an example, here is the range predicate
-that would be defined for the My_Rec_100 subtype:
+discriminant constraints, to check that a record belongs to the type or subtype.
+A predicate shared by the hierarchy compares the expected discriminants with
+the discriminants stored in the corresponding top-level field. For example,
+the check for ``My_Rec_100`` uses the following predicate with
+``expected_l = 100``:
 
 .. code-block:: whyml
 
-     predicate in_range (rec__my_rec__l : int) (a : my_rec)  =
-       rec__types__my_rec__l = to_rep a.__split_discrs.rec__my_rec__l
+     predicate in_range (expected_l : int) (d : __split_discrs) =
+       expected_l = to_rep d.rec__my_rec__l
 
 Note that the actual value of the discriminant is not inlined here,
 but rather needs to be supplied at each call. This is because this
@@ -1363,19 +1374,25 @@ in a loop (loop indices are translated as variables in Why).
 Private components
 """"""""""""""""""
 
-As stated at the beginning of the section, SPARK always uses the most
-precise view of types that is available to it. However, it can happen
+As discussed under :ref:`Modules for Entities`, proof uses the most precise
+SPARK view of types by default. However, it can happen
 that a type is completely or partially hidden from SPARK analysis
 under a SPARK_Mode (Off) pragma (see
-``Gnat2why.Tables.Has_Private_Part``). When this is the case, SPARK cannot
-just ignore the components it is not allowed to see. Instead, it
+``Gnat2why.Tables.Has_Private_Part``). Omitting the hidden components would make
+objects with the same visible components logically equal. Proof could then
+substitute one object for the other even when functions using hidden state
+can distinguish them. Instead, the translation
 creates a special field for them, named rec__t for a type T, of an
-abstract logic type. As an example, let us consider a semi private
-type, of which we can only see the discriminants:
+abstract logic type.
+
+.. _why3-private-record-example:
+
+As an example, let us consider a semi private
+type of which only the discriminants are available in SPARK:
 
 .. code-block:: ada
 
-       package P  is
+       package P with SPARK_Mode is
 	  type Priv (B: Boolean) is private;
        private
 	  pragma SPARK_Mode (Off);
@@ -1397,22 +1414,22 @@ Here is how it is translated in Why:
 	__split_fields : __split_fields }
 
 As __main_type has no definition, we can deduce nothing about the
-rec_priv field, not even whether it actually can take several values
+rec__priv field, not even whether it actually can take several values
 or not.
 
 Record equality
 """""""""""""""
 
 Predefined equality on record types is the conjunction of equalities
-on every components. If a component is ultimately a record type, the
-primitive equality should be used for it instead of the predefined
-equality (see Why.Gen.Expr.New_Ada_Equality). Predefined equality is
+on discriminants and present components, using the appropriate Ada equality
+for each component type (see :ref:`Predefined / primitive equality`). It does
+not compare placeholder values in inactive variants. Predefined equality is
 generated in the representative module, as it is shared between record
-types with same fields. Conversely, the primitive equality symbol
-user_eq is declared in specific modules as it can be overridden after
-derivation.
+types with the same fields. When a user-defined primitive equality is needed,
+its ``user_eq`` symbol belongs to the type-specific module, as equality can be
+overridden after derivation.
 
-As an example, let us consider a the following type structure:
+As an example, let us consider the following type structure:
 
 .. code-block:: ada
 
@@ -1422,25 +1439,25 @@ As an example, let us consider a the following type structure:
 
       type Rec_Eq is new My_Rec (100);
 
-      function "=" (X, Y : My_Rec_2) return Boolean;
+      function "=" (X, Y : Rec_Eq) return Boolean;
 
       type Big_Rec (B : Boolean) is record
 	 X : My_Rec_100;
 	 Y : Rec_Eq;
       end record;
 
-Here is the predicate defined for predefined equality on type Big_Rec:
+Here is the function defined for predefined equality on type Big_Rec:
 
 .. code-block:: whyml
 
     function bool_eq (a : __rep) (b : __rep) : bool =
       (a.__split_discrs.rec__big_rec__b =
        b.__split_discrs.rec__big_rec__b)
-      /\ (types__big_rec__x__pred a ->
+      /\ (types__big_rec__x__pred a.__split_discrs ->
 	     P__my_rec_100.bool_eq
 			 a.__split_fields.rec__big_rec__x
 			 b.__split_fields.rec__big_rec__x)
-      /\ (types__big_rec__y__pred a ->
+      /\ (types__big_rec__y__pred a.__split_discrs ->
 	    P__rec_eq.user_eq
 			 a.__split_fields.rec__big_rec__y
 			 b.__split_fields.rec__big_rec__y)
@@ -1452,7 +1469,7 @@ indeed present (i.e. when the predicate discriminant check for the
 corresponding component returns True).
 
 On tagged record extensions, the predefined equality is defined in
-term of the primitive equality of the parent. As a consequence, if
+terms of the primitive equality of the parent. As a consequence, if
 the primitive equality is overridden by the user on a tagged type,
 this user-defined equality function will be used in the predefined
 equality of all of its descendants. For example, consider the types
@@ -1479,42 +1496,86 @@ fields ``F`` and ``G`` in the predefined equality of ``Child``:
           { P__root.__split_fields =
               { P__root.rec__root__f = a.__split_fields.rec__root__f;
                 P__root.rec__root__g = a.__split_fields.rec__root__g;
-                P__root.rec__ext__ = null__ext__ };
+                P__root.rec__ext__ = P__root.null__ext__ };
             P__root.attr__tag = P__root.__tag }
           { P__root.__split_fields =
               { P__root.rec__root__f = b.__split_fields.rec__root__f;
                 P__root.rec__root__g = b.__split_fields.rec__root__g;
-                P__root.rec__ext__ = null__ext__ };
+                P__root.rec__ext__ = P__root.null__ext__ };
             P__root.attr__tag = P__root.__tag }
      /\ to_rep a.__split_fields.rec__child__h
           = to_rep b.__split_fields.rec__child__h
 
-For types with a private part, an uninterpreted logic function is
-introduced to stand for (primitive or predefined) equality on the
-private components of the type. It ensures that nothing can be deduced
-for this equality, not even that it is reflexive.
+For types with a private part, a separate function stands for equality on the
+hidden state. It uses Why3's logical equality when that is an appropriate model
+of Ada equality for the hidden representation. The translation can inspect
+the full view to make this choice without exposing its structure to proof;
+``Use_Real_Eq_For_Private_Type`` in :file:`src/spark/spark_util-types.adb`
+implements this decision, including predefined-equality annotations.
 
-For example, here is the predicate defined for predefined equality on
-type Priv:
+When Ada equality can identify values that a function could distinguish, logical
+equality would give unsound congruence assumptions. For example, floating-point
+equality identifies positive and negative zero, and unconstrained array equality
+does not compare bounds. User-defined component equality and equality on tagged
+types can also ignore parts of the represented state. In these cases, the
+equality function for the private part is left uninterpreted. Even reflexivity
+cannot then be assumed.
+
+For example, here is the function defined for predefined equality on
+type :ref:`Priv <why3-private-record-example>`:
 
 .. code-block:: whyml
 
-     function __main_eq (a : __main_type) (b : __main_type) : bool
+     function __main_eq (a : __main_type) (b : __main_type) : bool = a = b
 
      function bool_eq (a : __rep) (b : __rep) : bool =
       (a.__split_discrs.rec__priv__b = b.__split_discrs.rec__priv__b)
       /\ (__main_eq a.__split_fields.rec__priv
 		    b.__split_fields.rec__priv)
 
+The hidden completion of ``Priv`` is a null record, so logical equality can be
+used for its abstract private part. If the completion instead contained a
+floating-point component, ``__main_eq`` would have no definition.
+
+Logical equality and inactive components
+""""""""""""""""""""""""""""""""""""""""
+
+Why3 record values contain all fields, including those of inactive variants.
+Field accesses must check that the component is present, and predefined record
+equality only compares present components. The values stored in inactive fields
+therefore cannot affect the result of Ada equality.
+
+However, Why3's logical equality compares the whole representation. If inactive
+fields could contain arbitrary values, two records with matching discriminants
+and logically equal present components could still differ in those fields.
+To avoid this, all fields of inactive variants are fixed to their respective
+dummy values. In the earlier variant record example, the field for ``C`` is
+fixed to its dummy value whenever ``L = 0``.
+
+Absent components can then no longer prevent proof of logical equality. Once
+established, logical equality gives congruence for all logical functions:
+applying any such function to either record gives the same result. This requires
+logical equality of the present components, rather than just Ada equality;
+user-defined or floating-point equality may identify distinct Why3 values.
+Any private fields, tags, and extension fields must also be logically equal.
+
+This choice has a cost, as for the fixed out-of-bounds values of arrays.
+The dynamic invariant of a record requires each inactive field to equal its
+dummy value. Record construction and operations must establish or preserve
+these conditions. For example, aggregates fill absent fields with dummy values,
+and assignment of a new variant must leave the fields of the old variant dummy
+when they are no longer present. These conditions add to the proof context even
+though Ada code cannot read the fields. They are the tradeoff for being able to
+prove logical equality from the state present in the Ada record.
+
 Mutable discriminants
 """""""""""""""""""""
 
 Objects of a type with mutable discriminants can be either constrained
-or unconstrained (information can be get through the ‘Constrained
-attribute). It depends on how the object was declared and cannot be
-changed throughout the program. In the why translation of record types
-with mutable discriminants, the constrained information is kept as a
-separate top-level field.
+or unconstrained (this information is available through the ``'Constrained``
+attribute). It depends on how the object was declared and does not change during
+its lifetime. An assignment can change an unconstrained object's discriminants,
+but must preserve a constrained object's discriminants.
 
 As an example, consider the following type with mutable discriminants:
 
@@ -1529,27 +1590,27 @@ As an example, consider the following type with mutable discriminants:
 	end case;
      end record;
 
-Its representative type contains three fields, one for the
-discriminant, one for the field, and an additional boolean flag for
-the ‘Constrained attribute:
+Constrainedness belongs to the object, rather than to the record value copied
+by assignment. When it is not known statically, the translation keeps it in a
+separate immutable Boolean alongside the object's mutable discriminants and
+components (see :ref:`Record Objects`). For example, these objects can contain
+the same record value while having different constrainedness:
 
-.. code-block:: whyml
+.. code-block:: ada
 
-     type __rep =
-      { __split_discrs    : __split_discrs;
-        __split_fields    : __split_fields;
-        attr__constrained : bool }
+   X : My_Option := (Present => False);
+   Y : My_Option (False) := (Present => False);
 
-During assignment of an object with mutable discriminants, care must
-be taken to preserve the value of the attr__constrained flag (see
-``Gnat2why.Expr.New_Assignment``).
+``X`` can later receive a value with ``Present = True``; ``Y`` cannot. Copying a
+value to either object does not copy the source object's constrainedness.
+Before an assignment to a constrained target, a check verifies that the new
+discriminants match the old ones.
 
-Note that the ‘Constrained attribute on record or array components is
-not always the value of the attr_constrained field of the components.
-Indeed, to be able to handle assignment of composite objects easily,
-the attr_constrained field is always set to False if the component
-type is unconstrained whereas ‘Constrained always returns True on
-(parts of) constant objects (see ``Gnat2why.Expr.Transform_Attr``).
+The value of the ``'Constrained`` attribute also depends on its prefix; for example,
+components of constants are constrained. ``New_Constrained_Attribute_Expr`` in
+:file:`src/why/gnat2why-expr.adb` uses the statically known result when available
+and the separate object flag otherwise. It does not retrieve constrainedness
+from the component value.
 
 Record Conversions
 """"""""""""""""""
@@ -1558,8 +1619,9 @@ When two types of a record hierarchy share the same representative
 type, no conversion is required. Otherwise, conversions go through the
 root type of the hierarchy. More precisely, for every record type or
 subtype which is not a root, two conversion functions, to and from the
-root type are introduced. As an example, here are the conversion
-functions introduced for My_Rec_100:
+root type are introduced. As an example, here are the conversion functions for
+the earlier :ref:`My_Rec_100 <why3-discriminant-dependent-record-example>` subtype
+whose ``C`` component has static array bounds:
 
 .. code-block:: whyml
 
@@ -1572,12 +1634,15 @@ functions introduced for My_Rec_100:
      function of_base (r : my_rec) : __rep =
       { __split_discrs = r.__split_discrs;
 	__split_fields =
-	{ rec__my_rec__c = (to_array a.__split_fields.rec__my_rec__c) }
+	{ rec__my_rec__c = (to_array r.__split_fields.rec__my_rec__c) } }
 
-As no new discriminant can be introduced in derivation, the field for
+As SPARK does not allow adding discriminants in derivation, the field for
 discriminants is always preserved. As for regular components, they may
 require a conversion if their type has changed, like here for the C
-component.
+component. The map is preserved without sliding: this is a change of record
+view, and a discriminant-dependent component keeps its indexes. The conversion
+functions are not inverses of each other outside the subtype's constraints.
+Conversion conventions are documented in :file:`src/why/why-gen-records.ads`.
 
 Tagged types
 """"""""""""
@@ -1585,16 +1650,17 @@ Tagged types
 An object of a tagged type T has the particularity that it can in fact
 be a view conversion of an object of descendant of T. To represent
 tagged objects, we therefore need a tag, which allows to specialize
-treatment when necessary (conversions, dispatching, tag checks…), as
+treatment when necessary (conversions, dispatching, tag checks...), as
 well as a way to store an unknown number of unknown components which
 may arise from future derivations.
 
 The tag is represented by an additional top-level field of
-mathematical integer type named attr__tag. Each time a record type is
-introduced, a logic constant of type ``int`` is introduced to represent
+mathematical integer type named attr__tag. For each specific tagged type,
+a logic constant of type ``int`` is introduced to represent
 the specific tag of objects of this type. A fresh integer value is
 given for this constant on each derived type so it can be deduced that
-different types have different tags. These constants are used to
+different types have different tags. Subtypes reuse the tag of their base type.
+These constants are used to
 specify the value of the tag of an object when it is known, so that the
 object can be handled more precisely.
 
@@ -1622,7 +1688,7 @@ tree which is visible from the current unit (see
 ``Why.Gen.Records.Create_Compatible_Tags_Theory``).
 
 In addition to the attr__tag top-level field, tagged types also have a
-special regular field named rec__ext__ of the abstract __private type.
+special regular field named rec__ext__ of an abstract ``__ext_type``.
 It is stored in the __split_fields top-level field, along with other
 components and stands for potential hidden component of derived types.
 
@@ -1650,7 +1716,7 @@ special component for extensions:
       { __split_fields : __split_fields;
 	attr__tag      : int }
 
-Like for other record types, tagged conversions do through the root of
+Like for other record types, tagged conversions go through the root of
 the type hierarchy. For each tagged type which is not a root, logic
 functions are provided to hide components that are not present in the
 root type inside the extension and to retrieve them.
@@ -1679,7 +1745,7 @@ extensions:
 	attr__tag      : int }
 
 Then, conversions to and from the Root type are defined through the
-mean of abstract hide and extraction functions.
+means of abstract hide and extraction functions.
 
 .. code-block:: whyml
 
@@ -1697,7 +1763,7 @@ mean of abstract hide and extraction functions.
 				      a.__split_fields.rec__ext__) };
        attr__tag = a.attr__tag }
 
-     function of_base (r : May_package__root.root) : __rep =
+     function of_base (r : P__root.root) : __rep =
       { __split_fields =
 	 { rec__child__g = (extract__g r.__split_fields.rec__ext__);
 	   rec__root__f = r.__split_fields.rec__root__f;
@@ -1706,8 +1772,8 @@ mean of abstract hide and extraction functions.
 
 To avoid losing information when converting between types which share
 a component which is not in the root, the same extraction function is
-reused for every type which share the same component. As an example, a
-type:
+reused for every type which shares the same component. For example, consider
+the following extension:
 
 .. code-block:: ada
 
@@ -1715,21 +1781,22 @@ type:
         H : Integer;
      end record;
 
-Will reuse the extraction function for G declared in Child’s
+This type reuses the extraction function for G declared in Child's
 representative module:
 
 .. code-block:: whyml
 
-     function extract__g (x : __private) : Standard__integer.integer =
+     function extract__g (x : P__root.__ext_type) : Standard__integer.integer =
         P__child.extract__g x
 
 To link the extraction functions and the various hide__ext__ functions
-together, we introduce a bijection from the abstract __ext_type type to a
-concrete record type in an extension module P__root__rep__Compl. The concrete
-extension type of a root type contains a component for all the components
-that are introduced in those of its extensions that are visible from the
-analyzed unit plus an additional one standing for the components of other
-invisible extensions. For example, the concrete extension type of Root contains
+together, we introduce a bijection from the abstract ``__ext_type`` to a
+concrete record type in a separate representative completion module. This
+concrete type is a logical view of the single abstract extension field, rather
+than additional fields in the tagged record itself. For a root type, it contains
+all components introduced in extensions visible from the analyzed unit, plus
+one field for the unknown remaining extension. For example, the concrete
+extension type of Root contains
 components for Child.G and Grand_Child.H:
 
 .. code-block:: whyml
@@ -1739,38 +1806,47 @@ components for Child.G and Grand_Child.H:
       rec__p__grand_child__h__ext__ : Standard__integer.integer;
       rec__hidden_ext__ : Main.__private }
 
-  val function __open (x : P_root.__ext_type) : ext__
-  val function __close (x : ext__) : P_root.__ext_type
+  val function __open (x : P__root.__ext_type) : ext__
+  val function __close (x : ext__) : P__root.__ext_type
 
   axiom close_open:
-    forall x : P_root.__ext_type [__open x]. __close (__open x) = x
+    forall x : P__root.__ext_type [__open x]. __close (__open x) = x
 
   axiom open_close:
     forall x : ext__ [__close x]. __open (__close x) = x
 
-The bijection function open and close are generated by cloning the
-Incomplete_type module from ada__model.mlw. The completion module for Root
-also contains axioms defining all the extraction functions used in its
-extensions:
+The bijection functions ``__open`` and ``__close`` are generated by cloning
+``Incomplete_type`` from :file:`share/spark/theories/ada__model.mlw`.
+Completion modules also contain axioms defining the extraction functions used
+in the extensions:
 
 .. code-block:: whyml
 
   axiom extract__p__child__g__def:
     forall rec__ext__ : P__root.__ext_type.
       P__child.extract__p__child__g rec__ext__
-         = (__open rec__ext__).rec__p__child__g__ext__
+         = (P__root___rep__compl.__open rec__ext__).rec__p__child__g__ext__
 
   axiom extract__p__grand_child__h__def:
     forall rec__ext__ : P__root.__ext_type.
       P__grand_child.extract__p__grand_child__h rec__ext__
-         = (__open rec__ext__).rec__p__grand_child__h__ext__
+         = (P__root___rep__compl.__open rec__ext__).
+             rec__p__grand_child__h__ext__
 
 For tagged types which are not roots, the concrete extension type contains
 all components occurring in visible extensions *of the root* which are not
 present in the type. In our hierarchy, the concrete extension type for Child
 has only a component for Grand_Child.H, but, if we were to add a new child
-Other_Child of Root with a component I, then I would be in the concrete
-extension type of Child even if it cannot occur in any extension of child.
+Other_Child of Root with a component J, then J would be in the concrete
+extension type of Child even though it cannot occur in any descendant of Child.
+
+Keeping these fields allows ``__open`` and ``__close`` to remain inverse for
+all values of the extension types. If fields absent from the current type were
+discarded, a validity condition would be needed to fix their values to dummy
+values before stating those inverse properties. The chosen model avoids that
+condition by retaining the extra unknown values. This changes little in the
+abstraction, since it already contains an unknown remaining extension field.
+
 The extension module of non-root tagged types also contains axioms defining the
 hide__ext__ and extract__ext__ functions of the type. Here are those defined
 for Child:
@@ -1785,7 +1861,7 @@ for Child:
     forall g : Standard__integer.integer.
       forall ext : P__child.__ext_type.
         let open_ext = __open ext in
-          P__root__rep__Compl.__open (P__child__rep.hide_ext__ g ext)
+          P__root___rep__compl.__open (P__child.hide_ext__ g ext)
            = { rec__p__child__g__ext__       = g;
                rec__p__grand_child__h__ext__ =
 	            open_ext.rec__p__grand_child__h__ext__;
@@ -1793,13 +1869,13 @@ for Child:
 
   axiom extract__ext__def:
     forall ext : P__root.__ext_type.
-      let open_ext = P__root__rep__Compl.__open ext in
+      let open_ext = P__root___rep__compl.__open ext in
         __open (P__child.extract__ext__ ext)
          = { rec__p__grand_child__h__ext__ =
-	          open_ext.rec__main__grand_child__h__ext__;
+	          open_ext.rec__p__grand_child__h__ext__;
              rec__hidden_ext__             = open_ext.rec__hidden_ext__ }
 
-Equality on specific tagged type only compares fields that are visible
+Equality on a specific tagged type only compares fields that are visible
 in the current view of the objects. So the equality between view
 conversions to Root of two objects of type Child will still compare
 only the F component:
@@ -1834,8 +1910,11 @@ are finalized. In this case, it is necessary to generate WhyMl code to
 track whether a value of this type has been moved to another object
 before the finalization. This is done by declaring a ``__move_tree`` type
 and a ``__is_moved_or_reclaimed`` predicate like for
-:ref:`Access-To-Object Types`. For example, let us consider the
-following package:
+:ref:`Access-To-Object Types`. The private representation cannot expose the
+owned parts, so the reclamation condition comes from the user-supplied
+``Is_Reclaimed`` function. The move flag is stored separately from the value
+and is used to exclude moved objects from leak checks. For example, consider
+the following package:
 
 .. code-block:: ada
 
@@ -1868,96 +1947,49 @@ checking for leaks when an object of this type is finalized:
 
   end
 
-Record Attributes and Component Attributes
-""""""""""""""""""""""""""""""""""""""""""
-
-type.tag
-
 Special Cases
 """""""""""""
 
 As record types in Why must contain at least one field, untagged null
-records are translated specifically by Gnat2why as an abstract type.
+records are translated as an abstract type.
 To allow conversions between types of a hierarchy of null records, the
 abstract type introduced for the root of the hierarchy is reused by
 descendants. Therefore, conversion functions on null record types are
-always the identity. As for the predefined equality function, it is
-the True function since there is only one object of a null record
-type.
-
-As an example, let us consider an untagged null record type:
-
-.. code-block:: ada
-
-    type Null_Rec is null record;
-
-Here are the Why declarations introduced for it:
-
-.. code-block:: whyml
-
-    type null_rec
-
-    function to_base (a : null_rec) : null_rec = a
-
-    function of_base (r : null_rec) : null_rec = r
-
-    function bool_eq (a : null_rec) (b : null_rec) : bool = True
-
-On derived null record types:
-
-.. code-block:: ada
-
-    type Null_Rec_2 is new Null_Rec;
-
-The type of the root is reused:
-
-.. code-block:: whyml
-
-    type null_rec_2 = P__null_rec.null_rec
+always the identity. Predefined equality returns ``True`` because an Ada null
+record has no components to distinguish its values.
 
 Simple private types are untagged private types with no discriminants
 whose full view is not in SPARK:
 
-.. code-block:: whyml
+.. code-block:: ada
 
-      package P is
+      package P with SPARK_Mode is
 	 type Priv is private;
       private
 	 pragma SPARK_Mode (Off);
 	 type Priv is new Integer;
       end P;
 
-As such types are used by advanced users to model mathematical types
-(unbounded integers, reals…), we keep their translation as simple as
-possible to facilitate the task of mapping them to interpreted types
-inside proof assistants. Unlike for null record types, we introduce a
-representative theory for them, but a minimalist one, where the
-representative type is left abstract and predefined equality is
-undefined:
+Such types can model mathematical types (unbounded integers, reals...). Keeping
+their representation free of a record wrapper makes it easier to map them to
+interpreted types, both in proof assistants and in GNATprove's hardcoded models.
+Unlike for null record types, we introduce a representative theory for them,
+but a minimalist one, where the representative type is normally left abstract.
+Predefined equality uses logical equality
+when the full view permits it, and remains uninterpreted otherwise. For the
+integer completion above, it is:
 
 .. code-block:: whyml
 
      type __rep
 
-     function to_base (a : __rep) : __rep =  a
+     function bool_eq (a : __rep) (b : __rep) : bool = a = b
 
-     function of_base (a : __rep) : __rep = a
-
-     function bool_eq (a : __rep) (b : __rep) : bool
-
-For record types which are clones of other types, mostly classwide
-types and cloned subtypes (see Why.Gen.Records.Record_Type_Is_Clone),
-no new representative module is introduced and the specific module is
-simply a clone of the existing cloned type:
-
-.. code-block:: whyml
-
-    module Types__TrootC
-     use export Types__root
-    end
-
-Additionally, if the cloned type has a different name from the new
-type, a renaming is introduced for the record type.
+Classwide types reuse the representation of their specific type. The same
+fields and tag can describe values from the whole hierarchy; operations use
+the tag to select classwide behavior, as discussed under Tagged types.
+Other representation-reuse cases are documented with ``Record_Type_Is_Clone``
+in :file:`src/why/why-gen-records.ads`.
 
 Access-To-Object Types
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -4038,7 +4070,7 @@ recursive functions (see Flow_Generated_Globals.Pase_2.Is_Recursive).
 Indeed, these contracts could be unsound in cases where the function
 does not return, and could be used to prove themselves in recursive
 functions. For definition of expression functions, we are less
-restrictive. Indeed, an axiom of the form f x … = expr cannot be
+restrictive. Indeed, an axiom of the form f x ... = expr cannot be
 unsound unless expr depends (directly or through other axioms) on f x.
 To prevent this case, it is enough to avoid generating axioms for
 expression function bodies of functions which are both potentially

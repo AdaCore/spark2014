@@ -54,49 +54,8 @@ with Why.Inter;                   use Why.Inter;
 
 package body Why.Gen.Records is
 
-   --  For all Ada record types, we define a Why3 record type which contains
-   --  all components of the Ada type, including discriminants, and including
-   --  components in variant parts. We represent an Ada record as a Why3 record
-   --  containing a record for discriminants, a record for other fields, and a
-   --  boolean field for the 'Constrained attribute if needed. For tagged
-   --  types, it also includes a field for the tag and one for the extension
-   --  part representing components of derived types not visible in the current
-   --  static type.
-
-   --  For all such components, we then declare access program functions, where
-   --  the precondition represents the discriminant check, and the
-   --  postcondition states that the value of this function is just the value
-   --  of the record component.
-
-   --  The precondition for such access discriminant checks is actually
-   --  separated out in a separate predicate. This predicate is generated
-   --  for all types and subtypes. The declarations may be as follows:
-
-   --    predicate y__check__pred (a : t) = a.x = 1
-   --  ( to check that discriminant "x" is set to 1, and this is the check
-   --  predicate for record field "y")
-
-   --  Then we directly refer to that predicate in the program function:
-
-   --    val rec__y_ (a : t)
-   --    requires { y__check__pred (a) }
-
-   --  For all record types which are not root types, we also define conversion
-   --  functions to the root type (in logic space) and from the root type (in
-   --  logic and program space).
-
-   --  For all record types which are not root types, we define a check
-   --  function, which checks whether its argument is in the current
-   --  (sub-)type. This check function must be defined over the root type,
-   --  otherwise it is not expressible or trivially true. This function is
-   --  similar to the range_check functions in scalar/array types. In many
-   --  cases, the subtype constraints are dynamic, so we cannot refer to them
-   --  directly here. Instead, we take them as additional arguments:
-
-   --  val range_check_ (x : base) (d1 : type_of_discr_1)
-   --                              (d2 : type_of_discr_d2)
-   --  requires { d1 = constr_of_first_discr /\ d2 = constr_of_second_discr }
-   --  ensures  { result = x }
+   --  The representative layout and sharing conventions are described in the
+   --  package specification.
 
    function Concrete_Extension_Type
      (Ty : Entity_Id; Local : Boolean := True) return W_Type_Id;
@@ -128,6 +87,17 @@ package body Why.Gen.Records is
    --  For each record field, declare an access program function, whose
    --  result is the same as the record field access, but there is a
    --  precondition (when needed).
+   --  The discriminant check is expressed by a separate predicate on the value
+   --  of the top-level field for discriminants. For an Integer component Y
+   --  present when the Integer discriminant X is 1, the declarations have the
+   --  following form, using shortened field names:
+   --
+   --    predicate y__check__pred (d : __split_discrs) =
+   --      Standard__integer___rep.to_rep d.x = 1
+   --
+   --    val rec__y_ (a : __rep) : Standard__integer.integer
+   --      requires { y__check__pred a.__split_discrs }
+   --      ensures  { result = a.__split_fields.y }
 
    procedure Declare_Record_Type
      (Th           : Theory_UC;
@@ -141,13 +111,28 @@ package body Why.Gen.Records is
    procedure Declare_Rep_Record_Type (Th : Theory_UC; E : Entity_Id);
    --  Emit all necessary Why3 declarations to support Ada records. This also
    --  supports variant records, private types and concurrent types.
-   --  @param P the Why section to insert the declaration
+   --  @param Th the theory in which to insert the declarations
    --  @param E the type entity to translate
 
    procedure Declare_Conversion_Check_Function
      (Th : Theory_UC; Root : Entity_Id);
-   --  generate the program function which is used to insert subtype
-   --  discriminant checks
+   --  Generate the predicate and program operation for subtype discriminant
+   --  checks. They compare the discriminants stored in the root's top-level
+   --  field, shared by the hierarchy, with expected values. As with scalar and
+   --  array range checks, the expected constraints may be dynamic, so they are
+   --  passed as arguments at each use.
+   --  For two Integer discriminants, the declarations have the following form,
+   --  using shortened field names:
+   --
+   --    predicate in_range (d1 : int) (d2 : int) (a : __split_discrs) =
+   --      d1 = Standard__integer___rep.to_rep a.x /\
+   --      d2 = Standard__integer___rep.to_rep a.y
+   --
+   --    val range_check_ (d1 : int) (d2 : int) (a : __split_discrs) : unit
+   --      requires { in_range d1 d2 a }
+   --
+   --  This operation only checks the discriminants; the representation
+   --  conversion is performed separately.
 
    procedure Declare_Attributes (Th : Theory_UC; E : Entity_Id);
    --  Declare functions for the record attributes
@@ -1175,7 +1160,9 @@ package body Why.Gen.Records is
          Index     : Natural := 0;
 
       begin
-         --  Add a field for each extension of Root not visible in E
+         --  Add a field for each component of a visible extension of Root
+         --  which is not present in E. Retain components of sibling branches
+         --  too, so __open and __close remain inverse without validity guards.
 
          for Field of Ext_Comps loop
             if E = Root or else No (Search_Component_In_Type (E, Field)) then
@@ -2142,6 +2129,10 @@ package body Why.Gen.Records is
       --  . for the extension component rec__ext__ when converting to the
       --    root type, call hide_extension on all the extension fields in
       --    the source value.
+
+      --  These conversion functions are not inverses of each other outside
+      --  the current type's constraints: component conversions can lose
+      --  information. No unconditional inverse axiom is emitted.
 
       --  Step 1. Convert the __split_discrs field for discriminants
 
@@ -3335,25 +3326,29 @@ package body Why.Gen.Records is
       --  field of the root type based on the extension components and special
       --  extension field rec__ext__ of the current type.
       --
-      --  Note that we currently do not generate the axioms stating that
-      --  extraction and hiding are inverse functions, in the sense that:
+      --  The defining axioms are supplied separately by
+      --  Create_Rep_Record_Completion_If_Needed. They describe the functions
+      --  through a concrete view of the abstract extension type.
+      --  For a type with two extension components requiring no component
+      --  conversion, the definitions and the inverse __open and __close
+      --  functions give the following properties, using shortened names:
       --
-      --    root.rec_ext__ = hide_ext__ (extract__comp1 root.rec_ext__,
-      --                                 extract__comp2 root.rec_ext__,
-      --                                 ...
-      --                                 extract__ext__ root.rec_ext__)
+      --    hide_ext__ (extract__comp1 ext) (extract__comp2 ext)
+      --               (extract__ext__ ext) = ext
       --
-      --  and for every extension component <comp> or the special extension
-      --  component rec_ext__:
+      --  Conversely, for the extension components:
       --
-      --    cur.comp = extract__comp (hide_ext__ (..., cur.comp, ...))
+      --    extract__comp1 (hide_ext__ comp1 comp2 rest) = comp1
+      --    extract__comp2 (hide_ext__ comp1 comp2 rest) = comp2
       --
-      --  Previously, we generated axioms in Declare_Conversion_Functions that
-      --  stated that converting back and forth between the current type and
-      --  its root type is the identity in both directions. The axiom going
-      --  from root to derived to root was incorrect in the case that the
-      --  derived type had a constrained discriminant. These axioms are no
-      --  longer generated.
+      --  For the remaining extension:
+      --
+      --    extract__ext__ (hide_ext__ comp1 comp2 rest) = rest
+      --
+      --  When component conversions are needed, these properties depend on
+      --  those conversions preserving the values. They do not justify an
+      --  unconditional axiom stating that whole record conversions are
+      --  inverses; see Declare_Conversion_Functions.
 
       ---------------------
       -- Local Variables --
