@@ -1453,8 +1453,9 @@ package body Gnat2Why.Types is
 
       procedure Generate_Ref_Type
         (Th : Theory_UC; E : Entity_Id; Relaxed_Init : Boolean);
-      --  Generate a record type containing only one mutable field of type t.
-      --  This is used to store mutable variables of type t.
+      --  Generate a reference type for E in Th, with one mutable field holding
+      --  its Why3 value. Use the initialization wrapper when Relaxed_Init is
+      --  True.
 
       procedure Translate_Underlying_Type (Th : Theory_UC; E : Entity_Id);
       --  Translate a non-private type entity E
@@ -1780,12 +1781,10 @@ package body Gnat2Why.Types is
 
          Declare_Init_Wrapper (Th, E);
 
-         --  We declare a reference type for the init wrapper as well as move
-         --  functions. For record types, the init wrapper module might have
-         --  been cloned if E has a parent with the same fields. In this case,
-         --  we should not regenerate the move predicates. It is still
-         --  necessary to regenerate the reference type if the types have
-         --  different names, as it is named after the type.
+         --  Declare a reference type for the init wrapper. For record types,
+         --  the wrapper module may be cloned from a parent with the same
+         --  fields. Reuse its reference type when the types have the same
+         --  name. Otherwise, declare a reference type named after E's wrapper.
 
          if not Is_Record_Type_In_Why (Retysp (E))
            or else Oldest_Parent_With_Same_Fields (Retysp (E)) = Retysp (E)

@@ -14,143 +14,183 @@ Translation to Why3
 Content of the Why3 files
 *************************
 
-This section should describe what is generated in the Why3 files and
-why, and also give pointers to specific part of the gnat2why code to
-facilitate investigation of issues in these generated files. Here we
-do not explain what is generated for the purpose of counterexample
-generation only.
+This section describes the generated Why3 declarations and the modeling
+decisions behind them. Counterexample-specific metadata is described in
+:doc:`counterexamples`.
 
 Modules for Entities
 ====================
 
-What is translated: all visible entities that are spark-compatible (+
-fake entities for invisible / non-spark globals), both library-level
-and scoped, from the current and withed units.
+The generated modules describe the types, objects, and subprograms needed for
+verification of the current unit. This includes entities from dependency units
+and nested scopes, not just the entities selected for verification. A callee's
+declaration and contracts, for example, contribute to a caller's proof context
+even when the callee's body is not being verified in this invocation.
 
-Visibility: Precision is maximal, based on current unit and spec of
-withed units only, both private and public declarations, stopping at
-SPARK boundaries. Example: private types, deferred constants, private
-expression functions, abstract states...
+Proof does not follow Ada's privacy rules when choosing a model for a type. By
+default, it uses the most precise view available in SPARK, including private
+completions in the specifications of dependency units. The full view serves as
+a default model for the type: without it, proofs would be much less precise and
+users would have to supply their own models. The same visibility allows proof
+to use completions of deferred constants and private expression functions.
+Selection of a type's SPARK view is handled by ``Retysp`` in
+:file:`src/spark/spark_util-types.adb`.
+
+For example, consider this package:
 
 .. code-block:: ada
 
-     package P1 with SPARK_Mode is
-       type T1 is tagged private;
-       C1 : constant T1;
-       function Get_F (X : T1) return Integer;
-     private
-       type T1 is tagged record
-	 F : Integer;
-       end record;
-       C1 : constant T1 := (F => 1);
-       function Get_F (X : T1) return Integer is (X.F);
-     end P1;
+   package P with SPARK_Mode is
+      type T is private;
+      C : constant T;
+      function Get (X : T) return Integer;
+   private
+      type T is record
+         F : Integer;
+      end record;
+      C : constant T := (F => 1);
+      function Get (X : T) return Integer is (X.F);
+   end P;
 
-     with P1; use P1;
-     package P2 with SPARK_Mode is
-       type T2 is new T1 with private;
-       C2 : constant T2;
-       function Get_G (X : T1) return Integer;
+A client cannot name ``F`` in Ada, but its proof context contains the record
+model, the value of ``C``, and the definition of ``Get``. It can therefore prove
+``P.Get (P.C) = 1`` without a user-written model or postcondition.
 
-     private
-       pragma SPARK_Mode (Off);
-       type T2 is new T1 with record
-	 G : Integer;
-       end record;
-       C2 : constant T2 := (F => 1, G => 2);
-       function Get_G (X : T1) return Integer is (X.G);
-     end P2;
+The placement of expression function bodies gives users control over what is
+available to proofs outside the package. A definition in the private part is
+available to client proofs even though Ada clients cannot see it. Moving the
+definition to the package body hides it from those proofs, while leaving the
+declaration and any visible contract available. In this example, moving the
+completion of ``Get`` to the package body would hide its definition without
+hiding the record model for ``T`` or the value of ``C``.
 
-     with P2; use P2;
-     package P3 with SPARK_Mode is
-       X : T2;
-     end record;
+The default visibility can be restricted by ``Hide_Info`` annotations. A
+``SPARK_Mode (Off)`` boundary also prevents use of the hidden implementation:
+placing that pragma immediately after ``private`` in this example leaves the
+client with an abstract view of ``T`` and no definition of ``C`` or ``Get``.
+The equality then cannot be deduced from the remaining declarations alone.
 
-When analyzing P3, proof knows that X has a component called F and
-that it can be retrieved using Get_F. It also knows that Get_F (C1)
-is 1. On the other hand, it does not know anything about G, not even
-that there is a new component in T2. It does not know the value of C2
-or the meaning of Get_G either, so it cannot prove that Get_G (C2)
-is 2.
+Global effects must still be represented when their objects are opaque to proof,
+for example an abstract state or an object outside SPARK. Such objects receive
+abstract declarations recording their identity and effects without exposing an
+internal structure; see :ref:`Effect-Only Objects`.
+
+Generating these contextual declarations is separate from generating
+verification conditions. When proving a client of ``P``, GNATprove includes the
+model of ``P.T`` and declarations for ``P.C`` and ``P.Get`` in the client's proof
+context. Including them does not mean that ``P.Get``'s body is verified during
+that analysis: independent checks are generated for selected entities in the
+analyzed unit. Local subprograms analyzed only in their calling contexts need
+not have an independent verification module. Marking collects the entities used
+by translation;
+``Translate_CUnit`` in :file:`src/why/gnat2why-driver.adb` separates declaration,
+completion, and check generation.
 
 Types
 -----
 
-There are two modules (at least) for every visible type entity, one
-for declarations, one for type completion (predicates, invariants,
-default initialization…). This is necessary to avoid circularity
-issues (predicates and invariants may refer to functions defined after
-the type in the Ada unit, type bounds and default initialization may
-depend on variables which are always translated after types in Why
-units [NB. this is because of loops, where constants depending on the
-loop index are translated as variables. Indeed, type bounds and
-default values are not usually allowed to depend on variables]).
+A type can give rise to several modules, depending on its representation and
+the features it uses. These modules introduce types and symbols, supply
+completion axioms, or isolate features such as invariants, equality, and default
+initialization. Additional modules may describe initialization wrappers,
+validity, or reclamation tracking. There is no fixed set of modules generated
+for every type, and some representations are shared between types.
+
+Separating declarations from their completions allows symbols to be introduced
+before definitions that depend on them. For example, a type predicate or
+invariant may call a function declared after the type. Separate modules also
+allow definitions to be excluded from verification contexts where using them
+would introduce circular reasoning, as discussed under Type Completion.
+
+The ``Module_Kind`` enumeration and ``E_Module`` in
+:file:`src/why/why-atree-modules.ads` identify the roles of entity modules. The
+enumeration also includes modules for other entities; the checks in
+``E_Module``'s body describe which kinds apply to which entities. The following
+sections explain the design reasons for the type-related modules.
 
 Common Features
 ^^^^^^^^^^^^^^^
 
-Some elements are declared in all types. They are listed here and are
-not repeated in the following sections.
+The following sections describe common mechanisms used in type translation.
 
 References and Havoc
 """"""""""""""""""""
 
-Why is an ML-like language. In particular, declared variables are
-usually constant and cannot be modified. Why provides a way to define
-mutable variable using a polymorphic reference type named ref.
-However, to avoid introducing polymorphism which can be harmful to
-some background solvers, we do not use this type in gnat2why. Instead,
-for each type that we declare, we introduce a monomorphic reference
-type as a record with a single mutable field. Here is what this
-declaration would look like for a given type t:
+Why3 values are generally immutable. Why3 also supports mutable structures,
+such as records with mutable fields, but mutable values cannot be stored in
+logic types such as maps. Using mutable structures directly would therefore
+make it difficult to combine the encodings of Ada types, for example an array
+of records.
+
+The translation instead keeps data immutable and stores mutable state in
+references to that data. Instead of using Why3's polymorphic ``ref`` type, it
+generates monomorphic record types with a single mutable field. Most target
+solvers do not support polymorphism. Monomorphizing a polymorphic representation
+introduces additional overhead in the proof context that can severely degrade
+prover performance; generating monomorphic references directly avoids that
+overhead.
+
+For a value type ``t``, the reference has the following form:
 
 .. code-block:: whyml
 
     type t__ref = { mutable t__content : t }
 
-To allow compatibility between references, it is therefore important
-to only have one such reference type for each type. As a result, when
-types are only clones of existing types (see static array types or
-classwide types for instance), we do not redefine the reference type
-for them, and rather use the existing reference type (see
-``Gnat2why.Types.Translate_Types`` to see when the reference type is not
-emitted).
-
-NB: Because of this, we need to not rename types which are clones of
-existing types to avoid breaking the naming correspondence between the
-type contained in the reference and its content field. This is why no
-new type alias is generated for static array types and the Why3 map
-type is used directly instead (see Why.Inter.New_Kind_Base_Type which
-is called by Why.Inter.Type_Of_Node).
-
-In addition to the monomorphic reference type, a specific havoc
-function is declared for each type. It is a program function which
-modifies the content of a reference in an unknown way. Here is what it
-looks like for a given type t:
+Updating a record field constructs a new immutable record value and assigns
+the whole value to the reference. The other fields keep their previous values.
+Why3's record update syntax expresses this directly. If ``t`` is a record type
+with a field ``f``, updating that field to ``v`` takes the following form:
 
 .. code-block:: whyml
 
-    val t__havoc (x : t__ref) : unit
-    writes {x}
+    x.t__content <- { x.t__content with f = v }
 
-A havoc function is introduced every time a new reference type is
-declared. It is called to havoc an object when we know it can have been
-modified in an unknown way since the last time it was read. In
-particular, volatile objects with asynchronous writers are havoced
-every time they are read.
+An Ada object may be split into several parts, each represented separately;
+see :ref:`Objects`. The same update principle applies to each mutable part.
+
+Havoc models an update whose new value is unknown. It uses an ``any`` expression:
+
+.. code-block:: whyml
+
+    any unit writes {x}
+
+The ``writes`` clause allows
+the contents of ``x`` to change, while the absence of a postcondition leaves
+the new value unconstrained apart from its Why3 type.
+
+This operation is used before passing an ``out`` parameter with relaxed
+initialization. The parameter must be allowed to be uninitialized on entry to
+the callee, even if the actual parameter is initialized before the call.
+Havoc forgets the previous contents and initialization information in the
+reference used for the parameter. It does not assume the dynamic invariant of
+the parameter.
+
+Reference declarations can be reused when type encodings reuse an existing
+representation. The declaration helpers and naming conventions are documented
+in :file:`src/why/why-gen-decl.ads`; the rules for generating or reusing these
+declarations are in ``Generate_Ref_Type`` in
+:file:`src/why/gnat2why-types.adb`.
 
 Predefined / primitive equality
 """""""""""""""""""""""""""""""
 
-For every Ada type, we also introduce an equality function for the predefined
-equality named ``bool_eq``. A notable exception, predefined equality is not
-used on scalar types. Instead, equality on such types is directly
-translated as the Why built-in equality on the types representative
-types (see section about scalar types).
+For non-scalar Ada types, we introduce an equality function named ``bool_eq``
+for predefined equality. Equality on scalar types is handled separately;
+see :ref:`Scalar Types`.
 
-For types which ultimately are record types, we also define a function named
-``user_eq`` for the primitive equality. It is only used when primitive equality
-is redefined for the type (see ``Why.Gen.Expr.New_Ada_Equality``).
+Predefined equality of composite types uses primitive equality to compare
+components of record or inherently limited types. Primitive equality is the
+predefined equality unless the user has supplied a replacement. When there is
+a replacement, we declare a separate function named ``user_eq`` for it.
+The enclosing composite type's ``bool_eq`` then uses the component type's
+``user_eq`` rather than its ``bool_eq``
+(see ``Why.Gen.Expr.New_Ada_Equality``). Keeping these functions separate
+preserves the distinction between predefined and primitive equality.
+
+Ada equality cannot in general be replaced by Why3's built-in equality.
+For example, predefined record equality uses the appropriate Ada equality
+for each component, which may itself be user-defined. The two records can
+therefore compare equal without having identical Why3 values.
 
 When it is declared, the boolean equality ``bool_eq`` is given a
 definition depending on the kind of the type. Here is for example the
@@ -159,16 +199,17 @@ component of type ``Integer``:
 
 .. code-block:: whyml
 
-    function bool_eq (a : t) (y : t) : bool =
-    Standard__integer__rep.to_rep a.__split_fields.rec__t__f =
-    Standard__integer__rep.to_rep b.__split_fields.rec__t__f
+    function bool_eq (a : t) (b : t) : bool =
+      Standard__integer__rep.to_rep a.__split_fields.rec__t__f =
+      Standard__integer__rep.to_rep b.__split_fields.rec__t__f
 
 It simply states that two records are equal when their ``F`` components
 are equal.
 
 As for the user-defined primitive equality, it is declared with no
-definition. The definition will be given during the type completion if
-a primitive equality has been encountered:
+definition. During type completion, an axiom links it to the user-defined
+equality when that equality is available in SPARK. Otherwise it remains
+abstract:
 
 .. code-block:: whyml
 
@@ -177,7 +218,7 @@ a primitive equality has been encountered:
 Dummy values
 """"""""""""
 
-For each type, a constant dummy value is introduced. It is used to
+Type encodings provide a dummy value. It is used to
 give a value to components which are not present in record types due
 to discriminant constraints (see following section about record
 types):
@@ -185,6 +226,16 @@ types):
 .. code-block:: whyml
 
     function dummy : t
+
+Why3 record values contain all fields, including those of inactive variants.
+A dummy value fills these fields without representing an Ada component that
+can be read. Field accesses must check that the component is present, and
+record equality only compares the active components. The choice of dummy value
+must therefore not affect the Ada result.
+
+The same principle applies to the designated-value field of a null access
+value. Dummy values are placeholders in the encoding, not Ada default
+initialization values.
 
 Scalar Types
 ^^^^^^^^^^^^
@@ -197,11 +248,37 @@ These closed forms are only used for objects which are stored inside
 data structures, to avoid the need for complex invariants whenever
 possible.
 
-Primitive equality on scalar types is translated as Why equality on
-the corresponding representative types.
+The two forms are linked by ``to_rep`` and ``of_rep``. The first exposes
+the representative value of a closed value. The second constructs a closed
+value from a representative value. Their axioms guarantee that converting a
+closed value to its representative and back preserves it, and that every
+closed value satisfies the type's range constraint. Converting a representative
+value to the closed form and back preserves it only under the range condition;
+modular conversion also reduces the value modulo the modulus.
+
+These conversions do not replace Ada range checks. The translation must check
+the relevant constraint when an Ada operation requires it. The conversion
+functions and their axioms are kept in a separate module, which is only included
+when the conversions are used. This improves solver performance by keeping the
+proof context smaller when the conversions are not needed.
+
+Predefined equality on scalar types compares values of the corresponding
+representative types.
+
+Except for floating-point types, this comparison uses Why3's built-in logical
+equality. Logical equality means that the two values are the same: one can
+replace the other in any logical expression. This matches predefined equality
+for integers, modular integers, enumerations, and fixed-point types, whose
+representations preserve this notion of equality.
+
+Floating-point equality uses the float model's equality operation instead.
+For example, positive and negative zero compare equal, but they are distinct
+values and their signs can affect later operations. They cannot be freely
+substituted for each other. Using logical equality for this comparison would
+therefore give the proof incorrect assumptions.
 
 We first explain how static non-empty scalar types are translated into
-SPARK, going over each kind of type individually. Dynamic (and
+Why3, going over each kind of type individually. Dynamic (and
 statically empty) types are handled a bit differently, this is
 explained afterwards (see ``Gnat2why.Util.Type_Is_Modeled_As_Base`` for the
 exact check).
@@ -227,10 +304,8 @@ As an example, let us look at the following type:
 
    type Signed_Int is range 1 .. 10;
 
-Here are the axioms and declarations generated in Why for it. We do
-not repeat parts common to every types here, and scalar attributes are
-presented later. Here we inline the clones that are used to factorize
-declarations in Why:
+Here are the relevant axioms and declarations generated in Why3 for it.
+Here we inline the clones that are used to share declarations in Why3:
 
 .. code-block:: whyml
 
@@ -250,7 +325,7 @@ declarations in Why:
 
     module P__signed_int__rep
      use import "int".Int
-     use import Types__stat_ty
+     use import P__signed_int
 
      function to_rep (x : signed_int) : int = signed_int'int x
      function of_rep int : signed_int
@@ -270,29 +345,34 @@ declarations in Why:
 The range, inversion, and coerce axioms enforce that there is exactly
 one element in the closed form of a signed integer type per
 mathematical integer between first and last. These modules are
-generated respectively by Why.Gen.Scalars.Declare_Scalar_Types and
+generated respectively by Why.Gen.Scalars.Declare_Scalar_Type and
 Why.Gen.Scalars.Define_Scalar_Rep_Proj.
 
-NB: to_rep and of_rep functions as well as related axioms are in a
-separate module which is only included when these conversions are
-used. This is to improve solver performances by reducing the context
-when they are not necessary.
+GNAT's ``Unsigned_Base_Range`` extension gives an integer type an unsigned
+base range. Although the frontend represents these types internally as modular
+types, their arithmetic has integer semantics with overflow checks. GNATprove
+models this arithmetic with mathematical integers and checks matching GNAT's
+selected overflow mode; minimized mode uses the range of ``Long_Long_Unsigned``.
 
 Modular Integer Types
 """""""""""""""""""""
 
-Modular integer types are represented in Why as bit-vectors (machine
+Modular integer types are normally represented in Why as bit-vectors (machine
 integers). More precisely, their representative type is the smallest
-bit-vector in which they fit (we only use bit-vectors of size 8, 16,
-32, or 64). Indeed, some backend solvers can handle natively bitwise
-operations such as shift or rotate on bit-vectors whereas there is no
-equivalence on mathematical integers. They also handle wrap-around
+bit-vector in which they fit (we use bit-vectors of size 8, 16,
+32, 64, or 128). Indeed, some backend solvers can handle bitwise
+operations such as shift or rotate directly on bit-vectors.
+They also handle wrap-around
 semantics of operators natively. Solvers can sometimes be more precise
 about non-linear arithmetic on bit-vectors, especially on small
 bit-vectors.
 
+The ``No_Bitwise_Operations`` annotation selects a mathematical-integer
+representation instead. Marking then rejects bitwise operations on the type.
+Modular arithmetic still reduces results modulo the Ada modulus.
+
 Operations on modular types are generally translated as operations on
-bit-vectors, followed by a rounding of the specified modulus when
+bit-vectors, followed by a reduction modulo the specified modulus when
 necessary. However, when the type has a modulus which is not a power
 of two, care must be taken to do the computation in a type big enough
 to avoid wrap-around in the representative type. To this aim,
@@ -364,6 +444,8 @@ some attributes of universal integer types such as array length:
 
      predicate in_range_int (x : int) = (first_int <= x <= last_int)
 
+     function to_int (x : modular_int) : int = BV16.t'int (to_rep x)
+
      axiom range_int_axiom :
 	forall x : modular_int [to_int x]. in_range_int (BV16.t'int (to_rep x))
 
@@ -382,11 +464,12 @@ Floating Point Types
 """"""""""""""""""""
 
 The representative type of an Ada floating point type is a machine
-floating point type of the corresponding size (8, 16, 32, or 64).
+floating point type of the corresponding format (32, 64, or 80 bits).
 Background solvers which support floating point numbers abide by the
-IEEE 754 standard. Operations on floating point numbers in Ada are
-translated using the corresponding built-in operation in solvers, but
-only if the Ada standard is enforcing the IEEE 754 behavior.
+IEEE 754 standard. GNATprove requires the Ada program to use IEEE 754
+floating-point behavior. Operations on floating point numbers in Ada are
+translated using the corresponding built-in operations in solvers under
+this assumption.
 
 Then, like for integer types, a closed form is defined for static
 floating point types which only allows numbers in the specified range.
@@ -431,14 +514,15 @@ Fixed Point Types
 
 A value of fixed point types is translated as an integer, the represented value
 being the product of the small of the fixed point type with this value. To avoid
-confusion, we use an alias of int names __fixed. Except from that, static fixed
+confusion, we use an alias of int named ``__fixed``. Apart from that, static fixed
 point types are translated as static integer types, with a range, conversion
 functions and coerce and range axioms. For example, let us consider the
 following type:
 
 .. code-block:: ada
 
-   type My_Fixed is delta 3.0 / 1000.0 range 0.0 .. 3.0;
+   type My_Fixed is delta 3.0 / 1000.0 range 0.0 .. 3.0
+     with Small => 1.0 / 512.0;
 
 Here are the axioms and declarations generated in Why for it. Like for
 integer types, we only give here the relevant declarations and
@@ -468,25 +552,24 @@ to_rep and of_rep functions are separated in a different module:
    (x : Main.__fixed)  =
   ( (first <= x) /\ (x <= last) )
 
-  function to_rep t : __fixed
+  function to_rep my_fixed : Main.__fixed
 
-  function of_rep __fixed : t
+  function of_rep Main.__fixed : my_fixed
 
   axiom range_axiom :
-    forall x : t. in_range (to_rep x)
+    forall x : my_fixed. in_range (to_rep x)
 
   axiom inversion_axiom :
-    forall x : t [to_rep x].
+    forall x : my_fixed [to_rep x].
       of_rep (to_rep x) = x
 
   axiom coerce_axiom :
-    forall x : __fixed [to_rep (of_rep x)].
+    forall x : Main.__fixed [to_rep (of_rep x)].
       in_range x -> to_rep (of_rep x) = x
 
-Operations on values of a
-fixed point type depend on the value of the small of the type. For every
-possible small, a new module is introduced which defines operations for this
-small. As an example, here is the module introduced for fixed point types of
+Operations on values of a fixed point type depend on the value of the small
+of the type. Types with the same small share a module defining these operations.
+As an example, here is part of the module introduced for fixed point types of
 small 1 / 512 like My_Fixed above:
 
 .. code-block:: whyml
@@ -501,50 +584,35 @@ small 1 / 512 like My_Fixed above:
 
    function fxp_mult_int (x : __fixed) (y : int) : __fixed = x * y
 
-   (* division between a fixed-point value and an integer
-      case 1:
-         If the divident is zero, then the result is zero.
-      case 2:
-         If both arguments are of the same sign, then the mathematical
-         result is either exact, or between exact and exact+1, which are the
-         possible results.
+   function fxp_div_int (x : __fixed) (y : int) : __fixed
 
-         for example:
-              x =  5, y =  3, exact = 1, math = 1.666.., result in { 1, 2 }
-              x = -5, y = -3, exact = 1, math = 1.666.., result in { 1, 2 }
-      case 3:
-         If arguments are of opposite signs, then the mathematical
-         result is either exact, or between exact-1 and exact, which are the
-         possible results.
+   val fxp_div_int_ (x : __fixed) (y : int) : __fixed
+     requires { y <> 0 }
+     ensures { result = fxp_div_int x y }
 
-         for example:
-              x = -5, y =  3, exact = -1, math = -1.666.., result in { -2, -1 }
-              x =  5, y = -3, exact = -1, math = -1.666.., result in { -2, -1 }
-    *)
-
-    function fxp_div_int (x : __fixed) (y : int) : __fixed
-
-    axiom fxp_div_int_def :
-      forall x : __fixed. forall y : int [fxp_div_int x y].
-        if x = 0 then
-          fxp_div_int x y = 0
-        else if x > 0 /\ y > 0 then
-          pos_div_relation (fxp_div_int x y) x y
-        else if x < 0 /\ y < 0 then
-          pos_div_relation (fxp_div_int x y) (-x) (-y)
-        else if x < 0 /\ y > 0 then
-          pos_div_relation (- (fxp_div_int x y)) (-x) y
-        else if x > 0 /\ y < 0 then
-          pos_div_relation (- (fxp_div_int x y)) x (-y)
-        else (* y = 0 *)
-          true
+   axiom fxp_div_int_def :
+     forall x : __fixed, y : int [fxp_div_int x y].
+       if x = 0 then
+         fxp_div_int x y = 0
+       else if x > 0 /\ y > 0 then
+         pos_div_relation (fxp_div_int x y) x y
+       else if x < 0 /\ y < 0 then
+         pos_div_relation (fxp_div_int x y) (-x) (-y)
+       else if x < 0 /\ y > 0 then
+         pos_div_relation (- (fxp_div_int x y)) (-x) y
+       else if x > 0 /\ y < 0 then
+         pos_div_relation (- (fxp_div_int x y)) x (-y)
+       else (* y = 0 *)
+         true
 
   ...
 
   end
 
 Note that, in the Why generated code, the type system is not used to ensure
-that we always use the correct operation for fixed point types.
+that we always use the correct operation for fixed point types. The translator
+must select the module for the correct small. Multiplication and division
+between fixed-point types also depend on the smalls of the arguments and result.
 
 A subtlety of operations on fixed-point types is that multiplication and
 division involving fixed-point arguments are defined in Ada standard over a
@@ -563,6 +631,17 @@ always rounds to nearest with ties resolved in the direction away-from-zero
 (Ada RM 4.6(33)). This is conveyed in predicate
 ``pos_div_relation_round_away``.
 
+For example, dividing a fixed-point value represented by 5 by the integer 3
+can produce a value represented by 1 or 2. With a value represented by -5,
+the possible results are -2 and -1. If the mathematical result is exactly
+representable, the model requires that result. Otherwise, the model allows
+both neighboring values rather than choosing a rounding direction
+that Ada does not require. Division by zero is excluded by a separate check.
+
+The full sign cases and rounding predicates are defined in
+``Fixed_Point_Rep`` and ``Fixed_Point_Shared`` in
+:file:`share/spark/theories/ada__model.mlw`.
+
 Dynamic scalar types
 """"""""""""""""""""
 
@@ -570,9 +649,9 @@ When scalar types have dynamic bounds, or when they are statically
 empty, no new closed type is generated for them. Instead, their closed
 view is set to the closed view of their base type. Otherwise, the
 translation is unchanged, except that first and last bounds can be
-functions instead of constants if their values depend on variables. As
-a result, the range predicate is replaced by a dynamic_property
-predicate, which takes the current value of first and last as
+functions with parameters instead of constants if their values depend on
+variables. As a result, the range predicate is replaced by a
+``dynamic_property`` predicate, which takes the current value of first and last as
 additional parameters.
 
 Additionally, as no new closed type is generated for them, dynamic
@@ -634,19 +713,6 @@ cannot be defined if the closed form happens to be empty. Another
 issue is that, if the first and last bounds of a scalar type depend on
 variables, then the range predicate may change over time, so that the
 range axiom may become unsound.
-
-Scalar Attributes
-"""""""""""""""""
-
-Image and Value, they are not interpreted currently:
-
-.. code-block:: whyml
-
-     function attr__ATTRIBUTE_IMAGE rep_type : __image
-
-     predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
-
-     function attr__ATTRIBUTE_VALUE __image : rep_type
 
 Array Types
 ^^^^^^^^^^^
@@ -2868,13 +2934,10 @@ is the wrapper module introduced for ``Integer``:
     type integer__init_wrapper__ref = {
       mutable integer__init_wrapper__content : integer__init_wrapper
     }
-
-    val integer__init_wrapper__havoc (x: integer__init_wrapper__ref) : unit
-      writes { x }
   end
 
 We see that, in addition to the wrapper type itself and the usual declarations
-for the reference type and havoc function, we also introduce conversion
+for the reference type, we also introduce conversion
 functions to and from the wrapper type. They both assume that initialization has
 been appropriately checked (by proof or by flow) before the conversion.
 

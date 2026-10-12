@@ -81,7 +81,7 @@ package Why.Gen.Decl is
    --  Also emit a counterexample projection from the reference to its field.
    --  For more information about counterexample projections see documentation
    --  of Emit_Record_Declaration.
-   --  @param  Theory the theory where the reference type will be emitted
+   --  @param  Th the theory where the reference type will be emitted
    --  @param  Name name of the type for which we want a reference
 
 end Why.Gen.Decl;

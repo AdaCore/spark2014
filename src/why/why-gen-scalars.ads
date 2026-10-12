@@ -31,9 +31,18 @@ with Types;                use Types;
 with Why.Atree.Modules;    use Why.Atree.Modules;
 
 package Why.Gen.Scalars is
-   --  This package implements the generation of Why modules for scalar types
-   --  ??? Here is the right place for documentation of the translation of
-   --  scalar types, and how this relates to ada__model.mlw
+   --  This package implements the generation of Why modules for scalar types.
+   --  Declare_Scalar_Type declares the closed type or an alias of the base
+   --  type, along with bounds and range checks.
+   --  Define_Scalar_Rep_Proj supplies the to_rep/of_rep conversions and their
+   --  axioms in a separate module. Shared declarations are cloned from
+   --  share/spark/theories/ada__model.mlw.
+   --
+   --  Operations with integers and conversions to/from integers use a module
+   --  shared by fixed-point types with the same Small. Operations involving
+   --  several fixed-point types use modules selected from the Small values of
+   --  the arguments and result. The __fixed alias does not distinguish these
+   --  scales, so callers must select the appropriate operation module.
 
    procedure Create_Fixed_Point_Mult_Div_Theory_If_Needed
      (Typ_Left   : Entity_Id;
