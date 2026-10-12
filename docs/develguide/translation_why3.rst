@@ -717,20 +717,22 @@ range axiom may become unsound.
 Array Types
 ^^^^^^^^^^^
 
-An (n-dimensional) Ada array is translated in Why as an infinite
+An (n-dimensional) Ada array is translated in Why as an
 (n-dimensional) functional map mapping representative values of the
 array index types to closed values of the component type along with
-values for index bounds. As an example, the objects of the following
+values for index bounds. The map is defined over the whole index representation,
+including values outside the array bounds. For example, consider the following
 array type:
 
 .. code-block:: ada
 
+       type Modular_Int is mod 2 ** 16;
        type My_Matrix is array
 	   (Positive range 1 .. 100,
 	    Modular_Int range 1 .. 50) of Natural;
 
-Will be translated as maps from pairs of a mathematical integer and a
-bitvector of size 16 to natural closed form along with 4 static
+Objects of ``My_Matrix`` are translated as maps from pairs of a mathematical
+integer and a bitvector of size 16 to natural closed form along with 4 static
 bounds:
 
 .. code-block:: whyml
@@ -752,20 +754,14 @@ Representative Array Theories
 """""""""""""""""""""""""""""
 
 To avoid polymorphism, specific theories are introduced for each kind
-of functional maps that are used in the program (see
-Why.Gen.Arrays.Create_Rep_Array_Theory_If_Needed). To facilitate
-conversions between array types, the same theory is reused whenever
-possible. More precisely, a specific array theory is introduced per
-n-uplet of n-1 representative index types (either mathematical
-integers or bitvectors of size 8, 16, 32, or 64) and one component
-type. The symbols introduced for these theories are stored in a map to
-be reused for other array types with the same representative index
-types and the same component types (see the M_Arrays map in
-Why.Atree.Modules). To simplify implementation, the maps are indexed
-by names which represent the representative n-uplets. These names are
-created in a unique way by the function
-Why.Gen.Arrays.Get_Array_Theory_Name, and are used to name the Why
-module in which the related declarations are stored.
+of functional map used in the program. To facilitate conversions between
+array types, the same theory is reused whenever possible. A theory is shared
+by arrays with the same representative index types and the same closed
+component type. Each of the n index types is represented by a mathematical
+integer or a bitvector of size 8, 16, 32, 64, or 128. The bounds are not part of
+this choice: arrays with different bounds can use the same map type.
+The sharing and naming conventions are documented in
+:file:`src/why/why-gen-arrays.ads`.
 
 As an example, declarations related to the map type for the My_Matrix
 type presented above are all grouped in a module named
@@ -796,15 +792,11 @@ Array__Int_BV16__Standard__natural:
       ...
     end
 
-Remark that, to simplify the generation of Why, these declarations are
-in fact grouped in an abstract theory named
-"_gnatprove_standard".Array__2 which is then cloned with the
-appropriate index and component types each time such a theory is
-needed. Currently, such abstract theories are only provided up to 4
-dimensions, which means that GNATprove cannot currently handle arrays
-of 5 or more dimensions. We would need to add new abstract theories in
-__gnatprove_standard.mlw to lift this restriction should the need
-arise.
+These declarations come from the abstract theory ``Array__2`` in
+:file:`share/spark/theories/_gnatprove_standard.mlw`, cloned with the
+appropriate index and component types. The shared theories are provided
+for one to four dimensions, which is the current limit supported by
+GNATprove.
 
 Background solvers of GNATprove have theories for one dimensional
 abstract maps (this theory is called theory of arrays). However, we have chosen
@@ -820,14 +812,14 @@ for by the benefits of the encoding. As solvers are improving all the time, it
 may have to be revisited at some point.
 
 As a result of our encoding of arrays, Why3 values for Ada arrays contain
-elements for out-of-bounds indexes. So that Why3 can determine that 2 arrays are
-logically equal if they contain logically equal elements at the same indexes,
-a predicate has_bounds is introduced and maintained over arrays. It is used to
-state that a given infinite map has some specific bounds. Intuitively, it
-enforces that out-of-bounds values are necessarily equal to an unspecified
-value. An extensionality axiom allows Why3 to prove that two arrays with the
-same bounds are logically equal if they agree on the value of elements within
-the bounds:
+elements for out-of-bounds indexes. The predicate ``has_bounds`` is introduced
+and maintained over arrays so that these elements do not prevent proof of
+logical equality. It stands for the property that values outside the given
+bounds are fixed. Intuitively, they contain a dummy value, as for inactive
+record components; the choice of that value does not matter.
+An extensionality axiom allows Why3 to prove that two arrays with the same
+bounds are logically equal if they agree on the value of elements within the
+bounds:
 
 .. code-block:: whyml
 
@@ -848,19 +840,36 @@ The predicate eq_ext here is only used to provide SMT solvers with a trigger
 to apply the extensionality axiom. It is used to translate calls to functions
 annotated with Logical_Equal over arrays.
 
+This allows users to prove logical equality by comparing only elements within
+the array bounds. Once logical equality is established, it gives congruence
+for all logical functions: applying any such function to either array gives
+the same result. Agreement within the bounds would not imply this if the maps
+could still differ outside them.
+
+This choice has a cost. ``has_bounds`` occurs in the dynamic invariant of array
+values and must be maintained by array operations. Slicing can no longer be
+translated as the identity on the map in general. The ``slice`` operation
+preserves elements within the new bounds and produces a map whose values
+outside those bounds are fixed. These costs are a trade-off for being able to
+prove logical equality from the elements that users can access in Ada.
+
+To reduce this cost, ``has_bounds`` is an abstract, uninterpreted predicate.
+Its axioms give bounded extensionality and describe how array operations
+establish or preserve the predicate, without defining the out-of-bounds values
+explicitly. This limits the reasoning about those values required of solvers.
+
 Operators on Maps
 """""""""""""""""
 
 In addition to the usual get and set operations on maps, we also
 introduce more complex operations that are used to model Ada
 operations. The first one is an equality function which checks for
-equivalence of elements using the appropriate equality function for
-Ada (it can be either the translation of the Ada predefined equality
-function on the component type, or the translation of the Ada
-primitive equality if the component type is a record) and which only
-considers elements in a given range.
+equivalence of elements using the appropriate Ada equality for the component
+type (see :ref:`Predefined / primitive equality`). It only considers elements
+within the array bounds and compares corresponding positions, even when the
+lower bounds differ.
 
-Here is the equality predicate introduced for My_Matrix:
+Here is the equality function introduced for My_Matrix:
 
 .. code-block:: whyml
 
@@ -886,20 +895,17 @@ Here is the equality predicate introduced for My_Matrix:
 	       to_rep (get b ((b__first - a__first) + x1)
 			(BV16.add (BV16.sub b__first_2 a__first_2) x2)))))
 
-The predicate first states that the bounds given for each index for a
+The function first states that the bounds given for each dimension of a
 and b represent slices of the same length, and then that elements
-located inside the slices are equal. This predicate is generated
-dynamically for each map type (see
-Why.Gen.Arrays.Declare_Equality_Function).
+at corresponding positions inside the slices are Ada equal. It is generated
+for each map type by ``Declare_Equality_Function`` in
+:file:`src/why/why-gen-arrays.adb`. This differs from logical equality, which
+requires the same bounds and logically equal elements at the same indexes.
 
-Unlike the equality predicate, other operations on maps are declared
-via clones of static modules. The functions slide, concat, and
-singleton (used respectively for array sliding and for concatenation)
-are defined directly in the abstract theories for maps (concat and
-singleton are only defined for 1 dimensional maps as in Ada,
-concatenation is only defined for 1 dimensional arrays). Slide slides
-all elements stored in a map of a given offset in each dimension. The
-offsets are given by the mean of two positions per index, which stand
+Unlike the equality function, other operations on maps are declared
+via clones of static modules. The function slide shifts
+all elements stored in a map by a given offset in each dimension. The
+offsets are given by two positions per dimension, which stand
 for the old and the new value of the first index of the Ada array. As
 an example, here is the slide function defined for My_Matrix:
 
@@ -917,61 +923,25 @@ an example, here is the slide function defined for My_Matrix:
 	    get a (i - (new_first - old_first))
 		  (BV16.sub j (BV16.sub new_first_2 old_first_2))
 
-The effects of the slide function are described through a defining
-axiom. It states that each element of the slided array is equal (not
-Ada equal, but really equal) to the corresponding element in the input
-array.
+This excerpt shows the element-preservation part of the defining axiom.
+Each element of the shifted array is logically equal to the corresponding
+element in the input array. Sliding also preserves ``has_bounds`` with
+appropriately shifted bounds. It models the positional correspondence required
+by Ada assignment and conversion when lower bounds differ.
 
-Singleton returns a map which contains given element at a given index.
-It is under-specified as nothing is said about elements at other
-indexes:
-
-.. code-block:: whyml
-
-      function singleton component_type int : map
-
-      axiom singleton_def :
-       forall v : Standard_natural.
-       forall i : int.
-	 get (singleton v i) i = v
-
-Concat takes six parameters, the two maps and the first and last
-indexes of the relevant portions. Its behaviour is also specifies
-using an axiom. It states that the result of concat is equal to the
-first array when between the first set of bounds and to the second
-array slided so that the first index of the second set of bound
-coincides with the first index following the first array afterward:
-
-.. code-block:: whyml
-
-     function concat map int int map int int : map
-
-     axiom concat_def :
-       forall a b : map.
-       forall a_first a_last b_first b_last : int.
-       forall i : int.
-	 (a_first <= i <= a_last ->
-	     get (concat a a_first a_last b b_first b_last) i = get a i)
-	    /\
-	 (i > a_last ->
-	   get (concat a a_first a_last b b_first b_last) i =
-	   get b (i - a_last + b_first - 1))
-
-Note that the second last bound b_last is supplied but never used
-since we do not stop at the last bound for the second slice. Also note
-that concat is underspecified as we do not know the value of elements
-stored at indexes smaller than a_first.
-
-NB: Since they are defined only for one dimensional array theories,
-symbols for singleton and concat are not stored with other array
-symbols in the M_Arrays map. Instead, they are stored in a specific
-map named M_Arrays_1 which is only populated for one dimensional
-arrays.
+Concatenation is only defined for one-dimensional arrays. Its map operation
+preserves the first operand's elements and shifts the second operand to follow
+them. The result's last bound is supplied separately, so the defining axiom can
+restrict its element equations to the result's range. Separate operations handle
+concatenation with single components. ``singleton`` constructs the map for a
+single element, including when concatenating a component with an empty array.
+The exact definitions are kept in ``Array__1`` in
+:file:`share/spark/theories/_gnatprove_standard.mlw`.
 
 Comparison Operators
 """"""""""""""""""""
 Comparison operators (<, >, <=, and >=) are defined for one-dimensional arrays
-with a scalar component type. These operators are translated in Why through the
+with a discrete component type. These operators are translated in Why through the
 means of a ``compare`` logic function. This function is left uninterpreted, but
 its sign is uniquely defined by 3 axioms:
 
@@ -983,49 +953,14 @@ its sign is uniquely defined by 3 axioms:
  * ``compare_def_gt`` states that ``compare`` returns a positive number if and
    only if the first array is greater than the second.
 
-As an example, here are the axioms used for arrays ranging over a signed integer
-type and containing signed integers:
-
-.. code-block:: whyml
-
-  function compare map int int map int int : int
-
-  axiom compare_def_eq :
-    forall a b : map.
-    forall a_first a_last b_first b_last : int.
-      (compare a a_first a_last b b_first b_last = 0 <->
-          bool_eq a a_first a_last b b_first b_last = True)
-
-  axiom compare_def_lt :
-    forall a b : map.
-    forall a_first a_last b_first b_last : int.
-      (compare a a_first a_last b b_first b_last < 0 <->
-         exists i j : int. i <= a_last /\ j < b_last /\
-             (bool_eq a a_first i b b_first j = True /\
-             (i = a_last \/
-              i < a_last /\ to_rep (get a (i + 1)) < to_rep (get b (j + 1)))))
-
-  axiom compare_def_gt :
-    forall a b : map.
-    forall a_first a_last b_first b_last : int.
-      (compare a a_first a_last b b_first b_last > 0 <->
-         exists i j : int. i <= b_last /\ j < a_last /\
-             (bool_eq a a_first j b b_first i = True /\
-             (i = b_last \/
-	      i < b_last /\ to_rep (get a (j + 1)) > to_rep (get b (i + 1)))))
-
-To avoid polluting the context with unnecessary axioms when ``compare`` is not
-used, these declarations are grouped in a separate module. For example, here is
-the module which would be declared for ``My_Array``:
-
-.. code-block:: whyml
-
-  module Array__Int__Standard__natural_Comp
-
-    function compare map int int map int int : int
-
-    ...
-  end Array__Int__Standard__natural_Comp
+Lexicographic ordering compares corresponding elements after a common equal
+prefix. If one array is a proper prefix of the other, the shorter array is less.
+Only the sign of ``compare`` matters; its magnitude is unspecified.
+To avoid adding unnecessary axioms to the context when ``compare`` is not used,
+these declarations are grouped in a separate module. The shared definitions
+are in ``Array_Comparison_Axiom`` and its specializations in
+:file:`share/spark/theories/ada__model.mlw`; cloning is handled by
+``Declare_Comparison_Symbols`` in :file:`src/why/why-gen-arrays.adb`.
 
 Logical Operators
 """""""""""""""""
@@ -1040,24 +975,21 @@ consider the array type ``Bool_Array`` defined as follows:
 
    type Bool_Array is array (Positive range <>) of Boolean;
 
-Here is the axiom generated for the operator xor on ``Bool_Array``:
+For example, the element equation for xor on ``Bool_Array`` is:
 
 .. code-block:: whyml
 
-  module Array__Int__Bool__Bool_Op
-    use bool.Bool
+  forall a b : map.
+  forall a_first a_last b_first b_last : int.
+  forall i : int.
+    a_first <= i <= a_last ->
+    get (xorb a a_first a_last b b_first b_last) i =
+      Bool.xorb (get a i) (get b (i - a_first + b_first))
 
-    function xorb map int int map int int : map
-
-    axiom xorb_def:
-     forall a b : map.
-     forall a_first a_last b_first b_last : int.
-     forall i : int.
-       a_first <= i <= a_last ->
-       get (xorb a a_first a_last b b_first b_last) i =
-            Bool.xorb (get a i) (get b (i - a_first + b_first))
-
-    ...
+The second operand is indexed by position relative to its lower bound. Length
+checks are generated at the Ada operation; the element equation does not replace
+them. The shared definitions are in the logical-operator modules in
+:file:`share/spark/theories/ada__model.mlw`.
 
 As explained in section Enumerations, subtypes of Boolean types are
 generally translated as boolean in Why. However, it is not the case for subtypes
@@ -1070,27 +1002,18 @@ to introduce conversions. For example, for the following type:
 
    subtype Only_True is Boolean range True .. True;
 
-we generate:
+the corresponding element equation is:
 
 .. code-block:: whyml
 
-   module Array__Int__P__only_true__Bool_Op
-    use bool.Bool
-    use "_gnatprove_standard".Boolean
-
-    function xorb map int int map int int : map
-
-    axiom xorb_def:
-     forall a b : map.
-     forall a_first a_last b_first b_last : int.
-     forall i : int.
-       a_first <= i <= a_last ->
-       get (xorb a a_first a_last b b_first b_last) i =
-            of_rep (Boolean.to_int
-	      (Bool.xorb (Boolean.of_int (to_rep (get a i)))
-	            (Boolean.of_int (to_rep (get b (i - a_first + b_first))))))
-
-    ...
+  forall a b : map.
+  forall a_first a_last b_first b_last : int.
+  forall i : int.
+    a_first <= i <= a_last ->
+    get (xorb a a_first a_last b b_first b_last) i =
+      of_rep (Boolean.to_int
+        (Bool.xorb (Boolean.of_int (to_rep (get a i)))
+          (Boolean.of_int (to_rep (get b (i - a_first + b_first))))))
 
 Note that the equality test is done on the closed form of ``Only_True``, and not
 on its representative type or on ``bool``.
@@ -1117,8 +1040,8 @@ Here are the declarations generated for it:
 
 .. code-block:: whyml
 
-      function first : int := 1
-      function last  : int := 100
+      function first : int = 1
+      function last  : int = 100
 
       type __t = Array__Int__Standard__natural.map
 
@@ -1143,8 +1066,11 @@ containing both the map and the bounds. Bounds themselves are
 represented as pairs of values of the closed form of the base type of
 the index type (indeed, in Ada, bounds of an array object can be
 outside the range of the index type if the array is empty). Here is
-for example the module that is generated for the bounds of objects of
-type My_Array:
+for example the module for the bounds of objects of the following type:
+
+.. code-block:: ada
+
+   type My_Array is array (Positive range <>) of Natural;
 
 .. code-block:: whyml
 
@@ -1208,9 +1134,9 @@ type:
 	I1.dynamic_property range_first range_last f1 l1
 
       function bool_eq (x : __t) (y : __t) : bool =
-	Array__Int__Standard__natural.bool_eq
-	  x.elts (first x.rt) (last x.rt)
-	  y.elts (first y.rt) (last y.rt)
+        Array__Int__Standard__natural.bool_eq
+          x.elts (first x) (last x)
+          y.elts (first y) (last y)
 
 The type __t defined for objects of type My_Array is record holding
 one set of bounds (since the type has one dimension) and an infinite
@@ -1223,8 +1149,9 @@ the predefined equality bool_eq on arrays is defined in terms of the
 bool_eq function defined in the representative map theory.
 
 Note that these declarations are not generated directly by Gnat2why,
-instead they are given in abstract modules Unconstr_Array(_<dim>) in
-the ada_model.mlw file (similar modules names Constr_Array(_<dim>) are
+instead they are given in abstract modules ``Unconstr_Array`` and
+``Unconstr_Array_<dim>`` in :file:`share/spark/theories/ada__model.mlw`
+(similar modules named ``Constr_Array`` and ``Constr_Array_<dim>`` are
 declared for statically constrained array types). These modules are
 then cloned by Gnat2why as appropriate (see
 Declare_Unconstrained/Declare_Constrained declared in Why.Gen.Arrays).
@@ -1233,19 +1160,11 @@ Array Conversions
 """""""""""""""""
 
 Most array conversions can be handled by going to the underlying map
-type and then apply some sliding if necessary. However, Ada also
-allows converting between arrays with different component types, as
-long as the component subtype are statically matching. To handle this
-case, we introduce specific Why modules containing conversion
-functions between distinct map types. Just like representative
-theories, these conversion theories are introduced on the fly,
-whenever a conversion requesting them is encountered (see
-Why.Gen.Arrays.Create_Array_Conversion_Theory_If_Needed). They are
-then stored in a map mapping pairs of representative theory names to
-conversion symbols (see Why.Atree.Modules.M_Arrays_Conversion). The
-appropriate symbol for converting between two array types with
-different component types can then be retrieved using the function
-Get_Array_Conversion_Name from Why.Gen.Arrays.
+type and applying sliding if necessary. However, statically matching component
+subtypes can have different closed forms, so the arrays can use distinct map
+types. Specific Why3 conversion functions then relate those map types.
+They are generated as needed and reused; the conventions are documented in
+:file:`src/why/why-gen-arrays.ads`.
 
 As an example, assume we want to convert between the two following
 types:
@@ -1257,35 +1176,30 @@ types:
    subtype My_Natural is Natural;
    type My_Array_2 is array (Positive range <>) of My_Natural;
 
-Here is the module that will be defined for the conversion from My_Array to My_Array_2:
+The element equation for the conversion from ``My_Array`` to ``My_Array_2`` is:
 
 .. code-block:: whyml
 
-    module Array__Int__Standard__natural__to__Array__Int__my_natural
-
-     function convert (a : Array__Int__Standard__natural.map) :
-					   Array__Int__my_natural.map
-
-     axiom convert__def :
-      (forall a : Array__Int__Standard__natural.map.
-	let b = (convert a) in
-	(forall i  : int.
-	 to_rep (Array__Int__Standard__natural.get a i) =
-	 to_rep (Array__Int__my_natural.get b i)))
-    end
+   forall a : Array__Int__Standard__natural.map.
+     let b = convert a in
+       forall i : int.
+         to_rep (Array__Int__Standard__natural.get a i) =
+         to_rep (Array__Int__my_natural.get b i)
 
 The defining axiom for convert states that both maps contain the same
 elements. Note that here we need to go to the representative type of
 elements to be able to compare them, as their closed types are
-different.
+different. Each ``to_rep`` here is the conversion for its operand's component
+type; module qualifications are omitted.
+The conversion also preserves ``has_bounds``, so logical equality can still be
+proved from the elements within the bounds after conversion. These equations
+describe the representation change; length and subtype checks required by Ada
+are generated at the conversion.
 
-NB: Converting between array types with different representative
-indexes is not supported yet. To support it, we would probably need to
-introduce similar modules with a slightly more complex axiom involving
-conversions between indices.
-
-Array Attributes
-""""""""""""""""
+Converting between array types with different representative index types is not
+supported. In particular, conversions between integer and bitvector indexes,
+or between bitvectors of different sizes, are rejected during marking. Supporting
+them would require conversion functions that also convert the indexes.
 
 Record Types, Private Types, and Concurrent Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -42,98 +42,133 @@ package Why.Gen.Arrays is
    --  This package encapsulates the encoding of Ada arrays into Why.
    --
    --  --------------------
-   --  Modeling Array types
+   --  Modeling Array Types
    --  --------------------
    --
-   --  The operations on array *content* (access, update, sliding)
-   --  are modeled in Why by a simple "map" type that maps indices (a simple
-   --  "int" in the one-dimensional case) to objects of the component type.
-   --  There are only three functions on this type:
+   --  The operations on array content (access, update, sliding)
+   --  are modeled in Why by a "map" type. It maps representative index values
+   --  (an "int" or a bitvector per dimension) to values of the component type.
+   --  Operations on this type include:
    --    - "get" to access the map at a certain index
    --    - "set" to update the map at a certain index
    --    - "slide" to shift the objects of the map
+   --    - "slice" to restrict the map to new bounds
    --
-   --  There is also a predicate to express boolean equality.
+   --  There is also a function to express Ada equality.
    --
-   --  See the file _gnatprove_standard.mlw, the theories Array__N for N =
-   --  1,2,3,... to see this Why model.
+   --  See the theories Array__1 to Array__4 in _gnatprove_standard.mlw for
+   --  this model.
    --
-   --  The Why model of constrained array types consists of this map type,
-   --  along with two constants "first" and "last" that model the bounds of
-   --  this type. See ada__model.mlw, the theories Constr_Array_N for this
-   --  encoding.
+   --  The Why model of statically constrained array types consists of this
+   --  map type, with constants "first" and "last" per dimension for the bounds
+   --  of the type. See Constr_Array and Constr_Array_N in ada__model.mlw for
+   --  this encoding.
    --
-   --  The Why model of unconstrained array types consists of a record with
-   --  two components: the map, and a special "index" object that encodes the
-   --  bounds and their properties. See ada__model.mlw, the theories
-   --  Unconstr_Array_N for this encoding.
+   --  The Why model of unconstrained and dynamically constrained array types
+   --  consists of a record containing the map and an "index" object per
+   --  dimension. Each index object stores bounds in the closed base type of
+   --  the Ada index type. See ada__model.mlw, the theories Unconstr_Array and
+   --  Unconstr_Array_N for this encoding. Dynamically constrained types reuse
+   --  the representation of their base type; see Array_Type_Is_Clone.
+   --
+   --  The abstract predicate has_bounds states that map values outside the
+   --  given bounds are fixed. The well_formed predicate relates has_bounds to
+   --  the bounds of the array representation. It is part of the array's
+   --  dynamic invariant and must be maintained by array operations. For the
+   --  rationale, see "Representative Array Theories" in the "Translation to
+   --  Why3" chapter of the developer guide.
+   --
+   --  ----------------------
+   --  Sharing Array Theories
+   --  ----------------------
+   --
+   --  Representative map theories are shared by arrays with the same
+   --  representative index types and the same closed component type. Their
+   --  bounds do not affect this sharing. Get_Array_Theory_Name constructs the
+   --  module name from these types; M_Arrays in Why.Atree.Modules uses that
+   --  name as its key. The optional __init_wrapper suffix distinguishes the
+   --  map theory for an array's initialization wrapper.
+   --
+   --  M_Arrays_1 stores additional symbols for one-dimensional maps, including
+   --  concatenation and singleton. Comparison and logical-operator symbols
+   --  are stored separately in M_Arrays_1_Comp and M_Arrays_1_Bool_Op.
    --
    --  -------------------------
-   --  Modeling Array operations
+   --  Modeling Array Operations
    --  -------------------------
 
    --  Indexing and Assignment
    --  -----------------------
    --
-   --  Indexing and Assignment are directly expressed using the "get" and
+   --  Indexing and component assignment are expressed using the "get" and
    --  "set" operations on the map type. No shifting of the index takes place,
    --  "A (I)" in Ada directly becomes "get <array object> i" in Why. For
-   --  constrained arrays, nothing else is there to do.
+   --  statically constrained arrays, no map extraction is needed.
    --
-   --  For unconstrained arrays the array object must be converted to the map
-   --  type (by selecting the component) prior to indexing. For assignment,
-   --  the Why record update syntax is used:
+   --  For unconstrained or dynamically constrained arrays, the map must be
+   --  extracted from the array record before indexing. Component assignment
+   --  uses the Why record update syntax:
    --
-   --    { x with elts = update x.elts i v }
+   --    { x with elts = set x.elts i v }
    --
    --  Slicing
    --  -------
    --
-   --  Slicing is in fact an operation on the array bounds, and not the
-   --  content. For constrained arrays, there is nothing to do (the frontend
-   --  generates the appropriate subtypes already) except for runtime checks.
-   --  For unconstrained arrays, the content is selected.
+   --  Slicing preserves elements within the new bounds. The "slice" operation
+   --  establishes has_bounds on the resulting map for these bounds. It is a
+   --  no-op when the input map already has these bounds. New_Slice_Call
+   --  operates on the map; bounds are carried by the surrounding array
+   --  representation. Runtime checks are generated separately.
    --
    --  Sliding
    --  -------
    --
-   --  Sliding happens when converting to a constrained array type. We use the
-   --  "slide" function for that.
+   --  Sliding aligns the source elements with the target bounds, for example
+   --  when converting to a constrained array type. We use the "slide" function
+   --  for that.
    --
    --  Accessing bounds of the type or the object
    --  ------------------------------------------
    --
-   --  For constrained types, the type declaration comes with the appropriate
-   --  constants, and T'First for a constrained array type T, and X'First for
-   --  a constrained array object X is simply translated to this constant.
+   --  For statically constrained types, the type declaration comes with the
+   --  appropriate constants. Both T'First for such a type T and X'First for
+   --  an object X of that type are translated to the same constant.
    --
-   --  For unconstrained array objects, the bounds are stored in the object
-   --  and retrieved with the appropriate selection.
+   --  For unconstrained or dynamically constrained array objects, the bounds
+   --  are stored in the object and retrieved with the appropriate selection.
    --
    --  Equality
    --  --------
    --
-   --  Equality on arrays is simply translated by a call to the generic
-   --  "bool_eq" function, which requires explicit passing of the bounds. See
-   --  "Accessing bounds".
+   --  Predefined equality calls the map's "bool_eq" function with the bounds
+   --  of both operands. See "Accessing bounds of the type or the object".
    --
    --  Conversions
    --  -----------
    --
-   --  A conversion from an unconstrained object to a constrained one
-   --  corresponds to a simple selection of the "elts" field, because the
-   --  bounds for the constrained object are provided as constants. Sliding
-   --  will take place, and possibly a check inserted.
+   --  When the source and target representations share a map type, conversions
+   --  change how the bounds are supplied and apply sliding if needed.
    --
-   --  A conversion between constrained objects is a no-op except for sliding,
-   --  if necessary.
+   --  A conversion from an unconstrained object to a statically constrained
+   --  one selects the "elts" field, because the target bounds are provided as
+   --  constants. Sliding aligns the elements with those bounds if necessary.
+   --  Runtime checks are generated separately.
    --
-   --  A conversion from constrained objects to an unconstrained type requires
-   --  building an unconstrained object, by providing the "elts" field (= the
-   --  constrained object) and the bounds (the constants of the type).
+   --  A conversion between statically constrained objects sharing a map type
+   --  is a no-op except for sliding, if necessary.
+   --
+   --  A conversion from statically constrained objects to an unconstrained
+   --  type requires building an unconstrained object with the map as its
+   --  "elts" field and the bounds from the constants of the source type.
    --
    --  A conversion between unconstrained objects is similar, but the bounds
    --  are retrieved from the object instead of the type.
+   --
+   --  If the map types differ, Create_Array_Conversion_Theory_If_Needed emits
+   --  a conversion function and its defining axiom. M_Arrays_Conversion caches
+   --  these functions by source and target representative theory names.
+   --  Get_Array_Conversion_Name retrieves the cached symbol. Corresponding
+   --  indexes must have the same representative type.
 
    procedure Add_Attr_Arg
      (Domain  : EW_Domain;
@@ -533,18 +568,12 @@ package Why.Gen.Arrays is
    procedure Create_Rep_Array_Theory_If_Needed (E : Entity_Id);
    --  Check if the Array theory of the representation type of E has already
    --  been created. If not create it.
-   --  @param File the current why file
    --  @param E the entity of type array
-   --  @param Register_Only if Register_Only is true, the declaration is not
-   --         emited.
 
    procedure Create_Array_Conversion_Theory_If_Needed
      (From : Entity_Id; To : Entity_Id; Relaxed_Init : Boolean := False);
    --  Check if the conversion theory for converting from From to To has
    --  already been created. If not create it.
-   --  @param File the current file section. Conversion theories are always
-   --     created in WF_Pure, but it may be necessary to save the currently
-   --     opened theory if Current_File = WF_Pure.
    --  @param From the entity of source type of the conversion
    --  @param To the entity of target type of the conversion.
    --  @param Relaxed_Init True to convert partially initialized expressions.
