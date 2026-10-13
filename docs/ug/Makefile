@@ -56,7 +56,7 @@ generate:
 	mkdir examples
 	cp -r ../../testsuite/gnatprove/tests/ug__* examples
 
-setup:	$(GENERATED_RST_FILES) generate
+setup: $(GENERATED_RST_FILES) generate
 	echo "version = '$(VERSION)'" > ../sphinx_support/confvars.py
 	cp ../shared/static/custom.css static
 	cp ../shared/templates/search.html _templates
@@ -65,6 +65,7 @@ clean:
 	-rm -rf $(BUILDDIR)/*
 	gprclean -P table_generator/table_generator
 	rm -f $(GENERATED_RST_FILES)
+	rm -rf examples
 
 
 html: setup
