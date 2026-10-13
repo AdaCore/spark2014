@@ -52,14 +52,14 @@ package Gnat2Why.Expr is
       Initialized   : Boolean;
       Top_Predicate : Boolean;
       Context       : in out W_Prog_Id);
-   --  Add to Context assumption for a declared entity. They include both its
-   --  dynamic invariant and its value if it is a constant whose value contains
-   --  no dereference.
+   --  Add to Context assumptions for a declared entity. They include its
+   --  dynamic invariant, initialization requirements for copying, and its
+   --  value if it is a constant whose value contains no dereference.
    --  @param E Entity of the object that we want to declare
    --  @param Params Transformation parameters to be used
-   --  @param Initialized True iff E is known to be initialized
+   --  @param Initialized True iff E is known to be initialized for copying.
    --  @param Top_Predicate True iff the dynamic invariant should consider
-   --     the toplevel type predicate possibly associated with [Ty].
+   --     the top-level subtype predicate of E's type.
    --  @param Context The Why program to which we want to append the
    --     assumptions.
 
@@ -70,16 +70,18 @@ package Gnat2Why.Expr is
       Valid         : W_Term_Id := Why_Empty;
       Only_Var      : Boolean := True;
       Top_Predicate : Boolean := True) return W_Prog_Id;
+   --  Assume the predicate returned by Compute_Dynamic_Inv_And_Initialization
    --  @param Expr Why3 expression on which to assume the dynamic invariant
    --  @param Ty type of expression [Expr]
    --  @param Valid a term encoding the validity tree of Expr if any
-   --  @param Initialized True iff Expr is known to be initialized
+   --  @param Initialized True iff Expr is known to be initialized for copying
+   --     as a value of Ty.
    --  @param Only_Var True iff the dynamic invariant should only consider
    --     the variable parts of [Expr].
    --  @param Top_Predicate True iff the dynamic invariant should consider
    --     the toplevel type predicate possibly associated with [Ty].
-   --  @result Why3 program assuming the dynamic invariant of type [Ty]
-   --     over [Expr].
+   --  @result Why3 program assuming the dynamic invariant and initialization
+   --     requirements of type [Ty] over [Expr].
 
    function Assume_Dynamic_Invariant_For_Variables
      (Vars             : Node_Sets.Set;
@@ -93,8 +95,8 @@ package Gnat2Why.Expr is
    --     be used to determine whether or not variables are initialized.
    --  @param Exclude_Top_Pred entity of for which we do not want to assume the
    --     top predicate.
-   --  @param Initialized True if all variables sould be considered
-   --     initialized.
+   --  @param Initialized True if all variables should be considered
+   --     initialized for copying.
    --  @result Why3 program assuming the dynamic invariant of variables from
    --     Vars. As well as all variables used in their dynamic invariant.
 
@@ -287,6 +289,8 @@ package Gnat2Why.Expr is
       Ty            : Type_Kind_Id;
       Params        : Transformation_Params := Body_Params;
       Top_Predicate : W_Term_Id := True_Term) return W_Pred_Id;
+   --  Express the applicable subtype predicates of Ty on Expr, including
+   --  initialization required to evaluate them.
    --  @param Expr Why3 term expression on which to express the dynamic
    --     predicate.
    --  @param Ty type with the subtype predicate
@@ -391,11 +395,10 @@ package Gnat2Why.Expr is
       Only_Var       : W_Term_Id := True_Term;
       Top_Predicate  : Boolean := True;
       All_Global_Inv : Boolean := True) return W_Pred_Id;
-   --  Same as Compute_Dynamic_Invariant but also add the initialization if
-   --  Expr is an initialization wrapper type and Initialized is true.
-   --  @param Initialized true term iff Expr is known to be initialized. If
-   --     Expr has an initialization wrapper type, then should only be True if
-   --     Expr is at least partially Initialized.
+   --  Same as Compute_Dynamic_Invariant, but for an initialization wrapper
+   --  also express that Expr is initialized for copying as a value of Ty
+   --  when Initialized is True. This can allow partially initialized
+   --  composites with relaxed initialization.
 
    function Compute_Checks_For_Subcomponent
      (Expr : Node_Id; Index_Map : Ada_Node_To_Why_Id.Map) return W_Prog_Id;
@@ -580,6 +583,9 @@ package Gnat2Why.Expr is
       W_Expr           : W_Expr_Id;
       On_Default_Value : Boolean := False;
       Top_Predicate    : Boolean := True) return W_Prog_Id;
+   --  Generate checks of the applicable subtype predicates of Ty on W_Expr.
+   --  For wrappers, also check initialization required to evaluate them.
+   --
    --  @param Ada_Node node to which the check is attached
    --  @param Ty type whose predicate needs to be checked
    --  @param W_Expr Why3 expression on which to check the predicate
@@ -661,15 +667,20 @@ package Gnat2Why.Expr is
       No_Validity_Check : Boolean := False) return W_Expr_Id;
    --  Compute an expression in Why having the expected type for the given Ada
    --  expression node. The formal "Domain" decides if we return a predicate,
-   --  term or program. If Ref_Allowed is True, then references are allowed,
+   --  term or program. If Params.Ref_Allowed is True, references are allowed,
    --  for example in the context of a program (whether the domain is EW_Prog
-   --  for program text or EW_Pred/EW_Term for contract). If Ref_Allowed is
-   --  False, then references are not allowed, for example in the context of an
+   --  for program text or EW_Pred/EW_Term for contract). If Params.Ref_Allowed
+   --  is False, references are not allowed, for example in the context of an
    --  axiom or a logic function definition. If No_Init_Check is True, the
-   --  expression does not need to be initialized and predicate checks and
-   --  initialization checks for discriminants will not be emitted on
-   --  expressions annotated with Relaxed_Initialization. If No_Validity_Check
-   --  is True, do not emit validity check if expr is potentially invalid.
+   --  selected value need not be initialized: omit its initialization check
+   --  and read-time predicate checks along its component access path. This
+   --  applies to values with relaxed initialization and is used when fetching
+   --  a value for an update or testing its Initialized attribute. Checks
+   --  needed to select that value still apply, including initialization of
+   --  mutable discriminants and pointer state in its prefix. Checked
+   --  conversions control initialization checks through their own parameters.
+   --  If No_Validity_Check is True, omit validity checks for potentially
+   --  invalid expressions.
 
    function Transform_Prog
      (Expr              : N_Subexpr_Id;

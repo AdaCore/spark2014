@@ -106,7 +106,12 @@ package Why.Gen.Binders is
       --  in Why3.
 
       Init : Opt_Id;
-      --  Optional init flag for scalar objects which have Init_By_Proof
+      --  Optional initialization flag for a scalar or access object with
+      --  relaxed initialization. Mk_Item_Of_Entity introduces it for mutable
+      --  variables, out parameters, and loop parameters which need it.
+      --  For scalars, Main keeps its ordinary split type. Transform_Identifier
+      --  checks this flag on reads; the Initialized attribute queries it
+      --  separately.
 
       Is_Moved : Opt_Id;
       --  Optional move tree for objects containing allocated parts

@@ -1194,10 +1194,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                       (Conjuncts =>
                          (1 => Dyn_Types_Inv,
 
-                          --  Compute the dynamic property of Expr, taking into
-                          --  account its initialization if it corresponds to a
-                          --  variable taken as input in the current
-                          --  subprogram.
+                          --  Assume Expr's dynamic invariant and, when its
+                          --  initialization status in this scope permits,
+                          --  that it is initialized for copying.
 
                           2 =>
                             (if Status.Kind = Not_Written
