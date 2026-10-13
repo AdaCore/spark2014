@@ -129,7 +129,11 @@ package Why.Gen.Records is
    procedure Create_Move_Tree_Theory_For_Record (Th : Theory_UC; E : Entity_Id)
    with Pre => Contains_Allocated_Parts (E);
    --  Create a module declaring a type for the move trees for objects
-   --  of type E.
+   --  of type E. Record trees have one field per component needing reclamation
+   --  and no discriminants. The __is_moved_or_reclaimed predicate uses the
+   --  record value to select fields present in the current variant. Private
+   --  parts with ownership annotations use a boolean move flag and the
+   --  user-supplied reclamation function.
 
    procedure Create_Validity_Tree_Theory_For_Record
      (Th : Theory_UC; E : Entity_Id);

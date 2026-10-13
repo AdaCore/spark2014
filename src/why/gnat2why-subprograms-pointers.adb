@@ -85,9 +85,10 @@ package body Gnat2Why.Subprograms.Pointers is
    --  standing for the object designated by every access to the prefix of
    --  Expr. If one already exists, none is created. Regardless, Logic_Id is
    --  set to the appropriate logic constant.
-   --  Expr is used to dispatch the theory and to store it in E_Module, and
-   --  Params is used to store and restore the current theory before the
-   --  translation.
+   --  On the first occurrence, Expr is used to register the declaration and
+   --  completion modules through E_Module. For functions, the completion
+   --  links the profile's __call and pred_call, applied to this value, to the
+   --  function's logic symbol and call guard. It is empty for procedures.
 
    -------------------------------------
    -- Check_LSP_For_Subprogram_Access --
@@ -1320,9 +1321,7 @@ package body Gnat2Why.Subprograms.Pointers is
 
       procedure Check_No_Globals
       with Ghost;
-      --  Ghost procedure which checks that Subp has no global state.
-      --  We use it to ease debugging while flow analysis does not reject
-      --  this case.
+      --  Check that Subp has no global state for the ordinary access model
 
       ----------------------
       -- Check_No_Globals --
@@ -1338,8 +1337,7 @@ package body Gnat2Why.Subprograms.Pointers is
             Writes          => Writes,
             Erase_Constants => False);
          pragma Assert (Writes.Is_Empty and Reads.Is_Empty);
-         --  If we stop here, it means that Subp has some global state,
-         --  which is not supported in SPARK.
+         --  A failure means Subp has globals unsupported by this call model
       end Check_No_Globals;
 
    begin

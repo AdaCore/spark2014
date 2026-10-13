@@ -635,7 +635,6 @@ package body Why.Gen.Pointers is
                  Relaxed_Init => Relaxed_Init,
                  Force_Dummy  => True);
             --  (value   = to_root a.value,
-            --   addr    = a.addr,
             --   is_null = a.is_null)
 
          begin
@@ -699,7 +698,6 @@ package body Why.Gen.Pointers is
                  Relaxed_Init => Relaxed_Init,
                  Force_Dummy  => True);
             --  (value   = to_e r.value,
-            --   addr    = r.addr,
             --   is_null = r.is_null)
 
          begin

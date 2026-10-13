@@ -1993,15 +1993,20 @@ in :file:`src/why/why-gen-records.ads`.
 
 Access-To-Object Types
 ^^^^^^^^^^^^^^^^^^^^^^
-Representative Modules
-""""""""""""""""""""""
-Access types with the same designated type share a single representative type,
-so that it is possible to convert between them. This is necessary even though
-we cannot convert between different pool specific access types. Indeed, we still
-need all (named) access types to be convertible to anonymous access types. This
-representative type is declared inside a representative module. It is introduced
-for the first access to a given type translated, then it is reused for the
-following access types with the same designated type.
+Value-Based Representation
+""""""""""""""""""""""""""
+Access values are modeled by their designated values, without addresses or a
+shared heap. Updating a designated value is a functional update of the access
+value, just like updating a component of a record.
+
+Ownership checking prevents a write from leaving another usable alias with an
+outdated designated value in this model. See :ref:`Ownership Checking` for the
+aliasing restrictions and :ref:`Local Borrows` for the translation of borrowing.
+
+Access types with the same designated type share a representative type to allow
+conversions, including conversions from named to anonymous access types.
+Module selection and sharing conventions are documented in
+:file:`src/why/why-gen-pointers.ads`.
 
 This representative type has two fields. One for the value and a boolean flag
 to register whether the access object is null. As an example, consider an
@@ -2016,8 +2021,15 @@ Here is the representative type introduced for it:
 .. code-block:: whyml
 
    type __rep =
-     { p__ptr__is_null_pointer : bool;
-       p__ptr__pointer_value   : natural }
+     { rec__p__ptr__is_null_pointer : bool;
+       rec__p__ptr__pointer_value   : natural }
+
+An option datatype could omit the designated value for null pointers. However,
+accessing the value would then require a Why3-generated check or pattern
+matching on the null case. As for :ref:`variant records <Representative Type>`,
+the record representation lets GNATprove generate and track the null check
+itself, then translate the value access without an additional check or case
+split. The designated-value field is therefore retained even for null pointers.
 
 Along with the representative type, the representative module contains other
 declarations which are shared between access types. Among them, the null
@@ -2031,6 +2043,7 @@ are these declarations for the ``Ptr`` type defined above:
 
    axiom __null_pointer__def_axiom :
       __null_pointer.rec__p__ptr__is_null_pointer = True
+      /\ __null_pointer.rec__p__ptr__pointer_value = Standard__natural.dummy
 
    val rec__p__ptr__pointer_value_
      (a : __rep) : Standard__natural.natural
@@ -2042,20 +2055,25 @@ are these declarations for the ``Ptr`` type defined above:
    /\ (not a.rec__p__ptr__is_null_pointer ->
           a.rec__p__ptr__pointer_value = b.rec__p__ptr__pointer_value)
 
-Remark that the ``bool_eq`` function is not compatible with the execution
-model of equality on pointers. Indeed, two pointers might not be equal even
-if they designate equal values. The restrictions enforced by the SPARK subset
-ensure that primitive equality of access types is never used in SPARK code
-unless one of the operands is ``null``. The first conjunct of the definition of
-``bool_eq`` would be enough for this case.
+The designated-value field of a null pointer is fixed to a dummy value by the
+dynamic invariant, as for inactive fields of variant records. This ensures that
+all null pointers of this representative type are logically equal.
+
+The ``bool_eq`` function does not model address equality: two pointers might
+designate equal values at different addresses. SPARK permits predefined equality
+on access values only when one operand is statically null. The first conjunct
+of ``bool_eq`` is enough for this case; the comparison of designated values is
+not used to decide the result. For composite types, predefined equality is
+forbidden when it would compare access subcomponents.
 
 Subtype Constraints
 """""""""""""""""""
 Subtypes of access types to unconstrained composite objects can be supplied with
 a composite constraint which applies to the designated values. When generating
-the representative module for such an access subtype, we need to introduce
+the representative module for such an access subtype, we introduce
 conversion functions to and from the base access type, as well as a range check
-function to check membership to the subtype.
+function to check membership in the subtype. A null exclusion is checked
+separately using the ``is_null`` flag.
 
 For example, consider an access type to unconstrained arrays of natural numbers,
 and a subtype of this access type only storing arrays ranging from 1 to 5:
@@ -2065,22 +2083,17 @@ and a subtype of this access type only storing arrays ranging from 1 to 5:
    type Arr_Ptr is access Nat_Array;
    subtype S is Arr_Ptr (1 .. 5);
 
-Here are the conversion functions and range check predicate generated for ``S``:
+Since ``S`` has static bounds, its designated array is represented by a map.
+``to_base`` restores these bounds when converting to ``Arr_Ptr``, and
+``of_base`` extracts the map in the other direction. The range predicate
+checks the required bounds:
 
 .. code-block:: whyml
 
- function to_base (a : __rep) : p__arr_ptr.arr_ptr =
-  { p__arr_ptr.rec__p__arr_ptr__pointer_value = of_array a.rec__p__arr_ptr__pointer_value 1 5;
-    p__arr_ptr.rec__p__ptr__is_null_pointer = a.rec__p__arr_ptr__is_null_pointer }
-
- function of_base (r : p__arr_ptr.arr_ptr) : __rep =
-  { rec__p__arr_ptr__pointer_value = to_array r.p__arr_ptr.rec__p__arr_ptr__pointer_value;
-    rec__p__arr_ptr__is_null_pointer = r.p__arr_ptr.rec__p__ptr__is_null_pointer }
-
- predicate in_range (first : int) (last : int) (r : p__arr_ptr.arr_ptr)  =
-  not r.p__arr_ptr.rec__p__ptr__is_null_pointer ->
-   first r.p__arr_ptr.rec__p__ptr__pointer_value = first
-   /\ last r.p__arr_ptr.rec__p__ptr__pointer_value = last
+   predicate in_range (expected_first expected_last : int) (r : arr_ptr) =
+     not r.rec__p__arr_ptr__is_null_pointer ->
+       first r.rec__p__arr_ptr__pointer_value = expected_first
+       /\ last r.rec__p__arr_ptr__pointer_value = expected_last
 
 We can see that the range predicate for arrays takes the array bounds as
 parameters. This is because the bounds may contain references to constants which
@@ -2091,22 +2104,62 @@ The range predicate is used both for checking that a value is in the expected
 type, when translating conversions, qualifications, and allocators, and to
 translate explicit membership test in the user code.
 
+Recursive Access Types
+""""""""""""""""""""""
+
+An access type can designate an incomplete type whose completion contains
+components of that access type. For example:
+
+.. code-block:: ada
+
+   type Node;
+   type Node_Ptr is access Node;
+   type Node is record
+      Value : Integer;
+      Next : Node_Ptr;
+   end record;
+
+With the value-based representation, the pointer type contains a node value,
+and the node type contains a pointer value. Declaring these as recursive Why3
+datatypes would require declaring all mutually recursive types together.
+This would require changing the current organization, where types are
+declared separately, one per module.
+
+Instead, the representative module for ``Node_Ptr`` uses an abstract type for
+its designated-value field. The representation of ``Node`` can then refer to
+``Node_Ptr`` without a cycle between the type declarations. A separate
+completion module connects the abstract designated-value type to the completed
+node type through ``__open`` and ``__close`` functions. Dereference opens the
+abstract value; updating the designated value closes the new node value.
+The conversion axioms relate these two views without requiring recursive type
+declarations. This completion is generated by ``Declare_Rep_Pointer_Compl`` in
+:file:`src/why/why-gen-pointers.adb`.
+
+Move trees for recursive structures use separate abstract declarations and
+completions for the same reason. The concrete layout is supplied after the
+component types are available, and the abstract reclamation predicate is
+connected to the predicate on the concrete tree. The corresponding APIs are
+documented in :file:`src/why/why-gen-pointers.ads`.
+
 Move Trees
 """"""""""
 
-For objects containing parts which need to be reclaimed (typically of a
-pool-specific access type), it is necessary to generate WhyMl code to track
-whether a value of this type has been moved to another object before the
-finalization. This is done by storing a boolean flag per component which needs
-reclamation in variables and subprogram parameters. These flags are stored in
-a separate structure which mimics the form of the object. It does not duplicate
-information coming from the object (whether a pointer is null, discriminants,
-bounds of arrays). The type ``__move_tree`` for this structure is declared in a
-specific module, see ``Create_Move_Tree_Theory_For_{Array/Record/Access)``.
-This module also defines a predicate ``__is_moved_or_reclaimed`` which takes a
-move tree and an object of the type and returns true if the object does not hold
-memory as per the information stored in the move tree. As an example, consider
-the following data-structure. To know whether ``V`` is entirely reclaimed, we
+Ownership checking prevents invalid uses of moved values, but it does not prove
+that allocated memory is reclaimed. For objects containing parts which need
+reclamation (typically of a pool-specific access type), the translation tracks
+whether responsibility for reclamation has been transferred to another object.
+The source's designated value need not change when it is moved, so nullness
+alone cannot tell whether the source still owns memory.
+
+This is done by storing boolean move flags in variables and subprogram
+parameters. These flags are stored in a separate structure which mimics the
+form of the object. It does not duplicate information coming from the object
+(whether a pointer is null, discriminants, bounds of arrays). The type
+``__move_tree`` and the predicate ``__is_moved_or_reclaimed`` are declared in
+a separate module. The predicate takes a move tree and an object and returns
+true if no part of the object still requires reclamation by its owner.
+As an example, consider the following data structure. To know whether ``V``
+has been moved or reclaimed, we
 need to decide, depending on the value of the discriminant ``L``, whether the
 component ``F`` or all components of ``A`` have been either moved or set to
 null:
@@ -2116,136 +2169,99 @@ null:
    type Int_Acc is access Integer;
    type Int_Acc_Array is array (Positive range <>) of Int_Acc;
    type Rec (L : Natural) is record
+      G : Integer;
       case L is
          when 0 =>
             F : Int_Acc;
          when others =>
             A : Int_Acc_Array (1 .. L);
       end case;
-      G : Integer;
    end record;
 
    V : Rec (...);
 
-
 For this, a type ``__move_tree`` to store the flags and a predicate
 ``__is_moved_or_reclaimed`` are declared for each type used in the structure.
-Here is the module declared for the move trees of subcomponents of type
+Here is the move-tree type and predicate for subcomponents of type
 ``Int_Acc``. The move tree holds a single flag for the pointer itself, and the
 ``__is_moved_or_reclaimed`` predicate returns true if either the object has
 been moved as per the move tree, or it is null, as per the object value:
 
-
 .. code-block:: whyml
 
-  module Test__int_acc___move_tree
+   type __move_tree = { rec__is_moved__ : bool }
 
-    type __move_tree = { rec__is_moved__ : bool }
-
-    predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: int_acc) =
-      tree.rec__is_moved__ = True \/ obj.rec__is_null_pointer = True
-
-  end
+   predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: int_acc) =
+     tree.rec__is_moved__ = True \/ obj.rec__test__int_acc__is_null_pointer = True
 
 For arrays, we need a flag per component. Similarly to theories used for array
-values, we declare a logic type with two functions ``__get`` and ``__set`` to
-represent these values. Note that we do not attempt to represent bounds here,
-the arrays of flag are always total (they map all indices to boolean flags). The
-``__is_moved_or_reclaimed`` predicate gets the bounds either from the type (if
+values, we use a total map from indices to component move trees. It has no
+bounds of its own. The ``__is_moved_or_reclaimed`` predicate gets the bounds
+either from the type (if
 its bounds are static) or from the object and only considers elements which
 are in bounds:
 
-
 .. code-block:: whyml
 
-  module Test__int_acc_array___move_tree
-
-    type __move_tree
-
-    val function __get (tree: __move_tree) (i: int) :
-       Test__int_acc___move_tree.__move_tree
-
-    val __set (tree: __move_tree) (i: int)
-       (comp: Test__int_acc___move_tree.__move_tree) : __move_tree
-      ensures { __get result i = comp /\
-                (forall j : int.  j <> i -> __get result j = __get tree j) }
-
-    predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: int_acc_array) =
-      forall i : int. first obj <= i <= last obj ->
-           Test__int_acc___move_tree.__is_moved_or_reclaimed
-              (__get tree i)
-              (Test__int_acc_array.get obj.elts i)
-  end
+   predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: int_acc_array) =
+     forall i : int. first obj <= i <= last obj ->
+       Test__int_acc___move_tree.__is_moved_or_reclaimed
+         (__get tree i) (Test__int_acc_array.get (to_array obj) i)
 
 Move trees for records are Why3 records with a field per component which needs
 reclamation. Discriminants are not present. The ``__is_moved_or_reclaimed``
 predicate gets them from the value of the object and only considers components
-which are present in the type. Note that ``G`` is not present
+which are present in the current variant. Note that ``G`` is not present
 as it does not need reclamation:
 
 .. code-block:: whyml
 
-  (* The predicates for the presence of components in discriminated records
-     are defined in the representative module for the type. They are recalled
-     here for convenience. *)
+   type __move_tree =
+     { rec__test__rec__f : Test__int_acc___move_tree.__move_tree;
+       rec__test__rec__a : Test__int_acc_array___move_tree.__move_tree }
 
-  module Test__rec___rep
-    ...
+   predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: rec) =
+     (if test__rec__f__pred obj then
+        Test__int_acc___move_tree.__is_moved_or_reclaimed
+          tree.rec__test__rec__f obj.__split_fields.rec__test__rec__f)
+     /\
+     (if test__rec__a__pred obj then
+        Test__int_acc_array___move_tree.__is_moved_or_reclaimed
+          tree.rec__test__rec__a obj.__split_fields.rec__test__rec__a)
 
-    predicate test__rec__f__pred (a: __rep) =
-      to_rep a.__split_discr.rec__l = 0
+The field-presence predicates come from the record representation: ``F`` is
+present when ``L = 0``, and ``A`` when ``L /= 0``.
 
-    predicate test__rec__a__pred (a: __rep) =
-      to_rep a.__split_discr.rec__l <> 0
-  end
+For a pool-specific access type, the move tree contains a flag for the pointer
+itself and, when needed, a subtree for the designated value. General access
+types have no flag for the pointer itself; they reuse the designated value's
+move tree when it contains parts needing reclamation.
 
-  module Test__rec___move_tree
+The move-tree layouts and operations are documented with
+``Create_Move_Tree_Theory_For_Pointer`` in
+:file:`src/why/why-gen-pointers.ads` and the corresponding array and record
+routines in :file:`src/why/why-gen-arrays.ads` and
+:file:`src/why/why-gen-records.ads`.
 
-    type __move_tree =
-      { rec__test__rec__f : Test__int_acc___move_tree.__move_tree;
-        rec__test__rec__a : Test__int_acc_array___move_tree.__move_tree }
+Checks are needed when an owning value is overwritten or leaves its scope.
+``Unchecked_Deallocation`` frees the allocation itself, but still needs a check
+that owned parts inside the designated value have been moved or reclaimed.
 
-    type __move_tree__ref = { mutable __move_tree__content : __move_tree }
-
-    predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: rec) =
-        (if test__rec__f__pred obj then
-             Test__int_acc___move_tree.__is_moved_or_reclaimed
-                 tree.rec__test__rec__f
-                 obj.__split_fields.rec__test__rec__f)
-         /\
-         (if test__rec__a__pred obj then
-             Test__int_acc_array___move_tree.__is_moved_or_reclaimed
-                tree.rec__test__rec__a
-                obj.__split_fields.rec__test__rec__a)
-
-  end
-
-Using these definitions, it is possible to declare a move tree in the module
-for ``V`` as follows:
+To check whether ``V`` has been moved or reclaimed, the predicate is called
+with its current move tree and reconstructed value:
 
 .. code-block:: whyml
 
-  module Test__v
-
-    val v__split_fields : Test__rec.__split_fields__ref
-
-    val function v__split_discrs : Test__rec.__split_discrs
-
-    val v__rec__is_moved__ : Test__rec___move_tree.__move_tree__ref
-
-  end
-
-To check whether ``V`` is reclaimed, the ``__is_moved_or_reclaimed`` is called
-on these objects:
-
-.. code-block:: whyml
-
-  assert
-    { [@GP_Check:2:VC_RESOURCE_LEAK_AT_END_OF_SCOPE:test.adb:13:4]
+   assert {
       Test__rec___move_tree.__is_moved_or_reclaimed
-      Test__v.v__rec__is_moved__.__move_tree__content Test__v.v__rec__is_moved__
+      Test__v.v__rec__is_moved__.__move_tree__content
       { __split_fields = Test__v.v__split_fields.__split_fields__content;
         __split_discrs = Test__v.v__split_discrs } }
+
+These checks are generated by ``Check_No_Memory_Leaks`` in
+:file:`src/why/gnat2why-expr.adb`. They are isolated from the rest of the proof:
+resource-leak checks do not correspond to run-time checks, so justifying one
+must not introduce an assumption that could prove unrelated obligations.
 
 Access-To-Subprogram Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2253,10 +2269,10 @@ Access-To-Subprogram Types
 The Built-in Theory for Subprogram Types
 """"""""""""""""""""""""""""""""""""""""
 
-A module ``Subprogram_Pointer_Rep`` for access_to-subprogram types is defined in
-``_gnatprove_standard.mlw``. It declares an abstract ``__subprogram`` type,
-which can be accessed through ``M_Subprogram_Access.Subprogram_Type``. A type
-``__rep`` for all access-to-subprogram types is then defined as a record with
+A module ``Subprogram_Pointer_Rep`` for access-to-subprogram types is defined in
+:file:`share/spark/theories/_gnatprove_standard.mlw`. It declares an abstract
+``__subprogram`` type. A type ``__rep`` for all access-to-subprogram types is
+then defined as a record with
 two fields, one for the value designated by the access, considered to have type
 ``__subprogram``, and a flag to encode whether the access is ``null`` or not:
 
@@ -2266,17 +2282,22 @@ two fields, one for the value designated by the access, considered to have type
     { __is_null_pointer : bool;
       __pointer_value   : __subprogram }
 
+Ordinary subprogram accesses require a null ``Global`` contract, including
+inferred globals. The shared call model therefore needs no global-state
+parameters. :ref:`Higher Order Specializations` allow function actuals that
+read globals by adding those globals as inputs of the specialized call.
+Types annotated ``Handler`` may designate subprograms with globals, but their
+values cannot be called in SPARK and need no call model.
+
 Representative Theory for Profiles
 """"""""""""""""""""""""""""""""""
 
-A module is generated for every profile of subprograms designated by an access
-type, a profile being an ordered sequence of subtypes for parameters with their
+For callable access types, a module is generated for every designated profile,
+a profile being an ordered sequence of subtypes for parameters with their
 mode, as well as the result type for functions. It is shared between all
-access-to-subprogram types with the same profile. This module is named using the
-following schema (see ``Get_Profile_Theory_Name``)
-``Profile__((In|Out|InOut)__<Formal_Type_Full_Name>__)*Return__<Return_Type_Full_Name>``.
-
-In Gnat2why, its symbols are stored in the ``M_Subprogram_Profiles`` map.
+access-to-subprogram types with the same profile. Contracts and formal parameter
+names do not affect this sharing. Naming and sharing conventions are documented
+with ``Get_Profile_Theory_Name`` in :file:`src/why/why-atree-modules.ads`.
 For procedures, the representative module is empty. For functions, it contains
 a ``__call`` function and an axiom guard ``pred_call``. Here is an example.
 Consider the access-to-function type ``F`` below:
@@ -2297,26 +2318,34 @@ The representative module will have the following form:
   end
 
 Compared with the translation of regular functions, ``__call`` and
-``pred_call`` have an additionnal ``subp`` parameter which is the subprogram
+``pred_call`` have an additional ``subp`` parameter which is the subprogram
 object which should be called.
 
-This representative module allows sharing the ``__call`` and ``pred_call``
-symbols between all access-to-function types. As the ``__call`` function is used
-for calls in the logic domain, this sharing provides for free that the result
-of the designated function is preserved through conversions.
+As ``__call`` is shared between types with the same profile, converting an
+access value preserves the result of logical calls through that value.
+``pred_call`` serves the same role as the call guard for ordinary functions
+(see :ref:`Functions`): it controls when the contract can be used.
+
+For procedures, only the access type's contract is retained at indirect
+calls. Preserving a known procedure's more precise postcondition through
+``Access`` and conversions would require a shared postcondition predicate,
+as for dispatching calls. That model has not yet been implemented.
 
 Range Predicates
 """"""""""""""""
 
 Access-to-function types can have a contract. When they do, we need a way to
 state that the ``__call`` function used in the logic domain respects this
-contract. However, we cannot generate an axiom like we do for normal functions
-as ``__call`` is shared between all access-to-function types with the same
-profile. Instead, for all access-to-subprogram types, we create a range
-predicate. For access to procedures, it is simply ``True``. For functions,
-we define it to be the content of the post axiom for the access type. This
-predicate can then be used to assume that a particular access-to-subprogram
-object has the contract of a particular access-to-subprogram type.
+contract. However, ``__call`` is shared between types with the same profile,
+which can have different contracts. A global axiom for one type's contract
+would also constrain functions accessed through the other types.
+
+Instead, each access-to-subprogram type has an ``__in_range`` predicate on
+subprogram values. For functions, it states that the value satisfies the
+guarded postcondition axiom of that type. The dynamic invariant of an access
+object uses this predicate to supply its type's contract for logical calls.
+For procedures, it is simply ``True``: there is no logical call whose result
+needs a postcondition axiom. Their contracts are still used for program calls.
 
 The ``in_range`` predicate is declared in the definition module for the
 access-to-subprogram type, but, because of dependencies, its definition is
@@ -2335,7 +2364,8 @@ In the definition module for ``F`` a range predicate is declared:
 
   val predicate __in_range (subp : __subprogram)
 
-Its definition is deferred to the completion module:
+Its definition is deferred to the completion module. Ignoring implicit type
+facts, it is:
 
 .. code-block:: whyml
 
@@ -2345,12 +2375,23 @@ Its definition is deferred to the completion module:
          let result = __call subp x1 ... in
 	   pred_call result subp x1 ... ->
 	   f_pre x1 ... ->
-	     f_post result x1 ...
+	     f_post result x1 ...)
+
+These contracts are used as axioms, so their feasibility is checked at the type
+declaration. For every input satisfying the precondition, some result must
+satisfy the postcondition and the result's type properties. Otherwise an
+inconsistent axiom could prove ``False``, then prove the compatibility check
+for taking a function's ``Access`` with the same infeasible contract.
+
+An indirect call uses the access type's contract rather than the contract of
+its run-time target. Recursion through an access value therefore does not by
+itself make the target functions' contract axioms depend on one another.
+The access type's contract still needs the feasibility check above.
 
 Program Functions
 """""""""""""""""
 
-The completion module of access-to-subprogram types also contains a program
+The completion module of a callable access type also contains a program
 function ``__call_`` which can be used to call a subprogram in the
 program domain. Like for regular subprograms, this function will have the
 pre and postcondition of the access-to-subprogram type if any. For functions,
@@ -2362,9 +2403,17 @@ type ``F`` above:
 
   val __call_ (subp : __subprogram) (x1 : t1) ... : t
     requires { f_pre x1 ... }
-    ensures  { result = __call sub x1 ... /\
+    ensures  { result = __call subp x1 ... /\
                 pred_call result subp x1 ... /\
                 f_post result x1 ... }
+
+The null check occurs when the designated subprogram value is extracted from
+the access object, before the call to ``__call_``.
+The generation conventions are documented in
+:file:`src/why/gnat2why-subprograms-pointers.ads`. Taking a subprogram's
+:ref:`Access attribute <Access Attribute on Subprograms>` connects these shared
+call symbols to that subprogram's symbols. See
+:ref:`Access-To-Subprogram Conversions` for the contract checks on conversions.
 
 Type Completion
 ^^^^^^^^^^^^^^^
@@ -5483,11 +5532,12 @@ Access Attribute on Subprograms
 
 If the ``'Access`` attribute of a subprogram is used somewhere in the code,
 a defining module and a completion module are created for the object it
-designates (see
-Gnat2why.Subprograms.Pointers.Declare_Theory_For_Access_If_Needed).
+designates (see ``Declare_Theory_For_Access_If_Needed`` in
+:file:`src/why/gnat2why-subprograms-pointers.adb`). Repeated occurrences for the
+same subprogram reuse the same symbol.
 The defining module simply declares a symbol of the built-in type
 ``__subprogram``. The completion module is empty for procedures. For functions,
-it contains two modules giving the precise values of the ``__call`` and
+it contains two axioms giving the precise values of the ``__call`` and
 ``pred_call`` functions of the profile on the symbol introduced for the access.
 For example, let us consider the function ``F`` below:
 
@@ -5511,6 +5561,17 @@ and axioms:
       f__function_guard temp___result x1 ... <->
         pred_call temp___result attr__access x1 ...
 
+These axioms let calls through ``F'Access`` use the information available about
+``F``, including after conversions between access types with the same profile.
+In the program domain, taking ``F'Access`` also checks that ``F`` satisfies the
+contract of the access type, using the same checks as
+:ref:`Access-To-Subprogram Conversions`.
+
+SPARK also requires designated functions to terminate. Indirect calls can hide
+recursion from the call graph, so taking a function's ``Access`` introduces a
+termination check if the function or its callees make indirect calls. Flow
+analysis relies on this check for termination of calls through access-to-function
+values.
 
 Operators
 ^^^^^^^^^
@@ -5597,11 +5658,11 @@ from the access-to-function type ``S`` to ``T`` below:
 
 .. code-block:: ada
 
-  type S is access function (X1 : S1, ...) return R with
+  type S is access function (X1 : S1; ...) return R with
     Pre  => S_Pre (X1, ...),
     Post => S_Post (S'Result, X1, ...);
 
-  type T is access function (Y1 : S1, ...) return R with
+  type T is access function (Y1 : S1; ...) return R with
     Pre  => T_Pre (Y1, ...),
     Post => T_Post (T'Result, Y1, ...);
 
@@ -5624,14 +5685,14 @@ The idea is to generate the following code:
 
 For procedures, it is similar, except that we don't generate the let binding
 for the result identifier. Since procedures can modify their parameters, we
-generate an havoc statement between the checks for the precondition and the
+generate a havoc statement between the checks for the precondition and the
 postcondition to simulate the execution of ``Expr``.
 
 In all cases, these checks are conditioned to the fact that ``Expr`` is not
 ``null`` and wrapped in an ignore block so as to not impact the rest of the
 verification if these checks happen to fail. This is important as these
 Liskov checks are really mandated by SPARK and not Ada, so they do not
-correspond to a check at execution and users could chose to justify them.
+correspond to a check at execution and users could choose to justify them.
 
 ***********************
 gnat2why Implementation
