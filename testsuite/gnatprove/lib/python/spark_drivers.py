@@ -615,7 +615,7 @@ class SPARKTestFinder(TestFinder):
             return ParsedTest(testname, UGTestDriver, test_env, dirpath)
 
         if "__rac" in testname:
-            return ParsedTest(testname, RACTestDriver, {}, dirpath)
+            return ParsedTest(testname, RACTestDriver, test_env, dirpath)
 
         # If the test contains a test.py, we use the SPARKLegacyTestDriver
         if "test.py" in filenames:

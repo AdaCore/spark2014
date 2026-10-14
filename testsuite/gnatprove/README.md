@@ -69,6 +69,12 @@ The driver sets a `--timeout=30` in the gnatprove `command` to limit the time
 of individual proof attempts. The latter is separate from the whole-process
 timeout. See `UGTestDriver` in `lib/python/spark_drivers.py` for details.
 
+Tests whose names contain `__rac` use `RACTestDriver` to compare compiled
+execution with the one of the RAC interpreter. It is possible to configure the
+timeout of the different phases (compilation, execution of the compiled
+program, and GNATprove execution) of these tests by specifying a `timeout`
+entry in `test.yaml`. The setting applies to each of those phases separately.
+
 # Replay tests:
 
 Replay tests are tests that store session or manifist files and use these to
