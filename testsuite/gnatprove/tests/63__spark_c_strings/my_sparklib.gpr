@@ -2,10 +2,6 @@ with "sparklib_common";
 
 project My_SPARKlib extends "sparklib_internal" is
 
-   package Builder is
-      for Global_Configuration_Pragmas use "pragmas.adc";
-   end Builder;
-
    for Object_Dir use "sparklib_obj";
    for Source_Dirs use SPARKlib_Internal'Source_Dirs;
    --  The file providing the root SPARK unit varies with the body
