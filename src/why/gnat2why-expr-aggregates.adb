@@ -7123,13 +7123,11 @@ package body Gnat2Why.Expr.Aggregates is
          end if;
 
          declare
-            Index_Map : Ada_Node_To_Why_Id.Map;
             Value_Map : Ada_Node_To_Why_Id.Map;
          begin
             Get_Aggregate_Elements (Writes => Writes, Value_Map => Value_Map);
 
-            pragma
-              Assert (Elements.Length = Index_Map.Length + Value_Map.Length);
+            pragma Assert (Elements.Length = Value_Map.Length);
 
             --  If not done already, generate the logic function
 
@@ -7188,7 +7186,7 @@ package body Gnat2Why.Expr.Aggregates is
          with Pre => (for all Value of Values => Value.Size = Indices'Length);
          --  Return a predicate expressing that indices in Indices correspond
          --  to preserved choices of Values. Concrete values for indices inside
-         --  Values should be stored in Index_Map.
+         --  Values should be stored in Value_Map.
 
          function Transform_Path
            (Path : Path_Type; Indices : W_Identifier_Array) return W_Term_Id;
@@ -8213,7 +8211,7 @@ package body Gnat2Why.Expr.Aggregates is
 
             when Array_Components  =>
 
-               --  Go over the choice indexes and store them in Index_Map
+               --  Go over the choice indexes and store them in Value_Map
 
                declare
                   Idx_Typ : constant W_Type_Id :=
