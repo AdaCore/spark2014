@@ -513,10 +513,22 @@ commit-level-checks:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - when: never
   script:
-    -  !reference [.insteadOfPython]
-    -  python -m pip install pre-commit
+    - !reference [.insteadOfPython]
+    - python -m pip install pre-commit
     - |
       set -eu
+
+      # Install the "support" package with exactly the version specified in the
+      # pre-commit configuration.
+      support_rev="$(python -c '
+      import yaml
+      with open(".pre-commit-config.yaml") as stream:
+          repos = yaml.safe_load(stream)["repos"]
+      print(next(repo["rev"] for repo in repos
+                 if repo["repo"] == "git-adacore:eng/spark/support"))
+      ')"
+      git clone --depth 1 --branch "$support_rev" git-adacore:eng/spark/support
+      python -m pip install ./support
 
       base="${CI_MERGE_REQUEST_DIFF_BASE_SHA:?CI_MERGE_REQUEST_DIFF_BASE_SHA is not set}"
       head="${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA:-${CI_COMMIT_SHA:?CI_COMMIT_SHA is not set}}"
@@ -526,9 +538,10 @@ commit-level-checks:
         echo "Checking commit message for $commit"
         git log -1 --format=%B "$commit" > .gitlab_commit_msg
 
-        pre-commit run check-attribution \
-            --hook-stage commit-msg \
-            --commit-msg-filename .gitlab_commit_msg
+        # Check attributions in the commit message. The script is called
+        # directly as opposed to via pre-commit to enforce also the checking of
+        # commented lines.
+        python -m support.check_attribution .gitlab_commit_msg
 
         CHECK_DOC_SRC_REFS_COMMIT_SHA="$commit" \
           pre-commit run check-doc-src-refs \
