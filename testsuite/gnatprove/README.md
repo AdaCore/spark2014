@@ -60,9 +60,14 @@ timeout: 1500
 ```
 This directive replaces the default timeout of 300s (5 minutes) for this test.
 
-Tests with the prefix `ug__` are part of the special SPARK UG testsuite and
-don't interpret test.yaml or test.py files. They run a fixed `gnatprove`
-command. See the `UGTestDriver` in `run-tests` for details.
+Tests with the prefix `ug__` are part of the special SPARK UG testsuite and are
+executed via the `UGTestDriver`. They run a fixed `gnatprove` command, ignoring
+`test.py` and the `prove_all/do_flow` entries in `test.yaml`. However, they
+support a `timeout` and/or `steps` entry in `test.yaml` to override the default
+whole-process timeout and/or the default number of prover steps, respectively.
+The driver sets a `--timeout=30` in the gnatprove `command` to limit the time
+of individual proof attempts. The latter is separate from the whole-process
+timeout. See `UGTestDriver` in `lib/python/spark_drivers.py` for details.
 
 # Replay tests:
 
