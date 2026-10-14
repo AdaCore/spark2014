@@ -1249,7 +1249,7 @@ package body Gnat2Why.Driver is
       Last  : constant Natural := Switch_Last (Switch);
 
    begin
-      --  For now we allow the -g/-O/-f/-m/-W/-w, -nostdlib, -pipe and
+      --  For now we allow the -g/-O/-f/-m/-W/-w, -nostdlib, -pipe, -s and
       --  -save-temps/-save-temps=.. switches, even though they will have no
       --  effect. This permits compatibility with existing scripts.
       --  The below condition also covers some front-end switches such as
@@ -1263,6 +1263,7 @@ package body Gnat2Why.Driver is
           (Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w'
            or else Switch (First .. Last) = "nostdlib"
            or else Switch (First .. Last) = "pipe"
+           or else Switch (First .. Last) = "s"
            or else
              (Switch'Length >= 11
               and then Switch (First .. First + 9) = "save-temps"));
