@@ -31,12 +31,11 @@ is allowed to contain the following attributes:
 
   Switches given on the command line have priority over switches given in the
   project file, and file-specific switches have priority over switches that
-  apply to all files. A special case is the ``--level`` switch: the values for
-  ``--timeout`` etc implied by the ``--level`` switch are always overridden by
-  more specific switches, regardless of where they appear. For example,
-  the timeout for the analysis of ``file.adb`` is set to 10 seconds below,
-  despite the ``--level=0`` switch (which implies a lower timeout) specified
-  for this file::
+  apply to all files. Within one switch source, explicit settings such as
+  ``--timeout`` override the corresponding values implied by ``--level``.
+  Across sources, the usual precedence applies to the expanded settings.
+  For example, the timeout for the analysis of ``file.adb`` is set by
+  ``--level=0`` below, overriding the project-wide timeout of 10 seconds::
 
     package Prove is
        for Proof_Switches ("Ada") use ("--timeout=10");
