@@ -617,6 +617,8 @@ The last part defined other possible output of the prover ``CVC4``:
      *)
 
 
+.. _gnatwhy3_sessions:
+
 Sessions
 --------
 

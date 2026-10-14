@@ -14,7 +14,7 @@ The SPARK tool is a tool that consists of several executables:
 
 * gnatprove: This tool reads the command line, parses the project
   file, builds the set of analysis actions to run, invokes ``gnat2why`` on the
-  required units, and finally generates the user-visible reports.
+  required units, and calls the ``Spark_Report`` package to generate reports.
 * gnat2why: It is invoked in two different modes. One mode generates global
   information, while the other performs flow analysis and proof. During the
   proof phase, gnat2why delegates some work to gnatwhy3.
@@ -24,8 +24,8 @@ The SPARK tool is a tool that consists of several executables:
   is better to have this in a dedicated tool instead of spawning them
   directly from gnatwhy3.
 * the provers: Process prover input files and return proof results.
-
-.. _gnatprove:
+* spark_data_rep_wrapper, spark_semaphore_wrapper, and spark_memcached_wrapper:
+  Wrap compiler or proof-tool invocations.
 
 *********
 gnatprove
@@ -49,62 +49,20 @@ project-relevant switches (these are taken from GPR library). This phase
 only passes the unhandled switches to the next phases. This phase uses
 GNATCOLL.Opt_Parse to be able to reuse the GPR library switch definitions.
 
-The next phase parses the command-line and the root project's switch attributes
-into records which are then merged according to precedence rules. This phase
-establishes "invocation-level" settings (That influence the behavior of the
-whole run), but also establishes data that will then be used for file-specific
-switches as well.
+The next phase parses the command line and the root project's switch
+attributes into records, then merges them to establish invocation-wide settings.
+Each project's attributes are also processed into file-specific settings. For
+scalar settings, precedence increases from ``Prove.Switches`` through
+``Prove.Proof_Switches ("Ada")`` and ``Prove.Proof_Switches (file)`` to the command
+line. List values accumulate, while flags are combined according to their value
+kind in ``Merge_Parsed_Switches``.
 
-Within each parsed switch source, ``--level`` is expanded immediately into the
-more precise proof switches that it represents, such as ``--timeout``,
-``--steps``, ``--memlimit``, ``--prover``, and ``--counterexamples``. More
-precise switches in the same source override the corresponding ``--level``
-default. The later merge only combines the expanded detailed switches, so a
-higher-precedence ``--level`` overrides lower-precedence detailed switches in
-the same way as if those detailed switches had been written explicitly.
-
-After command-line switches have been parsed, gnatprove checks ``PATH`` once
-for the supported automatic provers Z3, CVC5, and Colibri. This initializes
-the availability information used when interpreting prover switches in
-project and per-file configurations.
-
-Before traversing the project tree to derive file-specific settings, gnatprove
-initializes settings that depend on the root project. It reads the global Ada
-compilation switches before checking the target configuration, since that
-check depends on whether ``-gnateT`` was specified there, and resolves the
-root project's ``Prove.Proof_Dir`` relative to the project file when needed.
-These settings are initialized once for the invocation; switch interpretation
-in ``Postprocess`` can then run for project and per-file configurations
-without re-reading root-project settings.
-
-Then, the switches attributes of the entire project tree are parsed
-into records, and merged according to precedence rules, to establish the
-"file-specific" switches, which can be specified on a per-file basis.
-Their effective values are interpreted while constructing each per-file
-configuration record. For example, ``--proof-warnings`` is validated and
-stored directly in that record.
-
-Switch multiplicity
--------------------
-
-Each switch entry in ``Switch_Definitions`` carries a ``Multiplicity`` field
-describing what happens when the switch appears several times *within a single
-source* (one command line, or one project-file attribute):
-
-- ``Override`` (the default): the last occurrence silently wins. This is the
-  expected behavior for scalar and mode switches.
-- ``Override_Warn``: the last occurrence still wins, but a warning is emitted on
-  every repetition. Used for switches where passing several values looks like a
-  natural user intent but is in fact collapsed to one, such as the
-  ``--limit-*`` family and ``--exclude-line``.
-- ``Accumulate``: every occurrence is collected. This only makes sense with list
-  storage, so it is constrained to ``String_List_Value`` (``--sarif-base-uri``).
-
-The warning for ``Override_Warn`` is emitted in ``Handle_Switch``, which is
-invoked once per source, so it fires only on same-source repetition. It is
-deliberately independent of ``Multiplicity``: precedence *across* sources
-(command line beating project file) is a separate axis derived from
-``Value_Kind`` in ``Merge_Parsed_Switches``, and this field does not change it.
+Within each switch source, ``--level`` expands into detailed proof settings before
+merging. Explicit detailed switches override that source's preset, but a
+higher-precedence preset can override a lower-precedence detailed setting.
+``Read_Command_Line`` in ``src/gnatprove/configuration.adb`` establishes the
+initialization order; ``Switch_Multiplicity`` and ``Switch_Definitions`` document
+repeated-switch behavior within a source separately from precedence across sources.
 
 Undocumented switches
 ---------------------
@@ -129,7 +87,7 @@ or internal-use switches:
    Omit the "from cache" phrase from check messages, for deterministic output.
 
 ``--debug-no-semaphore``
-   Do not use a semaphore to limit the number of concurrent prover processes.
+   Do not use a semaphore to limit the number of concurrent gnatwhy3 processes.
 
 ``--debug-prover-errors``
    Report errors raised by provers (forwarded as ``--debug-prover-errors`` to
@@ -200,73 +158,30 @@ data-representation action is skipped altogether. That action runs the
 compiler to generate code, which is impossible for a target that the compiler
 at hand does not support.
 
-.. _Generating Globals:
+Dependency graph and actions
+============================
 
-Generating Globals
-==================
+``gnatprove`` uses GPR2 project information to select compilation units and
+construct a graph of actions. Each action invokes a tool on a unit:
 
-Processing of the SPARK source files relies on three kinds of information:
-  - data-representation information produced by the target compiler,
-  - global information produced by ``gnat2why`` and stored in ALI files,
-  - flow-analysis and proof results produced by ``gnat2why``.
+* ``Global_Gen`` actions invoke ``gnat2why`` in global-generation mode, producing
+  ALI files and ``.spark_error`` files for phase-1 diagnostics. They inherit
+  ordinary source and configuration dependencies from GPR2's Ada compile action.
+  For library projects, they also copy the ALI file to the library ALI directory
+  when needed.
+* ``Data_Rep`` actions invoke the target compiler through
+  ``spark_data_rep_wrapper`` with ``-gnatR2js`` to produce representation JSON for
+  the unit's existing body and specification. They depend on the same unit's ALI
+  so they run only after successful global generation, avoiding secondary
+  diagnostics after compilation errors.
+* ``Analysis`` actions invoke ``gnat2why`` in analysis mode using the unit's own
+  ALI and applicable ALI and representation files from its dependency closure.
+  They produce ``.spark`` files containing analysis results.
 
-These concerns are useful for understanding the overall flow, but
-``gnatprove`` does not execute them as a simple sequence of separate phases.
-Instead, it builds a dependency graph of analysis actions and executes it
-through the ``GPR2.Build`` infrastructure. Global generation,
-data-representation generation, and analysis are therefore scheduled together,
-and additional work may be discovered while processing dependencies.
-
-Generating the Why3 configuration file
-======================================
-
-``gnatwhy3`` needs a Why3 configuration file that describes the provers and
-editors it may run. Rather than shipping that file directly, the toolset ships
-``share/spark/config/gnatprove.conf``, a JSON description of the same
-information, and ``gnatprove`` translates it into a ``why3.conf`` file. The
-translation is done before the build actions are scheduled, and a copy of
-``why3.conf`` is written into the artifact directory and into the object
-directory of every non-externally-built project of the tree, because
-``gnatwhy3`` is run with the object directory of the analyzed unit as its
-working directory. The JSON schema of ``gnatprove.conf`` is described in a
-comment next to the translation code, and does not need to be repeated here.
-
-Most command strings are copied through unchanged, so the Why3 ``%`` patterns
-they contain (``%f`` for the goal file, ``%l`` for the Why3 library directory,
-and so on) are interpreted by ``gnatwhy3`` at the point where it spawns the
-prover. One piece of information is not available to Why3, however: the
-directory into which the prover support libraries have been compiled. Those
-libraries (currently only Coq's) are built once, into the object directory of
-the root project, and every generated ``why3.conf`` must point at that single
-location regardless of the object directory it is written into.
-
-``gnatprove.conf`` therefore marks that location with the placeholder
-``@ROOT_OBJ_DIR@``, which ``gnatprove`` expands while writing ``why3.conf``.
-The placeholder deliberately does not use the Why3 ``%`` syntax, so that
-expanding it cannot disturb the patterns of other provers. When the root
-project has no object directory — an aggregate or abstract project — the
-placeholder is left in place; Coq is unsupported for such a tree anyway.
-
-Note that a user-supplied configuration file, passed with ``--why3-conf``, is
-read by ``gnatwhy3`` as an additional configuration file and is never rewritten
-by ``gnatprove``. ``@ROOT_OBJ_DIR@`` is consequently not available in it.
-
-Build Actions
-=============
-
-``gnatprove`` uses project information to determine the units that need to be
-processed, computes their dependencies, and then creates build actions for the
-relevant work:
-
-  - actions that invoke ``gnat2why`` in global-generation mode,
-  - actions that invoke the compiler in data-representation mode, and
-  - actions that invoke ``gnat2why`` in analysis mode.
-
-These actions are connected by their file dependencies, so incremental
-re-execution is handled by the build engine rather than by a separate external
-builder process. In addition to the traditional ALI output of
-global-generation actions, these actions now also register a
-``.spark_error`` output file that is used later during report generation.
+The actions are scheduled together through ``GPR2.Build``. Additional dependencies
+may be discovered when ``Global_Gen.Post_Execution`` reads ALI files; these extend
+the inputs of dependent analysis actions. Incremental re-execution is handled by
+the build engine through file dependencies and action signatures.
 
 Generating data representation information
 ==========================================
@@ -277,16 +192,20 @@ These JSON files become inputs to the corresponding analysis actions, together
 with the relevant ALI files.
 
 The compiler invocation goes through ``spark_data_rep_wrapper``. This wrapper
-suppresses compiler output in normal operation and ensures that the expected
-JSON files are present even if the compiler fails, so later analysis steps can
-still consume well-formed data-representation outputs.
+suppresses compiler output in normal operation; compiler failures produce a
+warning unless quiet mode is selected, and verbose mode shows compiler output.
+It removes stale JSON files before invoking the compiler and writes empty fallback
+files for any expected outputs missing after a compiler failure. The wrapper
+returns success so that analysis can continue with the available representation
+information.
 
 These actions are only applicable when the compiler can generate code for the
 target of the analysis. This is the case for a cross target described by its
 own runtime, as the compiler of that target is then used, but not when the user
 described the target with an explicit ``-gnateT`` switch: the compiler at hand
 then generally cannot generate code for that target, so the actions are
-skipped.
+skipped. Mode and source-layout restrictions are defined by ``Data_Rep.Applicable``
+in ``src/gnatprove/gpr2-build-actions-process-compile-ada-data_rep.adb``.
 
 Each JSON file is written next to the object files of the project that owns the
 corresponding source, so the files of a withed project are not in the object
@@ -302,186 +221,67 @@ earlier run are still lying around.
 Passing options to gnat2why
 ===========================
 
-Because gnat2why is essentially a modified gcc and shares e.g. command
-line parsing, it's not easy to add switches so that gnatprove can pass
-information to gnat2why. So we added a single switch ``-gnates``,
-which passes a single file in JSON format to gnat2why, that contains
-all the extra information we need. The unit ``gnat2why_args`` handles
-the reading and writing of that file.
+``gnatprove`` passes tool-specific options to ``gnat2why`` through a JSON file
+named by the ``-gnates`` switch. ``Gnat2Why_Opts.Writing`` writes this file and
+``Gnat2Why_Opts.Reading`` reads it; ``Gnat2Why_Args`` is a compatibility rename of
+the reader. The options contain the effective settings for the unit, including
+``Global_Gen_Mode``, which selects global generation or analysis.
 
-The switch ``Global_Gen_Mode`` dictates if gnat2why is in global-generation
-mode or in analysis mode.
+The filename is derived from a hash of the option values and participates in the
+action's command line, so changed settings invalidate the action even though the
+JSON contents are not command-line switches. ``Opt_File_Name`` in
+``src/gnatprove/gnat2why_opts-writing.ads`` documents this contract.
 
-gnatprove passes the target name, as obtained by running the compiler with
-``-dumpmachine``, to gnat2why, so that Standard.Target_Name is properly
-defined.
+``gnatprove`` also passes the target name, obtained by running the compiler with
+``-dumpmachine``, so that ``Standard.Target_Name`` is properly defined.
 
-Proof manifests are named after, and matched to, the unit they describe by that
-unit's *manifest stem*: its dot-separated Ada name, lower-cased, with the dots
-written as dashes (so ``Foo.Bar`` becomes ``foo-bar``). The Ada unit name is
-taken from the driver rather than recovered from the source file name, so the
-stem is stable under a non-default naming scheme, where a unit's name and the
-name of the file it lives in differ.
+Generating the Why3 configuration file
+======================================
 
-The per-unit ``.spark`` artifact is instead named after its source file base
-name, so the ``.spark`` file and the manifest of the same unit share a stem
-only under the default naming scheme. The two rules differ on purpose, because
-the artifacts are consumed differently. A ``.spark`` file is tool-to-tool:
-``gnat2why`` writes it and ``gnatprove`` reads it back, and both derive the name
-from the same physical source file, so no human ever has to predict it and the
-two ends cannot disagree. A manifest is user-facing: ``--proof-manifest-dir``
-reads hand-written, version-controlled files, so the name has to be one the
-author can pick from the unit alone. The Ada unit name is that stable, semantic
-identity (the name that appears in ``with`` clauses), independent of which file
-the unit lives in, of the spec/body/main-part split, and of multi-unit sources
-that would otherwise force a source-file index suffix. Naming manifests after
-the source file would leak these build-layout details into an artifact a person
-maintains by hand, which is why manifests use the unit name even though
-``.spark`` files do not.
+Before executing actions, ``gnatprove`` translates the shipped
+``share/spark/config/gnatprove.conf`` into ``why3.conf``. It writes the file in the
+artifact directory and the object directories of non-externally-built projects,
+where ``gnatwhy3`` runs. Prover support libraries are built in the root project's
+object directory, and the generated configurations reference that location.
+``Write_Why3_Conf_File`` in ``src/gnatprove/gnatprove_build.adb`` documents the
+schema, placeholders, and quoting rules. A user-supplied ``--why3-conf`` is read
+by ``gnatwhy3`` as additional configuration and is not rewritten by ``gnatprove``.
 
-The ``--proof-manifest-dir`` switch is parsed by ``gnatprove`` as an invocation
-option. It designates a directory containing versioned TOML files, one per
-unit, named by the unit's manifest stem. Each file is checked before analysis
-actions are launched, and the proof-manifest rules relevant to each unit are
-serialized into that unit's ``-gnates`` JSON options file for analysis-mode
-``gnat2why`` invocations, together with the manifest source file path and best
-available entry location.
-Manifest parsing, schema checks, and semantic sanity checks performed before
-analysis are fatal and are implemented in ``gnatprove``. Before serialization,
-entries are sorted by their matching identity so that directory traversal order
-does not affect the options seen by later pipeline stages.
+Unit naming convention
+======================
 
-During translation, ``gnat2why`` resolves these manifest entries against the
-semantic entities selected for the current analysis unit. Each policy first
-resolves to an exact anchor entity using its ``path`` and the optional
-``kind`` and ``profile`` identity fields. If ``hierarchical`` is true, which is
-the default, the resolved policy also applies to the entities enclosed by the
-anchor, that is, those whose scope is the anchor entity, transitively. If
-``hierarchical`` is false, the policy applies only to the anchor entity.
-Enclosure is decided by scope, not by comparing source paths, so a policy
-anchored on one overload never spills onto entities enclosed by another
-overload that shares its dotted path.
-The anchor entity itself is matched by identity, not by re-comparing source
-paths, so an entry that names one overload through its ``profile`` applies to
-exactly that overload and does not re-broaden to the other overloads that share
-its dotted path.
-Thus kind/profile disambiguate the named anchor; they do not filter descendant
-entities reached by hierarchical application. When several entries cover the
-same entity, the most specific one wins (longest dot-separated anchor path);
-an exact-only entry also wins over a same-depth hierarchical entry for the
-anchor entity itself. Broader entries are not merged in.
-Two policies that match the same entity at the same specificity are reported
-as an ambiguity warning, as are multiple overloads matched by a single policy
-that lacks sufficient disambiguation.
+Manifest and analysis artifacts use different naming conventions:
 
-A rule may be *nested* inside another rule, using TOML's nested arrays of
-tables (a ``rule`` sub-array inside a rule table). Nesting a rule means its
-entity is enclosed by the parent rule's entity, at any depth, so the parent's
-identity fields disambiguate the enclosing overload that the child's dotted
-path cannot express on its own: two Helpers spelled ``Pkg.Set.Helper`` under
-two different ``Pkg.Set`` overloads are told apart by which ``Set`` rule each
-Helper rule sits inside. A nested rule's ``path`` must be a dotted extension of
-its parent's ``path``, checked when the manifest is read. A parent rule that
-only anchors children may omit its own proof options. Because nesting, rather
-than the string ``path``, carries the parent overload's identity,
-``gnatprove`` assigns every rule a unit-unique ``id``, numbered from one in
-load order so that an enclosing rule comes before the rules it nests, and
-records each rule's enclosing rule as a ``nested_in`` id in the ``-gnates``
-options; ``gnat2why`` derives the nesting depth of each rule from those ids and
-resolves anchors by increasing depth, so that a nested rule's anchor is
-constrained to the entities enclosed by its parent's already resolved anchor. Two rules that share
-``path``, ``kind`` and ``profile`` are distinct when nested under different
-parents, so the enclosing rule is part of a rule's identity for duplicate
-detection and for the normalized ordering.
+- Proof manifests are named after, and matched to, the unit they describe by
+  that unit's *manifest stem*: its dot-separated Ada name, lower-cased, with the
+  dots written as dashes (so ``Foo.Bar`` becomes ``foo-bar``). The Ada unit name
+  is taken from the driver rather than recovered from the source file name, so
+  the stem is stable under a non-default naming scheme, where a unit's name and
+  the name of the file it lives in differ.
 
-A ``path`` is a dot-separated sequence of segments. A segment is either an Ada
-identifier or a user-defined operator spelled with its quotes as in Ada source,
-for example ``Pkg."&"`` or ``Pkg."and"`` (in TOML the inner quotes are escaped:
-``path = "Pkg.\"&\""``). This spelling matches the operator's canonical source
-path end to end: the resolver builds it from the operator's decoded name, the
-``.spark`` identity metadata records it, and the generator emits it, so an entry
-can target an operator exactly like any other subprogram. Operators are still
-overloadable, so an entry naming one operator overload disambiguates it with the
-same ``profile`` field used for identifier overloads. The single grammar that
-decides which paths are legal is shared by the manifest reader and the manifest
-generator, so the generator never emits a path the reader would reject.
+- The ``.spark`` filename uses the main source file's base name, with a
+  source-index suffix for multi-unit sources. The separator is given by
+  ``Compiler.Multi_Unit_Object_Separator``. ``SPARK_Artifacts.Artifacts_Base_Name``
+  defines this convention.
 
-The resolution step also warns about entries that are stale, selected only for
-contextual analysis, outside the analyzed files, or not selected for proof.
-These warnings are written to the ``manifest_warnings`` section of the unit's
-``.spark`` file and are later reported by ``gnatprove`` text and SARIF
-generation. They do not stop analysis; affected entities are proved with the
-default options. Later pipeline stages consume already-normalized policy data;
-``gnatwhy3`` receives only the concrete prover options selected by
-``gnat2why``.
+The two rules differ on purpose, because the artifacts are consumed differently.
+A ``.spark`` file is tool-to-tool while a manifest is user-facing.
 
-The ``--generate-manifest-dir=DIR`` switch is a separate explicit write mode. It
-does not try to discover stale ``.spark`` files by scanning the object tree.
-Instead, after a successful analysis run, ``gnatprove`` passes the set of units
-analyzed by the action graph to the manifest generator. The generator derives
-each unit's ``.spark`` file and writes one TOML file per existing ``.spark``
-file in ``DIR``, named by the unit's manifest stem and with entities attributed
-to that unit. Generation is based on the proof attempts and manifest identity
-metadata stored in each ``.spark`` file, and applies documented compactness
-heuristics such as a per-unit default prover, rounded step buckets, and explicit
-rules only when the unit default is not precise enough. Generated rule paths use
-Ada-style source casing.
-The unit's own entity (its package or top-level subprogram) shares the bare unit
-path used by the default rule; when it needs its own options it is emitted as a
-non-hierarchical entry carrying its kind, so it overrides the default for that
-entity alone without competing with the default over the entities the default
-covers hierarchically.
+Proof manifests
+===============
 
-Copying ALI files and phase-1 diagnostics
-=========================================
+``gnatprove`` parses and validates manifests before analysis and passes normalized
+policies through ``-gnates``. ``gnat2why`` resolves these policies against semantic
+entities and records resolution warnings in ``.spark``; ``gnatwhy3`` receives the
+concrete prover options selected by ``gnat2why``. The stage implementations are
+``Configuration.Load_Proof_Manifest`` and ``Gnat2Why.Driver.Resolve_Proof_Manifest``.
 
-Analysis actions consume ALI files produced by global-generation actions. For
-library projects, the global-generation action also takes care of copying the
-generated ALI file to the library ALI directory when needed, so the build
-action itself is responsible for making these files available to later work.
-
-Each global-generation action also produces a ``.spark_error`` file. This file
-contains the frontend warnings and errors collected during phase 1, and it is
-written even when compilation errors prevent later analysis from running. This
-extra artifact is what allows report generation to include frontend diagnostics
-in SARIF for early-exit runs.
-
-Translating to Why
-==================
-
-Analysis actions invoke ``gnat2why`` in analysis mode. They consume the source
-unit together with the ALI and data-representation information selected by
-``gnatprove`` for that unit and its dependencies, and they produce the
-machine-readable ``.spark`` output used later for reporting.
-
-Generating the SPARK report
-===========================
-
-Once the build actions have finished, ``gnatprove`` generates reports from the
-``.spark`` files that were produced during analysis and the ``.spark_error``
-files that were produced during global generation. The textual summary is
-written to ``gnatprove.out`` and a SARIF report is also generated in
-``gnatprove.sarif``.
-
-SARIF results may carry GNATprove-specific properties under
-``properties.gnatprove``. During the transition to rule-level classification,
-``explainCode`` is kept on individual SARIF results whenever the corresponding
-GNATprove diagnostic has one. SARIF rule descriptors are more selective:
-``properties.gnatprove.explainCode`` is emitted only for language-violation
-rules, where the ``Violation_Kind`` gives a stable one-to-one mapping between
-the rule and the explained message. Every SARIF result or rule that carries
-``properties.gnatprove.explainCode`` also carries
-``properties.gnatprove.explainCommand`` with the corresponding
-``gnatprove --explain=E00NN`` command.
-
-Explain codes are defined by the ``Explain_Code_Kind`` enumeration in
-``src/common/vc_kinds.ads``, each with a one-line description in
-``Explain_Description`` and a long-form explanation in
-``share/spark/explain_codes/E00NN.md``. The internal switch
-``gnatprove --debug-list-explain-codes`` lists all codes with their
-descriptions, derived from the enumeration. The ``1367__explain_codes`` test
-uses it to run ``gnatprove --explain`` for every code and ensure each one has a
-working explanation file.
+After successful analysis, ``--generate-manifest-dir`` generates manifests from
+the units recorded by the action graph and their existing ``.spark`` files.
+It does not scan the object tree for analysis results. See the
+`User's Guide manifest documentation
+<https://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_run_gnatprove.html#manifest-files>`__
+for the manifest format and options.
 
 ********
 gnat2why
@@ -496,31 +296,21 @@ gnat2why has many tasks:
  - It does (part of) proof;
  - It produces analysis results in the form of check messages.
 
-Other chapters detail what exatly happens in gnat2why. Here we mainly
+Other chapters detail what happens in gnat2why. Here we mainly
 focus on the interface of gnat2why with other programs.
 
 ``gnat2why`` is invoked by ``gnatprove`` on the relevant units in two modes:
 once for global generation, then for analysis. As explained in the
-:ref:`Gnatprove` section, these invocations are now managed by
+:ref:`gnatprove` section, these invocations are now managed by
 ``gnatprove``'s build-action graph rather than by ``gprbuild``.
 
 The "proof" part of gnat2why first serializes the GNAT tree to a Json
 file. Then it invokes gnatwhy3 on that file. It reads back the results
 of gnatwhy3 and interprets them to produce its own output on standard
-output. Most of the command line options for gnatwhy3 are in fact
-computed by gnatprove, and passed to gnat2why via the ``gnat2why_args``
-mechanism.
+output. Most command-line options for gnatwhy3 are computed by gnatprove and
+passed to gnat2why through the JSON options file.
 
-In addition to the compiler-like output of gnat2why on standard
-output, gnat2why produces a machine-parsable output in .spark files
-(if the SPARK input unit is e.g. ``main.adb``, the corresponding
-machine-parsable output is ``main.spark``).
-
-When invoked in global-generation mode, ``gnat2why`` also produces a
-``.spark_error`` JSON file. This file stores the frontend diagnostics gathered
-in phase 1. If compilation errors are detected during global generation,
-``gnat2why`` writes the ``.spark_error`` file and returns without continuing
-to the later tree-processing steps.
+The machine-readable analysis artifacts are described in :ref:`report_generation`.
 
 ********************************
 gnatwhy3, why3server and provers
@@ -529,8 +319,9 @@ gnatwhy3, why3server and provers
 gnatwhy3 reads the Gnat tree from a Json file as produced by gnat2why,
 converts it to the tree of a Why3 program, uses the Why3 library to
 generate verification conditions (VCs) from them, and to run provers on
-the verification conditions. A separate chapter describes how gnatwhy3
-works. Here we mainly focus on the interface with other programs.
+the verification conditions. The :doc:`gnatwhy3` chapter describes its internals,
+including :ref:`proof sessions <gnatwhy3_sessions>` and how existing proof attempts
+are matched to new goals. Here we focus on the process interfaces.
 
 - gnat2why: Gnat AST → Json-serialized Gnat AST
 - gnatwhy3: Json-serialized Gnat AST → Gnat AST → Why3 AST
@@ -573,121 +364,68 @@ When all prover processes are finished or have reached the timeout,
 gnatwhy3 terminates and produces a result dictionary in JSON on
 standard output.
 
-``gnat2why`` spawns multiple instances of ``gnatwhy3`` in parallel, however it
-has no knowledge over how many it is allowed to spawn. We use a semaphore for
-this purpose: ``gnatprove`` creates a semaphore upon startup initialized to the
-number of allowed parallel processes, and each ``gnatwhy3`` invocation is
-wrapped by a ``spark_semaphore_wrapper`` binary. This wrapper simply decrements
-the semaphore (potentially waiting until this is possible) on startup and
-increments it on exit, calling gnatwhy3 in between. ``gnatprove`` passes the
-name of the semaphore to the spark_semaphore_wrapper via the environment
-variable ``GNATPROVE_SEMAPHORE``.
+``gnat2why`` spawns multiple instances of ``gnatwhy3`` in parallel. To bound their
+memory use across analysis processes, ``gnatprove`` creates a semaphore before
+proof actions run. Its capacity is ``max(1, Parallel / Num_Provers)``, where
+``Num_Provers`` is the number of provers in the default file-specific configuration,
+with a minimum of one. This limit is separate from why3server's prover limit.
 
+Each ``gnatwhy3`` invocation is wrapped by ``spark_semaphore_wrapper``, which
+acquires a token before running it and releases the token on exit. The semaphore
+name is passed through ``GNATPROVE_SEMAPHORE``. ``--debug-no-semaphore`` disables
+this wrapper, allowing many memory-intensive ``gnatwhy3`` processes to run at once.
+
+.. _report_generation:
 
 *****************
 Report Generation
 *****************
 
-Report generation happens after analysis, inside ``gnatprove``. It reads the
-``.spark`` files produced by the analysis actions together with the
-``.spark_error`` files produced by global-generation actions, and aggregates
-them into the user-visible outputs. The textual and SARIF outputs are both
-built from this same post-processing step in ``Spark_Report``.
+After build actions finish, including runs stopped by compilation errors,
+``gnatprove`` calls ``Spark_Report.Generate_Report`` in the same process. It uses
+the units recorded by the action graph to locate existing ``.spark`` files and
+also reads the ``.spark_error`` files registered by global-generation actions.
+The outputs are ``gnatprove.out`` for the textual summary and ``gnatprove.sarif``
+for tool integration. The same analysis results are used by the manifest generator
+and IDE integrations.
 
-The ``.spark`` files remain the main source of flow and proof diagnostics.
-The ``.spark_error`` files are used to carry frontend diagnostics that are
-already known in phase 1, especially in runs that stop before analysis because
-of compilation errors. When a ``.spark`` file exists for a unit, the
-corresponding ``.spark_error`` file is expected to be empty so that diagnostics
-are not duplicated. The SARIF-specific processing is described below.
-
-At present, the main outputs are:
-
- - ``gnatprove.out``, the textual summary report;
- - ``gnatprove.sarif``, the SARIF report for tool integration.
+``gnat2why`` owns the diagnostic artifacts. Analysis writes flow, proof, warning,
+and manifest-resolution results into ``.spark``. During global generation,
+``Errout_Wrapper.Add_Frontend_Messages`` snapshots frontend diagnostics and
+``Create_Error_JSON_File`` writes them into ``.spark_error``, including when
+compilation errors prevent analysis. If a unit's ``.spark`` file exists, its
+``.spark_error`` must contain no messages, to avoid duplicate diagnostics; report
+loading asserts this invariant.
 
 SARIF report generation
 =======================
 
-The final ``gnatprove.sarif`` file is generated by
-``src/gnatprove/spark_report-generate_sarif_report.adb`` as part of
-``Spark_Report.Generate_Report``. This is separate from the GNAT front-end
-SARIF support in ``gnat2why/gnat_src/erroutc-sarif_emitter.adb``.
+``src/gnatprove/spark_report-generate_sarif_report.adb`` converts these parsed
+artifacts into SARIF. This is separate from the compiler's
+``Erroutc.SARIF_Emitter`` in ``gnat2why/gnat_src/erroutc-sarif_emitter.adb``.
+Compiler frontend diagnostics reach GNATprove's SARIF through ``.spark_error``.
 
-The two SARIF implementations serve different purposes:
+The conversion preserves diagnostic arguments, related locations, suppressions,
+and entity identity, and maps GNATprove severities to SARIF result kinds and
+levels. ``Errout_Wrapper`` prepares message placeholders during JSON serialization;
+the SARIF generator interprets those messages and supplies the rule descriptors.
+When ``--flow-show-gg`` is enabled, generated contracts from ``.spark`` are exposed
+as logical-location metadata.
 
- - ``Erroutc.SARIF_Emitter`` is GNAT front-end infrastructure for compiler
-   diagnostics and diagnostic repositories.
- - GNATprove builds its own SARIF report from the JSON artifacts already used
-   for report generation, namely ``.spark`` and ``.spark_error`` files.
+GNATprove-specific metadata is stored under ``properties.gnatprove``. Explain
+codes are carried by results when present on the diagnostic, and by rule
+descriptors only for language violations with a stable rule-to-code mapping.
+Each code is accompanied by its ``gnatprove --explain=E00NN`` command. Code
+definitions and descriptions are in ``src/common/vc_kinds.ads``; long explanations
+are in ``share/spark/explain_codes/E00NN.md``.
 
-The data flow is as follows:
-
- - During global generation, ``Errout_Wrapper.Add_Frontend_Messages`` snapshots
-   the frontend diagnostics accumulated by ``Errout`` before backend messages
-   start.
- - ``Create_Error_JSON_File`` writes these frontend diagnostics to the unit's
-   ``.spark_error`` file.
- - During analysis, phase 2 writes the unit's ``.spark`` file with flow,
-   proof, warning/error, and manifest-resolution results, plus generated
-   globals when ``--flow-show-gg`` is enabled.
- - After all build actions complete, ``Spark_Report.Generate_Report`` loads the
-   parsed ``.spark`` and ``.spark_error`` inputs and calls
-   ``Generate_SARIF_Report`` to write ``gnatprove.sarif``.
-
-The ``.spark_error`` path exists so frontend diagnostics still reach
-``gnatprove.sarif`` when compilation errors stop processing before phase 2.
-When a ``.spark`` file exists for a unit, the matching ``.spark_error`` file is
-expected to be empty so that the same diagnostic does not appear twice in the
-final report.
-
-Within ``Generate_SARIF_Report``, GNATprove maps its JSON report format to
-SARIF as follows:
-
- - SARIF results are collected from the ``flow``, ``proof``, ``warn_error``,
-   and ``manifest_warnings`` arrays.
- - The ``message`` field is copied into a SARIF message object, including
-   message arguments when placeholders were present in the original diagnostic.
- - ``reasonForCheck`` is emitted in the custom SARIF property bag as
-   ``gnatprove.reasonForCheck`` when available.
- - ``explainCode`` is emitted in the custom SARIF property bag as
-   ``gnatprove.explainCode`` when available.
- - When ``gnatprove.explainCode`` is emitted, ``gnatprove.explainCommand`` is
-   emitted next to it with the corresponding ``gnatprove --explain=E00NN``
-   command.
- - For rule families whose explain-code mapping is stable by construction,
-   the SARIF rule descriptor also carries ``gnatprove.explainCode`` and
-   ``gnatprove.explainCommand``. This currently applies only to
-   explain-code-bearing ``violation-*`` rules.
- - The ``suppressed`` field becomes a SARIF suppression.
- - ``relatedLocations`` entries are preserved as SARIF related locations.
- - The JSON ``entity`` field is turned into a SARIF logical location naming
-   the enclosing subprogram. ``name`` contains the leaf subprogram name, while
-   ``fullyQualifiedName`` carries the full Ada name.
- - When ``--flow-show-gg`` is set, generated global contracts are written into
-   the unit's ``.spark`` file under the ``generated_globals`` field and exposed
-   from there as top-level ``run.logicalLocations`` entries. Each such entry
-   carries the enclosing subprogram name and a custom ``gnatprove`` property
-   whose ``inferredContracts`` child contains ``global`` and
-   ``refinedGlobal`` objects, with mode-specific arrays of source-level names
-   serialized as strings.
- - GNATprove severities are translated to SARIF ``kind`` and ``level``.
- - The SARIF rule table is synthesized from GNATprove's flow, proof, warning,
-   annotation, unsupported, violation, and fallback rule kinds, plus a
-   dedicated ``GNAT`` rule for frontend diagnostics.
-
-The message objects consumed here are produced earlier by ``Errout_Wrapper``.
-During JSON serialization, the diagnostic text is rewritten into a SARIF-style
-message form: ``&`` placeholders are converted to indexed message arguments,
-and ``#`` is converted to ``[here](0)`` so it targets the first related
-location in the SARIF output.
-
-Source locations in the SARIF report are normalized through
-``--sarif-base-uri=ID:PATH``. ``Sanity_Check_SARIF_Base_URI`` ensures that a
-``%SRCROOT%`` mapping is present by default, unless the user provided one
-explicitly. When multiple base URIs match a file, the longest matching base
-path wins. Files that cannot be resolved to any configured base URI are emitted
-as absolute ``file://`` URIs instead.
+For field definitions, consult ``Properties``, ``Rules``, and
+``Handle_SPARK_File`` in the SARIF generator. Source URI normalization is handled
+by ``Make_Artifact_Location`` there and ``Sanity_Check_SARIF_Base_URI`` in
+``configuration.adb``;
+see the `User's Guide report documentation
+<https://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_view_gnatprove_output.html>`__
+for report options and ``--sarif-base-uri`` usage.
 
 SARIF tests
 -----------
@@ -709,8 +447,8 @@ base-URI data.
 When a SARIF field is also expected to appear in the CLI output, such a test
 may add a secondary CLI check. In that case, ``test.out`` should print the
 actual value extracted from SARIF, and also the CLI value when it is part of
-the intended behavior. This keeps baselines uniform for tests that add one or
-custom SARIF properties. For explain codes, SARIF tests should prefer checking
+the intended behavior. This keeps baselines uniform for tests that add custom
+SARIF properties. For explain codes, SARIF tests should prefer checking
 the rule-level descriptor metadata for language-violation rules only. For
 warnings, flow diagnostics, front-end diagnostics, and fallback diagnostics,
 tests should check the result-level property during the transition period and
