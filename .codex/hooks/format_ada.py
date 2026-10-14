@@ -104,7 +104,10 @@ def main() -> int:
             continue
         if candidate.exists() and candidate.suffix in {".ads", ".adb"}:
             try:
-                unique_paths.append(str(candidate.relative_to(repo_root)))
+                relative_path = candidate.relative_to(repo_root)
+                if "tests" in relative_path.parts or "testsuite" in relative_path.parts:
+                    continue
+                unique_paths.append(str(relative_path))
             except ValueError:
                 continue
 
