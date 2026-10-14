@@ -179,6 +179,13 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
             return True;
          end if;
 
+         --  Runtime units are already compiled and are not part of the
+         --  analysis dependency graph.
+
+         if CU.Owning_View.Is_Runtime then
+            return True;
+         end if;
+
          if Configuration.CL_Switches.No_Subprojects
            and then CU.Owning_View /= Self.CU.Owning_View
          then
@@ -246,6 +253,15 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
          CU := Self.Ctxt.Namespace_Roots.First_Element.Unit (Unit);
 
          if not CU.Is_Defined then
+            return True;
+         end if;
+
+         --  Only generate representation information for units that we can
+         --  compile, matching the initial analysis dependency collection.
+
+         if CU.Owning_View.Is_Runtime
+           or else CU.Owning_View.Is_Externally_Built
+         then
             return True;
          end if;
 
