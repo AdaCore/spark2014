@@ -1,0 +1,27 @@
+test_checks.adb:38:09: info: data dependencies proved
+test_checks.adb:41:22: medium: null exclusion check might fail
+test_checks.adb:49:09: info: data dependencies proved
+test_checks.adb:52:21: medium: predicate check might fail
+test_checks.adb:61:09: info: data dependencies proved
+test_checks.adb:64:22: info: null exclusion check proved (CVC5: 1 VC)
+test_checks.adb:72:09: info: data dependencies proved
+test_checks.adb:75:21: info: predicate check proved (CVC5: 1 VC)
+test_indices.adb:10:25: info: initialization of "I" proved
+test_indices.adb:10:40: info: initialization of "Value" proved
+test_indices.adb:11:09: info: data dependencies proved
+test_indices.adb:11:33: info: postcondition proved (CVC5: 2 VC)
+test_indices.adb:28:19: high: assertion might fail (e.g. when A = (others => (Value => 0, Unchanged => 0)))
+test_slices.adb:10:07: info: initialization of "Low" proved
+test_slices.adb:10:12: info: initialization of "High" proved
+test_slices.adb:10:30: info: initialization of "Values" proved
+test_slices.adb:12:06: info: data dependencies proved
+test_slices.adb:15:08: info: postcondition proved (CVC5: 3 VC)
+test_slices.adb:15:55: info: range check proved (CVC5: 2 VC)
+test_slices.adb:15:62: info: range check proved (CVC5: 2 VC)
+test_slices.adb:20:14: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slices.adb:30:04: info: precondition proved (CVC5: 1 VC)
+test_slices.adb:30:27: info: range check proved (CVC5: 4 VC)
+test_slices.adb:32:19: info: assertion proved (CVC5: 1 VC)
+test_slices.adb:41:04: info: precondition proved (CVC5: 1 VC)
+test_slices.adb:41:27: info: range check proved (CVC5: 4 VC)
+test_slices.adb:43:19: info: assertion proved (Z3: 1 VC)
