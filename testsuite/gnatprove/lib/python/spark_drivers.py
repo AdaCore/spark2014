@@ -497,11 +497,7 @@ class UGTestDriver(ProcessDiffTestDriver):
         # Tests withing SPARK libraries need this switch
         cmd += ["--no-subprojects"]
 
-        steps = 200
-        yamlfile = os.path.join(self.test_env["working_dir"], "test.yaml")
-        if os.path.exists(yamlfile):
-            config = e3.yaml.load_ordered(yamlfile)
-            steps = config["steps"]
+        steps = self.test_env.get("steps", 200)
         cmd += [f"--steps={steps}"]
 
         start_time = time.time()
@@ -616,10 +612,10 @@ class SPARKTestFinder(TestFinder):
             return None
 
         if testname.startswith("ug__"):
-            return ParsedTest(testname, UGTestDriver, {}, dirpath)
+            return ParsedTest(testname, UGTestDriver, test_env, dirpath)
 
         if "__rac" in testname:
-            return ParsedTest(testname, RACTestDriver, {}, dirpath)
+            return ParsedTest(testname, RACTestDriver, test_env, dirpath)
 
         # If the test contains a test.py, we use the SPARKLegacyTestDriver
         if "test.py" in filenames:
