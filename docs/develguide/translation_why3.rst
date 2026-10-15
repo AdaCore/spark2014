@@ -925,9 +925,17 @@ an example, here is the slide function defined for My_Matrix:
 
 This excerpt shows the element-preservation part of the defining axiom.
 Each element of the shifted array is logically equal to the corresponding
-element in the input array. Sliding also preserves ``has_bounds`` with
-appropriately shifted bounds. It models the positional correspondence required
-by Ada assignment and conversion when lower bounds differ.
+element in the input array. Sliding models the positional correspondence
+required by Ada assignment and conversion when lower bounds differ.
+
+The axiom also preserves ``has_bounds`` with appropriately shifted bounds,
+provided that sliding preserves nullness in every dimension. This guard is
+necessary for modular indexes: shifting both endpoints with wraparound can turn
+a nonempty interval into an empty one, or conversely. Without the guard, the
+axiom could assign empty bounds to distinct slid maps, contradicting
+extensionality. The guard belongs in the axiom itself, independently of the
+length checks generated for Ada conversions, because logic functions must be
+consistently axiomatized even for arguments that would fail a runtime check.
 
 Concatenation is only defined for one-dimensional arrays. Its map operation
 preserves the first operand's elements and shifts the second operand to follow

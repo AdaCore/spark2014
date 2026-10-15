@@ -1939,8 +1939,11 @@ module Array__1
          get (slide a old_first new_first) i =
 	 get a (I1.sub i (I1.sub new_first old_first)))
     /\
-      (* bounds *)
+      (* Bounds must preserve nullness: modular wraparound must not turn a
+         nonempty interval into an empty one, or conversely. *)
       (forall new_last : I1.t [has_bounds (slide a old_first new_first) new_first new_last].
+         (I1.le old_first (I1.sub new_last (I1.sub new_first old_first)) <->
+          I1.le new_first new_last) ->
          has_bounds a old_first
 	   (I1.sub new_last (I1.sub new_first old_first)) ->
          has_bounds (slide a old_first new_first) new_first new_last)
@@ -2203,6 +2206,10 @@ module Array__2
       (* bounds *)
       (forall new_last_1 : I1.t, new_last_2 : I2.t
          [has_bounds (slide a old_first_1 new_first_1 old_first_2 new_first_2) new_first_1 new_last_1 new_first_2 new_last_2].
+         (I1.le old_first_1 (I1.sub new_last_1 (I1.sub new_first_1 old_first_1)) <->
+          I1.le new_first_1 new_last_1) ->
+         (I2.le old_first_2 (I2.sub new_last_2 (I2.sub new_first_2 old_first_2)) <->
+          I2.le new_first_2 new_last_2) ->
          has_bounds a
 	   old_first_1 (I1.sub new_last_1 (I1.sub new_first_1 old_first_1))
 	   old_first_2 (I2.sub new_last_2 (I2.sub new_first_2 old_first_2)) ->
@@ -2346,6 +2353,12 @@ module Array__3
       (* bounds *)
       (forall new_last_1 : I1.t, new_last_2 : I2.t, new_last_3 : I3.t
          [has_bounds (slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3) new_first_1 new_last_1 new_first_2 new_last_2 new_first_3 new_last_3].
+         (I1.le old_first_1 (I1.sub new_last_1 (I1.sub new_first_1 old_first_1)) <->
+          I1.le new_first_1 new_last_1) ->
+         (I2.le old_first_2 (I2.sub new_last_2 (I2.sub new_first_2 old_first_2)) <->
+          I2.le new_first_2 new_last_2) ->
+         (I3.le old_first_3 (I3.sub new_last_3 (I3.sub new_first_3 old_first_3)) <->
+          I3.le new_first_3 new_last_3) ->
          has_bounds a
 	   old_first_1 (I1.sub new_last_1 (I1.sub new_first_1 old_first_1))
 	   old_first_2 (I2.sub new_last_2 (I2.sub new_first_2 old_first_2))
@@ -2498,6 +2511,14 @@ module Array__4
       (* bounds *)
       (forall new_last_1 : I1.t, new_last_2 : I2.t, new_last_3 : I3.t, new_last_4 : I4.t
          [has_bounds (slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3 old_first_4 new_first_4) new_first_1 new_last_1 new_first_2 new_last_2 new_first_3 new_last_3 new_last_4].
+         (I1.le old_first_1 (I1.sub new_last_1 (I1.sub new_first_1 old_first_1)) <->
+          I1.le new_first_1 new_last_1) ->
+         (I2.le old_first_2 (I2.sub new_last_2 (I2.sub new_first_2 old_first_2)) <->
+          I2.le new_first_2 new_last_2) ->
+         (I3.le old_first_3 (I3.sub new_last_3 (I3.sub new_first_3 old_first_3)) <->
+          I3.le new_first_3 new_last_3) ->
+         (I4.le old_first_4 (I4.sub new_last_4 (I4.sub new_first_4 old_first_4)) <->
+          I4.le new_first_4 new_last_4) ->
          has_bounds a
 	   old_first_1 (I1.sub new_last_1 (I1.sub new_first_1 old_first_1))
 	   old_first_2 (I2.sub new_last_2 (I2.sub new_first_2 old_first_2))
