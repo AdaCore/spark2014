@@ -282,6 +282,7 @@ package body Gnat2Why.Expr is
       No_Pred_Checks : Boolean;
       Pre_Expr       : W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
+      Pred_Checks    : in out W_Statement_Sequence_Id;
       Params         : Transformation_Params;
       Index_Map      : Ada_Node_To_Why_Id.Map;
       Ext_Visible    : Boolean;
@@ -289,6 +290,7 @@ package body Gnat2Why.Expr is
    --  Compute in Store the sequence of statements necessary to store back
    --  local identifiers of Pattern inside Actual, which is Empty in the case
    --  of the special "self" parameter of protected subprograms.
+   --  Append prefix predicate checks to Pred_Checks, to run after all stores.
    --  If Need_Store is True, at least one new identifier was used for the
    --  call. Note that postprocessing may be needed even if Need_Store is
    --  False, to set the init wrapper flag if any, or to perform predicate
@@ -310,11 +312,22 @@ package body Gnat2Why.Expr is
       No_Pred_Checks : Boolean;
       Pre_Expr       : W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
+      Pred_Checks    : in out W_Statement_Sequence_Id;
       Params         : Transformation_Params;
       Index_Map      : Ada_Node_To_Why_Id.Map;
       Ext_Visible    : Boolean);
    --  Same as above but for parameters whose type is neither "by copy" nor
    --  "by reference", the actual is simply havoc'ed.
+
+   function Compute_Prefix_Predicate_Checks
+     (Actual    : N_Subexpr_Id;
+      Params    : Transformation_Params;
+      Index_Map : Ada_Node_To_Why_Id.Map) return W_Prog_Id;
+   --  Check predicates on updated prefixes of Actual, from the innermost
+   --  prefix outward, using the types of the underlying stored objects. Run
+   --  the returned checks after all stores. Index_Map supplies the indices
+   --  and slice bounds captured before the call. Checks on Actual itself and
+   --  on conversion targets in prefixes are excluded.
 
    procedure Compute_Size_Of_Object
      (Expr         : Node_Or_Entity_Id;
@@ -578,12 +591,13 @@ package body Gnat2Why.Expr is
    type Do_Check_Kind is (All_Checks, Only_Vars, No_Checks);
 
    function New_Assignment
-     (Ada_Node    : Node_Id := Empty;
-      Lvalue      : N_Subexpr_Id;
-      Expr        : W_Prog_Id;
-      Do_Check    : Do_Check_Kind := All_Checks;
-      Preserv_Tag : Boolean := True;
-      Index_Map   : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+     (Ada_Node     : Node_Id := Empty;
+      Lvalue       : N_Subexpr_Id;
+      Expr         : W_Prog_Id;
+      Do_Check     : Do_Check_Kind := All_Checks;
+      Prefix_Preds : Boolean := True;
+      Preserv_Tag  : Boolean := True;
+      Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Prog_Id
    with
 
@@ -603,6 +617,8 @@ package body Gnat2Why.Expr is
    --  necessary to check the well-formedness of the prefix (discriminant,
    --  bounds...). This occurs when the new value already contains an
    --  evaluation of the prefix.
+   --  If Prefix_Preds is False, skip predicate checks on updated prefixes of
+   --  Lvalue.
    --  If Preserv_Tag is set to False, the tag and extension of Lvalue are not
    --  preserved. This is used for actual parameters of mode OUT and IN OUT on
    --  calls. The preservation of the tag is ensured by splitting the record
@@ -689,6 +705,7 @@ package body Gnat2Why.Expr is
       Domain       : EW_Domain;
       Params       : Transformation_Params;
       Check_Prefix : Boolean := True;
+      Prefix_Preds : Boolean := True;
       Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Expr_Id
    with
@@ -708,6 +725,7 @@ package body Gnat2Why.Expr is
    --  @param Check_Prefix False if it is not necessary to check the
    --      well-formedness of the prefix (discriminant, bounds...). This occurs
    --      when the new value already contains an evaluation of the prefix.
+   --  @param Prefix_Preds False to skip predicate checks on the updated prefix
    --  @param Index_Map    a mapping from index nodes in N to identifiers that
    --      should be used to refer to these indices. It is supplied when the
    --      indices should be evaluated in a different context (typically before
@@ -730,6 +748,7 @@ package body Gnat2Why.Expr is
       Last_Access  : in out Opt_N_Subexpr_Id;
       Domain       : EW_Domain := EW_Prog;
       Check_Prefix : Boolean := True;
+      Prefix_Preds : Boolean := True;
       Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
    with Pre => not Check_Prefix or else Index_Map.Is_Empty;
    --  the input pair (N, Expr) describes an assignment
@@ -746,6 +765,8 @@ package body Gnat2Why.Expr is
    --  If Check_Prefix is False then it is not necessary to check the
    --  well-formedness of the prefix (discriminant, bounds...). This occurs
    --  when the new value already contains an evaluation of the prefix.
+   --  If Prefix_Preds is False, skip predicate checks on updated prefixes,
+   --  including operands of conversions in these prefixes.
    --  Index_Map is a mapping from index nodes in N to identifiers that should
    --  be used to refer to these indices. It is supplied when the indices
    --  should be evaluated in a different context (typically before a call).
@@ -4528,6 +4549,9 @@ package body Gnat2Why.Expr is
          Arg_Cnt  : Positive := 1;
          Bind_Cnt : Positive := Binders'First;
 
+         Pred_Checks     : W_Statement_Sequence_Id := Void_Sequence;
+         Exc_Pred_Checks : W_Statement_Sequence_Id := Void_Sequence;
+
          procedure Compute_Param (Formal : Entity_Id; Actual : Node_Id);
          --  Compute a Why expression for each parameter
 
@@ -4912,6 +4936,7 @@ package body Gnat2Why.Expr is
                      No_Pred_Checks => No_Pred_Checks,
                      Pre_Expr       => +Actual_Tmp,
                      Store          => Store,
+                     Pred_Checks    => Pred_Checks,
                      Params         => Params,
                      Index_Map      => Index_Map,
                      Ext_Visible    => Ext_Visible);
@@ -4931,6 +4956,7 @@ package body Gnat2Why.Expr is
                            No_Pred_Checks => No_Pred_Checks,
                            Pre_Expr       => +Actual_Tmp,
                            Store          => Exc_Store,
+                           Pred_Checks    => Exc_Pred_Checks,
                            Params         => Params,
                            Index_Map      => Index_Map,
                            Ext_Visible    => Ext_Visible);
@@ -4943,6 +4969,7 @@ package body Gnat2Why.Expr is
                            No_Pred_Checks => No_Pred_Checks,
                            Pre_Expr       => +Actual_Tmp,
                            Store          => Exc_Store,
+                           Pred_Checks    => Exc_Pred_Checks,
                            Params         => Params,
                            Index_Map      => Index_Map,
                            Ext_Visible    => Ext_Visible);
@@ -5057,6 +5084,17 @@ package body Gnat2Why.Expr is
                end case;
             end loop;
          end;
+
+         --  Check predicates on enclosing objects after all copy-back stores
+         --  Skip empty sequences so calls without stores still have a single
+         --  void statement.
+
+         if not Is_Void_Sequence (Pred_Checks) then
+            Append (Store, Pred_Checks);
+         end if;
+         if Exc_Exit and then not Is_Void_Sequence (Exc_Pred_Checks) then
+            Append (Exc_Store, Exc_Pred_Checks);
+         end if;
 
          return Why_Args;
       end;
@@ -7815,6 +7853,7 @@ package body Gnat2Why.Expr is
       No_Pred_Checks : Boolean;
       Pre_Expr       : W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
+      Pred_Checks    : in out W_Statement_Sequence_Id;
       Params         : Transformation_Params;
       Index_Map      : Ada_Node_To_Why_Id.Map;
       Ext_Visible    : Boolean) is
@@ -7829,6 +7868,7 @@ package body Gnat2Why.Expr is
             No_Pred_Checks => No_Pred_Checks,
             Pre_Expr       => Pre_Expr,
             Store          => Store,
+            Pred_Checks    => Pred_Checks,
             Params         => Params,
             Index_Map      => Index_Map,
             Ext_Visible    => Ext_Visible,
@@ -8105,6 +8145,79 @@ package body Gnat2Why.Expr is
                    Typ  => EW_Bool_Type));
       end if;
    end Compute_Is_Reclaimed_For_Ownership;
+
+   -------------------------------------
+   -- Compute_Prefix_Predicate_Checks --
+   -------------------------------------
+
+   function Compute_Prefix_Predicate_Checks
+     (Actual    : N_Subexpr_Id;
+      Params    : Transformation_Params;
+      Index_Map : Ada_Node_To_Why_Id.Map) return W_Prog_Id
+   is
+      Path   : N_Subexpr_Id := Actual;
+      Checks : W_Prog_Id := +Void;
+
+   begin
+      loop
+         case Nkind (Path) is
+            when N_Identifier | N_Expanded_Name                  =>
+
+               --  Protected types cannot have predicates in SPARK
+
+               if Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (Path))
+                 and then
+                   Has_Predicates (Enclosing_Concurrent_Type (Entity (Path)))
+               then
+                  raise Program_Error;
+               end if;
+               exit;
+
+            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+
+               --  Predicates on conversion targets need not hold after the
+               --  update. Expected_Type_Of_Prefix looks through conversions
+               --  to check predicates on the underlying stored objects.
+
+               Path := Expression (Path);
+
+            when N_Selected_Component
+               | N_Indexed_Component
+               | N_Slice
+               | N_Explicit_Dereference                          =>
+
+               declare
+                  Pref      : constant N_Subexpr_Id := Prefix (Path);
+                  Pref_Type : constant W_Type_Id :=
+                    Expected_Type_Of_Prefix (Pref);
+                  Ty        : constant Entity_Id := Get_Ada_Node (+Pref_Type);
+
+               begin
+                  if Present (Ty) and then Has_Predicates (Ty) then
+                     Checks :=
+                       Sequence
+                         (Checks,
+                          New_Predicate_Check
+                            (Path,
+                             Ty,
+                             Insert_Simple_Conversion
+                               (Domain         => EW_Term,
+                                Expr           =>
+                                  Transform_Target
+                                    (Pref, EW_Term, Params, Index_Map),
+                                To             => Pref_Type,
+                                Force_No_Slide => True)));
+                  end if;
+                  Path := Pref;
+               end;
+
+            when others                                          =>
+               raise Program_Error;
+         end case;
+      end loop;
+
+      return Checks;
+   end Compute_Prefix_Predicate_Checks;
 
    -----------------------------------
    -- Compute_Record_Component_Size --
@@ -8513,6 +8626,7 @@ package body Gnat2Why.Expr is
       No_Pred_Checks : Boolean;
       Pre_Expr       : W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
+      Pred_Checks    : in out W_Statement_Sequence_Id;
       Params         : Transformation_Params;
       Index_Map      : Ada_Node_To_Why_Id.Map;
       Ext_Visible    : Boolean;
@@ -8554,12 +8668,16 @@ package body Gnat2Why.Expr is
             Append
               (Store,
                New_Assignment
-                 (Ada_Node    => Actual,
-                  Lvalue      => Actual,
-                  Expr        => Reconstructed_Arg,
-                  Do_Check    => Only_Vars,
-                  Preserv_Tag => False,
-                  Index_Map   => Index_Map));
+                 (Ada_Node     => Actual,
+                  Lvalue       => Actual,
+                  Expr         => Reconstructed_Arg,
+                  Do_Check     => Only_Vars,
+                  Prefix_Preds => False,
+                  Preserv_Tag  => False,
+                  Index_Map    => Index_Map));
+            Append
+              (Pred_Checks,
+               Compute_Prefix_Predicate_Checks (Actual, Params, Index_Map));
          end;
 
       --  If no store is needed, we might still need to reset the move tree
@@ -12602,12 +12720,13 @@ package body Gnat2Why.Expr is
    --------------------
 
    function New_Assignment
-     (Ada_Node    : Node_Id := Empty;
-      Lvalue      : N_Subexpr_Id;
-      Expr        : W_Prog_Id;
-      Do_Check    : Do_Check_Kind := All_Checks;
-      Preserv_Tag : Boolean := True;
-      Index_Map   : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+     (Ada_Node     : Node_Id := Empty;
+      Lvalue       : N_Subexpr_Id;
+      Expr         : W_Prog_Id;
+      Do_Check     : Do_Check_Kind := All_Checks;
+      Prefix_Preds : Boolean := True;
+      Preserv_Tag  : Boolean := True;
+      Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Prog_Id
    is
       --  Here, we deal with assignment statements. In SPARK, the general form
@@ -12667,6 +12786,7 @@ package body Gnat2Why.Expr is
             Last_Access,
             Domain,
             Check_Prefix => Do_Check = All_Checks,
+            Prefix_Preds => Prefix_Preds,
             Index_Map    => Index_Map);
       end loop;
 
@@ -12703,7 +12823,8 @@ package body Gnat2Why.Expr is
                          (Right => +Prot_Obj, Typ => Get_Typ (Prot_Obj)),
                        Right_Side,
                        Domain,
-                       Body_Params),
+                       Body_Params,
+                       Prefix_Preds => Prefix_Preds),
                  Typ      => Get_Typ (Prot_Obj));
          end;
 
@@ -14441,6 +14562,7 @@ package body Gnat2Why.Expr is
       Domain       : EW_Domain;
       Params       : Transformation_Params;
       Check_Prefix : Boolean := True;
+      Prefix_Preds : Boolean := True;
       Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Expr_Id
    is
@@ -14849,7 +14971,10 @@ package body Gnat2Why.Expr is
       declare
          Ty : constant Entity_Id := Get_Ada_Node (+Get_Type (+Pref));
       begin
-         if Domain = EW_Prog and then Present (Ty) and then Has_Predicates (Ty)
+         if Domain = EW_Prog
+           and then Prefix_Preds
+           and then Present (Ty)
+           and then Has_Predicates (Ty)
          then
             Result :=
               +Insert_Predicate_Check
@@ -15560,6 +15685,7 @@ package body Gnat2Why.Expr is
       Last_Access  : in out Opt_N_Subexpr_Id;
       Domain       : EW_Domain := EW_Prog;
       Check_Prefix : Boolean := True;
+      Prefix_Preds : Boolean := True;
       Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map) is
    begin
       case Nkind (N) is
@@ -15597,33 +15723,54 @@ package body Gnat2Why.Expr is
                         Lvalue   => True);
 
                else
-                  declare
-                     Tmp_Expr : W_Expr_Id := New_Temp_For_Expr (Expr);
-                  begin
-                     Expr :=
-                       +Sequence
-                          (Left  =>
-                             New_Ignore
-                               (Prog =>
-                                  +Insert_Checked_Conversion
-                                     (Ada_Node => N,
-                                      Domain   => EW_Prog,
-                                      Expr     => Tmp_Expr,
-                                      To       =>
-                                        EW_Abstract
-                                          (Etype (N),
-                                           Is_Init_Wrapper_Type
-                                             (Get_Type (Expr))))),
-                           Right => +Tmp_Expr);
-                     Expr :=
-                       Binding_For_Temp
-                         (Tmp => Tmp_Expr, Context => Expr, Domain => Domain);
-                  end;
+                  --  Check_Prefix is False when the prefix has already been
+                  --  evaluated with checks. Last_Access is present once a
+                  --  component access has been shifted, so this conversion
+                  --  is part of the prefix. In this case, skip the checked
+                  --  conversion: its constraint checks concern properties
+                  --  (bounds, discriminants, nullness) that cannot be changed
+                  --  by the component update. Its predicate checks on the
+                  --  conversion target are neither mandated by Ada on
+                  --  copy-back nor assumed by SPARK on the updated value.
+                  --  Predicates on the underlying stored objects are checked
+                  --  separately. Conversions of the whole target still need
+                  --  checks on the new value.
+
+                  if Check_Prefix or else No (Last_Access) then
+                     declare
+                        Tmp_Expr : W_Expr_Id := New_Temp_For_Expr (Expr);
+                     begin
+                        Expr :=
+                          +Sequence
+                             (Left  =>
+                                New_Ignore
+                                  (Prog =>
+                                     +Insert_Checked_Conversion
+                                        (Ada_Node => N,
+                                         Domain   => EW_Prog,
+                                         Expr     => Tmp_Expr,
+                                         To       =>
+                                           EW_Abstract
+                                             (Etype (N),
+                                              Is_Init_Wrapper_Type
+                                                (Get_Type (Expr))))),
+                              Right => +Tmp_Expr);
+                        Expr :=
+                          Binding_For_Temp
+                            (Tmp     => Tmp_Expr,
+                             Context => Expr,
+                             Domain  => Domain);
+                     end;
+                  end if;
 
                   --  If the origin of the conversion has predicates, they
-                  --  might not be checked. Do it here.
+                  --  might not be checked. Do it here, unless predicate
+                  --  checks are deferred for updated prefixes. Last_Access
+                  --  is present once a component access has been shifted.
 
-                  if Has_Predicates (Etype (Expression (N))) then
+                  if Has_Predicates (Etype (Expression (N)))
+                    and then (Prefix_Preds or else No (Last_Access))
+                  then
                      Expr :=
                        +Insert_Predicate_Check
                           (Ada_Node => Expression (N),
@@ -15734,6 +15881,7 @@ package body Gnat2Why.Expr is
                     Domain,
                     Params       => Body_Params,
                     Check_Prefix => Check_Prefix,
+                    Prefix_Preds => Prefix_Preds,
                     Index_Map    => Index_Map);
                Expr :=
                  Binding_For_Temp
