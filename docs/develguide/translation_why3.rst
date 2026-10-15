@@ -843,10 +843,19 @@ an example, here is the slide function defined for My_Matrix:
 	    get a (i - (new_first - old_first))
 		  (BV16.sub j (BV16.sub new_first_2 old_first_2))
 
-The effects of the slide function are described through a defining
-axiom. It states that each element of the slided array is equal (not
-Ada equal, but really equal) to the corresponding element in the input
-array.
+This excerpt shows the element-preservation part of the defining axiom.
+Each element of the shifted array is logically equal to the corresponding
+element in the input array. Sliding models the positional correspondence
+required by Ada assignment and conversion when lower bounds differ.
+
+The axiom also preserves ``has_bounds`` with appropriately shifted bounds,
+provided that sliding preserves nullness in every dimension. This guard is
+necessary for modular indexes: shifting both endpoints with wraparound can turn
+a nonempty interval into an empty one, or conversely. Without the guard, the
+axiom could assign empty bounds to distinct slid maps, contradicting
+extensionality. The guard belongs in the axiom itself, independently of the
+length checks generated for Ada conversions, because logic functions must be
+consistently axiomatized even for arguments that would fail a runtime check.
 
 Singleton returns a map which contains given element at a given index.
 It is under-specified as nothing is said about elements at other
