@@ -4918,6 +4918,12 @@ inserted either before or after the call. This is done while computing the
 parameter for checks on input, and while computing the store for checks on
 output.
 
+Indices and slice bounds in mutable actuals are captured before the call.
+Copy-back uses these captured values both to read enclosing objects and to
+update their components (see ``Transform_Target``). This preserves the other
+components of the selected object even when the call changes variables used
+in its indices or slice bounds.
+
 Additional Checks
 """""""""""""""""
 When a subprogram call is translated in the program domain, the precondition is
