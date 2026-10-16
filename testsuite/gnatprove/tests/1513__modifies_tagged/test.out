@@ -1,0 +1,7 @@
+test_tagged.adb:8:09: info: for "X" at test_tagged.adb:7
+test_tagged.adb:8:09: info: modifies contract proved (CVC5: 2 VC)
+test_tagged.adb:11:09: info: for "X" at test_tagged.adb:10
+test_tagged.adb:11:09: info: modifies contract proved (CVC5: 2 VC)
+test_tagged.adb:12:23: info: postcondition proved (CVC5: 1 VC)
+test_tagged.adb:30:14: info: postcondition proved (CVC5: 1 VC)
+test_tagged.adb:39:14: info: postcondition proved (CVC5: 2 VC)
