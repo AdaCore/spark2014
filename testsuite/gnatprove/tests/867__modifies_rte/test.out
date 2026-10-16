@@ -80,9 +80,6 @@ test.adb:145:19: medium: on exceptional exit at test.adb:141
 test.adb:148:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:152:40: warning: unused initial value of "B"
 test.adb:153:45: info: exceptional case proved (Trivial: 1 VC)
-test.adb:156:06: medium: for "B" at test.adb:152
-test.adb:156:06: medium: on exceptional exit at test.adb:152
-test.adb:156:06: medium: unexpected part of output might be modified by the subprogram
 test.adb:156:19: info: discriminant check proved (CVC5: 1 VC)
 test.adb:156:19: info: on entry of subprogram at test.adb:152
 test.adb:159:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -133,9 +130,6 @@ test.adb:207:06: info: data dependencies proved
 test.adb:207:27: warning: unused initial value of "B"
 test.adb:211:06: info: for "B" at test.adb:165
 test.adb:211:06: info: modifies contract proved (CVC5: 1 VC)
-test.adb:211:06: medium: for "B" at test.adb:165
-test.adb:211:06: medium: on program exit at test.adb:206
-test.adb:211:06: medium: unexpected part of output might be modified by the subprogram
 test.adb:211:19: info: discriminant check proved (CVC5: 1 VC)
 test.adb:211:19: info: discriminant check proved (CVC5: 1 VC)
 test.adb:211:19: info: on entry of subprogram at test.adb:206
