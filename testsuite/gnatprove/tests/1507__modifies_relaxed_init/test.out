@@ -1,0 +1,7 @@
+repro.adb:11:07: info: range check proved (CVC5: 2 VC)
+repro.adb:12:07: info: range check proved (CVC5: 2 VC)
+repro.adb:17:12: info: for "Container" at repro.adb:15
+repro.adb:17:12: info: modifies contract proved (CVC5: 1 VC)
+repro.adb:21:27: info: index check proved (CVC5: 2 VC)
+repro.adb:27:04: info: initialization of parts of "Container" without Relaxed_Initialization proved
+repro.adb:27:22: info: range check proved (CVC5: 2 VC)
