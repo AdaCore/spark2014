@@ -133,10 +133,12 @@ stages:
     - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/cobertura-report/ $CI_PROJECT_DIR/coverage
     - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/html-report/ $CI_PROJECT_DIR/coverage-html
 
-    # Process test file to generate timing test (skip for large tests)
+    # Check for slow non-large tests or fast large tests
     - |
-      if [[ "$ANOD_ENTRY_POINT" != "test_large" ]]; then
-        (cd $CI_PROJECT_DIR ; python scripts/check_test_times.py --threshold=180 xunit-*.xml xunit-times.xml) || timing_exit_code=$?
+      if [[ "$ANOD_ENTRY_POINT" == "test_large" ]]; then
+        (cd $CI_PROJECT_DIR ; python scripts/check_test_times.py --find-too-fast --threshold=60 --exclude-test=Z999-999__coq__always_fail xunit-*.xml xunit-times.xml) || timing_exit_code=$?
+      else
+        (cd $CI_PROJECT_DIR ; python scripts/check_test_times.py --find-too-slow --threshold=180 xunit-*.xml xunit-times.xml) || timing_exit_code=$?
       fi
 
     # Reestablish cache
@@ -145,7 +147,7 @@ stages:
     # Determine final exit code based on testsuite and timing results:
     # - If testsuite_reports failed: fail with its exit code
     # - If check_test_times.py failed with code other than 0 or 1: fail with its exit code
-    # - If check_test_times.py returned 1 (timing threshold exceeded): exit with code 89
+    # - If check_test_times.py returned 1 (tests flagged): exit with code 89
     #   exit code 89 is special-cased in allow_failure to indicate a warning
     # - Otherwise: success (exit code 0)
     - |
@@ -156,7 +158,7 @@ stages:
         # check_test_times.py failed with exit code other than 0 or 1, fail the job
         exit $timing_exit_code
       elif [[ -n "$timing_exit_code" && "$timing_exit_code" == "1" ]]; then
-        # check_test_times.py returned 1 (timing threshold exceeded), use special exit code for warning
+        # check_test_times.py returned 1 (tests flagged), use special exit code for warning
         exit 89
       fi
 
