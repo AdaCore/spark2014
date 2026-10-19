@@ -26,7 +26,11 @@ am_realized = [
     "Rep_Proj_ltBVGen",
     "Array_Comparison_Axiom",
 ]
-realize_subdir = "realize"
+realizations = [
+    ("_gnatprove_standard", gp_realized, "realize"),
+    ("ada__model", am_realized, "realize"),
+    ("_gnatprove_standard", ["Array__1"], "realize_modular"),
+]
 
 
 def copy_spark_why_files():
@@ -118,62 +122,49 @@ def compile_coq_files():
 
 def realize_theories():
     print("Launch why3realize")
-    for real in gp_realized:
-        print("Generate realization for " + real)
-        process = Run(
-            [
-                why3_bin,
-                "realize",
-                "-L",
-                ".",
-                "-L",
-                why3_lib,
-                "-T",
-                "_gnatprove_standard." + real,
-                "-o",
-                realize_subdir,
-                "-D",
-                os.path.join(driver_dir, "coq-realize.drv"),
-            ]
-        )
-        if process.status != 0:
-            print("FAILED ! Generation of realization coq files failed")
-        print(process.out)
-    for real in am_realized:
-        print("Generate realization for " + real)
-        process = Run(
-            [
-                why3_bin,
-                "realize",
-                "-L",
-                ".",
-                "-L",
-                why3_lib,
-                "-T",
-                "ada__model." + real,
-                "-o",
-                realize_subdir,
-                "-D",
-                os.path.join(driver_dir, "coq-realize.drv"),
-            ]
-        )
-        if process.status != 0:
-            print("FAILED ! Generation of realization coq files failed")
-        print(process.out)
+    for module, theories, subdir in realizations:
+        for real in theories:
+            name = real if subdir == "realize" else subdir + "/" + real
+            print("Generate realization for " + name)
+            process = Run(
+                [
+                    why3_bin,
+                    "realize",
+                    "-L",
+                    ".",
+                    "-L",
+                    why3_lib,
+                    "-T",
+                    module + "." + real,
+                    "-o",
+                    subdir,
+                    "-D",
+                    os.path.join(driver_dir, "coq-realize.drv"),
+                ]
+            )
+            if process.status != 0:
+                print("FAILED ! Generation of realization coq files failed")
+            print(process.out)
 
 
 def check_realizations():
     print("Check realizations")
-    os.chdir(realize_subdir)
-    for real in gp_realized + am_realized:
-        print("Run Coqc on realization file: " + real)
-        process = Run(["coqc", "-R", os.path.join("..", "coq"), "Why3", real + ".v"])
-        if process.status != 0:
-            print("FAILED ! The Coq compilation of the library filed")
-        lines = process.out.splitlines()
-        lines = grep(".*Grammar extension", lines, invert=True)
-        for line in lines:
-            print(line)
+    cwd = os.getcwd()
+    for _, theories, subdir in realizations:
+        os.chdir(subdir)
+        for real in theories:
+            name = real if subdir == "realize" else subdir + "/" + real
+            print("Run Coqc on realization file: " + name)
+            process = Run(
+                ["coqc", "-R", os.path.join("..", "coq"), "Why3", real + ".v"]
+            )
+            if process.status != 0:
+                print("FAILED ! The Coq compilation of the library failed")
+            lines = process.out.splitlines()
+            lines = grep(".*Grammar extension", lines, invert=True)
+            for line in lines:
+                print(line)
+        os.chdir(cwd)
     print("The realizations checks were run")
 
 
