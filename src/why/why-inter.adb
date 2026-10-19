@@ -1014,7 +1014,7 @@ package body Why.Inter is
 
    function Goto_Exception_Name (E : Entity_Id) return W_Name_Id is
       Suffix : constant Symbol :=
-        NID (Capitalize_First (Short_Name (E)) & "__goto");
+        NID (Capitalize_First (Full_Name (E)) & "__goto");
    begin
       return New_Name (Ada_Node => E, Symb => Suffix);
    end Goto_Exception_Name;
