@@ -1,0 +1,5 @@
+ext.ads:16:24: info: range check proved (CVC5: 2 VC)
+ext.ads:21:30: info: range check proved (CVC5: 2 VC)
+ext.ads:29:45: medium: this interrupt might be reserved (e.g. when C = 0) [possible fix: you should consider adding a postcondition to function "To_Interrupt" or turning it into an expression function in its unit spec]
+ext.ads:29:59: info: range check proved (CVC5: 2 VC)
+ext.ads:47:45: medium: this interrupt might be reserved [possible fix: subprogram at line 47 should mention Ext.P.X in a precondition]

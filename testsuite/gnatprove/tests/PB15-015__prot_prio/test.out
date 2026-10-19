@@ -1,1 +1,1 @@
-p.ads:8:24: medium: range check might fail
+p.ads:8:24: info: range check proved (CVC5: 2 VC)
