@@ -1731,39 +1731,60 @@ package body Why.Gen.Arrays is
               EW_Abstract (C_Type, Relaxed_Init => Has_Relaxed_Init (C_Type));
             Get_Name : constant W_Identifier_Id := To_Local (Symbols.Get);
             Eq_Name  : constant W_Identifier_Id := To_Local (Symbols.Bool_Eq);
-            Def      : W_Pred_Id := +New_Ada_Equality
-              (Typ    => C_Type,
-               Domain => EW_Pred,
-               Left   =>
-                 Insert_Simple_Conversion
-                   (Ada_Node => Empty,
-                    Domain   => EW_Term,
-                    Expr     => New_Call
-                      (Empty, EW_Term, Get_Name, A_Indexes, W_Ty),
-                    To       => EW_Abstract (C_Type)),
-               Right  =>
-                 Insert_Simple_Conversion
-                   (Ada_Node => Empty,
-                    Domain   => EW_Term,
-                    Expr     => New_Call
-                      (Empty, EW_Term, Get_Name, B_Indexes, W_Ty),
-                    To       => EW_Abstract (C_Type)));
+            A_Elt    : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Ada_Node => Empty,
+                 Domain   => EW_Term,
+                 Expr     =>
+                   New_Call (Empty, EW_Term, Get_Name, A_Indexes, W_Ty),
+                 To       => EW_Abstract (C_Type));
+            B_Elt    : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Ada_Node => Empty,
+                 Domain   => EW_Term,
+                 Expr     =>
+                   New_Call (Empty, EW_Term, Get_Name, B_Indexes, W_Ty),
+                 To       => EW_Abstract (C_Type));
+
+            function New_Equality_Definition
+              (Left, Right : W_Expr_Id) return W_Pred_Id;
+            --  Compare component expressions over the array bounds
+
+            -----------------------------
+            -- New_Equality_Definition --
+            -----------------------------
+
+            function New_Equality_Definition
+              (Left, Right : W_Expr_Id) return W_Pred_Id
+            is
+               Def : W_Pred_Id :=
+                 +New_Ada_Equality
+                    (Typ    => C_Type,
+                     Domain => EW_Pred,
+                     Left   => Left,
+                     Right  => Right);
+
+            begin
+               Def :=
+                 New_Conditional
+                   (Condition => +Range_Cond,
+                    Then_Part => +Def,
+                    Typ       => EW_Bool_Type);
+
+               Def :=
+                 New_Universal_Quantif (Binders => Idx_Vars, Pred => +Def);
+
+               return
+                 +New_And_Expr
+                    (Left => +Length_Eq, Right => +Def, Domain => EW_Pred);
+            end New_Equality_Definition;
+
+            Def     : constant W_Pred_Id :=
+              New_Equality_Definition (A_Elt, B_Elt);
+            Rev_Def : constant W_Pred_Id :=
+              New_Equality_Definition (B_Elt, A_Elt);
+
          begin
-
-            Def := New_Conditional
-              (Condition => +Range_Cond,
-               Then_Part => +Def,
-               Typ       => EW_Bool_Type);
-
-            Def := New_Universal_Quantif
-              (Binders => Idx_Vars,
-               Pred    => +Def);
-
-            Def := +New_And_Expr
-              (Left   => +Length_Eq,
-               Right  => +Def,
-               Domain => EW_Pred);
-
             Emit
               (Th,
                New_Function_Decl
@@ -1777,7 +1798,9 @@ package body Why.Gen.Arrays is
 
             --  This axiom is provable from the definition of bool_eq. We
             --  supply it to help E-matching when a_first is different from
-            --  b_first.
+            --  b_first. Reverse the component equality operands along with
+            --  the array arguments, since component equality need not be
+            --  symmetric.
 
             declare
                Rev_Args : constant Binder_Array :=
@@ -1796,7 +1819,7 @@ package body Why.Gen.Arrays is
                         Left   => Rev_Call,
                         Right  => +True_Term,
                         Domain => EW_Pred),
-                     Def     => Def,
+                     Def     => Rev_Def,
                      Dep     => New_Axiom_Dep (Name => Eq_Name,
                                                Kind => EW_Axdep_Func)));
             end;
