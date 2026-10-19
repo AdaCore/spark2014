@@ -7011,7 +7011,7 @@ package body SPARK_Util is
       return Boolean
    is
       function Path_Contains_Auxiliary (Subpath : N_Subexpr_Id) return Boolean;
-      --  Function processing recursive parts.
+      --  Function processing recursive parts
 
       -----------------------------
       -- Path_Contains_Auxiliary --
@@ -7044,6 +7044,16 @@ package body SPARK_Util is
                return
                  Is_Traversal_Function_Call (Subpath)
                  and then Is_Path_Expression (First_Actual (Subpath))
+                 and then
+                   (if Nkind (First_Actual (Subpath)) = N_Attribute_Reference
+                    then
+                      Attribute_Name (First_Actual (Subpath))
+                      not in Name_Access
+                           | Name_First
+                           | Name_Last
+                           | Name_Length)
+                 and then
+                   Nkind (First_Actual (Subpath)) not in N_Op_Eq | N_Op_Ne
                  and then Path_Contains_Auxiliary (First_Actual (Subpath));
 
             when N_Attribute_Reference       =>
