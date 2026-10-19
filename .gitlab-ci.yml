@@ -408,17 +408,19 @@ build_docs:
     - echo $SPECPATH
     - GNATFORMAT_DATE=`sed -n 's/.*gnatformat_version = "\(.*\)".*/\1/p' $SPECPATH/sparkdev.anod`
     - echo $GNATFORMAT_DATE
+    - VSS_QUALIFIER=edge
+    - if [ "$(anod eval spark2014 is_release)" = "True" ]; then VSS_QUALIFIER=; fi
     - anod install gnat --latest
     - anod install libgpr2 --latest
     - anod install ada-toml --latest
-    - anod install vss-text -Qedge --latest
-    - anod install vss-extra -Qedge --latest
+    - anod install vss-text --qualifier="$VSS_QUALIFIER" --latest
+    - anod install vss-extra --qualifier="$VSS_QUALIFIER" --latest
     - anod install gnatformat -Qdate=$GNATFORMAT_DATE
     - anod printenv gnat > /tmp/precommit_env.sh
     - anod printenv libgpr2 >> /tmp/precommit_env.sh
     - anod printenv ada-toml >> /tmp/precommit_env.sh
-    - anod printenv vss-text -Qedge >> /tmp/precommit_env.sh
-    - anod printenv vss-extra -Qedge >> /tmp/precommit_env.sh
+    - anod printenv vss-text --qualifier="$VSS_QUALIFIER" >> /tmp/precommit_env.sh
+    - anod printenv vss-extra --qualifier="$VSS_QUALIFIER" >> /tmp/precommit_env.sh
     - anod printenv gnatformat -Qdate=$GNATFORMAT_DATE >> /tmp/precommit_env.sh
     - cat /tmp/precommit_env.sh
     - . /tmp/precommit_env.sh
