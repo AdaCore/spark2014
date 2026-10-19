@@ -1,0 +1,2 @@
+nested_limited.ads:4:13: info: implicit aspect Always_Terminates on "Fresh" has been proved, subprogram will terminate
+nested_limited.ads:5:14: info: postcondition proved (CVC5: 3 VC)
