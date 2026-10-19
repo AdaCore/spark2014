@@ -1192,6 +1192,8 @@ package body VC_Kinds is
            & " to an access-to-constant type which does not occur directly"
            & " inside an assignment statement, an object declaration, or a"
            & " simple return statement",
+         when Lim_Mutably_Tagged_Type                                     =>
+           "tagged type where ""'Size'Class"" has been specified",
          when Lim_No_Return_Function                                      =>
            "a function annotated as No_Return",
          when Lim_Non_Static_Attribute                                    =>
@@ -3618,6 +3620,8 @@ package body VC_Kinds is
            "multidim-iterator",
          when Lim_Multidim_Update                                         =>
            "multidim-update",
+         when Lim_Mutably_Tagged_Type                                     =>
+           "mutably-tagged-type",
          when Lim_Null_Aggregate_In_Branching_Array_Aggregate             =>
            "null-aggregate-in-branching-array-aggregate",
          when Lim_Object_Before_Inv                                       =>

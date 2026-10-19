@@ -10905,6 +10905,16 @@ package body SPARK_Definition is
             Mark_Violation (Vio_Controlled_Types, E);
          end if;
 
+         --  Mutably tagged types are not supported yet
+
+         if Ekind (E) = E_Record_Type
+           and then Is_Tagged_Type (E)
+           and then not Is_Class_Wide_Type (E)
+           and then Is_Mutably_Tagged_Type (Class_Wide_Type (E))
+         then
+            Mark_Unsupported (Lim_Mutably_Tagged_Type, E);
+         end if;
+
          --  Front-end in GNATprove mode (see freeze.adb, call to
          --  Collect_Inherited_Class_Wide_Conditions) does not collect properly
          --  the class-wide contract elements needed to check Liskov on
