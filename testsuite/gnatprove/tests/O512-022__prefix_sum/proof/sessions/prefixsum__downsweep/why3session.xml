@@ -2,11 +2,9 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "https://www.why3.org/why3session.dtd">
 <why3session shape_version="6">
-  <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="2000" />
   <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="20" steplimit="0" memlimit="2000" />
   <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="2000" />
   <prover id="3" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000" />
-  <prover id="4" name="colibri" version="2137" timelimit="20" steplimit="0" memlimit="2000" />
   <file format="gnat-json">
     <path name=".." />
     <path name=".." />
@@ -610,8 +608,8 @@
             </proof>
           </goal>
           <goal name="def'vc.127" proved="true">
-            <proof prover="0">
-              <result status="valid" steps="751" />
+            <proof prover="1">
+              <result status="valid" steps="23731" />
             </proof>
           </goal>
           <goal name="def'vc.128" proved="true">
@@ -1119,7 +1117,7 @@
           </goal>
           <goal name="def'vc.249" proved="true">
             <proof prover="2">
-              <result status="valid" steps="269471" />
+              <result status="valid" steps="527099" />
             </proof>
           </goal>
           <goal name="def'vc.250" proved="true">
@@ -1129,7 +1127,7 @@
           </goal>
           <goal name="def'vc.251" proved="true">
             <proof prover="2">
-              <result status="valid" steps="370966" />
+              <result status="valid" steps="2107707" />
             </proof>
           </goal>
           <goal name="def'vc.252" proved="true">
@@ -1139,7 +1137,7 @@
           </goal>
           <goal name="def'vc.253" proved="true">
             <proof prover="2">
-              <result status="valid" steps="177989" />
+              <result status="valid" steps="616331" />
             </proof>
           </goal>
           <goal name="def'vc.254" proved="true">

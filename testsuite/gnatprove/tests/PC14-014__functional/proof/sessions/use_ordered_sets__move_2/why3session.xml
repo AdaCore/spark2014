@@ -2,11 +2,9 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "https://www.why3.org/why3session.dtd">
 <why3session shape_version="6">
-  <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="60" steplimit="0" memlimit="2000" />
   <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="60" steplimit="0" memlimit="2000" />
   <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="2000" />
   <prover id="3" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000" />
-  <prover id="4" name="colibri" version="2137" timelimit="60" steplimit="0" memlimit="2000" />
   <file format="gnat-json" proved="true">
     <path name=".." />
     <path name=".." />
@@ -222,8 +220,8 @@
             </proof>
           </goal>
           <goal name="def'vc.41" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="33102" />
+            <proof prover="1">
+              <result status="valid" steps="8607" />
             </proof>
           </goal>
           <goal name="def'vc.42" proved="true">
@@ -267,8 +265,8 @@
             </proof>
           </goal>
           <goal name="def'vc.50" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="56285" />
+            <proof prover="1">
+              <result status="valid" steps="9584" />
             </proof>
           </goal>
           <goal name="def'vc.51" proved="true">
@@ -287,8 +285,8 @@
             </proof>
           </goal>
           <goal name="def'vc.54" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="70294" />
+            <proof prover="1">
+              <result status="valid" steps="14812" />
             </proof>
           </goal>
           <goal name="def'vc.55" proved="true">
@@ -337,8 +335,8 @@
             </proof>
           </goal>
           <goal name="def'vc.64" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="71471" />
+            <proof prover="1">
+              <result status="valid" steps="21851" />
             </proof>
           </goal>
           <goal name="def'vc.65" proved="true">
@@ -382,8 +380,8 @@
             </proof>
           </goal>
           <goal name="def'vc.73" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="81593" />
+            <proof prover="1">
+              <result status="valid" steps="42916" />
             </proof>
           </goal>
           <goal name="def'vc.74" proved="true">
@@ -392,8 +390,8 @@
             </proof>
           </goal>
           <goal name="def'vc.75" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="93097" />
+            <proof prover="1">
+              <result status="valid" steps="70492" />
             </proof>
           </goal>
           <goal name="def'vc.76" proved="true">
@@ -427,13 +425,13 @@
             </proof>
           </goal>
           <goal name="def'vc.82" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="742143" />
+            <proof prover="1">
+              <result status="valid" steps="107688" />
             </proof>
           </goal>
           <goal name="def'vc.83" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="248576" />
+            <proof prover="1">
+              <result status="valid" steps="59319" />
             </proof>
           </goal>
           <goal name="def'vc.84" proved="true">
