@@ -828,11 +828,14 @@ package body Gnat2Why.Expr is
    --          the required range for this object type and pragma type
 
    function Transform_Slice
-     (N      : Node_Id;
-      Expr   : W_Expr_Id;
-      Params : Transformation_Params;
-      Domain : EW_Domain) return W_Expr_Id;
+     (N         : Node_Id;
+      Expr      : W_Expr_Id;
+      Params    : Transformation_Params;
+      Domain    : EW_Domain;
+      Index_Map : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+      return W_Expr_Id;
    --  Transform a slice Expr
+   --  Index_Map supplies previously captured slice bounds if nonempty
 
    function Transform_Statement_Or_Declaration
      (Stmt_Or_Decl        : Node_Id;
@@ -1052,6 +1055,23 @@ package body Gnat2Why.Expr is
    --  @param Domain the domain in which the translation happens
    --  @param Params the translation parameters
    --  @return the Why expression corresponding to the shift or rotate
+
+   function Transform_Target
+     (N         : N_Subexpr_Id;
+      Domain    : EW_Domain;
+      Params    : Transformation_Params;
+      Index_Map : Ada_Node_To_Why_Id.Map) return W_Expr_Id
+   with
+     Pre =>
+       Domain in EW_Term | EW_Pterm
+       and then
+         (Is_Composite_Type (Retysp (Etype (N)))
+          or else Is_Access_Type (Retysp (Etype (N))));
+   --  Read an assignment target or part of it without checks, using captured
+   --  indices and slice bounds. For composite and access types, this is
+   --  equivalent to Transform_Expr once the required conversion theories have
+   --  been generated, except that indices and slice bounds come from
+   --  Index_Map.
 
    function Transform_Unhandled_Raise (Stat : N_Raise_Kind_Id) return W_Prog_Id
    is (Sequence
@@ -8788,7 +8808,7 @@ package body Gnat2Why.Expr is
          if Present (Actual) and then Need_Pred_Check_On_Store then
             declare
                Postfetch_Actual : constant W_Prog_Id :=
-                 Transform_Prog (Actual, Params, Checks => False);
+                 +Transform_Target (Actual, EW_Pterm, Params, Index_Map);
 
             begin
                --  Generate a predicate check if the actual has a predicate
@@ -15683,12 +15703,21 @@ package body Gnat2Why.Expr is
                  Insert_Simple_Conversion
                    (Domain         => Subdomain,
                     Expr           =>
-                      Transform_Expr
-                        (Domain => Subdomain,
-                         Expr   => Prefix (N),
-                         Params => Body_Params),
+                      (if Index_Map.Is_Empty
+                       then Transform_Expr (Prefix (N), Subdomain, Body_Params)
+                       else
+                         Transform_Target
+                           (N         => Prefix (N),
+                            Domain    => Subdomain,
+                            Params    => Body_Params,
+                            Index_Map => Index_Map)),
                     To             => Prefix_Type,
                     Force_No_Slide => True);
+               --  Borrow reconstruction also uses Shift_Rvalue, on paths
+               --  which may contain traversal function calls. These require
+               --  Transform_Expr. Only use Transform_Target when indices or
+               --  slice bounds need to be replaced by their captured values.
+               --
                --  The type of the type prefix might not match Prefix_Type if
                --  it is a discriminant dependent subcomponent. In this case,
                --  Prefix_Type might have bounds that reference discriminants
@@ -26918,10 +26947,12 @@ package body Gnat2Why.Expr is
    ---------------------
 
    function Transform_Slice
-     (N      : Node_Id;
-      Expr   : W_Expr_Id;
-      Params : Transformation_Params;
-      Domain : EW_Domain) return W_Expr_Id
+     (N         : Node_Id;
+      Expr      : W_Expr_Id;
+      Params    : Transformation_Params;
+      Domain    : EW_Domain;
+      Index_Map : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+      return W_Expr_Id
    is
       Target_Ty : constant W_Type_Id :=
         EW_Abstract
@@ -26935,10 +26966,14 @@ package body Gnat2Why.Expr is
         Base_Why_Type_No_Bool (Entity_Id'(Type_Of_Node (Low_Bound (Rng))));
       Low_Expr  : constant W_Term_Id :=
         New_Temp_For_Expr
-          (Transform_Expr (Low_Bound (Rng), Rng_Type, Domain, Params));
+          ((if Index_Map.Is_Empty
+            then Transform_Expr (Low_Bound (Rng), Rng_Type, Domain, Params)
+            else +Index_Map.Element (Low_Bound (Rng))));
       High_Expr : constant W_Term_Id :=
         New_Temp_For_Expr
-          (Transform_Expr (High_Bound (Rng), Rng_Type, Domain, Params));
+          ((if Index_Map.Is_Empty
+            then Transform_Expr (High_Bound (Rng), Rng_Type, Domain, Params)
+            else +Index_Map.Element (High_Bound (Rng))));
 
    begin
       T := Pref_Term;
@@ -28309,6 +28344,61 @@ package body Gnat2Why.Expr is
 
       return T;
    end Transform_String_Literal;
+
+   ----------------------
+   -- Transform_Target --
+   ----------------------
+
+   function Transform_Target
+     (N         : N_Subexpr_Id;
+      Domain    : EW_Domain;
+      Params    : Transformation_Params;
+      Index_Map : Ada_Node_To_Why_Id.Map) return W_Expr_Id is
+   begin
+      case Nkind (N) is
+         when N_Identifier | N_Expanded_Name                  =>
+            return Transform_Expr (N, Domain, Params);
+
+         when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+            declare
+               Expr : constant W_Expr_Id :=
+                 Transform_Target (Expression (N), Domain, Params, Index_Map);
+            begin
+               return
+                 Insert_Simple_Conversion
+                   (Ada_Node => N,
+                    Domain   => Domain,
+                    Expr     => Expr,
+                    To       =>
+                      EW_Abstract
+                        (Etype (N), Is_Init_Wrapper_Type (Get_Type (Expr))));
+            end;
+
+         when N_Selected_Component
+            | N_Indexed_Component
+            | N_Explicit_Dereference                          =>
+            return
+              One_Level_Access
+                (N,
+                 Transform_Target (Prefix (N), Domain, Params, Index_Map),
+                 Domain,
+                 Params,
+                 No_Init_Check => True,
+                 Index_Map     => Index_Map);
+
+         when N_Slice                                         =>
+            return
+              Transform_Slice
+                (N,
+                 Transform_Target (Prefix (N), Domain, Params, Index_Map),
+                 Params,
+                 Domain,
+                 Index_Map);
+
+         when others                                          =>
+            raise Program_Error;
+      end case;
+   end Transform_Target;
 
    -------------------------------
    -- Type_Invariant_Expression --
