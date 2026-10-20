@@ -1997,6 +1997,7 @@ package body Gnat2Why.Subprograms is
            or else
              (Exceptional
               and then Is_Formal (Root)
+              and then Enclosing_Unit (Root) = E
               and then not By_Reference (Root))
            or else
              (Program_Exit
@@ -10367,7 +10368,15 @@ package body Gnat2Why.Subprograms is
         (if Program_Exit
          then Get_Outputs_From_Program_Exit (E, E)
          else Flow_Id_Sets.Empty_Set);
+      Outputs          : Flow_Id_Sets.Set;
+      Inputs           : Flow_Id_Sets.Set;
    begin
+      Get_Proof_Globals
+        (Subprogram      => E,
+         Reads           => Inputs,
+         Writes          => Outputs,
+         Erase_Constants => True);
+
       --  Go over the association tree
 
       for Position in Association_Tree.Iterate loop
@@ -10378,6 +10387,24 @@ package body Gnat2Why.Subprograms is
             Pred   : W_Pred_Id := Why_Empty;
 
          begin
+            --  On exceptional return, parameters that might be passed by
+            --  copy do not need to be preserved. On program exit, only
+            --  outputs referenced in the exit postcondition are relevant.
+            --  Abstract states are filtered constituent by constituent below.
+
+            if (Exceptional
+                and then Is_Formal (Obj)
+                and then Enclosing_Unit (Obj) = E
+                and then not By_Reference (Obj))
+              or else
+                (Program_Exit
+                 and then Ekind (Obj) /= E_Abstract_State
+                 and then
+                   not Relevant_Outputs.Contains (Direct_Mapping_Id (Obj)))
+            then
+               goto Next_Iter;
+            end if;
+
             --  Get entire objects (and in particular abstract states) out of
             --  the way.
 
@@ -10402,7 +10429,7 @@ package body Gnat2Why.Subprograms is
                   end loop;
 
                   --  For abstract states, generate a single check listing
-                  --  all its constituents.
+                  --  their relevant output constituents.
 
                   if Ekind (Obj) = E_Abstract_State then
                      declare
@@ -10412,11 +10439,17 @@ package body Gnat2Why.Subprograms is
                           W_Pred_Array (1 .. Natural (Constituents.Length));
                         Top          : Natural := 0;
                      begin
-                        for F of Constituents loop
+                        for F of
+                          Constituents
+                          when Outputs.Contains (F)
+                          and then
+                            (not Program_Exit
+                             or else Relevant_Outputs.Contains (F))
+                        loop
                            Top := Top + 1;
                            Eqs (Top) := Preservation_Of_Object (F);
                         end loop;
-                        Pred := New_And_Pred (Eqs);
+                        Pred := New_And_Pred (Eqs (1 .. Top));
                      end;
                   else
                      Pred := Preservation_Of_Object (Obj);
@@ -10426,8 +10459,6 @@ package body Gnat2Why.Subprograms is
                     New_Conditional
                       (Condition => New_Not (Right => New_Or_Pred (Conds)),
                        Then_Part => Pred);
-
-                  <<Next_Iter>>
                end;
 
             else
@@ -10454,6 +10485,8 @@ package body Gnat2Why.Subprograms is
             if Present (Pred) then
                Process_Predicate (Direct_Mapping_Id (Obj), Pred);
             end if;
+
+            <<Next_Iter>>
          end;
       end loop;
 
@@ -10461,9 +10494,7 @@ package body Gnat2Why.Subprograms is
       --  contract.
 
       declare
-         Outputs : Flow_Id_Sets.Set;
-         Inputs  : Flow_Id_Sets.Set;
-         Formal  : Entity_Id := First_Formal (E);
+         Formal : Entity_Id := First_Formal (E);
 
       begin
          --  Go over the formal parameters
@@ -10485,12 +10516,6 @@ package body Gnat2Why.Subprograms is
          end if;
 
          --  Go over the global outputs
-
-         Get_Proof_Globals
-           (Subprogram      => E,
-            Reads           => Inputs,
-            Writes          => Outputs,
-            Erase_Constants => True);
 
          for F of
            Outputs

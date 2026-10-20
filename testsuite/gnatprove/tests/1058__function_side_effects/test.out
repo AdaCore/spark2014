@@ -170,7 +170,9 @@ test_proof.adb:236:09: info: modifies contract proved (CVC5: 2 VC; Trivial: 2 VC
 test_proof.adb:236:09: info: on exceptional exit at test_proof.adb:240
 test_proof.adb:236:25: info: index check proved (CVC5: 2 VC)
 test_proof.adb:236:25: info: index check proved (CVC5: 2 VC)
+test_proof.adb:236:25: info: index check proved (CVC5: 2 VC)
 test_proof.adb:236:25: info: on entry of subprogram at test_proof.adb:231
+test_proof.adb:236:25: info: on exceptional exit at test_proof.adb:240
 test_proof.adb:236:25: info: on return of subprogram at test_proof.adb:231
 test_proof.adb:237:17: info: postcondition proved (CVC5: 2 VC)
 test_proof.adb:238:30: info: index check proved (CVC5: 2 VC)
@@ -210,7 +212,9 @@ test_proof.adb:281:09: info: modifies contract proved (CVC5: 2 VC; Trivial: 2 VC
 test_proof.adb:281:09: info: on exceptional exit at test_proof.adb:285
 test_proof.adb:281:25: info: index check proved (CVC5: 2 VC)
 test_proof.adb:281:25: info: index check proved (CVC5: 2 VC)
+test_proof.adb:281:25: info: index check proved (CVC5: 2 VC)
 test_proof.adb:281:25: info: on entry of subprogram at test_proof.adb:276
+test_proof.adb:281:25: info: on exceptional exit at test_proof.adb:285
 test_proof.adb:281:25: info: on return of subprogram at test_proof.adb:276
 test_proof.adb:282:17: info: postcondition proved (CVC5: 2 VC)
 test_proof.adb:283:30: info: index check proved (CVC5: 2 VC)
@@ -250,7 +254,9 @@ test_proof.adb:489:09: info: modifies contract proved (CVC5: 2 VC; Trivial: 2 VC
 test_proof.adb:489:09: info: on exceptional exit at test_proof.adb:493
 test_proof.adb:489:25: info: index check proved (CVC5: 2 VC)
 test_proof.adb:489:25: info: index check proved (CVC5: 2 VC)
+test_proof.adb:489:25: info: index check proved (CVC5: 2 VC)
 test_proof.adb:489:25: info: on entry of subprogram at test_proof.adb:484
+test_proof.adb:489:25: info: on exceptional exit at test_proof.adb:493
 test_proof.adb:489:25: info: on return of subprogram at test_proof.adb:484
 test_proof.adb:490:17: info: postcondition proved (CVC5: 2 VC)
 test_proof.adb:491:30: info: index check proved (CVC5: 2 VC)
@@ -293,7 +299,9 @@ test_proof.adb:541:09: info: modifies contract proved (CVC5: 2 VC; Trivial: 2 VC
 test_proof.adb:541:09: info: on exceptional exit at test_proof.adb:545
 test_proof.adb:541:25: info: index check proved (CVC5: 2 VC)
 test_proof.adb:541:25: info: index check proved (CVC5: 2 VC)
+test_proof.adb:541:25: info: index check proved (CVC5: 2 VC)
 test_proof.adb:541:25: info: on entry of subprogram at test_proof.adb:536
+test_proof.adb:541:25: info: on exceptional exit at test_proof.adb:545
 test_proof.adb:541:25: info: on return of subprogram at test_proof.adb:536
 test_proof.adb:542:17: info: postcondition proved (CVC5: 2 VC)
 test_proof.adb:543:30: info: index check proved (CVC5: 2 VC)
