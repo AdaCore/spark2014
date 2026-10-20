@@ -113,18 +113,18 @@ red_black_trees.ads:14:04: warning: "=" is recursive; its contract might not be 
 red_black_trees.ads:14:04: warning: "Count" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:14:04: warning: "Count_Children" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:14:04: warning: "Height" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:105
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:113
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:125
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:140
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:233
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:78
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:97
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:106
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:114
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:122
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:134
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:149
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:242
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:87
 red_black_trees.ads:14:04: warning: its contract might be missing
 red_black_trees.ads:14:04: warning: its contract might be missing
-red_black_trees.ads:14:04: warning: potentially missing automatically instanciated lemma "Lemma_Count_Children_Tail" declared at spark-containers-functional-trees.ads:249, instance at line 14
-red_black_trees.ads:14:04: warning: potentially missing contract for "Count" declared at spark-containers-functional-trees.ads:140, instance at line 14
-red_black_trees.ads:14:04: warning: potentially missing contract for "Count_Children" declared at spark-containers-functional-trees.ads:233, instance at line 14
+red_black_trees.ads:14:04: warning: potentially missing automatically instanciated lemma "Lemma_Count_Children_Tail" declared at spark-containers-functional-trees.ads:258, instance at line 14
+red_black_trees.ads:14:04: warning: potentially missing contract for "Count" declared at spark-containers-functional-trees.ads:149, instance at line 14
+red_black_trees.ads:14:04: warning: potentially missing contract for "Count_Children" declared at spark-containers-functional-trees.ads:242, instance at line 14
 red_black_trees.ads:14:04: warning: precondition is statically False [precondition-statically-false]
 red_black_trees.ads:14:04: warning: precondition is statically False [precondition-statically-false]
 red_black_trees.ads:14:04: warning: precondition is statically False [precondition-statically-false]
