@@ -818,9 +818,16 @@ package body Flow_Utility is
       function Pull_Proof_Dependencies (Typ : Type_Kind_Id) return Test_Result
       is
       begin
-         Get_Predicate_From_Parents (Typ);
-         Get_Invariant_From_Parents (Typ);
-         return Continue;
+         if Entity_In_SPARK (Typ) then
+            Get_Predicate_From_Parents (Typ);
+            Get_Invariant_From_Parents (Typ);
+            return Continue;
+
+         --  If Typ is not in SPARK, stop the search
+
+         else
+            return Fail;
+         end if;
       end Pull_Proof_Dependencies;
 
       --  Local variables
