@@ -273,6 +273,7 @@ unsupported-multiple-inheritance-mixed-spark-mode - unsupported-multiple-inherit
 unsupported-multiple-inheritance-root - unsupported-multiple-inheritance-root - a primitive operation which is inherited both from the parent type and from an interface in a tagged derivation - HIGH
 unsupported-multidim-iterator - unsupported-multidim-iterator - an iterator specification on a multidimensional array - HIGH
 unsupported-multidim-update - unsupported-multidim-update - a delta aggregate on a multidimensional array - HIGH
+unsupported-mutably-tagged-type - unsupported-mutably-tagged-type - tagged type where "'Size'Class" has been specified - HIGH
 unsupported-null-aggregate-in-branching-array-aggregate - unsupported-null-aggregate-in-branching-array-aggregate - a null aggregate which is a subaggregate of a multidimensional array aggregate with multiple associations - HIGH
 unsupported-object-before-inv - unsupported-object-before-inv - a non-scalar object or an object with an address clause declared before the loop-invariant - HIGH
 unsupported-op-fixed-float - unsupported-op-fixed-float - a multiplication or division between a fixed-point and a floating-point value - HIGH

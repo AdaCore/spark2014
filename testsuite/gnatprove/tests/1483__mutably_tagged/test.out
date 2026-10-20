@@ -1,0 +1,2 @@
+test.adb:6:09: error: tagged type where "'Size'Class" has been specified is not yet supported
+gnatprove: error during flow analysis and proof
