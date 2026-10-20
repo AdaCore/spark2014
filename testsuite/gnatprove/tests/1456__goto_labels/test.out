@@ -1,0 +1,7 @@
+test.adb:1:11: warning: subprogram "Test" has no effect
+test.adb:3:14: info: add a contract to analyze it separately from calling contexts
+test.adb:3:14: info: local subprogram "Proc" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:3:14: warning: subprogram "Proc" has no effect
+test.adb:9:04: info: analyzing call to "Proc" in context
+test.adb:10:04: info: analyzing call to "Proc" in context
+test.adb:11:19: high: assertion might fail (e.g. when X = True and Y = False) [possible fix: subprogram at line 1 should mention X and Y in a precondition]
