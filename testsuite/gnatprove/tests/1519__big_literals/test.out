@@ -1,0 +1,15 @@
+big_literals.adb:15:13: info: implicit aspect Always_Terminates on "Cube" has been proved, subprogram will terminate
+big_literals.adb:16:09: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+big_literals.adb:16:09: warning: call to "From_String" is not handled precisely [imprecise-call]
+big_literals.adb:18:14: warning: subprogram "Dynamic_Base" has no effect
+big_literals.adb:22:22: info: assertion proved (CVC5: 1 VC)
+big_literals.adb:26:07: info: assertion proved (CVC5: 1 VC)
+big_literals.adb:26:07: info: predicate check proved (Trivial: 1 VC)
+big_literals.adb:26:29: info: predicate check proved (Trivial: 1 VC)
+big_literals.adb:27:19: info: assertion proved (CVC5: 1 VC)
+big_literals.adb:27:19: info: predicate check proved (Trivial: 1 VC)
+big_literals.adb:27:44: info: division check proved (CVC5: 1 VC)
+big_literals.adb:28:19: info: assertion proved (CVC5: 1 VC)
+big_literals.adb:28:19: info: predicate check proved (Trivial: 1 VC)
+big_literals.adb:28:44: info: division check proved (CVC5: 1 VC)
+big_literals.adb:29:04: info: precondition proved (Trivial: 1 VC)

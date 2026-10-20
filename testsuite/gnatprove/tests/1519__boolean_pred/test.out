@@ -1,0 +1,3 @@
+boolean_pred.adb:1:11: warning: subprogram "Boolean_Pred" has no effect
+boolean_pred.adb:2:42: info: range check proved (CVC5: 1 VC)
+boolean_pred.adb:4:19: info: assertion proved (CVC5: 1 VC)
