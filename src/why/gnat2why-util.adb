@@ -1916,17 +1916,6 @@ package body Gnat2Why.Util is
       return +Compute_Spec (Params, Conjuncts_List, EW_Pred);
    end Get_Static_Call_Contract;
 
-   --------------------
-   -- Has_Post_Axiom --
-   --------------------
-
-   function Has_Post_Axiom (E : Callable_Kind_Id) return Boolean
-   is (Ekind (E) not in E_Procedure | Entry_Kind
-       and then not Has_Pragma_Volatile_Function (E));
-   --  Do not generate an axiom for the postcondition of:
-   --    * procedures or entries,
-   --    * volatile functions and protected subprograms.
-
    -----------------------
    -- Init_Why_Sections --
    -----------------------
