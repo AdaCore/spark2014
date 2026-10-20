@@ -1,0 +1,72 @@
+test_exceptional.adb:7:45: info: exceptional case proved (Trivial: 1 VC)
+test_exceptional.adb:12:09: warning: "raise" statement may result in abnormal return (RM 6.4.1(17)) [enabled by default]
+test_exceptional.adb:12:09: warning: assignment to pass-by-copy formal may have no effect [enabled by default]
+test_exceptional.adb:12:09: warning: unused assignment
+test_exceptional.adb:23:45: info: exceptional case proved (Trivial: 1 VC)
+test_exceptional.adb:28:11: warning: unused assignment
+test_exceptional.adb:36:06: medium: for "X" at test_exceptional.adb:34
+test_exceptional.adb:36:06: medium: on exceptional exit at test_exceptional.adb:40
+test_exceptional.adb:36:06: medium: unexpected part of output might be modified by the subprogram
+test_exceptional.adb:37:45: info: exceptional case proved (Trivial: 1 VC)
+test_exceptional.adb:48:21: warning: "X" is not modified, could be IN
+test_exceptional.adb:50:09: medium: for "X" at test_exceptional.adb:48
+test_exceptional.adb:50:09: medium: on exceptional exit at test_exceptional.adb:54
+test_exceptional.adb:50:09: medium: unexpected part of output might be modified by the subprogram
+test_exceptional.adb:51:48: info: exceptional case proved (Trivial: 1 VC)
+test_exceptional.adb:67:06: medium: for "X" at test_exceptional.adb:65
+test_exceptional.adb:67:06: medium: unexpected part of output might be modified by the subprogram
+test_exceptional.adb:84:31: warning: "X" is not modified, could be IN
+test_exceptional.adb:84:31: warning: unused variable "X"
+test_exceptional.adb:87:09: medium: for "X" at test_exceptional.adb:84
+test_exceptional.adb:87:09: medium: on exceptional exit at test_exceptional.adb:91
+test_exceptional.adb:87:09: medium: unexpected part of output might be modified by the subprogram
+test_exceptional.adb:87:22: info: discriminant check proved (CVC5: 1 VC)
+test_exceptional.adb:87:22: info: on entry of subprogram at test_exceptional.adb:85
+test_exceptional.adb:87:22: medium: discriminant check might fail
+test_exceptional.adb:87:22: medium: on exceptional exit at test_exceptional.adb:91
+test_exceptional.adb:88:48: info: exceptional case proved (Trivial: 1 VC)
+test_exceptional.adb:91:07: info: no contextual analysis of "Outer_Component" (nested subprogram)
+test_exceptional.adb:93:12: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_program_exit.adb:10:06: info: data dependencies proved
+test_program_exit.adb:10:31: warning: unused initial value of "H"
+test_program_exit.adb:12:06: info: for "G" at test_program_exit.adb:2
+test_program_exit.adb:12:06: info: modifies contract proved (CVC5: 1 VC; Trivial: 1 VC)
+test_program_exit.adb:14:22: info: program exit postcondition proved (CVC5: 1 VC)
+test_program_exit.adb:24:06: info: data dependencies proved
+test_program_exit.adb:24:31: warning: unused initial value of "H"
+test_program_exit.adb:26:06: info: for "G" at test_program_exit.adb:2
+test_program_exit.adb:26:06: info: modifies contract proved (CVC5: 1 VC; Trivial: 1 VC)
+test_program_exit.adb:28:22: info: program exit postcondition proved (CVC5: 1 VC)
+test_program_exit.adb:28:32: info: overflow check proved (CVC5: 2 VC)
+test_program_exit.adb:38:06: info: data dependencies proved
+test_program_exit.adb:38:31: warning: unused initial value of "H"
+test_program_exit.adb:40:06: info: for "G" at test_program_exit.adb:2
+test_program_exit.adb:40:06: info: modifies contract proved (CVC5: 1 VC; Trivial: 1 VC)
+test_program_exit.adb:40:06: medium: for "G" at test_program_exit.adb:2
+test_program_exit.adb:40:06: medium: on program exit at test_program_exit.adb:44
+test_program_exit.adb:40:06: medium: unexpected part of output might be modified by the subprogram
+test_program_exit.adb:42:22: info: program exit postcondition proved (CVC5: 2 VC)
+test_program_exit.adb:57:06: info: data dependencies proved
+test_program_exit.adb:59:06: info: for "X" at test_program_exit.adb:54
+test_program_exit.adb:59:06: info: modifies contract proved (CVC5: 1 VC)
+test_program_exit.adb:70:16: info: implicit aspect Always_Terminates on "Get_F" has been proved, subprogram will terminate
+test_program_exit.adb:70:42: info: data dependencies proved
+test_program_exit.adb:75:09: info: data dependencies proved
+test_program_exit.adb:77:09: info: for "State" at test_program_exit.adb:69
+test_program_exit.adb:77:09: info: for "State" at test_program_exit.adb:69
+test_program_exit.adb:77:09: info: modifies contract proved (CVC5: 1 VC; Trivial: 1 VC)
+test_program_exit.adb:77:09: info: modifies contract proved (Trivial: 2 VC)
+test_program_exit.adb:77:09: info: on program exit at test_program_exit.adb:100
+test_program_exit.adb:82:09: low: global Input "Nested.State" of "Unmentioned_State" not read
+test_program_exit.adb:83:09: info: for "State" at test_program_exit.adb:69
+test_program_exit.adb:83:09: info: for "State" at test_program_exit.adb:69
+test_program_exit.adb:83:09: info: modifies contract proved (CVC5: 2 VC; Trivial: 1 VC)
+test_program_exit.adb:83:09: info: modifies contract proved (Trivial: 2 VC)
+test_program_exit.adb:83:09: info: on program exit at test_program_exit.adb:106
+test_program_exit.adb:88:09: info: data dependencies proved
+test_program_exit.adb:90:09: info: for "State" at test_program_exit.adb:69
+test_program_exit.adb:90:09: info: modifies contract proved (CVC5: 2 VC; Trivial: 1 VC)
+test_program_exit.adb:90:09: medium: for "State" at test_program_exit.adb:69
+test_program_exit.adb:90:09: medium: on program exit at test_program_exit.adb:113
+test_program_exit.adb:90:09: medium: unexpected part of output might be modified by the subprogram
+test_program_exit.adb:92:25: info: program exit postcondition proved (CVC5: 1 VC)
