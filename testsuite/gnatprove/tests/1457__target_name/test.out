@@ -1,0 +1,2 @@
+target_name.ads:2:19: info: assertion proved (Trivial)
+target_name.ads:3:04: medium: assertion might fail

@@ -3,7 +3,9 @@ project GNAT2Why_GNAT is
    for Object_Dir use "obj";
    for Exec_Dir use "../install/bin";
 
-   for Source_Dirs use ("obj", "gnat_src", "obj-gnat");
+   --  Directory "spark_src" holds SPARK-specific units that the front-end
+   --  part of gnat2why depends on.
+   for Source_Dirs use ("obj", "gnat_src", "obj-gnat", "spark_src");
    for Excluded_Source_Files use ("back_end.adb",
                                   "gnat1drv.adb",
                                   "indepsw-aix.adb",

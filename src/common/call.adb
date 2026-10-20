@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;
+with GNAT.Expect;
 with GNATCOLL.Mmap;
 with GNATCOLL.Utils;
 
@@ -106,6 +107,44 @@ package body Call is
       GNATCOLL.Utils.Free (Arg_List);
       Free (Executable);
    end Call_With_Status;
+   pragma Annotate (Xcov, Exempt_Off);
+
+   ----------------------------------
+   -- First_Line_Of_Command_Output --
+   ----------------------------------
+
+   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
+   function First_Line_Of_Command_Output
+     (Command : String; Arguments : String_Lists.List; Status : out Integer)
+      return String
+   is
+      Local_Status : aliased Integer;
+      Arg_List     : Argument_List := Argument_List_Of_String_List (Arguments);
+   begin
+      declare
+         Output : constant String :=
+           GNAT.Expect.Get_Command_Output
+             (Command, Arg_List, "", Local_Status'Access, True);
+         Last   : Natural := Output'Last;
+      begin
+         GNATCOLL.Utils.Free (Arg_List);
+         Status := Local_Status;
+
+         for C in Output'Range loop
+            if Output (C) in ASCII.LF | ASCII.CR then
+               Last := C - 1;
+               exit;
+            end if;
+         end loop;
+
+         return Output (Output'First .. Last);
+      end;
+   exception
+      when GNAT.Expect.Invalid_Process =>
+         GNATCOLL.Utils.Free (Arg_List);
+         Status := 1;
+         return "";
+   end First_Line_Of_Command_Output;
    pragma Annotate (Xcov, Exempt_Off);
 
    ------------------------

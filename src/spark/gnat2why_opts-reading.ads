@@ -121,6 +121,12 @@ package Gnat2Why_Opts.Reading is
 
    Limit_Name : Unbounded_String;
 
+   --  Name of the target that the analyzed code would be compiled for, as
+   --  reported by the Ada compiler of the project. It is used as the value of
+   --  attribute Target_Name. Empty when gnatprove could not determine it.
+
+   Target_Name : Unbounded_String;
+
    --  The Why3 command will be run in this directory
 
    Why3_Dir : Unbounded_String;
