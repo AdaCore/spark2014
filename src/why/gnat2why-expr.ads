@@ -254,8 +254,10 @@ package Gnat2Why.Expr is
    --  @param Expr Expression for which we want the default initialization
    --  @param Ty The type of the expression Expr
    --  @param Params Transformation parameters
-   --  @param Skip_Last_Cond Do not assume the top-level
-   --         Default_Initial_Condition of Ty if any.
+   --  @param Skip_Last_Cond True term to omit Ty's top-level
+   --         Default_Initial_Condition. Used when proving that condition,
+   --         or properties of default values which its proof assumes, to
+   --         avoid circular reasoning.
    --  @param Use_Pred Use the precomputed predicate for Ty's default initial
    --         assumption
    --  @param Include_Subtypes True if Expr can be of any subtype of Ty. In
@@ -287,9 +289,10 @@ package Gnat2Why.Expr is
       Top_Predicate : W_Term_Id := True_Term) return W_Pred_Id;
    --  @param Expr Why3 term expression on which to express the dynamic
    --     predicate.
-   --  @param Ty type with the dynamic invariant
+   --  @param Ty type with the subtype predicate
    --  @param Params transformation parameters
-   --  @param Top_Predicate True to ignore the top-level predicate of Ty
+   --  @param Top_Predicate True to include the top-level predicate of Ty.
+   --     False excludes it but still includes applicable ancestor predicates.
    --  @result Why3 predicate expressing the dynamic predicate of type [Ty]
    --     over [Expr].
 
@@ -305,16 +308,22 @@ package Gnat2Why.Expr is
       Use_Pred       : Boolean := True) return W_Pred_Id;
    --  @param Expr Why3 expression on which to express the dynamic invariant
    --  @param Ty type of expression [Expr]
-   --  @param Initialized true term iff Expr is known to be initialized. If
-   --     Expr has an initialization wrapper type, then Initialized is not
-   --     used.
+   --  @param Initialized True term iff Expr is known to be initialized. It
+   --     guards assumptions that could make the modeled type empty, such as
+   --     membership in an empty scalar range. For wrapped scalars, the
+   --     wrapper's initialization flag is used instead of Initialized.
+   --     Properties of unread uninitialized values can still be assumed if
+   --     they do not make the proof context inconsistent.
    --  @param Valid validity flag of Expr if it is potentially invalid,
    --     Why_Empty otherwise.
-   --  @param Only_Var true term iff the dynamic invariant should only consider
-   --     the variable parts of [Expr].
-   --  @param Top_Predicate true term iff the dynamic invariant should consider
-   --     the toplevel type predicate possibly associated with [Ty].
-   --  @param All_Global_Inv true if the dynamic invariant should consider all
+   --  @param Only_Var True term iff the dynamic invariant should only consider
+   --     the variable parts of [Expr]. Used to omit already known top-level
+   --     bounds and discriminants; immutable parts of nested components are
+   --     still included.
+   --  @param Top_Predicate True term iff the dynamic invariant should include
+   --     the top-level subtype predicate of Ty. Exclude it when proving
+   --     runtime checks in that predicate's expression.
+   --  @param All_Global_Inv True if the dynamic invariant should consider all
    --     the non-local type invariants possibly associated with [Ty]. If it is
    --     False, non-local invariants relaxed for parameters of Current_Subp
    --     are excluded.
@@ -529,7 +538,7 @@ package Gnat2Why.Expr is
    --  @param Ada_Node node to which the check is attached
    --  @param Check_Ty type whose predicate needs to be checked
    --  @param W_Expr Why3 expression on which to check the predicate
-   --  @param Top_Predicate True to ignore the top-level predicate of Check_Ty
+   --  @param Top_Predicate True to include the top-level predicate of Check_Ty
    --  @result Why3 program that performs the check and returns [W_Expr]
 
    function Insert_Invariant_Check
@@ -573,7 +582,7 @@ package Gnat2Why.Expr is
    --  @param W_Expr Why3 expression on which to check the predicate
    --  @param On_Default_Value True iff this predicate check applies to the
    --    default value for a type
-   --  @param Top_Predicate True to ignore the top-level predicate of Ty
+   --  @param Top_Predicate True to include the top-level predicate of Ty
    --  @return Why3 program that performs the check
 
    function Range_Expr

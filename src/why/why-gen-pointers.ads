@@ -37,7 +37,37 @@ with Why.Conversions;        use Why.Conversions;
 with Why.Sinfo;              use Why.Sinfo;
 
 package Why.Gen.Pointers is
-   --  This package encapsulates the encoding of access types into Why.
+   --  This package encodes access-to-object types into Why3.
+   --
+   --  An immutable record __rep holds the is_null_pointer flag and the
+   --  pointer_value field. Addresses are not represented. Move flags used
+   --  for reclamation checks are stored in a separate move tree.
+   --
+   --  Initialization wrappers add a flag for initialization of the pointer
+   --  itself in SPARK. Although Ada pointers are initialized, SPARK can treat
+   --  them as uninitialized, as for out parameters whose initial value cannot
+   --  be read.
+   --
+   --  Repr_Pointer_Type selects the first translated access type with the
+   --  same Retysp of its directly designated type. This type supplies the
+   --  representative module and shared operations, including the null value,
+   --  checked dereference, and equality. Field names use rec__ followed by
+   --  the full name of Root_Pointer_Type (E) and the field name.
+   --  Declare_Ada_Pointer re-exports this module and aliases __rep with the
+   --  Ada type's name.
+   --
+   --  Root_Pointer_Type selects the representative for the root access type.
+   --  When designated subtypes have different representations, to_base and
+   --  of_base convert the designated value without array sliding and preserve
+   --  nullness. Null values use the destination's dummy designated value.
+   --  Subtype checks take bounds or discriminants as parameters and apply
+   --  only to non-null values; null exclusions are checked separately.
+   --
+   --  Access types designating incomplete types initially use an abstract
+   --  type for pointer_value. A separate completion module connects it to
+   --  the completed designated type and defines the shared operations.
+   --  Move trees have their own abstract declarations and completions when
+   --  incomplete access types prevent immediate construction of the tree.
 
    procedure Declare_Rep_Pointer_Compl_If_Needed (E : Entity_Id)
    with Pre => Is_Access_Type (E) and then Designates_Incomplete_Type (E);
@@ -47,14 +77,12 @@ package Why.Gen.Pointers is
    procedure Declare_Ada_Pointer (Th : Theory_UC; E : Entity_Id)
    with Pre => Is_Access_Type (E);
    --  Emit all necessary Why3 declarations to support Ada pointers.
-   --  @param P the Why section to insert the declaration
+   --  @param Th the theory in which to insert the declaration
    --  @param E the type entity to translate
 
    procedure Create_Rep_Pointer_Theory_If_Needed (E : Entity_Id);
-   --  Similar to Create_Rep_Record_Theory_If_Needed but handles objects of
-   --  access type. It declares a pointer type as a why record with three
-   --  fields: pointer_value, is_null_pointer, and is_moved.
-   --  It also defines the needed functions to manipulate this type.
+   --  Create a representative module for E's designated type if none exists.
+   --  It declares the pointer record and shared operations described above.
 
    procedure Create_Move_Tree_Theory_For_Pointer
      (Th : Theory_UC; E : Entity_Id)
@@ -64,7 +92,9 @@ package Why.Gen.Pointers is
        and then Contains_Allocated_Parts (E)
        and then not Is_Anonymous_Access_Type (E);
    --  Create a module declaring a type for the move trees for objects of type
-   --  E.
+   --  E. Pool-specific access types have an is_moved flag and, if needed, a
+   --  subtree for the designated value. General access types reuse the
+   --  designated type's move tree without a flag for the pointer itself.
 
    procedure Create_Move_Tree_For_Incomplete_Access (E : Entity_Id)
    with Pre => Has_Incomplete_Access (E) and then Contains_Allocated_Parts (E);

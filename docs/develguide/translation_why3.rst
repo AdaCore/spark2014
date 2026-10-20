@@ -218,24 +218,17 @@ abstract:
 Dummy values
 """"""""""""
 
-Type encodings provide a dummy value. It is used to
-give a value to components which are not present in record types due
-to discriminant constraints (see following section about record
-types):
+Type encodings provide a dummy value to fill fields that do not represent
+an Ada value in the current object:
 
 .. code-block:: whyml
 
     function dummy : t
 
-Why3 record values contain all fields, including those of inactive variants.
-A dummy value fills these fields without representing an Ada component that
-can be read. Field accesses must check that the component is present, and
-record equality only compares the active components. The choice of dummy value
-must therefore not affect the Ada result.
-
-The same principle applies to the designated-value field of a null access
-value. Dummy values are placeholders in the encoding, not Ada default
-initialization values.
+Examples are inactive record components and the designated-value field of a
+null access value. Dummy values are placeholders in the encoding, not Ada
+default initialization values. The record model and its tradeoffs are explained
+under :ref:`Logical equality and inactive components`.
 
 Scalar Types
 ^^^^^^^^^^^^
@@ -816,7 +809,8 @@ elements for out-of-bounds indexes. The predicate ``has_bounds`` is introduced
 and maintained over arrays so that these elements do not prevent proof of
 logical equality. It stands for the property that values outside the given
 bounds are fixed. Intuitively, they contain a dummy value, as for inactive
-record components; the choice of that value does not matter.
+record components (see :ref:`Logical equality and inactive components`);
+the choice of that value does not matter.
 An extensionality axiom allows Why3 to prove that two arrays with the same
 bounds are logically equal if they agree on the value of elements within the
 bounds:
@@ -1212,17 +1206,14 @@ them would require conversion functions that also convert the indexes.
 Record Types, Private Types, and Concurrent Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Types that are allowed to have discriminants (record types, task
-types, protected types, private types…) are translated as record types
-in Why using a single mechanism (see
-``Gnat2why.Util.Is_Record_Type_In_Why``). The translation is done in two
-phases, first a representative record theory is declared for the type
-(see Why.Gen.Records.Declare_Rep_Record_Type), and then a specific
-theory is declared, which uses this representative theory (see
-Why.Gen.Records.Declare_Ada_Record). This allows sharing a
-representative type between record types of a given hierarchy which
-have the same components to avoid conversions (see
-Oldest_Parent_With_Same_Fields).
+Record types, task types, protected types, and private types use a common
+record model (see ``Gnat2why.Util.Is_Record_Type_In_Why``). A representative
+module describes the stored data and operations shared by types with the same
+representation. A type-specific module uses that representation and adds
+declarations specific to the Ada type, such as its tag. Sharing a
+representative type between types of a hierarchy with the same components
+avoids unnecessary conversions. The declaration and sharing conventions are
+documented in :file:`src/why/why-gen-records.ads`.
 
 Representative Type
 """""""""""""""""""
@@ -1232,11 +1223,25 @@ why record type with immutable fields. Mutation of components is
 handled by modifying the whole object. A representative why record
 type has a layered structure.
 
+Variant records also use this structure, with fields for every variant,
+including inactive ones. An algebraic datatype with a constructor for each
+variant would make Why3 generate checks on accesses to fields that are not
+present in every constructor. GNATprove needs to generate these checks itself
+to track them precisely. Pattern matching would avoid those implicit checks,
+but would introduce cases that previous checks have already ruled out, making
+the VCs more complex. The record representation allows field access without
+another check or case split. This fits the common translation pattern for
+contracts and assertions:
+first generate the checks for an expression, then translate its logical value.
+
 At the top-level, a field is defined for each kind of information that
-needs to be stored in the object (discriminants, components, tag…)
-(see ``Gnat2why.Util.Count_Why_Top_Level_Fields``). Fields for components
-or discriminants are themselves records holding the values of the
-actual components.
+needs to be stored in the value (discriminants, components, tag...). Fields for
+components or discriminants are themselves records holding the values of the
+actual components. This separation lets the object and subprogram encodings
+treat each top-level field according to its mutability. For example, a call that
+cannot change discriminants can receive them by value while receiving the
+ordinary components by reference. See :ref:`Record Objects` for the split
+object model.
 
 As an example, consider the following record type:
 
@@ -1260,39 +1265,41 @@ discriminants and one for the components:
       type __rep = { __split_discrs : __split_discrs;
 		     __split_fields : __split_fields }
 
-The field __split_discrs contains every discriminant of the type. As
-no discriminant can be added to a record hierarchy, all types of a
-given hierarchy have the same discriminants. The field __split_fields
+The field __split_discrs contains every discriminant of the type. SPARK does not
+allow adding discriminants in a derivation, so all types of a given hierarchy
+share this top-level field. The field __split_fields
 contains every component of the type that can be visible in SPARK as
-well as Part_Of variables for single protected objects. Note that some
-components that are hidden by private derivation may be removed by the
-frontend from the component list of record types. As we still want
-them in SPARK, we use a table which stores every component of a record
-(see ``Gnat2why.Tables.Get_Component_Set``). In the case of tagged types,
-these hidden fields can have the same names as other (visible or not)
-components. To differentiate them, record fields in Why are prefixed
-by the full name of the first type in which they occur (rec__my_rec__h
-and not only rec__h).
+well as ``Part_Of`` variables for single protected objects. Components hidden
+by Ada privacy remain in the proof representation when their declarations are
+in SPARK. For all types modeled as records, proof translation retrieves
+the component set only through ``Gnat2why.Tables.Get_Component_Set``.
+The frontend's component list is insufficient, since Ada privacy can remove
+inherited components from it. The tables and their conventions are documented in
+:file:`src/why/gnat2why-tables.ads`; field naming conventions are in
+:file:`src/why/why-gen-records.ads`.
 
 When the type is derived, or when a subtype is defined, the
-representative type is preserved if both no new components are added
-(untagged derivation) and there are no component whose type changes in
-the derivation (discriminant dependent components). As it is the case
-in our example, the following My_Rec_100 subtype will have the same
+representative type can be preserved when no components are added and no
+component type changes, for example because of a discriminant constraint.
+In our example, the following My_Rec_100 subtype will have the same
 representative type as My_Rec:
 
 .. code-block:: ada
 
       subtype My_Rec_100 is My_Rec (100);
 
-Let us consider a slightly different example where My_Rec contains a
-discriminant dependent component:
+.. _why3-discriminant-dependent-record-example:
 
-.. code-block:: whyml
+Let us consider a slightly different example where My_Rec contains a
+discriminant-dependent component:
+
+.. code-block:: ada
 
      type My_Rec (L : Natural) is record
         C : My_Array (1 .. L);
      end record;
+
+     subtype My_Rec_100 is My_Rec (100);
 
 Here, My_Rec_100 will define a new representative type in which the C
 component has the more precise My_Array (1 .. 100) type. However, as
@@ -1313,14 +1320,13 @@ Discriminant checks
 
 There are two kinds of discriminant checks for types with
 discriminants. First, components that are under a variant require a
-check when accessed. In Gnat2why, information about record variants is
-computed once and for all and then stored in Gnat2why.Tables. It can
-be retrieved using Has_Variant_Info and Get_Variant_Info.
+check when accessed. Why3 records contain fields for every variant, so a field
+access in the encoding is possible even when the Ada component is absent.
+The discriminant check prevents the program from reading such a field.
 
-For all components of a record type, a predicate is defined that
+For components that may need a discriminant check, a predicate is defined that
 checks whether the component is present in a record object depending
-on the value of its discriminants if any. In the simplest case, if the
-record has no discriminant or if the component is not nested in a
+on the value of its discriminants. If the component is not nested in a
 variant part, this predicate simply returns True.
 
 As an example, let us consider a record type with a variant part:
@@ -1341,19 +1347,24 @@ zero. This is expressed in its associated discriminant predicate:
 
 .. code-block:: whyml
 
-     predicate types__c__pred (a : __rep)  =
-         not (to_rep a.__split_discrs.rec__my_rec__l = 0)
+     predicate types__c__pred (d : __split_discrs) =
+       not (to_rep d.rec__my_rec__l = 0)
+
+The predicate takes the value of the top-level field for discriminants. The
+type of this field can be shared even when component types differ between
+record views.
 
 A discriminant check is also needed for types and subtypes with
-discriminant constraints to check inclusion of a record in the type /
-subtype. If a type or a subtype is constrained, a range predicate is
-defined for this check. As an example, here is the range predicate
-that would be defined for the My_Rec_100 subtype:
+discriminant constraints, to check that a record belongs to the type or subtype.
+A predicate shared by the hierarchy compares the expected discriminants with
+the discriminants stored in the corresponding top-level field. For example,
+the check for ``My_Rec_100`` uses the following predicate with
+``expected_l = 100``:
 
 .. code-block:: whyml
 
-     predicate in_range (rec__my_rec__l : int) (a : my_rec)  =
-       rec__types__my_rec__l = to_rep a.__split_discrs.rec__my_rec__l
+     predicate in_range (expected_l : int) (d : __split_discrs) =
+       expected_l = to_rep d.rec__my_rec__l
 
 Note that the actual value of the discriminant is not inlined here,
 but rather needs to be supplied at each call. This is because this
@@ -1363,19 +1374,25 @@ in a loop (loop indices are translated as variables in Why).
 Private components
 """"""""""""""""""
 
-As stated at the beginning of the section, SPARK always uses the most
-precise view of types that is available to it. However, it can happen
+As discussed under :ref:`Modules for Entities`, proof uses the most precise
+SPARK view of types by default. However, it can happen
 that a type is completely or partially hidden from SPARK analysis
 under a SPARK_Mode (Off) pragma (see
-``Gnat2why.Tables.Has_Private_Part``). When this is the case, SPARK cannot
-just ignore the components it is not allowed to see. Instead, it
+``Gnat2why.Tables.Has_Private_Part``). Omitting the hidden components would make
+objects with the same visible components logically equal. Proof could then
+substitute one object for the other even when functions using hidden state
+can distinguish them. Instead, the translation
 creates a special field for them, named rec__t for a type T, of an
-abstract logic type. As an example, let us consider a semi private
-type, of which we can only see the discriminants:
+abstract logic type.
+
+.. _why3-private-record-example:
+
+As an example, let us consider a semi private
+type of which only the discriminants are available in SPARK:
 
 .. code-block:: ada
 
-       package P  is
+       package P with SPARK_Mode is
 	  type Priv (B: Boolean) is private;
        private
 	  pragma SPARK_Mode (Off);
@@ -1397,22 +1414,22 @@ Here is how it is translated in Why:
 	__split_fields : __split_fields }
 
 As __main_type has no definition, we can deduce nothing about the
-rec_priv field, not even whether it actually can take several values
+rec__priv field, not even whether it actually can take several values
 or not.
 
 Record equality
 """""""""""""""
 
 Predefined equality on record types is the conjunction of equalities
-on every components. If a component is ultimately a record type, the
-primitive equality should be used for it instead of the predefined
-equality (see Why.Gen.Expr.New_Ada_Equality). Predefined equality is
+on discriminants and present components, using the appropriate Ada equality
+for each component type (see :ref:`Predefined / primitive equality`). It does
+not compare placeholder values in inactive variants. Predefined equality is
 generated in the representative module, as it is shared between record
-types with same fields. Conversely, the primitive equality symbol
-user_eq is declared in specific modules as it can be overridden after
-derivation.
+types with the same fields. When a user-defined primitive equality is needed,
+its ``user_eq`` symbol belongs to the type-specific module, as equality can be
+overridden after derivation.
 
-As an example, let us consider a the following type structure:
+As an example, let us consider the following type structure:
 
 .. code-block:: ada
 
@@ -1422,25 +1439,25 @@ As an example, let us consider a the following type structure:
 
       type Rec_Eq is new My_Rec (100);
 
-      function "=" (X, Y : My_Rec_2) return Boolean;
+      function "=" (X, Y : Rec_Eq) return Boolean;
 
       type Big_Rec (B : Boolean) is record
 	 X : My_Rec_100;
 	 Y : Rec_Eq;
       end record;
 
-Here is the predicate defined for predefined equality on type Big_Rec:
+Here is the function defined for predefined equality on type Big_Rec:
 
 .. code-block:: whyml
 
     function bool_eq (a : __rep) (b : __rep) : bool =
       (a.__split_discrs.rec__big_rec__b =
        b.__split_discrs.rec__big_rec__b)
-      /\ (types__big_rec__x__pred a ->
+      /\ (types__big_rec__x__pred a.__split_discrs ->
 	     P__my_rec_100.bool_eq
 			 a.__split_fields.rec__big_rec__x
 			 b.__split_fields.rec__big_rec__x)
-      /\ (types__big_rec__y__pred a ->
+      /\ (types__big_rec__y__pred a.__split_discrs ->
 	    P__rec_eq.user_eq
 			 a.__split_fields.rec__big_rec__y
 			 b.__split_fields.rec__big_rec__y)
@@ -1452,7 +1469,7 @@ indeed present (i.e. when the predicate discriminant check for the
 corresponding component returns True).
 
 On tagged record extensions, the predefined equality is defined in
-term of the primitive equality of the parent. As a consequence, if
+terms of the primitive equality of the parent. As a consequence, if
 the primitive equality is overridden by the user on a tagged type,
 this user-defined equality function will be used in the predefined
 equality of all of its descendants. For example, consider the types
@@ -1479,42 +1496,86 @@ fields ``F`` and ``G`` in the predefined equality of ``Child``:
           { P__root.__split_fields =
               { P__root.rec__root__f = a.__split_fields.rec__root__f;
                 P__root.rec__root__g = a.__split_fields.rec__root__g;
-                P__root.rec__ext__ = null__ext__ };
+                P__root.rec__ext__ = P__root.null__ext__ };
             P__root.attr__tag = P__root.__tag }
           { P__root.__split_fields =
               { P__root.rec__root__f = b.__split_fields.rec__root__f;
                 P__root.rec__root__g = b.__split_fields.rec__root__g;
-                P__root.rec__ext__ = null__ext__ };
+                P__root.rec__ext__ = P__root.null__ext__ };
             P__root.attr__tag = P__root.__tag }
      /\ to_rep a.__split_fields.rec__child__h
           = to_rep b.__split_fields.rec__child__h
 
-For types with a private part, an uninterpreted logic function is
-introduced to stand for (primitive or predefined) equality on the
-private components of the type. It ensures that nothing can be deduced
-for this equality, not even that it is reflexive.
+For types with a private part, a separate function stands for equality on the
+hidden state. It uses Why3's logical equality when that is an appropriate model
+of Ada equality for the hidden representation. The translation can inspect
+the full view to make this choice without exposing its structure to proof;
+``Use_Real_Eq_For_Private_Type`` in :file:`src/spark/spark_util-types.adb`
+implements this decision, including predefined-equality annotations.
 
-For example, here is the predicate defined for predefined equality on
-type Priv:
+When Ada equality can identify values that a function could distinguish, logical
+equality would give unsound congruence assumptions. For example, floating-point
+equality identifies positive and negative zero, and unconstrained array equality
+does not compare bounds. User-defined component equality and equality on tagged
+types can also ignore parts of the represented state. In these cases, the
+equality function for the private part is left uninterpreted. Even reflexivity
+cannot then be assumed.
+
+For example, here is the function defined for predefined equality on
+type :ref:`Priv <why3-private-record-example>`:
 
 .. code-block:: whyml
 
-     function __main_eq (a : __main_type) (b : __main_type) : bool
+     function __main_eq (a : __main_type) (b : __main_type) : bool = a = b
 
      function bool_eq (a : __rep) (b : __rep) : bool =
       (a.__split_discrs.rec__priv__b = b.__split_discrs.rec__priv__b)
       /\ (__main_eq a.__split_fields.rec__priv
 		    b.__split_fields.rec__priv)
 
+The hidden completion of ``Priv`` is a null record, so logical equality can be
+used for its abstract private part. If the completion instead contained a
+floating-point component, ``__main_eq`` would have no definition.
+
+Logical equality and inactive components
+""""""""""""""""""""""""""""""""""""""""
+
+Why3 record values contain all fields, including those of inactive variants.
+Field accesses must check that the component is present, and predefined record
+equality only compares present components. The values stored in inactive fields
+therefore cannot affect the result of Ada equality.
+
+However, Why3's logical equality compares the whole representation. If inactive
+fields could contain arbitrary values, two records with matching discriminants
+and logically equal present components could still differ in those fields.
+To avoid this, all fields of inactive variants are fixed to their respective
+dummy values. In the earlier variant record example, the field for ``C`` is
+fixed to its dummy value whenever ``L = 0``.
+
+Absent components can then no longer prevent proof of logical equality. Once
+established, logical equality gives congruence for all logical functions:
+applying any such function to either record gives the same result. This requires
+logical equality of the present components, rather than just Ada equality;
+user-defined or floating-point equality may identify distinct Why3 values.
+Any private fields, tags, and extension fields must also be logically equal.
+
+This choice has a cost, as for the fixed out-of-bounds values of arrays.
+The dynamic invariant of a record requires each inactive field to equal its
+dummy value. Record construction and operations must establish or preserve
+these conditions. For example, aggregates fill absent fields with dummy values,
+and assignment of a new variant must leave the fields of the old variant dummy
+when they are no longer present. These conditions add to the proof context even
+though Ada code cannot read the fields. They are the tradeoff for being able to
+prove logical equality from the state present in the Ada record.
+
 Mutable discriminants
 """""""""""""""""""""
 
 Objects of a type with mutable discriminants can be either constrained
-or unconstrained (information can be get through the ‘Constrained
-attribute). It depends on how the object was declared and cannot be
-changed throughout the program. In the why translation of record types
-with mutable discriminants, the constrained information is kept as a
-separate top-level field.
+or unconstrained (this information is available through the ``'Constrained``
+attribute). It depends on how the object was declared and does not change during
+its lifetime. An assignment can change an unconstrained object's discriminants,
+but must preserve a constrained object's discriminants.
 
 As an example, consider the following type with mutable discriminants:
 
@@ -1529,27 +1590,27 @@ As an example, consider the following type with mutable discriminants:
 	end case;
      end record;
 
-Its representative type contains three fields, one for the
-discriminant, one for the field, and an additional boolean flag for
-the ‘Constrained attribute:
+Constrainedness belongs to the object, rather than to the record value copied
+by assignment. When it is not known statically, the translation keeps it in a
+separate immutable Boolean alongside the object's mutable discriminants and
+components (see :ref:`Record Objects`). For example, these objects can contain
+the same record value while having different constrainedness:
 
-.. code-block:: whyml
+.. code-block:: ada
 
-     type __rep =
-      { __split_discrs    : __split_discrs;
-        __split_fields    : __split_fields;
-        attr__constrained : bool }
+   X : My_Option := (Present => False);
+   Y : My_Option (False) := (Present => False);
 
-During assignment of an object with mutable discriminants, care must
-be taken to preserve the value of the attr__constrained flag (see
-``Gnat2why.Expr.New_Assignment``).
+``X`` can later receive a value with ``Present = True``; ``Y`` cannot. Copying a
+value to either object does not copy the source object's constrainedness.
+Before an assignment to a constrained target, a check verifies that the new
+discriminants match the old ones.
 
-Note that the ‘Constrained attribute on record or array components is
-not always the value of the attr_constrained field of the components.
-Indeed, to be able to handle assignment of composite objects easily,
-the attr_constrained field is always set to False if the component
-type is unconstrained whereas ‘Constrained always returns True on
-(parts of) constant objects (see ``Gnat2why.Expr.Transform_Attr``).
+The value of the ``'Constrained`` attribute also depends on its prefix; for example,
+components of constants are constrained. ``New_Constrained_Attribute_Expr`` in
+:file:`src/why/gnat2why-expr.adb` uses the statically known result when available
+and the separate object flag otherwise. It does not retrieve constrainedness
+from the component value.
 
 Record Conversions
 """"""""""""""""""
@@ -1558,8 +1619,9 @@ When two types of a record hierarchy share the same representative
 type, no conversion is required. Otherwise, conversions go through the
 root type of the hierarchy. More precisely, for every record type or
 subtype which is not a root, two conversion functions, to and from the
-root type are introduced. As an example, here are the conversion
-functions introduced for My_Rec_100:
+root type are introduced. As an example, here are the conversion functions for
+the earlier :ref:`My_Rec_100 <why3-discriminant-dependent-record-example>` subtype
+whose ``C`` component has static array bounds:
 
 .. code-block:: whyml
 
@@ -1572,12 +1634,15 @@ functions introduced for My_Rec_100:
      function of_base (r : my_rec) : __rep =
       { __split_discrs = r.__split_discrs;
 	__split_fields =
-	{ rec__my_rec__c = (to_array a.__split_fields.rec__my_rec__c) }
+	{ rec__my_rec__c = (to_array r.__split_fields.rec__my_rec__c) } }
 
-As no new discriminant can be introduced in derivation, the field for
+As SPARK does not allow adding discriminants in derivation, the field for
 discriminants is always preserved. As for regular components, they may
 require a conversion if their type has changed, like here for the C
-component.
+component. The map is preserved without sliding: this is a change of record
+view, and a discriminant-dependent component keeps its indexes. The conversion
+functions are not inverses of each other outside the subtype's constraints.
+Conversion conventions are documented in :file:`src/why/why-gen-records.ads`.
 
 Tagged types
 """"""""""""
@@ -1585,16 +1650,17 @@ Tagged types
 An object of a tagged type T has the particularity that it can in fact
 be a view conversion of an object of descendant of T. To represent
 tagged objects, we therefore need a tag, which allows to specialize
-treatment when necessary (conversions, dispatching, tag checks…), as
+treatment when necessary (conversions, dispatching, tag checks...), as
 well as a way to store an unknown number of unknown components which
 may arise from future derivations.
 
 The tag is represented by an additional top-level field of
-mathematical integer type named attr__tag. Each time a record type is
-introduced, a logic constant of type ``int`` is introduced to represent
+mathematical integer type named attr__tag. For each specific tagged type,
+a logic constant of type ``int`` is introduced to represent
 the specific tag of objects of this type. A fresh integer value is
 given for this constant on each derived type so it can be deduced that
-different types have different tags. These constants are used to
+different types have different tags. Subtypes reuse the tag of their base type.
+These constants are used to
 specify the value of the tag of an object when it is known, so that the
 object can be handled more precisely.
 
@@ -1622,7 +1688,7 @@ tree which is visible from the current unit (see
 ``Why.Gen.Records.Create_Compatible_Tags_Theory``).
 
 In addition to the attr__tag top-level field, tagged types also have a
-special regular field named rec__ext__ of the abstract __private type.
+special regular field named rec__ext__ of an abstract ``__ext_type``.
 It is stored in the __split_fields top-level field, along with other
 components and stands for potential hidden component of derived types.
 
@@ -1650,7 +1716,7 @@ special component for extensions:
       { __split_fields : __split_fields;
 	attr__tag      : int }
 
-Like for other record types, tagged conversions do through the root of
+Like for other record types, tagged conversions go through the root of
 the type hierarchy. For each tagged type which is not a root, logic
 functions are provided to hide components that are not present in the
 root type inside the extension and to retrieve them.
@@ -1679,7 +1745,7 @@ extensions:
 	attr__tag      : int }
 
 Then, conversions to and from the Root type are defined through the
-mean of abstract hide and extraction functions.
+means of abstract hide and extraction functions.
 
 .. code-block:: whyml
 
@@ -1697,7 +1763,7 @@ mean of abstract hide and extraction functions.
 				      a.__split_fields.rec__ext__) };
        attr__tag = a.attr__tag }
 
-     function of_base (r : May_package__root.root) : __rep =
+     function of_base (r : P__root.root) : __rep =
       { __split_fields =
 	 { rec__child__g = (extract__g r.__split_fields.rec__ext__);
 	   rec__root__f = r.__split_fields.rec__root__f;
@@ -1706,8 +1772,8 @@ mean of abstract hide and extraction functions.
 
 To avoid losing information when converting between types which share
 a component which is not in the root, the same extraction function is
-reused for every type which share the same component. As an example, a
-type:
+reused for every type which shares the same component. For example, consider
+the following extension:
 
 .. code-block:: ada
 
@@ -1715,21 +1781,22 @@ type:
         H : Integer;
      end record;
 
-Will reuse the extraction function for G declared in Child’s
+This type reuses the extraction function for G declared in Child's
 representative module:
 
 .. code-block:: whyml
 
-     function extract__g (x : __private) : Standard__integer.integer =
+     function extract__g (x : P__root.__ext_type) : Standard__integer.integer =
         P__child.extract__g x
 
 To link the extraction functions and the various hide__ext__ functions
-together, we introduce a bijection from the abstract __ext_type type to a
-concrete record type in an extension module P__root__rep__Compl. The concrete
-extension type of a root type contains a component for all the components
-that are introduced in those of its extensions that are visible from the
-analyzed unit plus an additional one standing for the components of other
-invisible extensions. For example, the concrete extension type of Root contains
+together, we introduce a bijection from the abstract ``__ext_type`` to a
+concrete record type in a separate representative completion module. This
+concrete type is a logical view of the single abstract extension field, rather
+than additional fields in the tagged record itself. For a root type, it contains
+all components introduced in extensions visible from the analyzed unit, plus
+one field for the unknown remaining extension. For example, the concrete
+extension type of Root contains
 components for Child.G and Grand_Child.H:
 
 .. code-block:: whyml
@@ -1739,38 +1806,47 @@ components for Child.G and Grand_Child.H:
       rec__p__grand_child__h__ext__ : Standard__integer.integer;
       rec__hidden_ext__ : Main.__private }
 
-  val function __open (x : P_root.__ext_type) : ext__
-  val function __close (x : ext__) : P_root.__ext_type
+  val function __open (x : P__root.__ext_type) : ext__
+  val function __close (x : ext__) : P__root.__ext_type
 
   axiom close_open:
-    forall x : P_root.__ext_type [__open x]. __close (__open x) = x
+    forall x : P__root.__ext_type [__open x]. __close (__open x) = x
 
   axiom open_close:
     forall x : ext__ [__close x]. __open (__close x) = x
 
-The bijection function open and close are generated by cloning the
-Incomplete_type module from ada__model.mlw. The completion module for Root
-also contains axioms defining all the extraction functions used in its
-extensions:
+The bijection functions ``__open`` and ``__close`` are generated by cloning
+``Incomplete_type`` from :file:`share/spark/theories/ada__model.mlw`.
+Completion modules also contain axioms defining the extraction functions used
+in the extensions:
 
 .. code-block:: whyml
 
   axiom extract__p__child__g__def:
     forall rec__ext__ : P__root.__ext_type.
       P__child.extract__p__child__g rec__ext__
-         = (__open rec__ext__).rec__p__child__g__ext__
+         = (P__root___rep__compl.__open rec__ext__).rec__p__child__g__ext__
 
   axiom extract__p__grand_child__h__def:
     forall rec__ext__ : P__root.__ext_type.
       P__grand_child.extract__p__grand_child__h rec__ext__
-         = (__open rec__ext__).rec__p__grand_child__h__ext__
+         = (P__root___rep__compl.__open rec__ext__).
+             rec__p__grand_child__h__ext__
 
 For tagged types which are not roots, the concrete extension type contains
 all components occurring in visible extensions *of the root* which are not
 present in the type. In our hierarchy, the concrete extension type for Child
 has only a component for Grand_Child.H, but, if we were to add a new child
-Other_Child of Root with a component I, then I would be in the concrete
-extension type of Child even if it cannot occur in any extension of child.
+Other_Child of Root with a component J, then J would be in the concrete
+extension type of Child even though it cannot occur in any descendant of Child.
+
+Keeping these fields allows ``__open`` and ``__close`` to remain inverse for
+all values of the extension types. If fields absent from the current type were
+discarded, a validity condition would be needed to fix their values to dummy
+values before stating those inverse properties. The chosen model avoids that
+condition by retaining the extra unknown values. This changes little in the
+abstraction, since it already contains an unknown remaining extension field.
+
 The extension module of non-root tagged types also contains axioms defining the
 hide__ext__ and extract__ext__ functions of the type. Here are those defined
 for Child:
@@ -1785,7 +1861,7 @@ for Child:
     forall g : Standard__integer.integer.
       forall ext : P__child.__ext_type.
         let open_ext = __open ext in
-          P__root__rep__Compl.__open (P__child__rep.hide_ext__ g ext)
+          P__root___rep__compl.__open (P__child.hide_ext__ g ext)
            = { rec__p__child__g__ext__       = g;
                rec__p__grand_child__h__ext__ =
 	            open_ext.rec__p__grand_child__h__ext__;
@@ -1793,13 +1869,13 @@ for Child:
 
   axiom extract__ext__def:
     forall ext : P__root.__ext_type.
-      let open_ext = P__root__rep__Compl.__open ext in
+      let open_ext = P__root___rep__compl.__open ext in
         __open (P__child.extract__ext__ ext)
          = { rec__p__grand_child__h__ext__ =
-	          open_ext.rec__main__grand_child__h__ext__;
+	          open_ext.rec__p__grand_child__h__ext__;
              rec__hidden_ext__             = open_ext.rec__hidden_ext__ }
 
-Equality on specific tagged type only compares fields that are visible
+Equality on a specific tagged type only compares fields that are visible
 in the current view of the objects. So the equality between view
 conversions to Root of two objects of type Child will still compare
 only the F component:
@@ -1834,8 +1910,11 @@ are finalized. In this case, it is necessary to generate WhyMl code to
 track whether a value of this type has been moved to another object
 before the finalization. This is done by declaring a ``__move_tree`` type
 and a ``__is_moved_or_reclaimed`` predicate like for
-:ref:`Access-To-Object Types`. For example, let us consider the
-following package:
+:ref:`Access-To-Object Types`. The private representation cannot expose the
+owned parts, so the reclamation condition comes from the user-supplied
+``Is_Reclaimed`` function. The move flag is stored separately from the value
+and is used to exclude moved objects from leak checks. For example, consider
+the following package:
 
 .. code-block:: ada
 
@@ -1868,108 +1947,66 @@ checking for leaks when an object of this type is finalized:
 
   end
 
-Record Attributes and Component Attributes
-""""""""""""""""""""""""""""""""""""""""""
-
-type.tag
-
 Special Cases
 """""""""""""
 
 As record types in Why must contain at least one field, untagged null
-records are translated specifically by Gnat2why as an abstract type.
+records are translated as an abstract type.
 To allow conversions between types of a hierarchy of null records, the
 abstract type introduced for the root of the hierarchy is reused by
 descendants. Therefore, conversion functions on null record types are
-always the identity. As for the predefined equality function, it is
-the True function since there is only one object of a null record
-type.
-
-As an example, let us consider an untagged null record type:
-
-.. code-block:: ada
-
-    type Null_Rec is null record;
-
-Here are the Why declarations introduced for it:
-
-.. code-block:: whyml
-
-    type null_rec
-
-    function to_base (a : null_rec) : null_rec = a
-
-    function of_base (r : null_rec) : null_rec = r
-
-    function bool_eq (a : null_rec) (b : null_rec) : bool = True
-
-On derived null record types:
-
-.. code-block:: ada
-
-    type Null_Rec_2 is new Null_Rec;
-
-The type of the root is reused:
-
-.. code-block:: whyml
-
-    type null_rec_2 = P__null_rec.null_rec
+always the identity. Predefined equality returns ``True`` because an Ada null
+record has no components to distinguish its values.
 
 Simple private types are untagged private types with no discriminants
 whose full view is not in SPARK:
 
-.. code-block:: whyml
+.. code-block:: ada
 
-      package P is
+      package P with SPARK_Mode is
 	 type Priv is private;
       private
 	 pragma SPARK_Mode (Off);
 	 type Priv is new Integer;
       end P;
 
-As such types are used by advanced users to model mathematical types
-(unbounded integers, reals…), we keep their translation as simple as
-possible to facilitate the task of mapping them to interpreted types
-inside proof assistants. Unlike for null record types, we introduce a
-representative theory for them, but a minimalist one, where the
-representative type is left abstract and predefined equality is
-undefined:
+Such types can model mathematical types (unbounded integers, reals...). Keeping
+their representation free of a record wrapper makes it easier to map them to
+interpreted types, both in proof assistants and in GNATprove's hardcoded models.
+Unlike for null record types, we introduce a representative theory for them,
+but a minimalist one, where the representative type is normally left abstract.
+Predefined equality uses logical equality
+when the full view permits it, and remains uninterpreted otherwise. For the
+integer completion above, it is:
 
 .. code-block:: whyml
 
      type __rep
 
-     function to_base (a : __rep) : __rep =  a
+     function bool_eq (a : __rep) (b : __rep) : bool = a = b
 
-     function of_base (a : __rep) : __rep = a
-
-     function bool_eq (a : __rep) (b : __rep) : bool
-
-For record types which are clones of other types, mostly classwide
-types and cloned subtypes (see Why.Gen.Records.Record_Type_Is_Clone),
-no new representative module is introduced and the specific module is
-simply a clone of the existing cloned type:
-
-.. code-block:: whyml
-
-    module Types__TrootC
-     use export Types__root
-    end
-
-Additionally, if the cloned type has a different name from the new
-type, a renaming is introduced for the record type.
+Classwide types reuse the representation of their specific type. The same
+fields and tag can describe values from the whole hierarchy; operations use
+the tag to select classwide behavior, as discussed under Tagged types.
+Other representation-reuse cases are documented with ``Record_Type_Is_Clone``
+in :file:`src/why/why-gen-records.ads`.
 
 Access-To-Object Types
 ^^^^^^^^^^^^^^^^^^^^^^
-Representative Modules
-""""""""""""""""""""""
-Access types with the same designated type share a single representative type,
-so that it is possible to convert between them. This is necessary even though
-we cannot convert between different pool specific access types. Indeed, we still
-need all (named) access types to be convertible to anonymous access types. This
-representative type is declared inside a representative module. It is introduced
-for the first access to a given type translated, then it is reused for the
-following access types with the same designated type.
+Value-Based Representation
+""""""""""""""""""""""""""
+Access values are modeled by their designated values, without addresses or a
+shared heap. Updating a designated value is a functional update of the access
+value, just like updating a component of a record.
+
+Ownership checking prevents a write from leaving another usable alias with an
+outdated designated value in this model. See :ref:`Ownership Checking` for the
+aliasing restrictions and :ref:`Local Borrows` for the translation of borrowing.
+
+Access types with the same designated type share a representative type to allow
+conversions, including conversions from named to anonymous access types.
+Module selection and sharing conventions are documented in
+:file:`src/why/why-gen-pointers.ads`.
 
 This representative type has two fields. One for the value and a boolean flag
 to register whether the access object is null. As an example, consider an
@@ -1984,8 +2021,15 @@ Here is the representative type introduced for it:
 .. code-block:: whyml
 
    type __rep =
-     { p__ptr__is_null_pointer : bool;
-       p__ptr__pointer_value   : natural }
+     { rec__p__ptr__is_null_pointer : bool;
+       rec__p__ptr__pointer_value   : natural }
+
+An option datatype could omit the designated value for null pointers. However,
+accessing the value would then require a Why3-generated check or pattern
+matching on the null case. As for :ref:`variant records <Representative Type>`,
+the record representation lets GNATprove generate and track the null check
+itself, then translate the value access without an additional check or case
+split. The designated-value field is therefore retained even for null pointers.
 
 Along with the representative type, the representative module contains other
 declarations which are shared between access types. Among them, the null
@@ -1999,6 +2043,7 @@ are these declarations for the ``Ptr`` type defined above:
 
    axiom __null_pointer__def_axiom :
       __null_pointer.rec__p__ptr__is_null_pointer = True
+      /\ __null_pointer.rec__p__ptr__pointer_value = Standard__natural.dummy
 
    val rec__p__ptr__pointer_value_
      (a : __rep) : Standard__natural.natural
@@ -2010,20 +2055,25 @@ are these declarations for the ``Ptr`` type defined above:
    /\ (not a.rec__p__ptr__is_null_pointer ->
           a.rec__p__ptr__pointer_value = b.rec__p__ptr__pointer_value)
 
-Remark that the ``bool_eq`` function is not compatible with the execution
-model of equality on pointers. Indeed, two pointers might not be equal even
-if they designate equal values. The restrictions enforced by the SPARK subset
-ensure that primitive equality of access types is never used in SPARK code
-unless one of the operands is ``null``. The first conjunct of the definition of
-``bool_eq`` would be enough for this case.
+The designated-value field of a null pointer is fixed to a dummy value by the
+dynamic invariant, as for inactive fields of variant records. This ensures that
+all null pointers of this representative type are logically equal.
+
+The ``bool_eq`` function does not model address equality: two pointers might
+designate equal values at different addresses. SPARK permits predefined equality
+on access values only when one operand is statically null. The first conjunct
+of ``bool_eq`` is enough for this case; the comparison of designated values is
+not used to decide the result. For composite types, predefined equality is
+forbidden when it would compare access subcomponents.
 
 Subtype Constraints
 """""""""""""""""""
 Subtypes of access types to unconstrained composite objects can be supplied with
 a composite constraint which applies to the designated values. When generating
-the representative module for such an access subtype, we need to introduce
+the representative module for such an access subtype, we introduce
 conversion functions to and from the base access type, as well as a range check
-function to check membership to the subtype.
+function to check membership in the subtype. A null exclusion is checked
+separately using the ``is_null`` flag.
 
 For example, consider an access type to unconstrained arrays of natural numbers,
 and a subtype of this access type only storing arrays ranging from 1 to 5:
@@ -2033,22 +2083,17 @@ and a subtype of this access type only storing arrays ranging from 1 to 5:
    type Arr_Ptr is access Nat_Array;
    subtype S is Arr_Ptr (1 .. 5);
 
-Here are the conversion functions and range check predicate generated for ``S``:
+Since ``S`` has static bounds, its designated array is represented by a map.
+``to_base`` restores these bounds when converting to ``Arr_Ptr``, and
+``of_base`` extracts the map in the other direction. The range predicate
+checks the required bounds:
 
 .. code-block:: whyml
 
- function to_base (a : __rep) : p__arr_ptr.arr_ptr =
-  { p__arr_ptr.rec__p__arr_ptr__pointer_value = of_array a.rec__p__arr_ptr__pointer_value 1 5;
-    p__arr_ptr.rec__p__ptr__is_null_pointer = a.rec__p__arr_ptr__is_null_pointer }
-
- function of_base (r : p__arr_ptr.arr_ptr) : __rep =
-  { rec__p__arr_ptr__pointer_value = to_array r.p__arr_ptr.rec__p__arr_ptr__pointer_value;
-    rec__p__arr_ptr__is_null_pointer = r.p__arr_ptr.rec__p__ptr__is_null_pointer }
-
- predicate in_range (first : int) (last : int) (r : p__arr_ptr.arr_ptr)  =
-  not r.p__arr_ptr.rec__p__ptr__is_null_pointer ->
-   first r.p__arr_ptr.rec__p__ptr__pointer_value = first
-   /\ last r.p__arr_ptr.rec__p__ptr__pointer_value = last
+   predicate in_range (expected_first expected_last : int) (r : arr_ptr) =
+     not r.rec__p__arr_ptr__is_null_pointer ->
+       first r.rec__p__arr_ptr__pointer_value = expected_first
+       /\ last r.rec__p__arr_ptr__pointer_value = expected_last
 
 We can see that the range predicate for arrays takes the array bounds as
 parameters. This is because the bounds may contain references to constants which
@@ -2059,22 +2104,62 @@ The range predicate is used both for checking that a value is in the expected
 type, when translating conversions, qualifications, and allocators, and to
 translate explicit membership test in the user code.
 
+Recursive Access Types
+""""""""""""""""""""""
+
+An access type can designate an incomplete type whose completion contains
+components of that access type. For example:
+
+.. code-block:: ada
+
+   type Node;
+   type Node_Ptr is access Node;
+   type Node is record
+      Value : Integer;
+      Next : Node_Ptr;
+   end record;
+
+With the value-based representation, the pointer type contains a node value,
+and the node type contains a pointer value. Declaring these as recursive Why3
+datatypes would require declaring all mutually recursive types together.
+This would require changing the current organization, where types are
+declared separately, one per module.
+
+Instead, the representative module for ``Node_Ptr`` uses an abstract type for
+its designated-value field. The representation of ``Node`` can then refer to
+``Node_Ptr`` without a cycle between the type declarations. A separate
+completion module connects the abstract designated-value type to the completed
+node type through ``__open`` and ``__close`` functions. Dereference opens the
+abstract value; updating the designated value closes the new node value.
+The conversion axioms relate these two views without requiring recursive type
+declarations. This completion is generated by ``Declare_Rep_Pointer_Compl`` in
+:file:`src/why/why-gen-pointers.adb`.
+
+Move trees for recursive structures use separate abstract declarations and
+completions for the same reason. The concrete layout is supplied after the
+component types are available, and the abstract reclamation predicate is
+connected to the predicate on the concrete tree. The corresponding APIs are
+documented in :file:`src/why/why-gen-pointers.ads`.
+
 Move Trees
 """"""""""
 
-For objects containing parts which need to be reclaimed (typically of a
-pool-specific access type), it is necessary to generate WhyMl code to track
-whether a value of this type has been moved to another object before the
-finalization. This is done by storing a boolean flag per component which needs
-reclamation in variables and subprogram parameters. These flags are stored in
-a separate structure which mimics the form of the object. It does not duplicate
-information coming from the object (whether a pointer is null, discriminants,
-bounds of arrays). The type ``__move_tree`` for this structure is declared in a
-specific module, see ``Create_Move_Tree_Theory_For_{Array/Record/Access)``.
-This module also defines a predicate ``__is_moved_or_reclaimed`` which takes a
-move tree and an object of the type and returns true if the object does not hold
-memory as per the information stored in the move tree. As an example, consider
-the following data-structure. To know whether ``V`` is entirely reclaimed, we
+Ownership checking prevents invalid uses of moved values, but it does not prove
+that allocated memory is reclaimed. For objects containing parts which need
+reclamation (typically of a pool-specific access type), the translation tracks
+whether responsibility for reclamation has been transferred to another object.
+The source's designated value need not change when it is moved, so nullness
+alone cannot tell whether the source still owns memory.
+
+This is done by storing boolean move flags in variables and subprogram
+parameters. These flags are stored in a separate structure which mimics the
+form of the object. It does not duplicate information coming from the object
+(whether a pointer is null, discriminants, bounds of arrays). The type
+``__move_tree`` and the predicate ``__is_moved_or_reclaimed`` are declared in
+a separate module. The predicate takes a move tree and an object and returns
+true if no part of the object still requires reclamation by its owner.
+As an example, consider the following data structure. To know whether ``V``
+has been moved or reclaimed, we
 need to decide, depending on the value of the discriminant ``L``, whether the
 component ``F`` or all components of ``A`` have been either moved or set to
 null:
@@ -2084,136 +2169,99 @@ null:
    type Int_Acc is access Integer;
    type Int_Acc_Array is array (Positive range <>) of Int_Acc;
    type Rec (L : Natural) is record
+      G : Integer;
       case L is
          when 0 =>
             F : Int_Acc;
          when others =>
             A : Int_Acc_Array (1 .. L);
       end case;
-      G : Integer;
    end record;
 
    V : Rec (...);
 
-
 For this, a type ``__move_tree`` to store the flags and a predicate
 ``__is_moved_or_reclaimed`` are declared for each type used in the structure.
-Here is the module declared for the move trees of subcomponents of type
+Here is the move-tree type and predicate for subcomponents of type
 ``Int_Acc``. The move tree holds a single flag for the pointer itself, and the
 ``__is_moved_or_reclaimed`` predicate returns true if either the object has
 been moved as per the move tree, or it is null, as per the object value:
 
-
 .. code-block:: whyml
 
-  module Test__int_acc___move_tree
+   type __move_tree = { rec__is_moved__ : bool }
 
-    type __move_tree = { rec__is_moved__ : bool }
-
-    predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: int_acc) =
-      tree.rec__is_moved__ = True \/ obj.rec__is_null_pointer = True
-
-  end
+   predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: int_acc) =
+     tree.rec__is_moved__ = True \/ obj.rec__test__int_acc__is_null_pointer = True
 
 For arrays, we need a flag per component. Similarly to theories used for array
-values, we declare a logic type with two functions ``__get`` and ``__set`` to
-represent these values. Note that we do not attempt to represent bounds here,
-the arrays of flag are always total (they map all indices to boolean flags). The
-``__is_moved_or_reclaimed`` predicate gets the bounds either from the type (if
+values, we use a total map from indices to component move trees. It has no
+bounds of its own. The ``__is_moved_or_reclaimed`` predicate gets the bounds
+either from the type (if
 its bounds are static) or from the object and only considers elements which
 are in bounds:
 
-
 .. code-block:: whyml
 
-  module Test__int_acc_array___move_tree
-
-    type __move_tree
-
-    val function __get (tree: __move_tree) (i: int) :
-       Test__int_acc___move_tree.__move_tree
-
-    val __set (tree: __move_tree) (i: int)
-       (comp: Test__int_acc___move_tree.__move_tree) : __move_tree
-      ensures { __get result i = comp /\
-                (forall j : int.  j <> i -> __get result j = __get tree j) }
-
-    predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: int_acc_array) =
-      forall i : int. first obj <= i <= last obj ->
-           Test__int_acc___move_tree.__is_moved_or_reclaimed
-              (__get tree i)
-              (Test__int_acc_array.get obj.elts i)
-  end
+   predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: int_acc_array) =
+     forall i : int. first obj <= i <= last obj ->
+       Test__int_acc___move_tree.__is_moved_or_reclaimed
+         (__get tree i) (Test__int_acc_array.get (to_array obj) i)
 
 Move trees for records are Why3 records with a field per component which needs
 reclamation. Discriminants are not present. The ``__is_moved_or_reclaimed``
 predicate gets them from the value of the object and only considers components
-which are present in the type. Note that ``G`` is not present
+which are present in the current variant. Note that ``G`` is not present
 as it does not need reclamation:
 
 .. code-block:: whyml
 
-  (* The predicates for the presence of components in discriminated records
-     are defined in the representative module for the type. They are recalled
-     here for convenience. *)
+   type __move_tree =
+     { rec__test__rec__f : Test__int_acc___move_tree.__move_tree;
+       rec__test__rec__a : Test__int_acc_array___move_tree.__move_tree }
 
-  module Test__rec___rep
-    ...
+   predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: rec) =
+     (if test__rec__f__pred obj then
+        Test__int_acc___move_tree.__is_moved_or_reclaimed
+          tree.rec__test__rec__f obj.__split_fields.rec__test__rec__f)
+     /\
+     (if test__rec__a__pred obj then
+        Test__int_acc_array___move_tree.__is_moved_or_reclaimed
+          tree.rec__test__rec__a obj.__split_fields.rec__test__rec__a)
 
-    predicate test__rec__f__pred (a: __rep) =
-      to_rep a.__split_discr.rec__l = 0
+The field-presence predicates come from the record representation: ``F`` is
+present when ``L = 0``, and ``A`` when ``L /= 0``.
 
-    predicate test__rec__a__pred (a: __rep) =
-      to_rep a.__split_discr.rec__l <> 0
-  end
+For a pool-specific access type, the move tree contains a flag for the pointer
+itself and, when needed, a subtree for the designated value. General access
+types have no flag for the pointer itself; they reuse the designated value's
+move tree when it contains parts needing reclamation.
 
-  module Test__rec___move_tree
+The move-tree layouts and operations are documented with
+``Create_Move_Tree_Theory_For_Pointer`` in
+:file:`src/why/why-gen-pointers.ads` and the corresponding array and record
+routines in :file:`src/why/why-gen-arrays.ads` and
+:file:`src/why/why-gen-records.ads`.
 
-    type __move_tree =
-      { rec__test__rec__f : Test__int_acc___move_tree.__move_tree;
-        rec__test__rec__a : Test__int_acc_array___move_tree.__move_tree }
+Checks are needed when an owning value is overwritten or leaves its scope.
+``Unchecked_Deallocation`` frees the allocation itself, but still needs a check
+that owned parts inside the designated value have been moved or reclaimed.
 
-    type __move_tree__ref = { mutable __move_tree__content : __move_tree }
-
-    predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: rec) =
-        (if test__rec__f__pred obj then
-             Test__int_acc___move_tree.__is_moved_or_reclaimed
-                 tree.rec__test__rec__f
-                 obj.__split_fields.rec__test__rec__f)
-         /\
-         (if test__rec__a__pred obj then
-             Test__int_acc_array___move_tree.__is_moved_or_reclaimed
-                tree.rec__test__rec__a
-                obj.__split_fields.rec__test__rec__a)
-
-  end
-
-Using these definitions, it is possible to declare a move tree in the module
-for ``V`` as follows:
+To check whether ``V`` has been moved or reclaimed, the predicate is called
+with its current move tree and reconstructed value:
 
 .. code-block:: whyml
 
-  module Test__v
-
-    val v__split_fields : Test__rec.__split_fields__ref
-
-    val function v__split_discrs : Test__rec.__split_discrs
-
-    val v__rec__is_moved__ : Test__rec___move_tree.__move_tree__ref
-
-  end
-
-To check whether ``V`` is reclaimed, the ``__is_moved_or_reclaimed`` is called
-on these objects:
-
-.. code-block:: whyml
-
-  assert
-    { [@GP_Check:2:VC_RESOURCE_LEAK_AT_END_OF_SCOPE:test.adb:13:4]
+   assert {
       Test__rec___move_tree.__is_moved_or_reclaimed
-      Test__v.v__rec__is_moved__.__move_tree__content Test__v.v__rec__is_moved__
+      Test__v.v__rec__is_moved__.__move_tree__content
       { __split_fields = Test__v.v__split_fields.__split_fields__content;
         __split_discrs = Test__v.v__split_discrs } }
+
+These checks are generated by ``Check_No_Memory_Leaks`` in
+:file:`src/why/gnat2why-expr.adb`. They are isolated from the rest of the proof:
+resource-leak checks do not correspond to run-time checks, so justifying one
+must not introduce an assumption that could prove unrelated obligations.
 
 Access-To-Subprogram Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2221,10 +2269,10 @@ Access-To-Subprogram Types
 The Built-in Theory for Subprogram Types
 """"""""""""""""""""""""""""""""""""""""
 
-A module ``Subprogram_Pointer_Rep`` for access_to-subprogram types is defined in
-``_gnatprove_standard.mlw``. It declares an abstract ``__subprogram`` type,
-which can be accessed through ``M_Subprogram_Access.Subprogram_Type``. A type
-``__rep`` for all access-to-subprogram types is then defined as a record with
+A module ``Subprogram_Pointer_Rep`` for access-to-subprogram types is defined in
+:file:`share/spark/theories/_gnatprove_standard.mlw`. It declares an abstract
+``__subprogram`` type. A type ``__rep`` for all access-to-subprogram types is
+then defined as a record with
 two fields, one for the value designated by the access, considered to have type
 ``__subprogram``, and a flag to encode whether the access is ``null`` or not:
 
@@ -2234,17 +2282,22 @@ two fields, one for the value designated by the access, considered to have type
     { __is_null_pointer : bool;
       __pointer_value   : __subprogram }
 
+Ordinary subprogram accesses require a null ``Global`` contract, including
+inferred globals. The shared call model therefore needs no global-state
+parameters. :ref:`Higher Order Specializations` allow function actuals that
+read globals by adding those globals as inputs of the specialized call.
+Types annotated ``Handler`` may designate subprograms with globals, but their
+values cannot be called in SPARK and need no call model.
+
 Representative Theory for Profiles
 """"""""""""""""""""""""""""""""""
 
-A module is generated for every profile of subprograms designated by an access
-type, a profile being an ordered sequence of subtypes for parameters with their
+For callable access types, a module is generated for every designated profile,
+a profile being an ordered sequence of subtypes for parameters with their
 mode, as well as the result type for functions. It is shared between all
-access-to-subprogram types with the same profile. This module is named using the
-following schema (see ``Get_Profile_Theory_Name``)
-``Profile__((In|Out|InOut)__<Formal_Type_Full_Name>__)*Return__<Return_Type_Full_Name>``.
-
-In Gnat2why, its symbols are stored in the ``M_Subprogram_Profiles`` map.
+access-to-subprogram types with the same profile. Contracts and formal parameter
+names do not affect this sharing. Naming and sharing conventions are documented
+with ``Get_Profile_Theory_Name`` in :file:`src/why/why-atree-modules.ads`.
 For procedures, the representative module is empty. For functions, it contains
 a ``__call`` function and an axiom guard ``pred_call``. Here is an example.
 Consider the access-to-function type ``F`` below:
@@ -2265,26 +2318,34 @@ The representative module will have the following form:
   end
 
 Compared with the translation of regular functions, ``__call`` and
-``pred_call`` have an additionnal ``subp`` parameter which is the subprogram
+``pred_call`` have an additional ``subp`` parameter which is the subprogram
 object which should be called.
 
-This representative module allows sharing the ``__call`` and ``pred_call``
-symbols between all access-to-function types. As the ``__call`` function is used
-for calls in the logic domain, this sharing provides for free that the result
-of the designated function is preserved through conversions.
+As ``__call`` is shared between types with the same profile, converting an
+access value preserves the result of logical calls through that value.
+``pred_call`` serves the same role as the call guard for ordinary functions
+(see :ref:`Functions`): it controls when the contract can be used.
+
+For procedures, only the access type's contract is retained at indirect
+calls. Preserving a known procedure's more precise postcondition through
+``Access`` and conversions would require a shared postcondition predicate,
+as for dispatching calls. That model has not yet been implemented.
 
 Range Predicates
 """"""""""""""""
 
 Access-to-function types can have a contract. When they do, we need a way to
 state that the ``__call`` function used in the logic domain respects this
-contract. However, we cannot generate an axiom like we do for normal functions
-as ``__call`` is shared between all access-to-function types with the same
-profile. Instead, for all access-to-subprogram types, we create a range
-predicate. For access to procedures, it is simply ``True``. For functions,
-we define it to be the content of the post axiom for the access type. This
-predicate can then be used to assume that a particular access-to-subprogram
-object has the contract of a particular access-to-subprogram type.
+contract. However, ``__call`` is shared between types with the same profile,
+which can have different contracts. A global axiom for one type's contract
+would also constrain functions accessed through the other types.
+
+Instead, each access-to-subprogram type has an ``__in_range`` predicate on
+subprogram values. For functions, it states that the value satisfies the
+guarded postcondition axiom of that type. The dynamic invariant of an access
+object uses this predicate to supply its type's contract for logical calls.
+For procedures, it is simply ``True``: there is no logical call whose result
+needs a postcondition axiom. Their contracts are still used for program calls.
 
 The ``in_range`` predicate is declared in the definition module for the
 access-to-subprogram type, but, because of dependencies, its definition is
@@ -2303,7 +2364,8 @@ In the definition module for ``F`` a range predicate is declared:
 
   val predicate __in_range (subp : __subprogram)
 
-Its definition is deferred to the completion module:
+Its definition is deferred to the completion module. Ignoring implicit type
+facts, it is:
 
 .. code-block:: whyml
 
@@ -2313,12 +2375,23 @@ Its definition is deferred to the completion module:
          let result = __call subp x1 ... in
 	   pred_call result subp x1 ... ->
 	   f_pre x1 ... ->
-	     f_post result x1 ...
+	     f_post result x1 ...)
+
+These contracts are used as axioms, so their feasibility is checked at the type
+declaration. For every input satisfying the precondition, some result must
+satisfy the postcondition and the result's type properties. Otherwise an
+inconsistent axiom could prove ``False``, then prove the compatibility check
+for taking a function's ``Access`` with the same infeasible contract.
+
+An indirect call uses the access type's contract rather than the contract of
+its run-time target. Recursion through an access value therefore does not by
+itself make the target functions' contract axioms depend on one another.
+The access type's contract still needs the feasibility check above.
 
 Program Functions
 """""""""""""""""
 
-The completion module of access-to-subprogram types also contains a program
+The completion module of a callable access type also contains a program
 function ``__call_`` which can be used to call a subprogram in the
 program domain. Like for regular subprograms, this function will have the
 pre and postcondition of the access-to-subprogram type if any. For functions,
@@ -2330,49 +2403,158 @@ type ``F`` above:
 
   val __call_ (subp : __subprogram) (x1 : t1) ... : t
     requires { f_pre x1 ... }
-    ensures  { result = __call sub x1 ... /\
+    ensures  { result = __call subp x1 ... /\
                 pred_call result subp x1 ... /\
                 f_post result x1 ... }
+
+The null check occurs when the designated subprogram value is extracted from
+the access object, before the call to ``__call_``.
+The generation conventions are documented in
+:file:`src/why/gnat2why-subprograms-pointers.ads`. Taking a subprogram's
+:ref:`Access attribute <Access Attribute on Subprograms>` connects these shared
+call symbols to that subprogram's symbols. See
+:ref:`Access-To-Subprogram Conversions` for the contract checks on conversions.
 
 Type Completion
 ^^^^^^^^^^^^^^^
 
 In addition to their main and possibly their representation module, types also
-have a completion module. This module contains declarations and axioms which
-may reference entities (types, functions...) defined after the type declaration.
-For example, completion modules for scalar types with dynamic bounds contain
-axioms which give the values of the bounds that do not have a static value, see
-``Gnat2why.Types.Generate_Type_Completion.Create_Axioms_For_Scalar_Bounds``.
+have completion modules. These contain declarations and axioms which may
+reference entities (types, functions...) defined after the type declaration.
+For example, scalar types with dynamic bounds need axioms giving the values
+of bounds that do not have a static value.
+
+Access types designating incomplete types need representation completions:
+``Type_Completion`` and, when an initialization wrapper is needed,
+``Init_Wrapper_Completion``. They connect the abstract designated-value
+representation to the completed type once its dependencies are available.
+See :ref:`Recursive Access Types` for the mechanism and its rationale.
 
 Completion modules are located after modules for declarations but before modules
-for checks in the generated mlw file. They have the same name as the main module
-they complete but with an additional __axiom suffix. Completion modules
-for types are created in ``Gnat2Why.Types.Generate_Type_Completion``.
+for checks in the generated mlw file. ``Generate_Type_Completion`` in
+:file:`src/why/gnat2why-types.adb` generates the following modules as needed.
+The module kinds below are those used by ``E_Module``:
 
-Predicates / Invariants
-"""""""""""""""""""""""
-If a type has a subtype predicate or a type invariant, a Why3 predicate is
-generated for its expression. For example, let's consider a subtype for sorted
-arrays:
+.. list-table:: Modules generated during type completion
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Module
+     - Contents
+   * - ``Axiom``
+     - The main completion, with the ``__axiom`` suffix. It defines dynamic
+       invariants and non-static scalar bounds. For composite initialization
+       wrappers, it also defines the initialization predicate, or completes
+       its earlier declaration. Callable access-to-subprogram types have their
+       call model completed here, as described above.
+   * - ``Default_Initialialization``
+     - The default initial assumption, including any default initial condition.
+   * - ``Invariant``
+     - The predicate for the type's own invariant.
+   * - ``User_Equality_Axiom``
+     - The definition of the ``user_eq`` symbol declared separately in
+       ``User_Equality``.
+   * - ``Dispatch_Equality_Axiom``
+     - The definition of the root type's ``__dispatch_eq`` symbol declared in
+       ``Dispatch_Equality``, including compatibility axioms for descendants.
+   * - ``Move_Tree``
+     - The reclamation tree and its operations for types containing allocated
+       parts. It also completes any abstract tree declared in
+       ``Incomp_Move_Tree``. See :ref:`Move Trees` for the tree model and
+       :ref:`Recursive Access Types` for its abstract declarations and
+       completions.
+   * - ``Record_Rep_Completion``
+     - The concrete extension representation and its connection to the abstract
+       representation of a tagged record. See :ref:`Tagged types`.
+   * - Tag compatibility module
+     - For a tagged hierarchy root, axioms describing compatibility between
+       the tags of its visible descendants. See :ref:`Tagged types`.
+
+Separating invariants, default initialization, and equality from the type
+representation is needed for soundness. Their definitions can use functions
+whose verification in turn relies on properties of the type. The proof
+dependency analysis identifies these cycles, and the translator withholds the
+affected function axioms to prevent circular reasoning. This also handles
+dependencies through subtype predicates.
+
+Dynamic invariants
+""""""""""""""""""
+Not all information provided by Ada types is encoded into the corresponding
+Why3 types. Here are some examples of information missing from Why3 types (see
+``Gnat2Why.Expr.Compute_Dynamic_Invariant`` for the exhaustive list):
+
+ * Type predicates and invariants,
+ * Bounds of empty or dynamically constrained scalar types,
+ * Bounds of dynamically constrained array types,
+ * Discriminants of constrained record types...
+
+This additional information is supplied by assumptions throughout Why3
+programs. It is assumed for inputs on subprogram entry (see
+``Compute_Dynamic_Property_For_Inputs``), added to the postcondition of
+subprograms for subprogram outputs, assumed inside loops as implicit invariants
+etc. To make these assumptions easier and to improve readability in the Why3
+files, a Why3 predicate named ``dynamic_invariant`` is defined
+in the main completion of ordinary type entities. Internal types (Itypes) may
+depend on locally defined constants such as 'Old, so their dynamic invariants
+are recomputed where needed. Standard Boolean and Universal_Fixed also have no
+named dynamic invariant.
+
+To see how this all works together, let's consider some examples. First,
+here is a simple integer type with dynamic bounds:
+
+.. code-block:: ada
+
+   type Dyn_Int is new Integer range - Max .. Max;
+
+Constants have already been introduced for its bounds, but ``Dyn_Int`` itself is
+translated as a renaming of ``Integer``. The dynamic invariant of ``Dyn_Int``
+simply states that its parameter is in the expected bounds:
+
+.. code-block:: whyml
+
+ predicate dynamic_invariant (expr : int) (is_init : bool)
+    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool)  =
+  (if is_init \/ dyn_int.first  <= dyn_int.last then
+      dyn_int.first <= expr <= dyn_int.last
+   else true)
+
+The ``is_init`` guard prevents assumptions that could make the modeled type
+empty, such as membership in an empty scalar range or an unsatisfiable subtype
+predicate. The example still assumes range membership for an uninitialized
+scalar when the range is nonempty. Uninitialized values cannot be read, so
+assumptions about them need not describe their actual values; they must only
+avoid making the proof context inconsistent. For initialized values, the
+initialization checks justify the stronger assumptions. Initialization wrappers
+and validity information also affect these guards.
+
+The other arguments allow the caller to omit facts that are already known or
+cannot yet be assumed: immutable bounds and discriminants at the top level,
+the subtype predicate whose runtime checks are being proved, or type invariants
+that the current subprogram may break. The API parameter meanings are documented
+with ``Compute_Dynamic_Invariant`` in :file:`src/why/gnat2why-expr.ads`.
+
+Subtype predicates are inlined in the type's dynamic invariant. For example,
+consider a subtype for sorted arrays:
 
 .. code-block:: ada
 
    subtype Sorted_Nat_Array is Nat_Array with
      Predicate => Is_Sorted (Sorted_Nat_Array);
 
-Here is the Why3 predicate generated for it (for readability, names are
-simplified and axiom guards are removed):
+Its dynamic invariant includes the subtype predicate alongside the array's
+bounds and component properties. Here names are simplified and those other
+properties are abbreviated:
 
 .. code-block:: whyml
 
-  predicate dynamic_predicate (x : sorted_nat_array) = is_sorted x
+  predicate dynamic_invariant (x : sorted_nat_array) (is_init : bool)
+    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool) =
+    ... (* bounds and component properties *) /\
+    (if is_init /\ do_toplevel then is_sorted x else true)
 
-In SPARK, subtype predicates and type invariants are not allowed to depend on
-variables (see SPARK RM 4.4 (2)). However, as scalar constants are sometimes
-translated as variables in Why, it is possible for the Why3 expression
-associated to such an aspect specification to reference a Why3 variable. In such
-a case, the Why3 predicate generated for the invariant or predicate will take
-the variable as an additional parameter. Here is an example:
+Scalar constants used in subtype predicates can be modeled as variables in
+Why3. The predicate expression then has variable inputs, which are passed as
+additional parameters to ``dynamic_invariant``. Here is an example:
 
 .. code-block:: ada
 
@@ -2385,21 +2567,142 @@ the variable as an additional parameter. Here is an example:
 
 Because loops are sometimes (partially) unrolled, scalar constants declared in
 loops, and in particular loop indexes, are
-translated as variables in Why. As a result, the predicate of type
-``Dynamic_Bounds`` will have as an additional parameter the value of the loop
-index at the current iteration:
+translated as variables in Why. As a result, the dynamic invariant of
+``Dynamic_Bounds`` takes the value of the loop index at the current iteration
+as an additional parameter. Abbreviating the scalar range property, its
+declaration is:
 
 .. code-block:: whyml
 
- predicate dynamic_predicate (x : int) (L_1__i : int) = 1 <= x <= L_1__i
+  predicate dynamic_invariant (x : int) (is_init : bool)
+    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool)
+    (L_1__i : int) =
+    ... (* scalar range property *) /\
+    (if is_init /\ do_toplevel then 1 <= x <= L_1__i else true)
 
-As (private) functions taking an object of the type can be used in type
-invariants, the predicate for invariants is generated in a separate
-module (see ``Why.Atree.Modules.E_Invariant_Module``). This prevents the
-tool from seeing the defining axiom of the function while checking the function itself. Subtype predicates do not have their own module. Since
-they are used every time the type is used, it would not help to avoid
-recursivity. It falls in the category of the "no recursivity through
-types" assumption/limitation.
+Let's now consider a more complex example. We can declare an option type
+with a mutable discriminant containing a value of type ``Dyn_Int``, but only
+when the discriminant is True:
+
+.. code-block:: ada
+
+   type Result_Type (Found : Boolean := False) is record
+      case Found is
+      when True  =>
+        Result : Dyn_Int;
+      when False =>
+         null;
+      end case;
+   end record;
+
+Here is its dynamic invariant:
+
+.. code-block:: whyml
+
+ predicate dynamic_invariant (expr : result_type) (is_init : bool)
+    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool) =
+  (if p__result_type__result__pred expr.__split_discrs then
+    (if is_init \/ dyn_int.first  <= dyn_int.last then
+      dyn_int.first <= dyn_int.to_rep expr.__split_fields.result <= dyn_int.last
+     else true)
+  else expr.__split_fields.result = dyn_int.dummy)
+
+We see that dynamic invariants of composite types repeat the dynamic invariants
+of their components. As ``Result_Type`` has a discriminant, the dynamic property
+of the ``Result`` component is only assumed if the component is present. An
+absent component instead has its type's dummy value, as explained under
+:ref:`Record Types, Private Types, and Concurrent Types`. Note
+that the ``dynamic_invariant`` predicate of components is not reused here. This
+sometimes allows simplifications.
+
+Let us now consider an unconstrained array of ``Result_Type``:
+
+.. code-block:: ada
+
+   type Result_Array is array (Positive range <>) of Result_Type;
+
+Like for records, its dynamic invariant contains the invariant of its
+components, but it also contains information about its bounds, which are only
+assumed if ``skip_constant`` is false:
+
+.. code-block:: whyml
+
+ predicate dynamic_invariant (expr : result_array) (is_init : bool)
+    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool) =
+  (if skip_constant then true
+   else dynamic_property Standard__positive.first Standard__positive.last
+           (first expr) (last expr))
+  /\ (forall i : int.
+        (if (first expr) <= i <= (last expr) then
+            ... (* dynamic invariant of get (to_array expr) i *)
+         else true))
+
+As a last example, let's use this array type to define a type of stacks. This
+type contains a dynamically constrained subtype of ``Result_Array`` and features
+a subtype predicate:
+
+.. code-block:: ada
+
+   type Result_Stack (Max : Natural) is record
+      Content : Result_Array (1 .. Max);
+      Length  : Natural;
+   end record
+     with Predicate => Length in 0 .. Max;
+
+The frontend introduces an entity for the type of the content component. As
+this entity is an Itype, it does not have its own dynamic invariant. However,
+we will see it inlined in the invariant of ``Result_Stack``:
+
+.. code-block:: whyml
+
+ predicate dynamic_invariant (expr : result_stack) (is_init : bool)
+    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool) =
+  (if do_toplevel then
+   (if is_init then
+     0 <= to_rep expr.__split_fields.length <= to_rep expr.__split_discrs.max
+    else true)
+   else true) /\
+   first expr.__split_fields.content = 1 /\
+   last expr.__split_fields.content = to_rep expr.__split_discrs.max /\
+   ... (* valid Content bounds and dynamic invariants of its elements *)
+
+The first conjunct of the dynamic invariant of ``Result_Stack`` concerns the
+subtype predicate. We see that it only holds if ``do_toplevel`` and ``is_init``
+are true (that is, if ``expr`` is initialized and if we do not intentionally
+skip this predicate). The second conjunct is the invariant of the ``Content``
+component (the ``Length`` component has no dynamic invariant, it is of a static
+scalar type, all necessary information is contained in its Why3 type). The
+first part of the invariant of ``Content`` assumes the value of its bounds.
+Note that this assumption is made even when ``skip_constant`` is true.
+Immutable parts of objects are only split into separate objects at the top
+level. A nested array can be replaced by assigning its enclosing object, so its
+bounds must be included again when the enclosing object's dynamic invariant is
+assumed.
+
+Type invariants
+"""""""""""""""
+
+A type invariant has a named Why3 predicate in the separate ``Invariant``
+module. Like dynamic invariants, it takes additional parameters for any
+constants modeled as Why3 variables.
+
+The type-invariant predicate is reused for both assumptions and checks.
+``Compute_Dynamic_Invariant`` includes invariants assumed throughout the
+analyzed unit in the reusable ``dynamic_invariant`` definition. Invariants
+whose availability depends on the current scope are added at each use, outside
+that definition. This keeps the named dynamic invariant independent of the
+scope in which it is used.
+
+When verifying the package that defines the type, the remaining invariants
+are included in generated subprogram contracts: input invariants in the
+precondition, and output and result invariants in the postcondition. The caller
+checks the input invariants before the call and gets the output invariants from
+its postcondition. Conversely, verification of the callee assumes the input
+invariants on entry and proves the output invariants on return. These contract
+conditions omit invariants relaxed for private subprogram parameters.
+``Compute_Type_Invariant`` selects the applicable invariants, including those
+of parent types and components, for both assumptions and checks. The selection
+rules are shared with :file:`src/spark/spark_util-types.adb`.
 
 Default initialization
 """"""""""""""""""""""
@@ -2449,9 +2752,9 @@ is set to true:
 .. code-block:: whyml
 
  predicate default_initial_assumption (x : holder) (skip_top_level : bool) =
-  holder.__split_fields.rec__present = false /\
-  to_rep (holder.__split_fields.rec__content) = 0 /\
-  (if skip_top_level then true else is_empty holder)
+  x.__split_fields.rec__present = false /\
+  to_rep (x.__split_fields.rec__content) = 0 /\
+  (if skip_top_level then true else is_empty x)
 
 This short-circuit is used in particular in code that checks the
 ``Default_Initial_Condition`` aspect itself, see
@@ -2462,172 +2765,9 @@ assuming all applicable invariants and predicates (at least when the default
 initial condition is checked at declaration, see ``Needs_DIC_Check_At_Decl``
 and ``Needs_DIC_Check_At_Use``).
 
-Like for type invariants, the default initial assumption predicate is
-generated in a separate module (see ``Why.Atree.Modules.E_DIC_Module``). This prevents the tool from seeing the defining axiom of a function called
-from the default initialization of a type while checking the function itself.
-
-Dynamic invariants
-""""""""""""""""""
-Not all information provided by Ada types is encoded into the corresponding
-Why3 types. Here are some examples of information missing from Why3 types (see
-``Gnat2Why.Expr.Compute_Dynamic_Invariant`` for the exhaustive list):
-
- * Type predicates and invariants,
- * Bounds of empty or dynamically constrained scalar types,
- * Bounds of dynamically constrained array types,
- * Discriminants of constrained record types...
-
-This additional information is supplied by the mean of assumptions all over Why3
-programs. It is assumed for inputs on subprogram entry (see
-``Compute_Dynamic_Property_For_Inputs``), added to the postcondition of
-subprograms for subprogram outputs, assumed inside loops as implicit invariants
-etc. To make these assumptions easier and to improve readability in the Why3
-files, a Why3 predicate named ``dynamic_invariant`` is defined
-in the completion of every type entity (except for Itypes as they may depend on
-locally defined constants such as 'Old; dynamic invariants of Itypes are
-recomputed when needed, see ``Compute_Dynamic_Invariant``).
-
-To see how this all works together, let's consider some examples. First,
-here is a simple integer type with dynamic bounds:
-
-.. code-block:: ada
-
-   type Dyn_Int is new Integer range - Max .. Max;
-
-Constants have already been introduced for its bounds, but ``Dyn_Int`` itself is
-translated as a renaming of ``Integer``. The dynamic invariant of ``Dyn_Int``
-simply states that its parameter is in the expected bounds:
-
-.. code-block:: whyml
-
- predicate dynamic_invariant (expr : int) (is_init : bool)
-    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool)  =
-  (if is_init \/ dyn_int.first  <= dyn_int.last then
-      dyn_int.first <= expr <= dyn_int.last
-   else true)
-
-We see that, in addition to its main ``expr`` parameter, ``dynamic_invariant``
-takes 4 boolean arguments:
-
- * ``is_init`` is used to avoid assuming unsound properties if ``expr`` is
-   not known to be initialized. We see it in use here, where it prevents
-   assuming that ``expr`` is in an empty range unless it is known to be
-   initialized (in which case an error will have been raised at the
-   initialization of ``expr``).
- * ``skip_constant`` allows to skip the dynamic invariant which applies to
-   constant parts of ``expr`` (array bounds, discriminants...). This is used to
-   avoid polluting the context with already known facts.
- * ``do_toplevel`` allows to skip the toplevel type predicate applied to
-   ``expr`` if any. This is used to check the predicate itself for absence of
-   runtime errors.
- * ``do_typ_inv`` allows to skip all invariants that may apply to ``expr`` or
-   to one of its components. This is used to avoid introducing soundness issues
-   when translating private subprograms from boundary packages, as they are
-   allowed to break the invariant.
-
-Let's now consider a more complex example. We can declare an option type
-with a mutable discriminant containing a value of type ``Dyn_Int``, but only
-when the discriminant is True:
-
-.. code-block:: ada
-
-   type Result_Type (Found : Boolean := False) is record
-      case Found is
-      when True  =>
-        Result : Dyn_Int;
-      when False =>
-         null;
-      end case;
-   end record;
-
-Here is its dynamic invariant:
-
-.. code-block:: whyml
-
- predicate dynamic_invariant (expr : result_type) (is_init : bool)
-    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool) =
-  (if p__result_type__result__pred expr then
-    (if is_init \/ dyn_int.first  <= dyn_int.last then
-      dyn_int.first <= dyn_int.to_rep expr.__split_fields.result <= dyn_int.last
-     else false)
-  else false)
-
-We see that dynamic invariants of composite types repeat the dynamic invariants
-of their components. As ``Result_Type`` has discriminant, the dynamic property
-of the ``Result`` component is only assumed if the component is present. Note
-that the ``dynamic_invariant`` predicate of components is not reused here. This
-sometimes allows simplifications.
-
-Let us now consider an unconstrained array of ``Result_Type``:
-
-.. code-block:: ada
-
-   type Result_Array is array (Positive range <>) of Result_Type;
-
-Like for records, its dynamic invariant contains the invariant of its
-components, but it also contains information about its bounds, which are only
-assumed if ``skip_constant`` is false:
-
-.. code-block:: whyml
-
- predicate dynamic_invariant (expr : result_array) (is_init : bool)
-    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool) =
-  (if skip_constant then true
-   else dynamic_property Standard__positive.first Standard__positive.last
-           (first expr) (last expr))
-  /\ (forall i : int.
-        (if (first expr) <= i <= (last expr) then
-            ... (* dynamic invariant of get (to_array expr) i *)
-            /\ (get (to_array expr) i).attr_constrained = False
-         else true))
-
-Note that, in addition to the dynamic invariant of ``Result_Type`` which is not
-repeated here, the dynamic invariant also assumes that elements of ``expr`` are
-unconstrained. Indeed, if it is not true in general that records with defaulted
-discriminants are unconstrained, but it always holds when such elements are
-nested in a composite type.
-
-As a last example, lets use this array type to define a type of stacks. This
-type contains a dynamically constrained subtype of ``Result_Array`` and features
-a subtype predicate:
-
-.. code-block:: ada
-
-   type Result_Stack (Max : Natural) is record
-      Content : Result_Array (1 .. Max);
-      Length  : Natural;
-   end record
-     with Predicate => Length in 0 .. Max;
-
-The frontend introduces an entity for the type of the content component. As
-this entity is an Itype, it does not have its own dynamic invariant. However,
-we will see it inlined in the invariant of ``Result_Stack``:
-
-.. code-block:: whyml
-
- predicate dynamic_invariant (expr : result_stack) (is_init : bool)
-    (skip_constant : bool) (do_toplevel : bool) (do_typ_inv : bool) =
-  (if do_toplevel then
-   (if is_init then
-     0 <= to_rep expr.__split_fields.length <= to_rep expr.__split_discrs.max
-    else true)
-   else true) /\
-   (if p__result_stack__content__pred expr then
-       first expr.__split_fields.content = 1
-    /\ last expr.__split_fields.content = to_rep expr.__split_discrs.max
-    /\ (forall i : int. ...
-
-The first conjunct of the dynamic invariant of ``Result_Stack`` concerns the
-subtype predicate. We see that it only holds if ``do_toplevel`` and ``is_init``
-are true (that is, if ``expr`` is initialized and if we do not intentionally
-skip this predicate). The second conjunct is the invariant of the ``Content``
-component (the ``Length`` component has no dynamic invariant, it is of  a static
-scalar type, all necessary information is contained in its Why3 type). The
-first part of the invariant of ``Content`` assumes the value of its bounds.
-Note that this assumption is done even when ``skip_constants`` is true.
-Indeed, constant parts of objects are only split in different object at the
-top level. As a consequence, Why3 does not know that the bounds are constant
-for nested arrays, and we need to assume it.
+The default initial assumption has its own ``Default_Initialialization`` module,
+as described above. Its expression can depend on functions used in component
+defaults as well as in the default initial condition.
 
 User equality
 """""""""""""
@@ -2651,17 +2791,17 @@ equality of the ``Main`` component only:
 The "=" function above is translated as a normal function, producing a Why3
 logic function named ``P__Oeq.oeq``. Using this function, we can define the
 value of the generic primitive equality function ``user_eq`` introduced for
-``T`` (see the section about Record Equality for usage of ``user_eq``):
+``T_Rec`` (see :ref:`Record equality` for usage of ``user_eq``):
 
 .. code-block:: whyml
 
  axiom user_eq__def_axiom :
   (forall a b : t_rec__. P__t_rec.user_eq a b = P__Oeq.oeq a b)
 
-The ``user_eq`` function and its axiom are generated in a separate
-module (see ``Why.Atree.Modules.E_User_Eq_Module``). This prevents the
-tool from seeing the defining axiom of the primitive equality while
-checking the function itself.
+The symbol is declared in ``User_Equality`` and its definition is supplied
+separately in ``User_Equality_Axiom``. This keeps the declaration independent of
+the overriding function and allows its function axioms to be withheld when
+using them would create circular reasoning through equality.
 
 Dispatching equality
 """"""""""""""""""""
@@ -2680,13 +2820,12 @@ It states that ``__dispatch_eq`` is equal to the dispatching version of
       forall a : root, b : root [__dispatch_eq attr__tag a b].
         __dispatch_eq attr__tag a b = Dispatch.oeq attr__tag a b
 
-Otherwise, the dispatching equality is define specifically for each new
+Otherwise, the dispatching equality is defined specifically for each new
 derivation of the root type. A compatibility axiom is generated for each
 type ``Child`` of the hierarchy giving a value to the ``__dispatch_eq``
 function when the tag is known to be the tag of ``Child``. This is similar
-to what is done for other primitive functions of tagged type. It gives
-one of the axioms below depending on whether or not the primitive equality
-was redefined on the type ``Child``:
+to what is done for other primitive functions of tagged types. For predefined
+equality, the axiom is:
 
 .. code-block:: whyml
 
@@ -2696,18 +2835,13 @@ was redefined on the type ``Child``:
          __dispatch_eq Child.__tag a b =
            Child.bool_eq (Child.of_base a) (Child.of_base b)
 
-.. code-block:: whyml
+If ``Child`` has a user-defined primitive equality, ``Child.user_eq`` replaces
+``Child.bool_eq`` in this axiom.
 
-  axiom child__compat_axiom:
-    forall a :root, b : root [__dispatch_eq Child.__tag a b].
-      (attr__tag a = Child.__tag /\ attr__tag b = Child.__tag) ->
-         __dispatch_eq Child.__tag a b =
-            Child.user_eq  (Child.of_base a) (Child.of_base b)
-
-The ``__dispatch_eq`` function and its axioms are generated in a separate
-module (see ``Why.Atree.Modules.E_Dispatch_Eq_Module``). This prevents the
-tool from seeing the defining axiom of the dispatching equality while
-checking potential overriddings of the primitive equality.
+The symbol is declared in ``Dispatch_Equality`` and its axioms are supplied in
+``Dispatch_Equality_Axiom`` for the root of the hierarchy. Proof dependencies
+include the possible overriding equalities, so their function axioms can be
+withheld when using them would create circular reasoning through dispatching.
 
 Wrapper types for Relaxed_Initialization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4038,7 +4172,7 @@ recursive functions (see Flow_Generated_Globals.Pase_2.Is_Recursive).
 Indeed, these contracts could be unsound in cases where the function
 does not return, and could be used to prove themselves in recursive
 functions. For definition of expression functions, we are less
-restrictive. Indeed, an axiom of the form f x … = expr cannot be
+restrictive. Indeed, an axiom of the form f x ... = expr cannot be
 unsound unless expr depends (directly or through other axioms) on f x.
 To prevent this case, it is enough to avoid generating axioms for
 expression function bodies of functions which are both potentially
@@ -5451,11 +5585,12 @@ Access Attribute on Subprograms
 
 If the ``'Access`` attribute of a subprogram is used somewhere in the code,
 a defining module and a completion module are created for the object it
-designates (see
-Gnat2why.Subprograms.Pointers.Declare_Theory_For_Access_If_Needed).
+designates (see ``Declare_Theory_For_Access_If_Needed`` in
+:file:`src/why/gnat2why-subprograms-pointers.adb`). Repeated occurrences for the
+same subprogram reuse the same symbol.
 The defining module simply declares a symbol of the built-in type
 ``__subprogram``. The completion module is empty for procedures. For functions,
-it contains two modules giving the precise values of the ``__call`` and
+it contains two axioms giving the precise values of the ``__call`` and
 ``pred_call`` functions of the profile on the symbol introduced for the access.
 For example, let us consider the function ``F`` below:
 
@@ -5479,6 +5614,17 @@ and axioms:
       f__function_guard temp___result x1 ... <->
         pred_call temp___result attr__access x1 ...
 
+These axioms let calls through ``F'Access`` use the information available about
+``F``, including after conversions between access types with the same profile.
+In the program domain, taking ``F'Access`` also checks that ``F`` satisfies the
+contract of the access type, using the same checks as
+:ref:`Access-To-Subprogram Conversions`.
+
+SPARK also requires designated functions to terminate. Indirect calls can hide
+recursion from the call graph, so taking a function's ``Access`` introduces a
+termination check if the function or its callees make indirect calls. Flow
+analysis relies on this check for termination of calls through access-to-function
+values.
 
 Operators
 ^^^^^^^^^
@@ -5565,11 +5711,11 @@ from the access-to-function type ``S`` to ``T`` below:
 
 .. code-block:: ada
 
-  type S is access function (X1 : S1, ...) return R with
+  type S is access function (X1 : S1; ...) return R with
     Pre  => S_Pre (X1, ...),
     Post => S_Post (S'Result, X1, ...);
 
-  type T is access function (Y1 : S1, ...) return R with
+  type T is access function (Y1 : S1; ...) return R with
     Pre  => T_Pre (Y1, ...),
     Post => T_Post (T'Result, Y1, ...);
 
@@ -5592,14 +5738,14 @@ The idea is to generate the following code:
 
 For procedures, it is similar, except that we don't generate the let binding
 for the result identifier. Since procedures can modify their parameters, we
-generate an havoc statement between the checks for the precondition and the
+generate a havoc statement between the checks for the precondition and the
 postcondition to simulate the execution of ``Expr``.
 
 In all cases, these checks are conditioned to the fact that ``Expr`` is not
 ``null`` and wrapped in an ignore block so as to not impact the rest of the
 verification if these checks happen to fail. This is important as these
 Liskov checks are really mandated by SPARK and not Ada, so they do not
-correspond to a check at execution and users could chose to justify them.
+correspond to a check at execution and users could choose to justify them.
 
 ***********************
 gnat2why Implementation

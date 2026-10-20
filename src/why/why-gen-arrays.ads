@@ -582,7 +582,10 @@ package Why.Gen.Arrays is
    procedure Create_Move_Tree_Theory_For_Array (Th : Theory_UC; E : Entity_Id)
    with Pre => Has_Array_Type (E) and then Contains_Allocated_Parts (E);
    --  Create a module declaring a type for the reclamation trees for objects
-   --  of type E.
+   --  of type E. The tree is a total map from indices to component move trees,
+   --  with __get and __set operations. It stores no bounds. The
+   --  __is_moved_or_reclaimed predicate uses bounds from the array value or
+   --  its static type and checks only components within these bounds.
 
    procedure Create_Validity_Tree_Theory_For_Array
      (Th : Theory_UC; E : Entity_Id);

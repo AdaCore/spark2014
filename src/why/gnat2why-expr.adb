@@ -6746,9 +6746,9 @@ package body Gnat2Why.Expr is
       --  @param C_Ty component type
       --  @param E record field for record component
       --  @param Idx array indices for array component
-      --  @return predicate for individual components
-      --          Dynamic_Invariant <C_Expr>
-      --              /\ C_Expr.rec__constrained = <Is_Constrained (C_Ty)>
+      --  @return The dynamic invariant of C_Expr, including its bounds and
+      --          discriminant constraints. For tagged components, also require
+      --          that the stored tag equals C_Ty's tag.
 
       function Invariant_For_Absent_Comp
         (C_Expr : W_Term_Id; C_Ty : Entity_Id; E : Entity_Id) return W_Pred_Id;

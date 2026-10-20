@@ -717,13 +717,12 @@ package Why.Atree.Modules is
 
    Exception_Module : W_Module_Id;
 
-   --  M_Subprogram_Profiles maps the profile of a subprogram, represented
-   --  as a name, to a Why3 module. If the subprogram is a function, the module
-   --  contains a Why3 logic function and a predicate which can be used to call
-   --  the access-to-subprogram object designating the expected profile in the
-   --  term domain. For now, the module contains nothing for procedures. The
-   --  name of a profile can be obtained by Get_Profile_Theory_Name from
-   --  Gnat2why.Subprograms.Pointers.
+   --  M_Subprogram_Profiles maps a profile name, produced by
+   --  Get_Profile_Theory_Name below, to shared call symbols and their module.
+   --  For functions, Call_Id is the logical __call symbol and Pred_Id is its
+   --  pred_call guard. Both take the designated __subprogram value as an
+   --  additional parameter. Procedure entries have only a module, currently
+   --  empty; no shared postcondition predicate is generated for them.
 
    type M_Subprogram_Profile_Type (Is_Function : Boolean := True) is record
       Module : W_Module_Id;
@@ -871,14 +870,17 @@ package Why.Atree.Modules is
 
    function Get_Logic_Function_Guard
      (E : Function_Kind_Id) return W_Identifier_Id;
-   --  Return the guard predicate __pred_call associated with the profile of a
+   --  Return the guard predicate pred_call associated with the profile of a
    --  function or function type.
 
    function Get_Module_Name (M : W_Module_Id) return String;
    --  Return the name of the module
 
    function Get_Profile_Theory_Name (E : Entity_Id) return Symbol;
-   --  Compute the name of the theory for a profile
+   --  Compute the name for the profile of a subprogram or subprogram type E.
+   --  It depends only on the ordered parameter modes and representative
+   --  subtypes (Retysp), and the representative result subtype for functions.
+   --  The name is the sharing key in M_Subprogram_Profiles.
 
    function Get_Move_Tree_Type (E : Entity_Id) return W_Type_Id;
    --  Compute the type of the move tree for E

@@ -37,8 +37,49 @@ with Why.Sinfo;            use Why.Sinfo;
 with Why.Types;            use Why.Types;
 
 package Why.Gen.Records is
-   --  This package encapsulates the encoding of Ada records into Why. This
-   --  also includes records with variant parts.
+   --  This package encodes Ada records, including variant records, into Why3.
+   --  It also handles private types and concurrent types modeled as records.
+   --
+   --  The record representation __rep is immutable. Its top-level field
+   --  __split_discrs holds discriminants and __split_fields holds ordinary
+   --  components. All components in variant parts are represented, even
+   --  when absent for the current discriminant values. Tagged types also have
+   --  an attr__tag field. Their __split_fields record contains a single
+   --  abstract extension field, rec__ext__, for components not present in the
+   --  current static view. The top-level fields for discriminants and ordinary
+   --  components are omitted when they would be empty. Constrainedness is
+   --  tracked separately on objects and is not part of __rep.
+   --
+   --  Simple private types use an abstract __rep, apart from hardcoded library
+   --  models. Null records with no top-level fields are declared directly in
+   --  the Ada type module, without a separate representative module.
+   --
+   --  Get_Component_Set in Gnat2Why.Tables supplies ordinary components,
+   --  including components hidden by Ada privacy and Part_Of objects for
+   --  single protected objects. A type entity in this set stands for a part
+   --  hidden from SPARK and is represented by a field of an abstract type.
+   --  Field names use rec__ followed by the full name of the representative
+   --  component from its first declaration. This distinguishes components
+   --  with the same Ada name that originate in different ancestors.
+   --
+   --  Oldest_Parent_With_Same_Fields selects the ancestor whose representative
+   --  module can be reused. A new module is needed when components or their
+   --  types differ, or when the initialization wrapper requires a different
+   --  layout. The type of the top-level field for discriminants is shared with
+   --  the root even when the top-level field for ordinary components needs a
+   --  new type.
+   --
+   --  Declare_Ada_Record re-exports the representative module and gives __rep
+   --  the Ada type's name. Classwide types and other clones re-export an
+   --  existing type module; Record_Type_Is_Clone identifies these cases.
+   --
+   --  The to_base and of_base functions convert to and from the root
+   --  representation in both logic and program domains. Shared fields are
+   --  copied, with component conversions when needed. Array components are
+   --  converted without sliding. Tagged extensions use hide_ext__ and
+   --  extract__ functions to transfer components between explicit fields and
+   --  rec__ext__. Their defining axioms are in a separate representative
+   --  completion module.
 
    procedure Declare_Ada_Record (Th : Theory_UC; E : Entity_Id)
    with
@@ -50,8 +91,7 @@ package Why.Gen.Records is
         | Concurrent_Kind;
    --  Emit all necessary Why3 declarations to support Ada records. This also
    --  supports variant records, private types and concurrent types.
-   --  @param P the Why section to insert the declaration
-   --  @param Theory the theory in which to insert the type declaration
+   --  @param Th the theory in which to insert the type declaration
    --  @param E the type entity to translate
 
    procedure Declare_Init_Wrapper_For_Record (Th : Theory_UC; E : Entity_Id)
@@ -63,8 +103,9 @@ package Why.Gen.Records is
 
    procedure Complete_Tagged_Record_Type (Th : Theory_UC; E : Entity_Id)
    with Pre => Is_Tagged_Type (E);
-   --  Emit a type concrete declaration for the extension part of a tagged type
-   --  and axioms for its extract__ and hide__ functions.
+   --  Export the representative completion module for E. It gives a concrete
+   --  view of the abstract extension field and supplies any defining axioms
+   --  for the extract__ and hide_ext__ functions.
 
    procedure Create_Compatible_Tags_Theory (E : Entity_Id)
    with Pre => Is_Tagged_Type (E) and then E = Root_Retysp (E);
@@ -81,13 +122,18 @@ package Why.Gen.Records is
         | Incomplete_Or_Private_Kind
         | Concurrent_Kind;
    --  Create a module for the representative type of a record if needed. It
-   --  contains a why record type named WNE_Rec_Rep and all the needed
-   --  functions and attributes except for the tag of tagged types.
+   --  contains the representative type __rep and its shared operations.
+   --  The constant for a tagged type's specific tag is declared in its Ada
+   --  type module. The attr__tag field of __rep stores each value's tag.
 
    procedure Create_Move_Tree_Theory_For_Record (Th : Theory_UC; E : Entity_Id)
    with Pre => Contains_Allocated_Parts (E);
    --  Create a module declaring a type for the move trees for objects
-   --  of type E.
+   --  of type E. Record trees have one field per component needing reclamation
+   --  and no discriminants. The __is_moved_or_reclaimed predicate uses the
+   --  record value to select fields present in the current variant. Private
+   --  parts with ownership annotations use a boolean move flag and the
+   --  user-supplied reclamation function.
 
    procedure Create_Validity_Tree_Theory_For_Record
      (Th : Theory_UC; E : Entity_Id);
@@ -392,8 +438,11 @@ package Why.Gen.Records is
       Ty           : Entity_Id;
       Relaxed_Init : Boolean := False) return W_Term_Id;
    --  Reconstructs a complete record of type Ty from an array of expressions
-   --  representing a split form. A should contain first the fields, then the
-   --  discriminants, the 'Constrained attribute and the 'Tag attribute.
+   --  representing a split form. A contains the value of the top-level field
+   --  for components, then the value of the top-level field for discriminants,
+   --  its initialization flag when needed, and the tag.
+   --  Entries absent from Ty's representation are omitted. Constrainedness
+   --  is not part of A.
 
    function Field_Type_For_Discriminants (E : Entity_Id) return W_Type_Id
    with Pre => Is_Type (E) and then Has_Discriminants (E);
@@ -414,6 +463,9 @@ package Why.Gen.Records is
    --  Return the existing type declaration that has been cloned for E
 
    function Oldest_Parent_With_Same_Fields (E : Entity_Id) return Entity_Id;
+   --  Select the ancestor used to share E's representative module, accounting
+   --  for component types and the initialization wrapper's layout.
+   --  The result may be Retysp (E) itself.
 
    --  Default values for predicates for fields which are not present in a
    --  variant record.

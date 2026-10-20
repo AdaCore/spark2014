@@ -29,6 +29,36 @@ with SPARK_Util.Types; use SPARK_Util.Types;
 with Why.Types;        use Why.Types;
 
 package Gnat2Why.Subprograms.Pointers is
+   --  This package translates access-to-subprogram types, subprogram 'Access
+   --  attributes, and contract checks on conversions. It also handles
+   --  higher-order specializations.
+   --
+   --  All access-to-subprogram types reuse Subprogram_Pointer_Rep from
+   --  _gnatprove_standard.mlw, accessed through M_Subprogram_Access. Its
+   --  record __rep holds an is_null flag and an abstract __subprogram value.
+   --  Declare_Access_To_Subprogram_Type exports this module and aliases __rep
+   --  with the Ada type's name.
+   --
+   --  M_Subprogram_Profiles holds modules shared by access types with the same
+   --  profile. Get_Profile_Theory_Name in Why.Atree.Modules supplies the key.
+   --  Function modules declare __call(subp, inputs) for the logical result and
+   --  pred_call(result, subp, inputs) to guard contract axioms on calls.
+   --  Procedure modules are currently empty; no shared postcondition predicate
+   --  has been implemented for them.
+   --
+   --  Each access type declares __in_range(subp) to express compatibility with
+   --  its contract. For functions, the completion defines this predicate using
+   --  the guarded postcondition axiom for __call. Derived types and subtypes
+   --  use the parent's predicate. Procedure predicates are True.
+   --  The completion also declares the type-specific program call __call_
+   --  with the profile's contract.
+   --
+   --  Ordinary subprogram accesses require a null Global contract.
+   --  Higher-order specialization permits global inputs on specialized
+   --  function actuals. These become inputs of the specialized call model
+   --  rather than the shared profile model. Handler types can designate
+   --  subprograms accessing globals, but cannot be called in SPARK and have
+   --  no call symbols.
 
    procedure Declare_Access_To_Subprogram_Type
      (Th : Theory_UC; E : Access_Kind_Id)
@@ -47,10 +77,11 @@ package Gnat2Why.Subprograms.Pointers is
 
    procedure Create_Theory_For_Profile_If_Needed (E : Access_Kind_Id)
    with Pre => Is_Access_Subprogram_Type (E);
-   --  Create a theory for a profile E if no theory has been declared for the
-   --  same profile. For function profiles, this theory contains a logic __call
-   --  function which is shared between all access to subprogram types which
-   --  have the same profile.
+   --  Create a theory for the profile designated by E if none exists yet.
+   --  For function profiles, this theory contains a logic __call function
+   --  and its pred_call guard, shared between access types with the
+   --  same profile. Naming and sharing conventions are described with
+   --  Get_Profile_Theory_Name in Why.Atree.Modules.
 
    function New_Dynamic_Property_For_Subprogram
      (Ty : Access_Kind_Id; Expr : W_Term_Id; Params : Transformation_Params)
@@ -98,14 +129,14 @@ package Gnat2Why.Subprograms.Pointers is
      Pre =>
        Attribute_Name (Expr) = Name_Access
        and then Is_Access_Subprogram_Type (Retysp (Etype (Expr)));
-   --  Transform a reference to the 'Access attribute whose prefix in a
+   --  Transform a reference to the 'Access attribute whose prefix is a
    --  subprogram name. A theory is introduced for accesses to a given
    --  subprogram so that it can be shared between occurrences.
    --  If Domain is EW_Prog, also perform LSP checks and possibly checks for
    --  specific type constraints of Etype (Expr).
 
    procedure Create_Theory_For_HO_Specialization_If_Needed (Call : Node_Id);
-   --  Create a theory for a call to asubprogram annotated with higher order
+   --  Create a theory for a call to a subprogram annotated with higher order
    --  specialization if no theory has been declared for the same
    --  specialization.
 
