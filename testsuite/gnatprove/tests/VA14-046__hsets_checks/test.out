@@ -73,8 +73,6 @@ spark-containers-formal-hashed_sets.ads:1284:27: info: overflow check proved (Z3
 spark-containers-formal-hashed_sets.ads:1284:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:1285:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
 spark-containers-formal-hashed_sets.ads:1285:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1285:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1285:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:1337:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
 spark-containers-formal-hashed_sets.ads:1337:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:1423:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:12
@@ -168,8 +166,6 @@ spark-containers-formal-unbounded_hashed_sets.ads:1226:27: info: overflow check 
 spark-containers-formal-unbounded_hashed_sets.ads:1226:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:1227:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
 spark-containers-formal-unbounded_hashed_sets.ads:1227:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1227:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1227:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:1279:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
 spark-containers-formal-unbounded_hashed_sets.ads:1279:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:1365:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:35

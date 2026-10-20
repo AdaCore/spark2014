@@ -81,8 +81,6 @@ spark-containers-formal-ordered_sets.ads:1409:27: info: overflow check proved (Z
 spark-containers-formal-ordered_sets.ads:1409:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:1410:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
 spark-containers-formal-ordered_sets.ads:1410:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1410:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1410:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:1456:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
 spark-containers-formal-ordered_sets.ads:1456:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:1523:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:10
@@ -203,8 +201,6 @@ spark-containers-formal-unbounded_ordered_sets.ads:1396:27: info: overflow check
 spark-containers-formal-unbounded_ordered_sets.ads:1396:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
 spark-containers-formal-unbounded_ordered_sets.ads:1397:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
 spark-containers-formal-unbounded_ordered_sets.ads:1397:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1397:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1397:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
 spark-containers-formal-unbounded_ordered_sets.ads:1443:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
 spark-containers-formal-unbounded_ordered_sets.ads:1443:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
 spark-containers-formal-unbounded_ordered_sets.ads:1510:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:26
