@@ -10,8 +10,9 @@ def my_plan():
     anod_install("libgpr", query_range=20)
     anod_install("libgpr2", query_range=20)
     anod_install("gnatcoll-core", query_range=20)
-    anod_install("vss-extra", qualifier="edge", query_range=20)
-    anod_install("vss-text", qualifier="edge", query_range=20)
+    vss_qualifier = {"edge": not config.is_release}
+    anod_install("vss-extra", qualifier=vss_qualifier, query_range=20)
+    anod_install("vss-text", qualifier=vss_qualifier, query_range=20)
     anod_install("e3-for-testing", query_range=20)
     anod_build("why3")
     anod_build("spark2014", qualifier="assertions")
