@@ -8511,7 +8511,11 @@ package body Gnat2Why.Subprograms is
                if not Has_Contracts (E, Pragma_Postcondition)
                  and then not Has_Contracts (E, Pragma_Contract_Cases)
                then
-                  Post := Get_LSP_Contract (Params, E, Pragma_Postcondition);
+                  Post :=
+                    New_And_Pred
+                      (Left  =>
+                         Get_LSP_Contract (Params, E, Pragma_Postcondition),
+                       Right => Post);
                end if;
             end if;
 
