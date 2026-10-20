@@ -15,8 +15,9 @@ def build():
     anod_install("alt-ergo", query_range=20)
     anod_install("xmlada", query_range=20)
     anod_install("gnatcoll-core", query_range=20)
-    anod_install("vss-extra", qualifier="edge", query_range=20)
-    anod_install("vss-text", qualifier="edge", query_range=20)
+    vss_qualifier = {"edge": not config.is_release}
+    anod_install("vss-extra", qualifier=vss_qualifier, query_range=20)
+    anod_install("vss-text", qualifier=vss_qualifier, query_range=20)
     anod_build("spark2014", qualifier=build_qualifiers())
 
 def test():
