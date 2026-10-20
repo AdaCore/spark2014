@@ -1,0 +1,5 @@
+nested_invariant.adb:1:42: info: initialization of "X" proved
+nested_invariant.adb:3:11: info: postcondition proved (CVC5: 1 VC)
+nested_invariant.adb:10:36: info: loop invariant initialization proved (CVC5: 1 VC)
+nested_invariant.adb:10:36: info: loop invariant preservation proved (CVC5: 1 VC)
+nested_invariant.adb:13:14: info: overflow check proved (CVC5: 2 VC)

@@ -1,0 +1,3 @@
+entry_precondition.adb:5:25: info: assertion proved (CVC5: 1 VC)
+entry_precondition.adb:10:38: warning: statement has no effect
+entry_precondition.ads:14:45: warning: precondition is always False (CVC5: 1 VC)
