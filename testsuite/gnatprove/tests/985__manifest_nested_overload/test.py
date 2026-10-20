@@ -180,7 +180,9 @@ def inspect(name, manifest):
 
 
 def gnatwhy3_line_for(lines, file_stem):
-    matches = [line for line in lines if f"/{file_stem}.gnat-json " in line]
+    matches = [
+        line for line in lines if line.rstrip().endswith(f"/{file_stem}.gnat-json")
+    ]
     if len(matches) != 1:
         raise AssertionError("\n".join(lines))
     return f" {matches[0]} "
