@@ -330,9 +330,25 @@ if-statement.
 If the preceding or enclosing construct is a subprogram
 body, the pragma applies to both the subprogram body and the spec including its
 contract. This allows one to place a justification for a check message issued by
-|GNATprove| either on the spec when it is relevant for callers. Note that
-this placement of a justification is ineffective on subprograms analyzed
-only in the context of their calls (see details in
+|GNATprove| either on the spec when it is relevant for callers:
+
+.. literalinclude:: /examples/ug__justifications/justifications.ads
+   :language: ada
+   :lines: 4-7
+
+or on the body when it is an implementation choice that need not be visible
+to users of the unit:
+
+.. literalinclude:: /examples/ug__justifications/justifications.ads
+   :language: ada
+   :lines: 9-10
+
+.. literalinclude:: /examples/ug__justifications/justifications.adb
+   :language: ada
+   :lines: 10-16
+
+Note that this placement of a justification is ineffective on subprograms
+analyzed only in the context of their calls (see details in
 :ref:`Contextual Analysis of Subprograms Without Contracts`).
 
 An aspect on a package or subprogram declaration/body can be used instead of a
@@ -364,21 +380,6 @@ the pragma to a possibly large range of source lines:
 
 Users should take care to not justify checks which were not intended to be
 justified, when placing pragma Annotate in such places.
-
-.. literalinclude:: /examples/ug__justifications/justifications.ads
-   :language: ada
-   :lines: 4-7
-
-or on the body when it is an implementation choice that need not be visible
-to users of the unit:
-
-.. literalinclude:: /examples/ug__justifications/justifications.ads
-   :language: ada
-   :lines: 9-10
-
-.. literalinclude:: /examples/ug__justifications/justifications.adb
-   :language: ada
-   :lines: 10-16
 
 A justification placed on the declaration of a generic subprogram or generic
 package applies to the check messages issued for all its instances, whether it
