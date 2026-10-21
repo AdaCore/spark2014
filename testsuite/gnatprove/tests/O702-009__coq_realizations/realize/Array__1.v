@@ -207,6 +207,8 @@ Lemma slide_def :
    ((get (slide a old_first new_first) i) =
     (get a (sub i (sub new_first old_first))))) /\
   (forall (new_last:t),
+   le old_first (sub new_last (sub new_first old_first)) <->
+   le new_first new_last ->
    has_bounds a old_first (sub new_last (sub new_first old_first)) ->
    has_bounds (slide a old_first new_first) new_first new_last).
 Proof.
@@ -221,7 +223,7 @@ split.
    - rewrite Z.sub_sub_distr.
      auto.
 * intro new_last; unfold slide, sub, has_bounds; simpl.
-  intros has_bounds_a x Hx.
+  intros _ has_bounds_a x Hx.
   destruct (Z.eq_dec old_first new_first) as [Ha | Ha];
   apply has_bounds_a; lia.
 Qed.

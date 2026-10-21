@@ -1,0 +1,4 @@
+s0s.ads:22:16: medium: postcondition might fail
+s0s.ads:40:16: medium: postcondition might fail
+s0s.ads:60:16: medium: postcondition might fail
+s0s.ads:83:16: medium: postcondition might fail
