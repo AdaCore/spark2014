@@ -7465,8 +7465,6 @@ package body Gnat2Why.Subprograms is
          return;
       end if;
 
-      pragma Assert (Is_Function_Type (E) or else Has_Post_Axiom (E));
-
       --  For recursive functions, we store the axiom in a different module,
       --  so that we can make sure that it cannot be used to prove the function
       --  itself.

@@ -807,9 +807,6 @@ package Gnat2Why.Util is
    --  From a list of declarations, returns a list of borrowers, in reverse
    --  order of the declarations.
 
-   function Has_Post_Axiom (E : Callable_Kind_Id) return Boolean;
-   --  Returns True if we may produce an axiom for the post of E
-
    procedure Collect_Attr_Parts
      (N : Node_Id; Attr_Id : Attribute_Id; Parts : in out Node_Sets.Set)
    with Pre => Attr_Id in Attribute_Old | Attribute_Loop_Entry;
