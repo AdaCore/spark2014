@@ -1,0 +1,100 @@
+sliding_1.adb:19:22: high: assertion might fail (e.g. when B = (1 => 10, 2 => 20, 3 => 30))
+sliding_1.adb:32:22: high: assertion might fail (e.g. when B = (-1 => 10, 0 => 20, 1 => 30))
+sliding_1.ads:5:09: info: data dependencies proved
+sliding_1.ads:7:09: info: data dependencies proved
+sliding_2.adb:16:15: info: index check proved (CVC5: 2 VC)
+sliding_2.adb:16:31: info: index check proved (CVC5: 2 VC)
+sliding_2.adb:16:47: info: index check proved (CVC5: 2 VC)
+sliding_2.adb:20:22: medium: assertion might fail
+sliding_2.adb:30:15: info: index check proved (CVC5: 2 VC)
+sliding_2.adb:30:31: info: index check proved (CVC5: 2 VC)
+sliding_2.adb:30:47: info: index check proved (CVC5: 2 VC)
+sliding_2.adb:34:22: medium: assertion might fail
+sliding_2.adb:47:22: medium: assertion might fail
+sliding_2.adb:60:22: medium: assertion might fail
+sliding_2.ads:5:09: info: data dependencies proved
+sliding_2.ads:7:09: info: data dependencies proved
+sliding_2.ads:9:09: info: data dependencies proved
+sliding_2.ads:11:09: info: data dependencies proved
+sliding_3.adb:20:15: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:20:21: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:20:38: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:20:44: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:20:61: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:20:67: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:24:22: medium: assertion might fail
+sliding_3.adb:38:15: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:38:21: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:38:38: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:38:44: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:38:61: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:38:67: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:42:22: medium: assertion might fail
+sliding_3.adb:56:21: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:56:37: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:56:53: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:60:22: medium: assertion might fail
+sliding_3.adb:74:21: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:74:37: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:74:53: info: index check proved (CVC5: 2 VC)
+sliding_3.adb:78:22: medium: assertion might fail
+sliding_3.adb:95:22: medium: assertion might fail
+sliding_3.adb:112:22: medium: assertion might fail
+sliding_3.ads:5:09: info: data dependencies proved
+sliding_3.ads:7:09: info: data dependencies proved
+sliding_3.ads:9:09: info: data dependencies proved
+sliding_3.ads:11:09: info: data dependencies proved
+sliding_3.ads:13:09: info: data dependencies proved
+sliding_3.ads:15:09: info: data dependencies proved
+sliding_4.adb:21:15: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:21:21: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:21:27: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:22:15: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:22:21: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:22:27: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:23:15: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:23:21: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:23:27: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:27:22: medium: assertion might fail
+sliding_4.adb:42:15: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:42:21: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:42:27: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:43:15: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:43:21: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:43:27: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:44:15: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:44:21: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:44:27: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:48:22: medium: assertion might fail
+sliding_4.adb:64:18: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:64:24: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:65:18: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:65:24: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:66:18: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:66:24: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:70:22: medium: assertion might fail
+sliding_4.adb:86:18: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:86:24: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:87:18: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:87:24: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:88:18: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:88:24: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:92:22: medium: assertion might fail
+sliding_4.adb:107:27: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:107:43: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:107:59: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:111:22: medium: assertion might fail
+sliding_4.adb:126:27: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:126:43: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:126:59: info: index check proved (CVC5: 2 VC)
+sliding_4.adb:130:22: medium: assertion might fail
+sliding_4.adb:149:22: medium: assertion might fail
+sliding_4.adb:168:22: medium: assertion might fail
+sliding_4.ads:5:09: info: data dependencies proved
+sliding_4.ads:7:09: info: data dependencies proved
+sliding_4.ads:9:09: info: data dependencies proved
+sliding_4.ads:11:09: info: data dependencies proved
+sliding_4.ads:13:09: info: data dependencies proved
+sliding_4.ads:15:09: info: data dependencies proved
+sliding_4.ads:17:09: info: data dependencies proved
+sliding_4.ads:19:09: info: data dependencies proved
