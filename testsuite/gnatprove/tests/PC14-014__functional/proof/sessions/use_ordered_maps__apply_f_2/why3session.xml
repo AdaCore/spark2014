@@ -472,13 +472,13 @@
             </proof>
           </goal>
           <goal name="def'vc.91" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="120279" />
+            <proof prover="1">
+              <result status="valid" steps="24425" />
             </proof>
           </goal>
           <goal name="def'vc.92" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="252632" />
+            <proof prover="1">
+              <result status="valid" steps="24972" />
             </proof>
           </goal>
         </transf>

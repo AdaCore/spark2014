@@ -100,7 +100,7 @@
           </goal>
           <goal name="def'vc.16" proved="true">
             <proof prover="1">
-              <result status="valid" steps="99002" />
+              <result status="valid" steps="99003" />
             </proof>
           </goal>
           <goal name="def'vc.17" proved="true">
@@ -155,7 +155,7 @@
           </goal>
           <goal name="def'vc.27" proved="true">
             <proof prover="1">
-              <result status="valid" steps="48419" />
+              <result status="valid" steps="48417" />
             </proof>
           </goal>
           <goal name="def'vc.28" proved="true">
@@ -174,8 +174,8 @@
             </proof>
           </goal>
           <goal name="def'vc.31" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="1201856" />
+            <proof prover="0">
+              <result status="valid" steps="19295" />
             </proof>
           </goal>
           <goal name="def'vc.32" proved="true">
@@ -185,7 +185,7 @@
           </goal>
           <goal name="def'vc.33" proved="true">
             <proof prover="1">
-              <result status="valid" steps="52261" />
+              <result status="valid" steps="52259" />
             </proof>
           </goal>
           <goal name="def'vc.34" proved="true">
@@ -194,8 +194,8 @@
             </proof>
           </goal>
           <goal name="def'vc.35" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="1984932" />
+            <proof prover="1">
+              <result status="valid" steps="516988" />
             </proof>
           </goal>
           <goal name="def'vc.36" proved="true">
@@ -209,8 +209,8 @@
             </proof>
           </goal>
           <goal name="def'vc.38" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="970488" />
+            <proof prover="1">
+              <result status="valid" steps="642717" />
             </proof>
           </goal>
           <goal name="def'vc.39" proved="true">

@@ -6,7 +6,6 @@
   <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="60" steplimit="0" memlimit="2000" />
   <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="2000" />
   <prover id="3" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000" />
-  <prover id="4" name="colibri" version="2137" timelimit="60" steplimit="0" memlimit="2000" />
   <file format="gnat-json" proved="true">
     <path name=".." />
     <path name=".." />
@@ -182,13 +181,13 @@
             </proof>
           </goal>
           <goal name="def'vc.33" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="17768" />
+            <proof prover="1">
+              <result status="valid" steps="5346" />
             </proof>
           </goal>
           <goal name="def'vc.34" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="1560" />
+            <proof prover="1">
+              <result status="valid" steps="1696" />
             </proof>
           </goal>
           <goal name="def'vc.35" proved="true">
@@ -227,8 +226,8 @@
             </proof>
           </goal>
           <goal name="def'vc.42" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="51428" />
+            <proof prover="1">
+              <result status="valid" steps="8495" />
             </proof>
           </goal>
           <goal name="def'vc.43" proved="true">
@@ -312,13 +311,13 @@
             </proof>
           </goal>
           <goal name="def'vc.59" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="62846" />
+            <proof prover="1">
+              <result status="valid" steps="30660" />
             </proof>
           </goal>
           <goal name="def'vc.60" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="67787" />
+            <proof prover="1">
+              <result status="valid" steps="38074" />
             </proof>
           </goal>
           <goal name="def'vc.61" proved="true">
@@ -327,8 +326,8 @@
             </proof>
           </goal>
           <goal name="def'vc.62" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="67738" />
+            <proof prover="1">
+              <result status="valid" steps="28403" />
             </proof>
           </goal>
           <goal name="def'vc.63" proved="true">
