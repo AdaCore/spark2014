@@ -2932,9 +2932,9 @@ package body Why.Gen.Arrays is
          then
             declare
                Base_Ty   : constant W_Type_Id :=
-                Nth_Index_Rep_Type_No_Bool (L_Ty, Dim);
+                Nth_Index_Rep_Type_No_Bool (L_Ty, I);
                pragma Assert
-                 (Base_Ty = Nth_Index_Rep_Type_No_Bool (R_Ty, Dim));
+                 (Base_Ty = Nth_Index_Rep_Type_No_Bool (R_Ty, I));
 
                L_First_E : constant W_Term_Id :=
                  Insert_Simple_Conversion
@@ -2996,9 +2996,9 @@ package body Why.Gen.Arrays is
          then
             declare
                Base_Ty   : constant W_Type_Id :=
-                Nth_Index_Rep_Type_No_Bool (L_Ty, Dim);
+                Nth_Index_Rep_Type_No_Bool (L_Ty, I);
                pragma Assert
-                 (Base_Ty = Nth_Index_Rep_Type_No_Bool (Right, Dim));
+                 (Base_Ty = Nth_Index_Rep_Type_No_Bool (Right, I));
 
                L_First_E : constant W_Term_Id :=
                  Insert_Simple_Conversion
