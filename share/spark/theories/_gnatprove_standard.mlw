@@ -495,7 +495,7 @@ module Floating_power
   meta "remove_unused:dependency" axiom Power_neg2, function power
 
   axiom Power_neg3 : forall x : t. is_finite x -> not (is_zero x) ->
-    eq (power x (-2)) (div (of_int 1) (power x 3))
+    eq (power x (-3)) (div (of_int 1) (power x 3))
   meta "remove_unused:dependency" axiom Power_neg3, function power
 end
 
