@@ -1,0 +1,13 @@
+mixed_assignment.adb:1:11: warning: subprogram "Mixed_Assignment" has no effect
+mixed_assignment.adb:4:04: info: range check proved (CVC5: 2 VC)
+mixed_assignment.adb:4:32: info: length check proved (CVC5: 6 VC)
+mixed_assignment.adb:4:32: info: range check proved (CVC5: 2 VC)
+mixed_assignment.adb:5:04: info: initialization of "B" proved
+mixed_assignment.adb:8:09: medium: length check might fail [reason for check: array must be of the appropriate length]
+mixed_assignment.adb:9:19: info: assertion proved (CVC5: 1 VC)
+mixed_conversion.adb:1:11: warning: subprogram "Mixed_Conversion" has no effect
+mixed_conversion.adb:4:04: info: range check proved (CVC5: 2 VC)
+mixed_conversion.adb:4:32: info: length check proved (CVC5: 6 VC)
+mixed_conversion.adb:4:32: info: range check proved (CVC5: 2 VC)
+mixed_conversion.adb:9:29: medium: length check might fail [reason for check: value must have same length as the target array type of the conversion]
+mixed_conversion.adb:11:19: info: assertion proved (CVC5: 1 VC)
