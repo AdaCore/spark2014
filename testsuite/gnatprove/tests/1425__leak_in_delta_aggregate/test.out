@@ -1,0 +1,51 @@
+bad_delta.adb:6:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+bad_delta.adb:6:54: info: index check proved (CVC5: 2 VC)
+bad_delta.adb:6:54: medium: resource or memory leak might occur
+bad_delta.adb:20:13: info: implicit aspect Always_Terminates on "Make" has been proved, subprogram will terminate
+bad_delta.adb:24:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+bad_delta.adb:25:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+bad_delta.adb:25:27: medium: resource or memory leak might occur
+bad_delta.adb:26:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+bad_delta.adb:27:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+bad_delta.adb:27:30: medium: resource or memory leak might occur
+bad_delta.adb:27:33: info: index check proved (CVC5: 2 VC)
+bad_delta.adb:28:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+bad_delta.adb:28:30: medium: resource or memory leak might occur
+bad_delta.adb:29:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+bad_delta.adb:29:52: medium: resource or memory leak might occur
+bad_delta.adb:30:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+bad_delta.adb:30:52: medium: resource or memory leak might occur
+bad_delta.adb:31:14: medium: resource or memory leak might occur
+bad_delta.adb:32:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+bad_delta.adb:32:31: info: absence of resource or memory leak proved (CVC5: 1 VC)
+bad_delta.adb:34:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+bad_delta.adb:35:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+bad_delta.adb:36:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+bad_delta.adb:36:25: medium: resource or memory leak might occur
+bad_delta.adb:36:26: info: index check proved (CVC5: 2 VC)
+bad_delta.adb:36:28: info: index check proved (CVC5: 2 VC)
+bad_delta.adb:38:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+bad_delta.adb:38:32: medium: resource or memory leak might occur
+bad_delta.adb:42:06: info: postcondition proved (CVC5: 2 VC)
+bad_delta.adb:47:33: info: loop invariant initialization proved (CVC5: 1 VC)
+bad_delta.adb:47:33: info: loop invariant preservation proved (CVC5: 1 VC)
+bad_delta.adb:47:65: info: index check proved (CVC5: 4 VC)
+bad_delta.adb:53:06: info: postcondition proved (CVC5: 2 VC)
+bad_delta.adb:59:14: info: add a contract to analyze it separately from calling contexts
+bad_delta.adb:59:14: info: local subprogram "In_Ghost_Static" only analyzed in the context of calls [info-unrolling-inlining]
+bad_delta.adb:65:14: info: add a contract to analyze it separately from calling contexts
+bad_delta.adb:65:14: info: local subprogram "In_Ghost" only analyzed in the context of calls [info-unrolling-inlining]
+bad_delta.adb:67:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC), in call inlined at bad_delta.adb:94
+bad_delta.adb:67:35: medium: resource or memory leak might occur, in call inlined at bad_delta.adb:94
+bad_delta.adb:73:30: info: loop invariant initialization proved (CVC5: 1 VC)
+bad_delta.adb:73:30: info: loop invariant preservation proved (CVC5: 1 VC)
+bad_delta.adb:73:60: info: index check proved (CVC5: 4 VC)
+bad_delta.adb:74:30: info: loop invariant initialization proved (CVC5: 1 VC)
+bad_delta.adb:74:30: info: loop invariant preservation proved (Z3: 1 VC)
+bad_delta.adb:75:61: info: index check proved (CVC5: 4 VC)
+bad_delta.adb:76:16: info: index check proved (CVC5: 2 VC)
+bad_delta.adb:78:33: info: loop invariant initialization proved (Trivial: 1 VC; Z3: 1 VC)
+bad_delta.adb:78:33: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
+bad_delta.adb:81:48: info: index check proved (CVC5: 4 VC)
+bad_delta.adb:94:04: info: analyzing call to "In_Ghost" in context
+bad_delta.adb:95:04: info: analyzing call to "In_Ghost_Static" in context

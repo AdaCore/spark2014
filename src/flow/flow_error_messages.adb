@@ -2392,6 +2392,25 @@ package body Flow_Error_Messages is
          function Is_Choice_Of_Aggr (N : Node_Id) return Boolean is
             Par : Node_Id := N;
          begin
+            --  Detect choices of 'Update
+
+            if Nkind (N) = N_Aggregate then
+               Par := Parent (N);
+               if Nkind (Par) /= N_Component_Association then
+                  return False;
+               end if;
+               Par := Parent (Par);
+               if Nkind (Par) /= N_Aggregate then
+                  return False;
+               end if;
+               Par := Parent (Par);
+               return
+                 (Nkind (Par) = N_Attribute_Reference
+                  and then
+                    Get_Attribute_Id (Attribute_Name (Par))
+                    = Attribute_Update);
+            end if;
+
             --  Climb up the parent chain to find a deep container association
             --  if there is one.
 

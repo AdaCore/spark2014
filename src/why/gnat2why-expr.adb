@@ -2988,16 +2988,7 @@ package body Gnat2Why.Expr is
 
       if Contains_Allocated_Parts (Typ)
         and then not Is_Anonymous_Access_Type (Typ)
-        and then
-          (not Is_Ghost_Entity (Current_Subp)
-           or else
-             not Is_Non_Exec_Assertion_Level
-                   (Ghost_Assertion_Level (Current_Subp)))
-        and then
-          not (Present (Root)
-               and then Is_Ghost_Entity (Root)
-               and then
-                 Is_Non_Exec_Assertion_Level (Ghost_Assertion_Level (Root)))
+        and then not Is_Never_Executed_Ghost (Root, Current_Subp)
       then
          declare
             Val     : constant W_Expr_Id :=
@@ -3012,7 +3003,7 @@ package body Gnat2Why.Expr is
                      (Return_Type => Get_Move_Tree_Type (Val_Typ),
                       Labels      => Symbol_Sets.Empty_Set)
                  elsif Nkind (N) = N_Defining_Identifier
-                 then New_Move_Tree_Access_For_Identitier (N)
+                 then New_Move_Tree_Access_For_Identifier (N)
                  else New_Move_Tree_Access (N, EW_Pterm, Body_Params));
             --  If the value cannot be moved, use a fresh move tree
 
@@ -4190,11 +4181,7 @@ package body Gnat2Why.Expr is
       --  Do not complain if the operation is in non-executable ghost code.
       --  Program_Error cannot be raised at runtime.
 
-      if (Is_Ghost_Entity (Current_Subp)
-          and then
-            Is_Non_Exec_Assertion_Level (Ghost_Assertion_Level (Current_Subp)))
-        or else In_Non_Exec_Context (Expr)
-      then
+      if Is_Never_Executed_Ghost (Expr, Current_Subp) then
          return;
       end if;
 
@@ -13138,7 +13125,7 @@ package body Gnat2Why.Expr is
    begin
       case Nkind (Expr) is
          when N_Identifier | N_Expanded_Name                  =>
-            return New_Move_Tree_Access_For_Identitier (Entity (Expr));
+            return New_Move_Tree_Access_For_Identifier (Entity (Expr));
 
          --   As move trees for arrays do not have bounds, slices are ignored
          --   in Expr.
@@ -13229,10 +13216,10 @@ package body Gnat2Why.Expr is
    end New_Move_Tree_Access;
 
    -----------------------------------------
-   -- New_Move_Tree_Access_For_Identitier --
+   -- New_Move_Tree_Access_For_Identifier --
    -----------------------------------------
 
-   function New_Move_Tree_Access_For_Identitier
+   function New_Move_Tree_Access_For_Identifier
      (Ent : Entity_Id) return W_Expr_Id
    is
       C : constant Ada_Ent_To_Why.Cursor :=
@@ -13270,7 +13257,7 @@ package body Gnat2Why.Expr is
                  Ty    => Prot);
          end;
       end if;
-   end New_Move_Tree_Access_For_Identitier;
+   end New_Move_Tree_Access_For_Identifier;
 
    ------------------------------
    -- New_Move_Tree_Assignment --
@@ -13804,6 +13791,40 @@ package body Gnat2Why.Expr is
 
       return Raise_Or_Absurd;
    end New_Raise_Or_Absurd;
+
+   ---------------------------
+   -- New_Reclamation_Check --
+   ---------------------------
+
+   function New_Reclamation_Check
+     (Ada_Node  : Node_Id;
+      W_Expr    : W_Term_Id;
+      Move_Tree : W_Prog_Id := Why_Empty) return W_Prog_Id
+   is
+      Ty    : constant Type_Kind_Id := Get_Ada_Node (+Get_Type (+W_Expr));
+      Moved : constant W_Expr_Id :=
+        New_Temp_For_Expr
+          (if Present (Move_Tree)
+           then +Move_Tree
+           else
+             New_Any_Expr
+               (Return_Type => Get_Move_Tree_Type (Ty),
+                Labels      => Symbol_Sets.Empty_Set));
+   begin
+      return
+        New_Ignore
+          (Ada_Node => Ada_Node,
+           Prog     =>
+             Binding_For_Temp
+               (Tmp     => +Moved,
+                Context =>
+                  New_Located_Assert
+                    (Ada_Node => Ada_Node,
+                     Pred     =>
+                       Compute_Is_Moved_Or_Reclaimed (W_Expr, +Moved, Ty),
+                     Reason   => VC_Resource_Leak,
+                     Kind     => EW_Assert)));
+   end New_Reclamation_Check;
 
    -----------------------------
    -- New_Type_Invariant_Call --
@@ -20858,9 +20879,11 @@ package body Gnat2Why.Expr is
       Domain   : EW_Domain;
       Params   : Transformation_Params) return W_Expr_Id
    is
-      Pref_Typ : constant Entity_Id := Retysp (Etype (Pref));
-      W_Pref   : W_Expr_Id;
-      T        : W_Expr_Id;
+      Pref_Typ         : constant Entity_Id := Retysp (Etype (Pref));
+      Needs_Leak_Check : constant Boolean :=
+        Domain = EW_Prog and then Needs_Leak_Checks_For_Delta_Aggregate (Aggr);
+      W_Pref           : W_Expr_Id;
+      T                : W_Expr_Id;
 
    begin
       if Is_Deep_Delta_Aggregate (Ada_Node) then
@@ -20881,9 +20904,11 @@ package body Gnat2Why.Expr is
                      Expr_Has_Relaxed_Init (Ada_Node, No_Eval => False)));
 
          --  Introduce a temporary for the prefix to avoid recomputing it
-         --  several times if Pref_Typ has discriminants.
+         --  several times, and make sure we can use it in predicates.
 
-         W_Pref := New_Temp_For_Expr (W_Pref, Has_Discriminants (Pref_Typ));
+         W_Pref :=
+           New_Temp_For_Expr
+             (W_Pref, Has_Discriminants (Pref_Typ) or else Needs_Leak_Check);
 
          --  As discriminants may occur as bounds in types of
          --  discriminant dependent components, store them in the
@@ -20945,6 +20970,46 @@ package body Gnat2Why.Expr is
                          Discr_Vals         => Dummy_Vals,
                          Missing_Fields     => Dummy_Fields));
             end;
+
+            --  If we are in the program domain, generate leak checks
+            --  for erased deep components.
+
+            if Needs_Leak_Check then
+               declare
+                  Association : Node_Id :=
+                    Nlists.First (Component_Associations (Aggr));
+                  Choice      : Node_Id;
+                  Checks      : W_Statement_Sequence_Id := Void_Sequence;
+                  Component   : Entity_Id;
+               begin
+                  while Present (Association) loop
+                     Choice := First (Choice_List (Association));
+
+                     while Present (Choice) loop
+                        Component :=
+                          Search_Component_In_Type (Pref_Typ, Entity (Choice));
+                        if Contains_Allocated_Parts
+                             (Retysp (Etype (Component)))
+                        then
+                           Append
+                             (Checks,
+                              New_Reclamation_Check
+                                (Ada_Node => Choice,
+                                 W_Expr   =>
+                                   New_Ada_Record_Access
+                                     (Ada_Node => Choice,
+                                      Name     => +W_Pref,
+                                      Field    => Component,
+                                      Ty       => Pref_Typ)));
+                        end if;
+                        Next (Choice);
+                     end loop;
+                     Next (Association);
+                  end loop;
+
+                  Prepend (+Checks, T);
+               end;
+            end if;
 
             --  If we are in the program domain and Pref_Typ has discriminants,
             --  check that selectors are present in the prefix.
@@ -21021,56 +21086,6 @@ package body Gnat2Why.Expr is
               Relaxed_Init  =>
                 Expr_Has_Relaxed_Init (Ada_Node, No_Eval => False));
       end if;
-
-      --  Detect possible resource leaks in the assignment of component
-      --  associations.
-
-      declare
-         function Has_Deep_Association (Assocs : List_Id) return Boolean;
-         --  Returns whether the list of component associations Assocs
-         --  has a deep component.
-
-         --------------------------
-         -- Has_Deep_Association --
-         --------------------------
-
-         function Has_Deep_Association (Assocs : List_Id) return Boolean is
-            Assoc : Node_Id := Nlists.First (Assocs);
-         begin
-            while Present (Assoc) loop
-               if not Box_Present (Assoc)
-                 and then Is_Deep (Etype (Expression (Assoc)))
-               then
-                  return True;
-               end if;
-               Next (Assoc);
-            end loop;
-
-            return False;
-         end Has_Deep_Association;
-
-      begin
-         --  If all associations in the delta aggregate are not deep, then
-         --  there is no possibility of a resource leak when moving the prefix
-         --  and assigning component associations in turn. There is also no
-         --  possibility of move unless the delta aggregate appears directly
-         --  or indirectly on the rhs of an assignment, due to SPARK RM 3.10(6)
-         --  which prevents using the aggregate as the prefix of an enclosing
-         --  expression. Otherwise, it is correct over-approximation to check
-         --  that the prefix before any update does not own any memory. We
-         --  could improve on that if this is too imprecise for real code.
-
-         --  The case of delta aggregates involving array indexes with aliasing
-         --  between choices has already been rejected during marking, to
-         --  ensure that these cannot lead to a memory leak, even if the
-         --  prefix did not own memory initially.
-
-         if Has_Deep_Association (Component_Associations (Aggr))
-           and then Aggregate_Is_In_Assignment (Aggr)
-         then
-            Prepend (Check_No_Memory_Leaks (Pref, Pref), T);
-         end if;
-      end;
 
       return T;
    end Transform_Delta_Aggregate;
@@ -24355,12 +24370,8 @@ package body Gnat2Why.Expr is
          if Is_Allocating_Function (Subp)
            and then Contains_Allocated_Parts (Etype (Subp))
            and then
-             In_Statically_Leaking_Context (Expr, Ignore_Non_Exec => True)
-           and then
-             not (Is_Ghost_Entity (Current_Subp)
-                  and then
-                    Is_Non_Exec_Assertion_Level
-                      (Ghost_Assertion_Level (Current_Subp)))
+             In_Statically_Leaking_Context (Expr, Ignore_Non_Exec => False)
+           and then not Is_Never_Executed_Ghost (Expr, Current_Subp)
          then
             Emit_Static_Proof_Result
               (Expr,
