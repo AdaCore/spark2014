@@ -1,0 +1,13 @@
+empty_multidimensional.adb:1:11: warning: subprogram "Empty_Multidimensional" has no effect
+empty_multidimensional.adb:2:12: info: range check proved (CVC5: 2 VC)
+empty_multidimensional.adb:6:27: info: for array dimension 1 at empty_multidimensional.adb:3
+empty_multidimensional.adb:6:27: info: range check proved (CVC5: 1 VC)
+empty_multidimensional.adb:6:27: medium: for array dimension 2 at empty_multidimensional.adb:3
+empty_multidimensional.adb:6:27: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+empty_multidimensional.adb:6:27: warning: Constraint_Error will be raised at run time [enabled by default]
+empty_multidimensional.adb:6:27: warning: Pred of "Integer'First" [enabled by default]
+empty_signed.adb:1:11: warning: subprogram "Empty_Signed" has no effect
+empty_signed.adb:2:12: info: range check proved (CVC5: 2 VC)
+empty_signed.adb:6:27: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+empty_signed.adb:6:27: warning: Constraint_Error will be raised at run time [enabled by default]
+empty_signed.adb:6:27: warning: Pred of "Integer'First" [enabled by default]
