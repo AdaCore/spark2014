@@ -1,0 +1,2 @@
+prove_all:
+  steps: 10000
