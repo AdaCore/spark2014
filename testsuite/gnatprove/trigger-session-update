@@ -2,15 +2,18 @@
 """Trigger a CI session-update pipeline and apply results locally.
 
 Usage:
-  trigger-session-update [--tests TEST ...] [--no-wait]
+  trigger-session-update [--setup SETUP] [--tests TEST ...] [--no-wait]
   trigger-session-update --mr MR_ID [--tests TEST ...] [--no-wait]
   trigger-session-update --apply PIPELINE_ID
 
 Without --mr, the nightly gnatprove build is used (fast, no source build).
+Use --setup 27.1 to select a release setup instead of wavefront (wave).
+The tests and companion repositories follow the selected setup's revisions.
 
 With --mr MR_ID, the pipeline builds gnatprove from the MR's source branch.
 Depends-On handling and branch selection for companion repositories is done
 by generic_anod_ci on the CI side; the trigger script only passes the MR ID.
+The setup is inferred from the MR's target branch.
 
 --no-wait: triggers the pipeline and exits immediately, printing the pipeline
 URL and the exact command to run later to retrieve results, e.g.:
@@ -70,10 +73,16 @@ def parse_options():
         metavar="PIPELINE_ID",
         help="skip triggering; apply sessions from this already-finished pipeline",
     )
-    parser.add_argument(
+    source = parser.add_mutually_exclusive_group()
+    source.add_argument(
         "--mr",
         metavar="MR_ID",
         help="build gnatprove from this spark2014 MR instead of the nightly build",
+    )
+    source.add_argument(
+        "--setup",
+        metavar="SETUP",
+        help="Anod setup for the nightly build (default: wave; e.g. 27.1)",
     )
     parser.add_argument(
         "--tests",
@@ -82,7 +91,10 @@ def parse_options():
         default=[],
         help="test names to update (default: all session tests)",
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.apply and (args.mr or args.setup):
+        parser.error("--mr and --setup cannot be used with --apply")
+    return args
 
 
 def apply_sessions(gl, pipeline_id):
@@ -131,10 +143,6 @@ def main():
     args = parse_options()
     gl = make_gitlab_client()
 
-    if args.apply and args.mr:
-        print("error: --mr cannot be used with --apply", file=sys.stderr)
-        raise SystemExit(1)
-
     if args.apply:
         apply_sessions(gl, args.apply)
         return
@@ -145,7 +153,7 @@ def main():
             "ACI_UPSTREAM_MERGE_REQUEST_IID": str(args.mr),
         }
     else:
-        variables = {}
+        variables = {"SESSION_UPDATE_SETUP": args.setup or "wave"}
 
     variables["UPDATE_SESSION_TESTS"] = " ".join(args.tests)
 
