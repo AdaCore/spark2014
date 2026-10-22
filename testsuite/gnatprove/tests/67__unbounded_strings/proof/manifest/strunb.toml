@@ -18,14 +18,14 @@ path = "Strunb.\"&\""
 kind = "function"
 profile = "(_ : String; _ : Strunb.Unbounded_String) return Strunb.Unbounded_String"
 provers = ["cvc5", "z3"]
-steps = 2500
+steps = 1000
 
 [[rule]]
 path = "Strunb.\"&\""
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Character) return Strunb.Unbounded_String"
-provers = ["cvc5", "z3"]
-steps = 100
+provers = ["cvc5"]
+steps = 1500
 
 [[rule]]
 path = "Strunb.\"&\""
@@ -53,7 +53,7 @@ path = "Strunb.\"*\""
 kind = "function"
 profile = "(_ : Natural; _ : Strunb.Unbounded_String) return Strunb.Unbounded_String"
 provers = ["cvc5", "alt-ergo"]
-steps = 205000
+steps = 220000
 
 [[rule]]
 path = "Strunb.Append"
@@ -87,7 +87,7 @@ steps = 2500
 path = "Strunb.Delete"
 kind = "procedure"
 profile = "(_ : in out Strunb.Unbounded_String; _ : Positive; _ : Natural)"
-provers = ["cvc5"]
+provers = ["cvc5", "z3"]
 steps = 3500
 
 [[rule]]
@@ -122,8 +122,8 @@ steps = 100
 path = "Strunb.Insert"
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Positive; _ : String) return Strunb.Unbounded_String"
-provers = ["cvc5", "z3"]
-steps = 500
+provers = ["cvc5", "z3", "alt-ergo"]
+steps = 40000
 
 [[rule]]
 path = "Strunb.Insert"
@@ -147,35 +147,35 @@ path = "Strunb.Overwrite"
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Positive; _ : String) return Strunb.Unbounded_String"
 provers = ["cvc5", "z3"]
-steps = 1000
+steps = 1500
 
 [[rule]]
 path = "Strunb.Overwrite"
 kind = "procedure"
 profile = "(_ : in out Strunb.Unbounded_String; _ : Positive; _ : String)"
-provers = ["cvc5"]
-steps = 13000
+provers = ["cvc5", "z3"]
+steps = 4000
 
 [[rule]]
 path = "Strunb.Replace_Slice"
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Positive; _ : Natural; _ : String) return Strunb.Unbounded_String"
 provers = ["cvc5", "z3"]
-steps = 19000
+steps = 55000
 
 [[rule]]
 path = "Strunb.Replace_Slice"
 kind = "procedure"
 profile = "(_ : in out Strunb.Unbounded_String; _ : Positive; _ : Natural; _ : String)"
 provers = ["cvc5", "z3"]
-steps = 2000
+steps = 2500
 
 [[rule]]
 path = "Strunb.Tail"
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Natural; _ : Character) return Strunb.Unbounded_String"
-provers = ["cvc5"]
-steps = 2000
+provers = ["cvc5", "z3"]
+steps = 1500
 
 [[rule]]
 path = "Strunb.Tail"
@@ -188,7 +188,7 @@ steps = 2000
 path = "Strunb.Trim"
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Ada.Strings.Maps.Character_Set; _ : Ada.Strings.Maps.Character_Set) return Strunb.Unbounded_String"
-provers = ["cvc5", "alt-ergo"]
+provers = ["cvc5"]
 steps = 3000
 
 [[rule]]
