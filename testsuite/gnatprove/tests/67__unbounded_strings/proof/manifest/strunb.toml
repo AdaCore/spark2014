@@ -18,14 +18,14 @@ path = "Strunb.\"&\""
 kind = "function"
 profile = "(_ : String; _ : Strunb.Unbounded_String) return Strunb.Unbounded_String"
 provers = ["cvc5", "z3"]
-steps = 2500
+steps = 1000
 
 [[rule]]
 path = "Strunb.\"&\""
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Character) return Strunb.Unbounded_String"
-provers = ["cvc5", "z3"]
-steps = 100
+provers = ["cvc5"]
+steps = 1500
 
 [[rule]]
 path = "Strunb.\"&\""
@@ -53,7 +53,7 @@ path = "Strunb.\"*\""
 kind = "function"
 profile = "(_ : Natural; _ : Strunb.Unbounded_String) return Strunb.Unbounded_String"
 provers = ["cvc5", "alt-ergo"]
-steps = 205000
+steps = 220000
 
 [[rule]]
 path = "Strunb.Append"
@@ -123,7 +123,7 @@ path = "Strunb.Insert"
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Positive; _ : String) return Strunb.Unbounded_String"
 provers = ["cvc5", "z3"]
-steps = 500
+steps = 30000
 
 [[rule]]
 path = "Strunb.Insert"
@@ -147,21 +147,21 @@ path = "Strunb.Overwrite"
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Positive; _ : String) return Strunb.Unbounded_String"
 provers = ["cvc5", "z3"]
-steps = 1000
+steps = 1500
 
 [[rule]]
 path = "Strunb.Overwrite"
 kind = "procedure"
 profile = "(_ : in out Strunb.Unbounded_String; _ : Positive; _ : String)"
 provers = ["cvc5", "z3"]
-steps = 11000
+steps = 4000
 
 [[rule]]
 path = "Strunb.Replace_Slice"
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Positive; _ : Natural; _ : String) return Strunb.Unbounded_String"
 provers = ["cvc5", "alt-ergo", "z3"]
-steps = 19000
+steps = 55000
 
 [[rule]]
 path = "Strunb.Replace_Slice"
@@ -188,14 +188,14 @@ steps = 2000
 path = "Strunb.Trim"
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Ada.Strings.Maps.Character_Set; _ : Ada.Strings.Maps.Character_Set) return Strunb.Unbounded_String"
-provers = ["cvc5"]
-steps = 3000
+provers = ["cvc5", "z3"]
+steps = 500
 
 [[rule]]
 path = "Strunb.Trim"
 kind = "function"
 profile = "(_ : Strunb.Unbounded_String; _ : Ada.Strings.Trim_End) return Strunb.Unbounded_String"
-provers = ["cvc5", "alt-ergo", "z3"]
+provers = ["cvc5", "z3"]
 steps = 1500
 
 [[rule]]
