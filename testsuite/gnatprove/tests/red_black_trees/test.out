@@ -1107,9 +1107,8 @@ binary_trees.adb:1017:24: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:1017:24: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:1017:24: medium: precondition might fail
 binary_trees.adb:1017:45: medium: array index check might fail [reason for check: value must be a valid index into the array]
-binary_trees.adb:1017:65: medium: for "F" before the call at binary_trees.ads:45
-binary_trees.adb:1017:65: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:1017:65: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.adb:1017:65: info: for "F" before the call at binary_trees.ads:45
+binary_trees.adb:1017:65: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:1017:65: medium: precondition might fail
 binary_trees.adb:1017:86: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:1018:23: medium: for "F" before the call at binary_trees.ads:45
