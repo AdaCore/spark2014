@@ -1,0 +1,9 @@
+project Test is
+   package Builder is
+      for Global_Compilation_Switches ("Ada") use
+        ("-gnateT=" & Test'Project_Dir & "target.atp");
+   end Builder;
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat2022", "-gnata", "-gnatX0");
+   end Compiler;
+end Test;

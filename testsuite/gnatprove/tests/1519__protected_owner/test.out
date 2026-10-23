@@ -1,0 +1,1 @@
+protected_owner.adb:6:15: info: absence of resource or memory leak proved (CVC5: 1 VC)

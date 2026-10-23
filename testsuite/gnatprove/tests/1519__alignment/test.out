@@ -1,0 +1,2 @@
+alignment.adb:1:22: info: initialization of "Result" proved
+alignment.adb:9:19: info: assertion proved (CVC5: 1 VC)

@@ -1,0 +1,3 @@
+constants.adb:5:25: info: assertion proved (CVC5: 2 VC)
+constants.adb:5:31: info: pointer dereference check proved (CVC5: 1 VC)
+constants.ads:7:25: info: data dependencies proved
