@@ -3308,9 +3308,10 @@ package body Gnat2Why.Expr.Aggregates is
                      Insert_Tmp_Item_For_Entity (Quant_Var, Idx);
 
                      if Present (Loop_Actions (Association)) then
-                        Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-                        Transform_Actions_Preparation
-                          (Loop_Actions (Association));
+                        --  Loop actions are only created during full aggregate
+                        --  expansion, which is disabled in GNATprove mode.
+
+                        raise Program_Error;
                      end if;
                   end;
                end if;
@@ -3345,16 +3346,6 @@ package body Gnat2Why.Expr.Aggregates is
                --  In_Iterated_Assoc.
 
                if Nkind (Association) = N_Iterated_Component_Association then
-                  if Present (Loop_Actions (Association)) then
-                     Comp_Checks :=
-                       +Transform_Actions
-                          (Actions => Loop_Actions (Association),
-                           Expr    => +Comp_Checks,
-                           Domain  => EW_Prog,
-                           Params  => Params);
-                     Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-                  end if;
-
                   Append
                     (Save_Checks,
                      New_Binding
@@ -4206,24 +4197,16 @@ package body Gnat2Why.Expr.Aggregates is
                end if;
 
                if Present (Actions) then
-                  Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-                  Transform_Actions_Preparation (Actions);
+                  --  Loop actions are only created during full aggregate
+                  --  expansion, which is disabled in GNATprove mode.
+
+                  raise Program_Error;
                end if;
 
                if Dim /= Nb_Dim and then not In_Delta_Aggregate then
                   Result := Transform_Rec_Complex_Aggregate (Dim + 1, Expr);
                else
                   Result := Constrain_Value_At_Index (Expr, Indexes);
-               end if;
-
-               if Present (Actions) then
-                  Result :=
-                    +Transform_Actions
-                       (Actions => Actions,
-                        Expr    => +Result,
-                        Domain  => EW_Pred,
-                        Params  => Params);
-                  Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                end if;
 
                return Result;
@@ -4409,25 +4392,16 @@ package body Gnat2Why.Expr.Aggregates is
                   end if;
                end if;
 
-               --  For delta aggregates, the prefix is used for the default
-               --  value in the logic function.
+               --  Delta aggregates are handled by
+               --  Transform_Rec_Complex_Aggregate.
 
-               if In_Delta_Aggregate then
-                  Append
-                    (V    => V_Other_Assocs,
-                     Pred =>
-                       New_Conditional
-                         (Condition =>
-                            New_And_Pred (Pre & To_Array (Condition)),
-                          Then_Part =>
-                            Constrain_Value_At_Index
-                              (Update_Prefix, Indexes)));
+               pragma Assert (not In_Delta_Aggregate);
 
                --  Special case for "others" choice, which must appear alone as
                --  last association and for aggregates with only one
                --  association, as their choice might not be static.
 
-               elsif Present (Association) then
+               if Present (Association) then
                   pragma Assert (No (Next (Association)));
 
                   Append
