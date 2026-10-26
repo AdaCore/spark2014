@@ -122,6 +122,7 @@ package body VC_Kinds is
 
          when Annot_Logical_Equal_Post
             | Annot_Logical_Equal_Potentially_Invalid
+            | Annot_Logical_Equal_Relaxed_Init
          => Logical_Equal,
 
          when Annot_Mutable_In_Params_Depends
@@ -2487,6 +2488,10 @@ package body VC_Kinds is
            "function with the "
            & Annot_To_String (Kind)
            & " shall not have a Potentially_Invalid aspect",
+         when Annot_Logical_Equal_Relaxed_Init                =>
+           "both parameters of a function with the "
+           & Annot_To_String (Kind)
+           & " shall have the same relaxed initialization status",
          when Annot_Mutable_In_Params_Depends                 =>
            "subprogram with the "
            & Annot_To_String (Kind)

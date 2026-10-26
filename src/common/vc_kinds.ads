@@ -572,6 +572,7 @@ package VC_Kinds is
       Annot_Iterable_For_Proof_Prim,
       Annot_Logical_Equal_Post,
       Annot_Logical_Equal_Potentially_Invalid,
+      Annot_Logical_Equal_Relaxed_Init,
       Annot_Mutable_In_Params_Depends,
       Annot_Mutable_In_Params_No_Params,
       Annot_Mutable_In_Params_Side_Effects,
