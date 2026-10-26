@@ -1,0 +1,28 @@
+Bits_BE                       0
+Bits_Per_Unit                 8
+Bits_Per_Word                64
+Bytes_BE                      0
+Char_Size                     8
+Double_Float_Alignment        0
+Double_Scalar_Alignment       0
+Double_Size                  64
+Float_Size                   32
+Float_Words_BE                0
+Int_Size                     64
+Long_Double_Size            128
+Long_Long_Size               64
+Long_Size                    64
+Maximum_Alignment            16
+Max_Unaligned_Field          64
+Pointer_Size                 64
+Short_Enums                   0
+Short_Size                   16
+Strict_Alignment              0
+System_Allocator_Alignment   16
+Wchar_T_Size                 32
+Words_BE                      0
+
+float         15  I  32  32
+double        15  I  64  64
+long double   18  I  80 128
+TF            33  I 128 128

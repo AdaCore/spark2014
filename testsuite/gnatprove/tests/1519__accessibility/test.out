@@ -1,0 +1,8 @@
+accessibility.adb:2:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+accessibility.adb:3:50: info: dynamic accessibility check proved (Trivial)
+accessibility.adb:3:58: info: data dependencies proved
+accessibility.adb:5:13: info: implicit aspect Always_Terminates on "Choose" has been proved, subprogram will terminate
+accessibility.adb:6:51: info: data dependencies proved
+accessibility.adb:11:15: medium: dynamic accessibility check might fail [possible explanation: part of a traversal function call whose master is local has a local accessibility level] [possible fix: subprogram at line 5 should mention B in a precondition]
+accessibility.adb:11:29: info: null exclusion check proved (CVC5: 1 VC)
+accessibility.adb:11:41: info: null exclusion check proved (CVC5: 1 VC)
