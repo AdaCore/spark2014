@@ -12,4 +12,6 @@ bad_logical_equal.adb:21:13: error: wrong number of parameters for a subprogram 
 bad_logical_equal.adb:24:13: error: function with the "Logical_Equal" annotation shall not have postconditions or contract cases
 bad_logical_equal.adb:29:13: error: function with the "Logical_Equal" annotation shall not have postconditions or contract cases
 bad_logical_equal.adb:35:13: error: a subprogram with the "Logical_Equal" annotation shall not access global data
+bad_logical_equal.adb:44:13: error: both parameters of a function with the "Logical_Equal" annotation shall have the same relaxed initialization status
+bad_logical_equal.adb:49:13: error: both parameters of a function with the "Logical_Equal" annotation shall have the same relaxed initialization status
 gnatprove: error during flow analysis and proof

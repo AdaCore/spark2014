@@ -820,6 +820,9 @@ equality for the type. If the function body is visible in
 |SPARK|, a check will be emitted to ensure that it indeed checks for logical
 equality as understood by the proof engine (which depends on the underlying
 model used by the tool, see below).
+Both parameters shall have the same effective relaxed initialization status.
+When both parameters have relaxed initialization, logical equality compares
+their initialization information as well as their values.
 It comes in handy for example to express that a (part of a) data-structure
 is left unchanged by a procedure, as is done in the example below:
 

@@ -36,6 +36,20 @@ procedure Bad_Logical_Equal with SPARK_Mode is
      Annotate => (GNATprove, Logical_Equal),
      Import,
      Global => G;
+
+   type Rec is record
+      F : Integer;
+   end record;
+
+   function My_Eq_11 (X, Y : Rec) return Boolean with
+     Import,
+     Relaxed_Initialization => X,
+     Annotate => (GNATprove, Logical_Equal);
+
+   function My_Eq_12 (X, Y : Rec) return Boolean with
+     Import,
+     Relaxed_Initialization => Y;
+   pragma Annotate (GNATprove, Logical_Equal, My_Eq_12);
 begin
    null;
 end;
