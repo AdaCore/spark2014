@@ -3181,7 +3181,8 @@ package body Why.Gen.Arrays is
       Typ : constant W_Type_Id := Get_Type (+Left);
       E   : constant Entity_Id := Get_Ada_Node (+Typ);
       P   : constant W_Pred_Id := New_Call
-        (Name => E_Symb (E, WNE_Array_Logic_Eq),
+        (Name => E_Symb
+           (E, WNE_Array_Logic_Eq, Is_Init_Wrapper_Type (Typ)),
          Args => (1 => +Left, 2 => +Right));
    begin
       return Boolean_Expr_Of_Pred (P, Domain);
