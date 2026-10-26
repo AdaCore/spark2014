@@ -1,0 +1,10 @@
+power_neg2.adb:4:11: warning: subprogram "Power_Neg2" has no effect
+power_neg2.adb:8:28: info: division check proved (CVC5: 1 VC; Trivial: 1 VC)
+power_neg2.adb:8:28: info: float overflow check proved (CVC5: 1 VC)
+power_neg2.adb:10:19: info: assertion proved (CVC5: 1 VC)
+power_neg2.adb:11:19: medium: assertion might fail (e.g. when Y = 2.5000000E-1)
+power_neg3.adb:4:11: warning: subprogram "Power_Neg3" has no effect
+power_neg3.adb:8:28: info: division check proved (CVC5: 1 VC; Trivial: 1 VC)
+power_neg3.adb:8:28: info: float overflow check proved (CVC5: 1 VC)
+power_neg3.adb:10:19: info: assertion proved (CVC5: 1 VC)
+power_neg3.adb:11:19: medium: assertion might fail (e.g. when Y = 1.2500000E-1)
