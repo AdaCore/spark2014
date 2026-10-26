@@ -20772,8 +20772,11 @@ package body Gnat2Why.Expr is
                   declare
                      Left       : constant Node_Id := First_Actual (Expr);
                      Right      : constant Node_Id := Next_Actual (Left);
+                     Formal     : constant Entity_Id := First_Formal (Subp);
                      BT         : constant W_Type_Id :=
-                       Base_Why_Type (Etype (First_Formal (Subp)));
+                       (if Obj_Has_Relaxed_Init (Formal)
+                        then EW_Init_Wrapper (Base_Why_Type (Etype (Formal)))
+                        else Base_Why_Type (Etype (Formal)));
 
                      Left_Expr  : constant W_Expr_Id :=
                        Transform_Expr (Left, BT, EW_Term, Params);
