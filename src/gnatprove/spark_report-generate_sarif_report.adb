@@ -47,6 +47,8 @@ procedure Generate_SARIF_Report
    Error_Code         : Integer;
    Tree               : GPR2.Project.Tree.Object)
 is
+   use type SPARK_Report_Data.Entity_Reference;
+
    Root                 : SARIF.Types.Root;
    My_Run               : run;
    My_Results           : SARIF.Types.result_Vector;
@@ -97,10 +99,12 @@ is
    function Build_Original_Uri_Base_Ids return SARIF.Types.Any_Object;
    --  Build the run.originalUriBaseIds value from Base_URIs.
 
-   function Properties (V : JSON_Value) return Optional_propertyBag;
+   function Properties
+     (V : SPARK_Report_Data.Diagnostic) return Optional_propertyBag;
    --  Build custom SARIF properties for a given result in GNATprove's JSON
 
-   function Contracts_Properties (V : JSON_Value) return Optional_propertyBag;
+   function Contracts_Properties
+     (V : SPARK_Report_Data.Generated_Global) return Optional_propertyBag;
    --  Build custom SARIF properties for generated global contracts
 
    function Explain_Command (Code : String) return String;
@@ -111,26 +115,32 @@ is
    --  Build the custom SARIF property bag for a stable rule explain code.
 
    procedure Handle_SPARK_Files;
-   --  Parse all .spark files
+   --  Consume all .spark files
 
    procedure Handle_SPARK_Error_Files;
-   --  Parse all .spark_error files for frontend diagnostics
+   --  Consume all .spark_error files for frontend diagnostics
 
-   procedure Handle_SPARK_File (Dict : JSON_Value);
-   --  Extract all information from a single already-parsed SPARK file
+   procedure Handle_SPARK_File (Dict : SPARK_Report_Data.Unit_Data);
+   --  Extract all information from a single decoded SPARK file
 
-   procedure Handle_Items (V : JSON_Array);
+   procedure Handle_Items
+     (V    : SPARK_Report_Data.Diagnostic_Vectors.Vector;
+      Data : SPARK_Report_Data.Unit_Data);
 
-   function Location (V : JSON_Value) return SARIF.Types.location;
-   --  Produce a SARIF location object from a JSON item that has "file",
-   --  "line", "col" fields. "entity" field is optional and is added as a
-   --  "logical" location.
+   function Location
+     (V : SPARK_Report_Data.Diagnostic; Data : SPARK_Report_Data.Unit_Data)
+      return SARIF.Types.location;
+   --  Produce a SARIF location from a decoded diagnostic. An optional
+   --  entity reference is resolved against the owning unit's entity map.
 
-   function Locations (V : JSON_Value) return SARIF.Types.location_Vector;
+   function Locations
+     (V : SPARK_Report_Data.Diagnostic; Data : SPARK_Report_Data.Unit_Data)
+      return SARIF.Types.location_Vector;
    --  Wrapper for Location that produces a vector
 
-   function Message (V : JSON_Value) return SARIF.Types.message;
-   --  Produce a SARIF message from a message object
+   function Message
+     (V : SPARK_Report_Data.Diagnostic) return SARIF.Types.message;
+   --  Produce a SARIF message from a decoded diagnostic
 
    function Logical_Location
      (Full_Name  : String;
@@ -142,8 +152,9 @@ is
    function Leaf_Name (Full_Name : String) return String;
    --  Return the leaf name of a dotted fully qualified name
 
-   function SARIF_Location (V : JSON_Value) return SARIF.Types.location;
-   --  Copy a SARIF location from JSON to sarif-ada
+   function SARIF_Location
+     (V : SPARK_Report_Data.Related_Location) return SARIF.Types.location;
+   --  Copy a decoded related location to sarif-ada
 
    function Severity_To_Result_Kind
      (S : String) return SARIF.Types.Enum.result_kind;
@@ -191,96 +202,63 @@ is
    -- Contracts_Properties --
    --------------------------
 
-   function Contracts_Properties (V : JSON_Value) return Optional_propertyBag
+   function Contracts_Properties
+     (V : SPARK_Report_Data.Generated_Global) return Optional_propertyBag
    is
-      Global_Contracts : constant JSON_Value :=
-        (if Has_Field (V, "globals") then Get (V, "globals") else V);
-
-      procedure Append_Array (Into : in out Any_Object; Values : JSON_Array);
-      --  Append Values as a JSON string array
-
-      procedure Append_Global_Modes
-        (Into : in out Any_Object; Global_Contracts : JSON_Value);
-      --  Append Global/Refined_Global modes as a JSON object
-
-      ------------------
-      -- Append_Array --
-      ------------------
-
-      procedure Append_Array (Into : in out Any_Object; Values : JSON_Array) is
-         use VSS.JSON.Streams;
-      begin
-         Into.Append ((Kind => Start_Array));
-         for Index in Positive range 1 .. Length (Values) loop
-            Into.Append
-              ((Kind         => String_Value,
-                String_Value =>
-                  To_Virtual_String
-                    (UTF8_String'(Get (Get (Values, Index))))));
-         end loop;
-         Into.Append ((Kind => End_Array));
-      end Append_Array;
-
-      -------------------------
-      -- Append_Global_Modes --
-      -------------------------
-
-      procedure Append_Global_Modes
-        (Into : in out Any_Object; Global_Contracts : JSON_Value)
-      is
-         use VSS.JSON.Streams;
-
-         procedure Append_Mode (Ada_Name : String; JSON_Name : String);
-         --  Append one mode when present
-
-         -----------------
-         -- Append_Mode --
-         -----------------
-
-         procedure Append_Mode (Ada_Name : String; JSON_Name : String) is
-         begin
-            if Has_Field (Global_Contracts, Ada_Name) then
-               Into.Append
-                 ((Kind     => Key_Name,
-                   Key_Name => To_Virtual_String (JSON_Name)));
-               Append_Array (Into, Get (Global_Contracts, Ada_Name));
-            end if;
-         end Append_Mode;
-
-      begin
-         Into.Append ((Kind => Start_Object));
-         Append_Mode ("Input", "input");
-         Append_Mode ("In_Out", "inOut");
-         Append_Mode ("Output", "output");
-         Append_Mode ("Proof_In", "proofIn");
-         Into.Append ((Kind => End_Object));
-      end Append_Global_Modes;
-
       use VSS.JSON.Streams;
-      Extra     : Any_Object;
-      Gnatprove : Any_Object;
+      Extra : Any_Object;
+
+      procedure Append_Modes
+        (Name : String; Modes : SPARK_Report_Data.Global_Modes);
+
+      ------------------
+      -- Append_Modes --
+      ------------------
+
+      procedure Append_Modes
+        (Name : String; Modes : SPARK_Report_Data.Global_Modes)
+      is
+         use SPARK_Report_Data;
+      begin
+         Extra.Append
+           ((Kind => Key_Name, Key_Name => To_Virtual_String (Name)));
+         Extra.Append ((Kind => Start_Object));
+         for Mode in Global_Mode loop
+            if Modes (Mode).Present then
+               declare
+                  Name : constant String :=
+                    (case Mode is
+                       when Input_Mode    => "input",
+                       when In_Out_Mode   => "inOut",
+                       when Output_Mode   => "output",
+                       when Proof_In_Mode => "proofIn");
+               begin
+                  Extra.Append
+                    ((Kind => Key_Name, Key_Name => To_Virtual_String (Name)));
+                  Extra.Append ((Kind => Start_Array));
+                  for Item of Modes (Mode).Names loop
+                     Extra.Append
+                       ((Kind         => String_Value,
+                         String_Value => To_Virtual_String (Item)));
+                  end loop;
+                  Extra.Append ((Kind => End_Array));
+               end;
+            end if;
+         end loop;
+         Extra.Append ((Kind => End_Object));
+      end Append_Modes;
    begin
       Extra.Append
         ((Kind => Key_Name, Key_Name => To_Virtual_String ("gnatprove")));
       Extra.Append ((Kind => Start_Object));
-      Gnatprove.Append
-        ((Kind => Key_Name, Key_Name => To_Virtual_String ("global")));
-      Append_Global_Modes (Gnatprove, Get (Global_Contracts, "Global"));
-      Gnatprove.Append
-        ((Kind => Key_Name, Key_Name => To_Virtual_String ("refinedGlobal")));
-      Append_Global_Modes
-        (Gnatprove, Get (Global_Contracts, "Refined_Global"));
-
       Extra.Append
         ((Kind     => Key_Name,
           Key_Name => To_Virtual_String ("inferredContracts")));
       Extra.Append ((Kind => Start_Object));
-      for Item of Gnatprove loop
-         Extra.Append (Item);
-      end loop;
+      Append_Modes ("global", V.Global);
+      Append_Modes ("refinedGlobal", V.Refined_Global);
       Extra.Append ((Kind => End_Object));
       Extra.Append ((Kind => End_Object));
-
       return
         (Is_Set => True,
          Value  => (tags => <>, Additional_Properties => Extra));
@@ -290,13 +268,15 @@ is
    -- Properties --
    ----------------
 
-   function Properties (V : JSON_Value) return Optional_propertyBag is
+   function Properties
+     (V : SPARK_Report_Data.Diagnostic) return Optional_propertyBag
+   is
       use VSS.JSON.Streams;
       Extra          : Any_Object;
       Gnatprove      : Any_Object;
       Has_Properties : Boolean := False;
    begin
-      if Has_Field (V, "reasonForCheck") then
+      if V.Reason_For_Check.Present then
          Has_Properties := True;
          Gnatprove.Append
            ((Kind     => Key_Name,
@@ -304,12 +284,12 @@ is
          Gnatprove.Append
            ((Kind         => String_Value,
              String_Value =>
-               To_Virtual_String (UTF8_String'(Get (V, "reasonForCheck")))));
+               To_Virtual_String (To_String (V.Reason_For_Check.Value))));
       end if;
 
-      if Has_Field (V, "explainCode") then
+      if V.Explain_Code.Present then
          declare
-            Code : constant String := UTF8_String'(Get (V, "explainCode"));
+            Code : constant String := To_String (V.Explain_Code.Value);
          begin
             Has_Properties := True;
             Gnatprove.Append
@@ -490,23 +470,27 @@ is
    -- Handle_Items --
    ------------------
 
-   procedure Handle_Items (V : JSON_Array) is
+   procedure Handle_Items
+     (V    : SPARK_Report_Data.Diagnostic_Vectors.Vector;
+      Data : SPARK_Report_Data.Unit_Data) is
    begin
-      for Index in 1 .. Length (V) loop
+      for Result of V loop
          declare
-            Result       : constant JSON_Value := Get (V, Index);
-            Severity     : constant String := Get (Get (Result, "severity"));
-            Rule_Id      : constant String := Get (Get (Result, "rule"));
+            Severity     : constant String := To_String (Result.Severity);
+            Rule_Id      : constant String := To_String (Result.Rule);
             Suppressions : SARIF.Types.suppression_Vector;
             Rel_Locs     : SARIF.Types.location_Vector;
          begin
-            if Has_Field (Result, "suppressed") then
+            if Result.Suppression.Kind /= SPARK_Report_Data.No_Suppression then
                declare
                   Suppr_Object : SARIF.Types.suppression :=
                     SARIF.Types.suppression'
                       (kind => SARIF.Types.Enum.external, others => <>);
                   Reason       : constant String :=
-                    Get (Get (Result, "suppressed"));
+                    (if Result.Suppression.Kind
+                       = SPARK_Report_Data.Check_Suppression
+                     then To_String (Result.Suppression.Reason)
+                     else "");
                begin
                   if Reason /= "" then
                      Suppr_Object.justification := To_Virtual_String (Reason);
@@ -515,16 +499,9 @@ is
                end;
             end if;
 
-            if Has_Field (Result, "relatedLocations") then
-               declare
-                  Locs : constant JSON_Array :=
-                    Get (Result, "relatedLocations");
-               begin
-                  for Index in 1 .. Length (Locs) loop
-                     Rel_Locs.Append (SARIF_Location (Get (Locs, Index)));
-                  end loop;
-               end;
-            end if;
+            for Item of Result.Related loop
+               Rel_Locs.Append (SARIF_Location (Item));
+            end loop;
 
             My_Results.Append
               (SARIF.Types.result'
@@ -533,10 +510,10 @@ is
                     (True, Severity_To_Result_Kind (Severity)),
                   level            =>
                     (True, Severity_To_Result_Level (Severity)),
-                  message          => Message (Get (Result, "message")),
+                  message          => Message (Result),
                   properties       => Properties (Result),
                   suppressions     => Suppressions,
-                  locations        => Locations (Result),
+                  locations        => Locations (Result, Data),
                   relatedLocations => Rel_Locs,
                   others           => <>));
          end;
@@ -547,45 +524,19 @@ is
    -- Handle_SPARK_File --
    -----------------------
 
-   procedure Handle_SPARK_File (Dict : JSON_Value) is
-
-      procedure Handle_Generated_Globals
-        (Name : UTF8_String; Value : JSON_Value);
-      --  Add inferred contracts from one generated_globals map entry
-
-      ------------------------------
-      -- Handle_Generated_Globals --
-      ------------------------------
-
-      procedure Handle_Generated_Globals
-        (Name : UTF8_String; Value : JSON_Value) is
-      begin
+   procedure Handle_SPARK_File (Dict : SPARK_Report_Data.Unit_Data) is
+   begin
+      for Item of Dict.Globals loop
          My_Logical_Locations.Append
            (Logical_Location
-              (Full_Name  => Subp_Name (From_Key (String (Name))),
-               Properties => Contracts_Properties (Value)));
-      end Handle_Generated_Globals;
-
-      Has_Flow              : constant Boolean := Has_Field (Dict, "flow");
-      Has_Proof             : constant Boolean := Has_Field (Dict, "proof");
-      Has_Manifest_Warnings : constant Boolean :=
-        Has_Field (Dict, "manifest_warnings");
-   begin
-      Parse_Entity_Table (Get (Dict, "entities"));
-      if Has_Field (Dict, "generated_globals") then
-         Map_JSON_Object
-           (Get (Dict, "generated_globals"), Handle_Generated_Globals'Access);
-      end if;
-      if Has_Flow then
-         Handle_Items (Get (Get (Dict, "flow")));
-      end if;
-      if Has_Proof then
-         Handle_Items (Get (Get (Dict, "proof")));
-      end if;
-      if Has_Manifest_Warnings then
-         Handle_Items (Get (Get (Dict, "manifest_warnings")));
-      end if;
-      Handle_Items (Get (Get (Dict, "warn_error")));
+              (Full_Name  =>
+                 Subp_Name (SPARK_Report_Data.Subprogram (Dict, Item.Entity)),
+               Properties => Contracts_Properties (Item)));
+      end loop;
+      Handle_Items (Dict.Flow, Dict);
+      Handle_Items (Dict.Proof, Dict);
+      Handle_Items (Dict.Manifest_Warnings, Dict);
+      Handle_Items (Dict.Warn_Error, Dict);
    end Handle_SPARK_File;
 
    ------------------------
@@ -619,7 +570,8 @@ is
    begin
       for SPARK_Error_File of SPARK_Error_Files loop
          begin
-            Handle_Items (Get (Get (SPARK_Error_File.Data, "warn_error")));
+            Handle_Items
+              (SPARK_Error_File.Data.Warn_Error, SPARK_Error_File.Data);
          exception
             when others =>
                Ada.Text_IO.Put_Line
@@ -667,17 +619,22 @@ is
    -- Location --
    --------------
 
-   function Location (V : JSON_Value) return SARIF.Types.location is
-      File              : constant String := Get (Get (V, "file"));
-      Line              : constant Integer := Get (Get (V, "line"));
-      Col               : constant Integer := Get (Get (V, "col"));
+   function Location
+     (V : SPARK_Report_Data.Diagnostic; Data : SPARK_Report_Data.Unit_Data)
+      return SARIF.Types.location
+   is
+      File              : constant String := To_String (V.Sloc.File);
+      Line              : constant Integer := V.Sloc.Line;
+      Col               : constant Integer := V.Sloc.Column;
       Logical_Locations : logicalLocation_Vector;
    begin
       --  ??? the vc_sloc (check_file, check_line etc) might be more
       --  appropriate, if present.
-      if Has_Field (V, "entity") then
+      if V.Sloc.Entity /= SPARK_Report_Data.No_Entity_Reference then
          Logical_Locations.Append
-           (Logical_Location (Subp_Name (From_JSON (Get (V, "entity")))));
+           (Logical_Location
+              (Subp_Name
+                 (SPARK_Report_Data.Subprogram (Data, V.Sloc.Entity))));
       end if;
       return
         SARIF.Types.location'
@@ -699,10 +656,13 @@ is
    -- Locations --
    ---------------
 
-   function Locations (V : JSON_Value) return SARIF.Types.location_Vector is
+   function Locations
+     (V : SPARK_Report_Data.Diagnostic; Data : SPARK_Report_Data.Unit_Data)
+      return SARIF.Types.location_Vector
+   is
       Result : SARIF.Types.location_Vector;
    begin
-      Result.Append (Location (V));
+      Result.Append (Location (V, Data));
       return Result;
    end Locations;
 
@@ -710,24 +670,15 @@ is
    -- Message --
    -------------
 
-   function Message (V : JSON_Value) return SARIF.Types.message is
+   function Message
+     (V : SPARK_Report_Data.Diagnostic) return SARIF.Types.message
+   is
       Result : SARIF.Types.message;
-      Text   : constant String := Get (Get (V, "text"));
    begin
-      Result.text := To_Virtual_String (Text);
-      if Has_Field (V, "arguments") then
-         declare
-            Ar : constant JSON_Array := Get (V, "arguments");
-         begin
-            for Var_Index in Positive range 1 .. Length (Ar) loop
-               declare
-                  Arg : constant String := (Get (Get (Ar, Var_Index)));
-               begin
-                  Result.arguments.Append (To_Virtual_String (Arg));
-               end;
-            end loop;
-         end;
-      end if;
+      Result.text := To_Virtual_String (To_String (V.Text));
+      for Arg of V.Arguments loop
+         Result.arguments.Append (To_Virtual_String (Arg));
+      end loop;
       return Result;
    end Message;
 
@@ -885,22 +836,17 @@ is
    -- SARIF_Location --
    --------------------
 
-   function SARIF_Location (V : JSON_Value) return SARIF.Types.location is
-      pragma Assert (Has_Field (V, "physicalLocation"));
-      Ph   : constant JSON_Value := Get (V, "physicalLocation");
-      pragma Assert (Has_Field (Ph, "uri"));
-      pragma Assert (Has_Field (Ph, "region"));
-      Reg  : constant JSON_Value := Get (Ph, "region");
-      File : constant String := Get (Get (Ph, "uri"));
-      Line : constant Integer := Get (Get (Reg, "startLine"));
-      Col  : constant Integer := Get (Get (Reg, "startColumn"));
+   function SARIF_Location
+     (V : SPARK_Report_Data.Related_Location) return SARIF.Types.location
+   is
+      File : constant String := To_String (V.Sloc.File);
+      Line : constant Integer := V.Sloc.Line;
+      Col  : constant Integer := V.Sloc.Column;
    begin
       return
         SARIF.Types.location'
           (id               =>
-             (if Has_Field (V, "id")
-              then (True, Integer'(Get (Get (V, "id"))))
-              else (Is_Set => False)),
+             (if V.Has_Id then (True, V.Id) else (Is_Set => False)),
            physicalLocation =>
              (True,
               physicalLocation'

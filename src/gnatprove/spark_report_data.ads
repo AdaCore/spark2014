@@ -29,7 +29,6 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Assumption_Types;      use Assumption_Types;
 with Assumptions;
-with GNATCOLL.JSON;
 with String_Utils;          use String_Utils;
 with VC_Kinds;              use VC_Kinds;
 
@@ -163,13 +162,9 @@ package SPARK_Report_Data is
    --  Decode report fields into owned application records. Unknown members
    --  and opaque proof payloads are ignored after JSON parsing.
 
-   function Decode
-     (Value : GNATCOLL.JSON.JSON_Value; Read_Assumptions : Boolean := True)
-      return Unit_Data;
-   --  Transitional entry point for consumers that still retain JSON trees
-
    function Subprogram
      (Data : Unit_Data; Entity : Valid_Entity_Reference) return Subp_Type;
+
    function Resolve_Assumptions
      (Data : Unit_Data) return Assumptions.Rule_Lists.List;
 end SPARK_Report_Data;
