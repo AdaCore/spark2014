@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;
 with Common_Containers;       use Common_Containers;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
@@ -67,9 +66,18 @@ package body Why.Gen.Progs is
 
       Stats : constant Why_Node_Lists.List :=
         Get_List (+Get_Statements (Right));
+      First : Boolean := True;
    begin
       for Stat of Stats loop
-         Statement_Sequence_Append_To_Statements (Left, +Stat);
+         if not Is_Void (+Stat) then
+            if First then
+               First := False;
+               if Is_Void_Sequence (Left) then
+                  Clear (+Get_Statements (Left));
+               end if;
+            end if;
+            Statement_Sequence_Append_To_Statements (Left, +Stat);
+         end if;
       end loop;
    end Append;
 
@@ -83,6 +91,9 @@ package body Why.Gen.Progs is
          Append (Left, W_Statement_Sequence_Id'(+Right));
 
       else
+         if Is_Void_Sequence (Left) then
+            Clear (+Get_Statements (Left));
+         end if;
          Statement_Sequence_Append_To_Statements (Left, Right);
       end if;
    end Append;
@@ -102,12 +113,8 @@ package body Why.Gen.Progs is
    -- Is_Void_Sequence --
    ----------------------
 
-   function Is_Void_Sequence (S : W_Statement_Sequence_Id) return Boolean is
-      use type Ada.Containers.Count_Type;
-      L : constant Why_Node_Lists.List := Get_List (+Get_Statements (S));
-   begin
-      return L.Length = 1 and then L.First_Element = +Void;
-   end Is_Void_Sequence;
+   function Is_Void_Sequence (S : W_Statement_Sequence_Id) return Boolean
+   is (for all Stat of Get_List (+Get_Statements (S)) => Is_Void (+Stat));
 
    --------------------------
    -- New_Absurd_Statement --
@@ -306,9 +313,18 @@ package body Why.Gen.Progs is
 
       Stats : constant Why_Node_Lists.List :=
         Get_List (+Get_Statements (Left));
+      First : Boolean := True;
    begin
       for Stat of reverse Stats loop
-         Statement_Sequence_Prepend_To_Statements (Right, +Stat);
+         if not Is_Void (+Stat) then
+            if First then
+               First := False;
+               if Is_Void_Sequence (Right) then
+                  Clear (+Get_Statements (Right));
+               end if;
+            end if;
+            Statement_Sequence_Prepend_To_Statements (Right, +Stat);
+         end if;
       end loop;
    end Prepend;
 
@@ -324,6 +340,9 @@ package body Why.Gen.Progs is
          Prepend (W_Statement_Sequence_Id'(+Left), Right);
 
       else
+         if Is_Void_Sequence (Right) then
+            Clear (+Get_Statements (Right));
+         end if;
          Statement_Sequence_Prepend_To_Statements (Right, Left);
       end if;
    end Prepend;

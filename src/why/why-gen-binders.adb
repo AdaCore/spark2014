@@ -782,7 +782,7 @@ package body Why.Gen.Binders is
          declare
             Typ            : constant W_Type_Id :=
               (if Ekind (E) /= E_Function
-               then Why_Empty
+               then EW_Unit_Type
                elsif Is_Potentially_Invalid (E)
                then Validity_Wrapper_Type (Etype (E))
                else Type_Of_Node (E));

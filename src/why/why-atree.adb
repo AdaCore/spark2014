@@ -17,6 +17,19 @@ package body Why.Atree is
       LI.Checked := True;
    end Append;
 
+   -----------
+   -- Clear --
+   -----------
+
+   procedure Clear (List_Id : Why_Node_List) is
+      LI : List_Info renames List_Table (List_Id);
+   begin
+      LI.Content.Clear;
+
+      --  Since the list is empty, it is no longer valid.
+      LI.Checked := False;
+   end Clear;
+
    -------------
    -- Prepend --
    -------------
