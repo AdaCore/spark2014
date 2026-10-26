@@ -121,8 +121,9 @@ package body Gnat2Why.Expr is
    -----------------------
 
    function All_DICs_But_Last
-     (E : Type_Kind_Id; W_Expr : W_Term_Id; Params : Transformation_Params)
-      return W_Pred_Id;
+     (E      : Type_Kind_Id;
+      W_Expr : W_Identifier_Id;
+      Params : Transformation_Params) return W_Pred_Id;
    --  Compute all default initial conditions applicable to E on W_Expr except
    --  for E's own DIC if it should be checked at declaration.
 
@@ -191,7 +192,7 @@ package body Gnat2Why.Expr is
    procedure Check_Or_Assume_All_DICs_At_Use
      (Ada_Node : Node_Id;
       E        : Type_Kind_Id;
-      W_Expr   : W_Term_Id;
+      W_Expr   : W_Identifier_Id;
       Params   : Transformation_Params;
       Prog     : in out W_Prog_Id;
       Check    : Boolean);
@@ -403,13 +404,14 @@ package body Gnat2Why.Expr is
    --  write of New_Tree in LHS.
 
    function DIC_Expression
-     (Expr               : W_Expr_Id;
+     (Expr               : W_Identifier_Id;
       Default_Init_Param : Formal_Kind_Id;
       Default_Init_Expr  : Node_Id;
       Params             : Transformation_Params;
       Domain             : EW_Domain) return W_Expr_Id;
    --  Transform the expression of a default initial condition
-   --  @param Expr expression on which the DIC is called
+   --  @param Expr identifier on which the DIC is called, or Why_Empty if the
+   --    DIC does not reference the current type instance.
    --  @param Default_Init_Expr expression of the DIC
    --  @param Default_Init_Param formal for the type instance
    --  @param Params transformation parameters
@@ -1228,8 +1230,9 @@ package body Gnat2Why.Expr is
    -----------------------
 
    function All_DICs_But_Last
-     (E : Type_Kind_Id; W_Expr : W_Term_Id; Params : Transformation_Params)
-      return W_Pred_Id
+     (E      : Type_Kind_Id;
+      W_Expr : W_Identifier_Id;
+      Params : Transformation_Params) return W_Pred_Id
    is
       Pred : W_Pred_Id := True_Pred;
 
@@ -1253,7 +1256,7 @@ package body Gnat2Why.Expr is
               New_And_Pred
                 (Left  =>
                    +DIC_Expression
-                      (+W_Expr,
+                      (W_Expr,
                        Default_Init_Param,
                        Default_Init_Expr,
                        Params,
@@ -3126,7 +3129,7 @@ package body Gnat2Why.Expr is
    procedure Check_Or_Assume_All_DICs_At_Use
      (Ada_Node : Node_Id;
       E        : Type_Kind_Id;
-      W_Expr   : W_Term_Id;
+      W_Expr   : W_Identifier_Id;
       Params   : Transformation_Params;
       Prog     : in out W_Prog_Id;
       Check    : Boolean)
@@ -3169,7 +3172,7 @@ package body Gnat2Why.Expr is
                     (Ada_Node => Ada_Node,
                      Prog     =>
                        +DIC_Expression
-                          (+W_Expr,
+                          (W_Expr,
                            Default_Init_Param,
                            Default_Init_Expr,
                            Params,
@@ -3180,7 +3183,7 @@ package body Gnat2Why.Expr is
                      Reason     => VC_Default_Initial_Condition,
                      Pred       =>
                        +DIC_Expression
-                          (+W_Expr,
+                          (W_Expr,
                            Default_Init_Param,
                            Default_Init_Expr,
                            Params,
@@ -3193,7 +3196,7 @@ package body Gnat2Why.Expr is
                     (Ada_Node => Ada_Node,
                      Pred     =>
                        +DIC_Expression
-                          (+W_Expr,
+                          (W_Expr,
                            Default_Init_Param,
                            Default_Init_Expr,
                            Params,
@@ -3261,7 +3264,7 @@ package body Gnat2Why.Expr is
                     Ty               => Ty_Ext,
                     Include_Subtypes => True,
                     Skip_Last_Cond   => True_Term),
-               3 => All_DICs_But_Last (Ty_Ext, +Result, Params)));
+               3 => All_DICs_But_Last (Ty_Ext, Result, Params)));
          --  Assume default initialization of the expression. Do not assume
          --  the Ty_Ext's own DIC if any.
 
@@ -3383,7 +3386,7 @@ package body Gnat2Why.Expr is
               Include_Subtypes => True,
               Skip_Last_Cond   => True_Term);
          DICs         : constant W_Pred_Id :=
-           All_DICs_But_Last (N, +Tmp_Id, Params);
+           All_DICs_But_Last (N, Tmp_Id, Params);
          --  Do not assume N's own DIC if it is checked at declaration as it
          --  might contain a boundary call.
 
@@ -5329,7 +5332,7 @@ package body Gnat2Why.Expr is
                --  cannot blindly assume all DICs here.
 
                DICs : constant W_Pred_Id :=
-                 All_DICs_But_Last (Ty_Ext, +New_Result_Ident (W_Typ), Params);
+                 All_DICs_But_Last (Ty_Ext, New_Result_Ident (W_Typ), Params);
                --  Assume all default initial conditions but the top-level one
                --  if any. If there is an inherited DIC applying to a type
                --  with a predicate, the predicate will be checked when
@@ -5620,7 +5623,7 @@ package body Gnat2Why.Expr is
             Check_Or_Assume_All_DICs_At_Use
               (Ada_Node,
                Ty_Ext,
-               +Tmp_Exp,
+               Tmp_Exp,
                Params,
                Checks,
                Check => not At_Declaration);
@@ -9087,22 +9090,17 @@ package body Gnat2Why.Expr is
       Rep_Ty : constant Entity_Id := Retysp (Ty);
 
    begin
-      if Has_Invariants_In_SPARK (Rep_Ty) then
+      --  If Use_Pred is true, then we already have generated a predicate
+      --  for the type invariant of elements of type Ty.
 
-         --  If Use_Pred is true, then we already have generated a predicate
-         --  for the type invariant of elements of type Ty.
-
-         if Use_Pred then
-            return New_Type_Invariant_Call (Rep_Ty, Expr, Params);
-         else
-            return
-              Type_Invariant_Expression
-                (Expr     => Expr,
-                 Inv_Subp => Invariant_Procedure (Rep_Ty),
-                 Params   => Params);
-         end if;
+      if Use_Pred then
+         return New_Type_Invariant_Call (Rep_Ty, Expr, Params);
       else
-         return True_Pred;
+         return
+           Type_Invariant_Expression
+             (Expr     => Expr,
+              Inv_Subp => Invariant_Procedure (Rep_Ty),
+              Params   => Params);
       end if;
    end Compute_Top_Level_Type_Invariant;
 
@@ -9388,34 +9386,23 @@ package body Gnat2Why.Expr is
    --------------------
 
    function DIC_Expression
-     (Expr               : W_Expr_Id;
+     (Expr               : W_Identifier_Id;
       Default_Init_Param : Formal_Kind_Id;
       Default_Init_Expr  : Node_Id;
       Params             : Transformation_Params;
       Domain             : EW_Domain) return W_Expr_Id
    is
-      Result   : W_Expr_Id;
-      Need_Tmp : constant Boolean :=
-        Expr /= Why_Empty and then Get_Kind (+Expr) not in W_Identifier;
-      --  Only introduce a new identifier for Expr if it is not already an
-      --  identifier. Expr might be empty if the expression does not reference
-      --  the current type instance.
-      DIC_Id   : constant W_Identifier_Id :=
-        (if Need_Tmp
-         then New_Temp_Identifier (Default_Init_Param, Get_Type (+Expr))
-         else +Expr);
+      Result : W_Expr_Id;
 
    begin
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-      --  Register the temporary identifier DIC_Id for parameter
-      --  Default_Init_Param in the symbol table. This ensures both that a
-      --  distinct name is used each time (preventing name capture), and that
-      --  the type of Expr is used as the type used to represent
-      --  Default_Init_Param (avoiding type conversion).
+      --  Register Expr for parameter Default_Init_Param in the symbol table.
+      --  This uses the type of Expr to represent Default_Init_Param, avoiding
+      --  type conversion.
 
-      if DIC_Id /= Why_Empty then
-         Insert_Tmp_Item_For_Entity (Default_Init_Param, DIC_Id);
+      if Expr /= Why_Empty then
+         Insert_Tmp_Item_For_Entity (Default_Init_Param, Expr);
       end if;
 
       --  Transform the DIC expression into Why3
@@ -9423,18 +9410,6 @@ package body Gnat2Why.Expr is
       Result :=
         Transform_Expr
           (Expr => Default_Init_Expr, Params => Params, Domain => Domain);
-
-      --  Relate the name DIC_Id used in the DOC expression to the value Expr
-      --  for which the DIC is checked.
-      if Need_Tmp then
-         Result :=
-           New_Binding
-             (Name    => DIC_Id,
-              Def     => Expr,
-              Context => Result,
-              Typ     => Get_Type (+Result),
-              Domain  => Domain);
-      end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
@@ -15690,9 +15665,6 @@ package body Gnat2Why.Expr is
       Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map) is
    begin
       case Nkind (N) is
-         when N_Identifier | N_Expanded_Name =>
-            null;
-
          --  We include a type qualification here even if it may not occur
          --  on the left-hand side of an assignment, due to the use of
          --  Shift_Rvalue on borrowed expressions, where a type qualification
@@ -15700,7 +15672,7 @@ package body Gnat2Why.Expr is
 
          when N_Type_Conversion
             | N_Unchecked_Type_Conversion
-            | N_Qualified_Expression         =>
+            | N_Qualified_Expression =>
 
             --  Insert a conversion to make sure that the reconstructed
             --  value fullfils the type constraint.
@@ -15818,7 +15790,7 @@ package body Gnat2Why.Expr is
          when N_Selected_Component
             | N_Indexed_Component
             | N_Slice
-            | N_Explicit_Dereference         =>
+            | N_Explicit_Dereference =>
             Last_Access := N;
 
             --  Go to the expected type before performing a record update to
@@ -15890,7 +15862,7 @@ package body Gnat2Why.Expr is
                N := Prefix (N);
             end;
 
-         when others                         =>
+         when others                 =>
             Ada.Text_IO.Put_Line
               ("[Shift_Rvalue] kind =" & Node_Kind'Image (Nkind (N)));
             raise Not_Implemented;
@@ -21569,14 +21541,13 @@ package body Gnat2Why.Expr is
                        Value    => Corresponding_Integer_Value (Expr),
                        Typ      => Base_Why_Type (Expr_Type));
 
-               --  It can happen that the literal is a universal real which is
-               --  converted into a fixed point type, we then simply return a
-               --  real constant.
-
                elsif Is_Universal_Numeric_Type (Expr_Type) then
-                  T :=
-                    New_Real_Constant
-                      (Ada_Node => Expr, Value => Realval (Expr));
+
+                  --  Universal real expressions are rejected during marking,
+                  --  including real literals used in fixed-point
+                  --  multiplication or division.
+
+                  raise Program_Error;
 
                else
                   T :=
@@ -21597,9 +21568,11 @@ package body Gnat2Why.Expr is
                end if;
 
             when N_Character_Literal                       =>
-               T :=
-                 New_Integer_Constant
-                   (Ada_Node => Expr, Value => Char_Literal_Value (Expr));
+
+               --  Character literals are handled above as compile-time-known
+               --  discrete values.
+
+               raise Program_Error;
 
             --  Deal with identifiers:
             --  * Enumeration literals: deal with special cases True and
@@ -24623,11 +24596,7 @@ package body Gnat2Why.Expr is
                      end if;
 
                   when Why.Inter.Refine   =>
-                     if Domain = EW_Prog then
-                        T := +E.Refine_Prog.Id;
-                     else
-                        T := +E.For_Logic.Id;
-                     end if;
+                     T := +E.Refine_Prog.Id;
                end case;
             else
                declare
