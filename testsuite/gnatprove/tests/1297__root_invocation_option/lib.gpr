@@ -1,0 +1,13 @@
+project Lib is
+   for Source_Dirs use ("lib_src");
+   for Object_Dir use "obj_lib";
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnatws");
+      for Local_Configuration_Pragmas use "test.adc";
+   end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--no-global-generation");
+   end Prove;
+end Lib;

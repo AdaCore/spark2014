@@ -3863,13 +3863,25 @@ package body Configuration is
 
    procedure Read_Command_Line (Tree : out Project.Tree.Object) is
 
+      type File_Specific_Invocation_Options is record
+         No_Global_Generation : Boolean;
+         Output_Msg_Only      : Boolean;
+         Replay               : Boolean;
+      end record;
+
+      function File_Specific_Options_From_Invocation
+        (Invocation : Parsed_Switches) return File_Specific_Invocation_Options;
+      --  Extract file-specific options from merged invocation switches.
+
       procedure Init
         (Tree : out Project.Tree.Object; Opt : in out GPR2.Options.Object);
       --  Load the project file; This function requires the project file to be
       --  present.
 
       procedure Parse_Analysis_Attributes
-        (Command_Line : Parsed_Switches; Root_Attributes : Parsed_Switches);
+        (Command_Line       : Parsed_Switches;
+         Root_Attributes    : Parsed_Switches;
+         Invocation_Options : File_Specific_Invocation_Options);
       --  Parse the Switches and Proof_Switches attributes in project files.
       --  The regular command line is needed to interpret them properly.
 
@@ -3879,9 +3891,9 @@ package body Configuration is
       procedure Initialize_Root_Project_Settings;
       --  Initialize settings derived from the root project.
 
-      procedure Postprocess (Parsed : in out Parsed_Switches);
-      --  Read the switch variables set by command-line parsing and set the
-      --  gnatprove variables.
+      procedure Postprocess_Invocation (Parsed : in out Parsed_Switches);
+      --  Interpret the effective switches from the root project's attributes
+      --  and the command line, setting invocation-wide GNATprove state.
 
       procedure Warn_And_Strip_Non_Root_Invocation_Switches
         (View           : Project.View.Object;
@@ -3891,8 +3903,11 @@ package body Configuration is
       --  compatibility but ignored semantically.
 
       procedure File_Specific_Postprocess
-        (Parsed : Parsed_Switches; FS : out File_Specific);
-      --  Same as Postprocess, but for the switches that can be file-specific.
+        (Parsed             : Parsed_Switches;
+         Invocation_Options : File_Specific_Invocation_Options;
+         FS                 : out File_Specific);
+      --  Same as Postprocess_Invocation, but for the switches that can be
+      --  file-specific.
       --  For example, --level, --timeout are handled here.
 
       procedure Check_Obsolete_Prove_Switches (View : Project.View.Object);
@@ -3910,7 +3925,9 @@ package body Configuration is
       procedure Set_Report_Mode (Parsed : Parsed_Switches);
 
       procedure Set_Level_Timeout_Steps_Provers
-        (Parsed : Parsed_Switches; FS : out File_Specific);
+        (Parsed             : Parsed_Switches;
+         Invocation_Options : File_Specific_Invocation_Options;
+         FS                 : out File_Specific);
       --  Using the --level, --timeout, --steps, --provers, --ce-steps,
       --  --counterexamples and --proof-warning-timeout switches, set the
       --  corresponding variables.
@@ -3919,7 +3936,9 @@ package body Configuration is
         (Parsed : Parsed_Switches; FS : in out File_Specific);
       procedure Process_Limit_Switches (Parsed : in out Parsed_Switches);
       procedure Set_Provers
-        (Parsed : Parsed_Switches; FS : in out File_Specific);
+        (Parsed             : Parsed_Switches;
+         Invocation_Options : File_Specific_Invocation_Options;
+         FS                 : in out File_Specific);
       procedure Set_Proof_Dir (View : GPR2.Project.View.Object);
       --  If attribute Proof_Dir is set in the project file,
       --  set global variable Proof_Dir to the full path
@@ -4038,9 +4057,11 @@ package body Configuration is
       -------------------------------
 
       procedure File_Specific_Postprocess
-        (Parsed : Parsed_Switches; FS : out File_Specific) is
+        (Parsed             : Parsed_Switches;
+         Invocation_Options : File_Specific_Invocation_Options;
+         FS                 : out File_Specific) is
       begin
-         Set_Level_Timeout_Steps_Provers (Parsed, FS);
+         Set_Level_Timeout_Steps_Provers (Parsed, Invocation_Options, FS);
          Set_Proof_Mode (Parsed, FS);
          Set_Mode (Parsed, FS);
          if Switch_String (Parsed, Sw_Proof_Warnings) = ""
@@ -4081,7 +4102,7 @@ package body Configuration is
 
          FS.No_Inlining :=
            Parsed.Values (Sw_No_Inlining).Boolean_Val
-           or Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
+           or Invocation_Options.No_Global_Generation;
          for WK in Misc_Warning_Kind loop
             FS.Warning_Status (WK) :=
               (if Parsed.Warning_Status (WK) /= WS_None
@@ -4166,6 +4187,22 @@ package body Configuration is
          return View.Source (GPR2.Simple_Name (Fn)).Path_Name.String_Value;
       end Source_Key;
 
+      -------------------------------------------
+      -- File_Specific_Options_From_Invocation --
+      -------------------------------------------
+
+      function File_Specific_Options_From_Invocation
+        (Invocation : Parsed_Switches) return File_Specific_Invocation_Options
+      is
+      begin
+         return
+           (No_Global_Generation =>
+              Invocation.Values (Sw_No_Global_Generation).Boolean_Val,
+            Output_Msg_Only      =>
+              Invocation.Values (Sw_Output_Msg_Only).Boolean_Val,
+            Replay               => Invocation.Values (Sw_Replay).Boolean_Val);
+      end File_Specific_Options_From_Invocation;
+
       -------------------
       -- Switch_String --
       -------------------
@@ -4231,7 +4268,9 @@ package body Configuration is
       -------------------------------
 
       procedure Parse_Analysis_Attributes
-        (Command_Line : Parsed_Switches; Root_Attributes : Parsed_Switches)
+        (Command_Line       : Parsed_Switches;
+         Root_Attributes    : Parsed_Switches;
+         Invocation_Options : File_Specific_Invocation_Options)
       is
          use type Project.View.Object;
 
@@ -4328,8 +4367,8 @@ package body Configuration is
                   --  Use the merge helper for a deep copy
                   Merge_Parsed_Switches (Effective, Project_Switches);
                   Merge_Parsed_Switches (Effective, Command_Line);
-                  Postprocess (Effective);
-                  File_Specific_Postprocess (Effective, FS);
+                  File_Specific_Postprocess
+                    (Effective, Invocation_Options, FS);
                end;
                File_Specific_Map.Include ("Ada", FS);
                Has_Coq_Prover := Case_Insensitive_Contains (FS.Provers, "coq");
@@ -4368,8 +4407,8 @@ package body Configuration is
                         --  override file-specific project switches.
 
                         Merge_Parsed_Switches (Effective, Command_Line);
-                        Postprocess (Effective);
-                        File_Specific_Postprocess (Effective, FS);
+                        File_Specific_Postprocess
+                          (Effective, Invocation_Options, FS);
                         File_Specific_Map.Include
                           (Source_Key (View, Attr.Index.Text), FS);
                      end;
@@ -4389,11 +4428,11 @@ package body Configuration is
          end loop;
       end Parse_Analysis_Attributes;
 
-      -----------------
-      -- Postprocess --
-      -----------------
+      ----------------------------
+      -- Postprocess_Invocation --
+      ----------------------------
 
-      procedure Postprocess (Parsed : in out Parsed_Switches) is
+      procedure Postprocess_Invocation (Parsed : in out Parsed_Switches) is
       begin
          Sanity_Checking (Parsed);
 
@@ -4492,7 +4531,7 @@ package body Configuration is
 
          Use_Semaphores :=
            not Debug and then not Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
-      end Postprocess;
+      end Postprocess_Invocation;
 
       ----------------------------
       -- Process_Limit_Switches --
@@ -4705,7 +4744,9 @@ package body Configuration is
       -------------------------------------
 
       procedure Set_Level_Timeout_Steps_Provers
-        (Parsed : Parsed_Switches; FS : out File_Specific) is
+        (Parsed             : Parsed_Switches;
+         Invocation_Options : File_Specific_Invocation_Options;
+         FS                 : out File_Specific) is
       begin
          pragma Assert (Parsed.Values (Sw_Level).Integer_Val = Invalid_Level);
          pragma Assert (not Parsed.Present (Sw_Level));
@@ -4811,9 +4852,9 @@ package body Configuration is
             then Constants.Max_CE_Timeout
             else Integer'Min (FS.Timeout, Constants.Max_CE_Timeout));
 
-         Set_Provers (Parsed, FS);
+         Set_Provers (Parsed, Invocation_Options, FS);
 
-         if Parsed.Values (Sw_Output_Msg_Only).Boolean_Val then
+         if Invocation_Options.Output_Msg_Only then
             FS.Provers.Clear;
          end if;
 
@@ -4834,7 +4875,7 @@ package body Configuration is
            FS.Counterexamples
            and then SPARK_Install.CVC5_Present
            and then not Has_Manual_Prover
-           and then not Parsed.Values (Sw_Output_Msg_Only).Boolean_Val;
+           and then not Invocation_Options.Output_Msg_Only;
 
          if Switch_String (Parsed, Sw_Check_Counterexamples) = "" then
             null;
@@ -5024,7 +5065,9 @@ package body Configuration is
       -----------------
 
       procedure Set_Provers
-        (Parsed : Parsed_Switches; FS : in out File_Specific)
+        (Parsed             : Parsed_Switches;
+         Invocation_Options : File_Specific_Invocation_Options;
+         FS                 : in out File_Specific)
       is
          First : Integer;
          S     : constant String := Switch_String (Parsed, Sw_Prover);
@@ -5037,7 +5080,7 @@ package body Configuration is
          --  --provers was explicitly set.
 
          if S = "" then
-            if Parsed.Values (Sw_Replay).Boolean_Val then
+            if Invocation_Options.Replay then
                FS.Provers.Clear;
             end if;
             return;
@@ -5269,13 +5312,20 @@ package body Configuration is
       Detect_Installed_Provers;
       Initialize_Root_Project_Settings;
 
-      Parse_Analysis_Attributes
-        (Command_Line_Switches, Root_Attribute_Switches);
-
-      --  Derive the invocation-wide semantic configuration
       Merge_Parsed_Switches (Invocation_Switches, Root_Attribute_Switches);
       Merge_Parsed_Switches (Invocation_Switches, Command_Line_Switches);
-      Postprocess (Invocation_Switches);
+
+      declare
+         Invocation_Options : constant File_Specific_Invocation_Options :=
+           File_Specific_Options_From_Invocation (Invocation_Switches);
+      begin
+         Postprocess_Invocation (Invocation_Switches);
+         Parse_Analysis_Attributes
+           (Command_Line_Switches,
+            Root_Attribute_Switches,
+            Invocation_Options);
+      end;
+
       Verbosity := Parse_Result.Verbosity;
 
       --  Publish the final invocation settings for legacy consumers
