@@ -1,0 +1,312 @@
+repro.adb:9:25: info: in value of subprogram parameter after the call at repro.adb:9
+repro.adb:9:25: info: non-aliasing of formal parameters "Data" and "Last" proved
+repro.adb:9:25: info: predicate check proved (CVC5: 1 VC)
+repro.adb:9:33: info: in value of subprogram parameter after the call at repro.adb:9
+repro.adb:9:33: info: predicate check proved (CVC5: 1 VC)
+repro.adb:18:24: info: in value of subprogram parameter after the call at repro.adb:18
+repro.adb:18:24: info: non-aliasing of formal parameters "Last" and "Data" proved
+repro.adb:18:24: info: predicate check proved (CVC5: 1 VC)
+repro.adb:18:32: info: in value of subprogram parameter after the call at repro.adb:18
+repro.adb:18:32: info: predicate check proved (CVC5: 1 VC)
+repro.adb:63:25: info: in value of subprogram parameter after the call at repro.adb:63
+repro.adb:63:25: info: non-aliasing of formal parameters "Data" and "Last" proved
+repro.adb:63:25: info: predicate check proved (CVC5: 1 VC)
+repro.adb:63:33: info: in value of subprogram parameter after the call at repro.adb:63
+repro.adb:63:33: info: predicate check proved (CVC5: 1 VC)
+repro.adb:72:24: info: in value of subprogram parameter after the call at repro.adb:72
+repro.adb:72:24: info: non-aliasing of formal parameters "Last" and "Data" proved
+repro.adb:72:24: info: predicate check proved (CVC5: 1 VC)
+repro.adb:72:32: info: in value of subprogram parameter after the call at repro.adb:72
+repro.adb:72:32: info: predicate check proved (CVC5: 1 VC)
+repro.ads:15:39: info: index check proved (CVC5: 2 VC)
+repro.ads:25:07: warning: unused initial value of "Last"
+repro.ads:29:09: info: postcondition proved (CVC5: 2 VC)
+repro.ads:30:51: info: index check proved (CVC5: 2 VC)
+repro.ads:33:07: warning: unused initial value of "Last"
+repro.ads:38:09: info: postcondition proved (CVC5: 2 VC)
+repro.ads:39:51: info: index check proved (CVC5: 2 VC)
+test_conversions.adb:26:34: info: range check proved (CVC5: 2 VC)
+test_conversions.adb:28:35: warning: unused initial value of "Obj"
+test_conversions.adb:28:65: info: data dependencies proved
+test_conversions.adb:32:18: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:32:22: info: in value of subprogram parameter after the call at test_conversions.adb:32
+test_conversions.adb:32:22: info: non-aliasing of formal parameters "Low" and "High" proved
+test_conversions.adb:32:22: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:32:36: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:32:40: info: in value of subprogram parameter after the call at test_conversions.adb:32
+test_conversions.adb:32:40: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:33:22: info: assertion proved (CVC5: 2 VC)
+test_conversions.adb:36:39: warning: unused initial value of "Obj"
+test_conversions.adb:37:09: info: data dependencies proved
+test_conversions.adb:41:18: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:41:22: info: non-aliasing of formal parameters "Low" and "High" proved
+test_conversions.adb:41:22: medium: in value of subprogram parameter after the call at test_conversions.adb:41
+test_conversions.adb:41:22: medium: predicate check might fail
+test_conversions.adb:41:36: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:41:40: info: in value of subprogram parameter after the call at test_conversions.adb:41
+test_conversions.adb:41:40: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:44:32: warning: unused initial value of "Obj"
+test_conversions.adb:45:09: info: data dependencies proved
+test_conversions.adb:49:15: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:49:15: medium: discriminant check might fail (e.g. when Obj = (D => 2, Low => 0, High => 0))
+test_conversions.adb:49:19: info: in value of subprogram parameter after the call at test_conversions.adb:49
+test_conversions.adb:49:19: info: non-aliasing of formal parameters "Low" and "High" proved
+test_conversions.adb:49:19: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:49:30: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:49:30: medium: discriminant check might fail (e.g. when Obj = (D => 2, Low => 0, High => 0))
+test_conversions.adb:49:34: info: in value of subprogram parameter after the call at test_conversions.adb:49
+test_conversions.adb:49:34: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:55:09: info: data dependencies proved
+test_conversions.adb:59:24: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:59:29: info: non-aliasing of formal parameters "Low" and "High" proved
+test_conversions.adb:60:22: info: assertion proved (CVC5: 2 VC)
+test_conversions.adb:64:09: info: data dependencies proved
+test_conversions.adb:68:18: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:68:22: info: non-aliasing of formal parameters "Low" and "High" proved
+test_conversions.adb:68:36: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:69:22: info: assertion proved (CVC5: 2 VC)
+test_conversions.adb:73:09: info: data dependencies proved
+test_conversions.adb:77:10: info: in value of subprogram parameter after the call at test_conversions.adb:77
+test_conversions.adb:77:10: info: tag check proved (CVC5: 1 VC)
+test_conversions.adb:77:21: medium: tag check might fail
+test_conversions.adb:77:25: info: non-aliasing of formal parameters "Low" and "High" proved
+test_conversions.adb:77:31: info: in value of subprogram parameter after the call at test_conversions.adb:77
+test_conversions.adb:77:31: info: tag check proved (CVC5: 1 VC)
+test_conversions.adb:77:42: info: tag check proved (CVC5: 1 VC)
+test_conversions.adb:80:39: warning: unused initial value of "Obj"
+test_conversions.adb:81:09: info: data dependencies proved
+test_conversions.adb:85:15: info: discriminant check proved (CVC5: 1 VC)
+test_conversions.adb:85:15: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:85:19: info: in value of subprogram parameter after the call at test_conversions.adb:85
+test_conversions.adb:85:19: info: non-aliasing of formal parameters "Low" and "High" proved
+test_conversions.adb:85:19: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:85:30: info: discriminant check proved (CVC5: 1 VC)
+test_conversions.adb:85:30: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:85:34: info: in value of subprogram parameter after the call at test_conversions.adb:85
+test_conversions.adb:85:34: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:86:22: info: assertion proved (CVC5: 2 VC)
+test_conversions.adb:90:09: info: data dependencies proved
+test_conversions.adb:94:24: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:94:29: info: non-aliasing of formal parameters "Low" and "High" proved
+test_conversions.adb:95:39: medium: assertion might fail, cannot prove Obj.High = 30 (e.g. when Obj = (Low => 20, High => 10))
+test_conversions.adb:99:09: info: data dependencies proved
+test_conversions.adb:103:18: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:103:22: info: non-aliasing of formal parameters "Low" and "High" proved
+test_conversions.adb:103:36: info: predicate check proved (CVC5: 1 VC)
+test_conversions.adb:104:22: info: assertion proved (CVC5: 2 VC)
+test_conversions.adb:108:09: info: data dependencies proved
+test_conversions.adb:112:10: info: in value of subprogram parameter after the call at test_conversions.adb:112
+test_conversions.adb:112:10: info: tag check proved (CVC5: 1 VC)
+test_conversions.adb:112:21: info: tag check proved (CVC5: 1 VC)
+test_conversions.adb:112:25: info: non-aliasing of formal parameters "Low" and "High" proved
+test_conversions.adb:112:31: info: in value of subprogram parameter after the call at test_conversions.adb:112
+test_conversions.adb:112:31: info: tag check proved (CVC5: 1 VC)
+test_conversions.adb:112:42: info: tag check proved (CVC5: 1 VC)
+test_conversions.adb:113:22: info: assertion proved (CVC5: 2 VC)
+test_conversions.adb:117:09: info: data dependencies proved
+test_conversions.adb:121:18: medium: predicate check might fail
+test_conversions.adb:121:22: info: non-aliasing of formal parameters "Low" and "High" proved
+test_conversions.adb:132:09: info: data dependencies proved
+test_conversions.adb:135:17: medium: in value of subprogram parameter after the call at test_conversions.adb:135
+test_conversions.adb:135:17: medium: predicate check might fail
+test_conversions.adb:135:25: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:16:22: warning: unused initial value of "Obj"
+test_prefixes.adb:16:46: info: data dependencies proved
+test_prefixes.adb:18:07: warning: assuming "Set_Values" always terminates
+test_prefixes.adb:18:07: warning: no Always_Terminates aspect available for "Set_Values" [assumed-always-terminates]
+test_prefixes.adb:18:22: info: in value of subprogram parameter after the call at test_prefixes.adb:18
+test_prefixes.adb:18:22: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:18:22: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:18:31: info: in value of subprogram parameter after the call at test_prefixes.adb:18
+test_prefixes.adb:18:31: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:19:22: info: assertion proved (CVC5: 2 VC)
+test_prefixes.adb:22:53: info: data dependencies proved
+test_prefixes.adb:24:07: warning: assuming "Update_Values" always terminates
+test_prefixes.adb:24:07: warning: no Always_Terminates aspect available for "Update_Values" [assumed-always-terminates]
+test_prefixes.adb:24:25: info: in value of subprogram parameter after the call at test_prefixes.adb:24
+test_prefixes.adb:24:25: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:24:25: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:24:34: info: in value of subprogram parameter after the call at test_prefixes.adb:24
+test_prefixes.adb:24:34: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:25:22: info: assertion proved (CVC5: 2 VC)
+test_prefixes.adb:41:33: warning: unused initial value of "Obj"
+test_prefixes.adb:42:11: info: data dependencies proved
+test_prefixes.adb:45:07: warning: assuming "Set_Cells" always terminates
+test_prefixes.adb:45:07: warning: no Always_Terminates aspect available for "Set_Cells" [assumed-always-terminates]
+test_prefixes.adb:45:21: info: in value of subprogram parameter after the call at test_prefixes.adb:45
+test_prefixes.adb:45:21: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:45:21: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:45:30: info: in value of subprogram parameter after the call at test_prefixes.adb:45
+test_prefixes.adb:45:30: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:46:22: info: assertion proved (CVC5: 2 VC)
+test_prefixes.adb:59:22: warning: unused initial value of "Obj"
+test_prefixes.adb:59:47: info: data dependencies proved
+test_prefixes.adb:61:07: warning: assuming "Set_Nested" always terminates
+test_prefixes.adb:61:07: warning: no Always_Terminates aspect available for "Set_Nested" [assumed-always-terminates]
+test_prefixes.adb:61:22: info: in value of subprogram parameter after the call at test_prefixes.adb:61
+test_prefixes.adb:61:22: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:61:31: info: in value of subprogram parameter after the call at test_prefixes.adb:61
+test_prefixes.adb:61:31: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:61:31: info: non-aliasing of formal parameters "Low" and "Limit" proved
+test_prefixes.adb:61:31: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:61:40: info: in value of subprogram parameter after the call at test_prefixes.adb:61
+test_prefixes.adb:61:40: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:61:49: info: in value of subprogram parameter after the call at test_prefixes.adb:61
+test_prefixes.adb:61:49: info: non-aliasing of formal parameters "High" and "Limit" proved
+test_prefixes.adb:61:49: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:61:59: info: in value of subprogram parameter after the call at test_prefixes.adb:61
+test_prefixes.adb:61:59: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:62:22: info: assertion proved (CVC5: 3 VC)
+test_prefixes.adb:73:31: warning: unused initial value of "Obj"
+test_prefixes.adb:73:56: info: data dependencies proved
+test_prefixes.adb:75:07: warning: assuming "Set_Values" always terminates
+test_prefixes.adb:75:07: warning: no Always_Terminates aspect available for "Set_Values" [assumed-always-terminates]
+test_prefixes.adb:75:31: info: in value of subprogram parameter after the call at test_prefixes.adb:75
+test_prefixes.adb:75:31: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:75:31: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:75:49: info: in value of subprogram parameter after the call at test_prefixes.adb:75
+test_prefixes.adb:75:49: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:76:22: info: assertion proved (CVC5: 2 VC)
+test_prefixes.adb:86:35: warning: unused initial value of "Obj"
+test_prefixes.adb:87:11: info: data dependencies proved
+test_prefixes.adb:90:07: warning: assuming "Set_Values" always terminates
+test_prefixes.adb:90:07: warning: no Always_Terminates aspect available for "Set_Values" [assumed-always-terminates]
+test_prefixes.adb:90:36: info: in value of subprogram parameter after the call at test_prefixes.adb:90
+test_prefixes.adb:90:36: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:90:36: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:90:59: info: in value of subprogram parameter after the call at test_prefixes.adb:90
+test_prefixes.adb:90:59: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:91:22: info: assertion proved (CVC5: 2 VC)
+test_prefixes.adb:102:11: info: data dependencies proved
+test_prefixes.adb:106:07: warning: assuming "Set_Indexed" always terminates
+test_prefixes.adb:106:07: warning: no Always_Terminates aspect available for "Set_Indexed" [assumed-always-terminates]
+test_prefixes.adb:106:27: info: in value of subprogram parameter after the call at test_prefixes.adb:106
+test_prefixes.adb:106:27: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:106:27: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:106:40: info: in value of subprogram parameter after the call at test_prefixes.adb:106
+test_prefixes.adb:106:40: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:107:22: info: assertion proved (CVC5: 2 VC)
+test_prefixes.adb:123:52: info: data dependencies proved
+test_prefixes.adb:125:07: warning: assuming "Set_Slice" always terminates
+test_prefixes.adb:125:07: warning: no Always_Terminates aspect available for "Set_Slice" [assumed-always-terminates]
+test_prefixes.adb:125:21: info: in value of subprogram parameter after the call at test_prefixes.adb:125
+test_prefixes.adb:125:21: info: non-aliasing of formal parameters "Data" and "Limit" proved
+test_prefixes.adb:125:21: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:125:21: info: range check proved (CVC5: 4 VC)
+test_prefixes.adb:125:40: info: in value of subprogram parameter after the call at test_prefixes.adb:125
+test_prefixes.adb:125:40: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:126:22: info: assertion proved (CVC5: 3 VC)
+test_prefixes.adb:133:11: info: data dependencies proved
+test_prefixes.adb:136:07: warning: assuming "Set_Values" always terminates
+test_prefixes.adb:136:07: warning: no Always_Terminates aspect available for "Set_Values" [assumed-always-terminates]
+test_prefixes.adb:136:23: info: pointer dereference check proved (CVC5: 1 VC)
+test_prefixes.adb:136:26: info: in value of subprogram parameter after the call at test_prefixes.adb:136
+test_prefixes.adb:136:26: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:136:26: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:136:36: info: pointer dereference check proved (CVC5: 1 VC)
+test_prefixes.adb:136:39: info: in value of subprogram parameter after the call at test_prefixes.adb:136
+test_prefixes.adb:136:39: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:137:22: info: assertion proved (CVC5: 2 VC)
+test_prefixes.adb:137:25: info: pointer dereference check proved (CVC5: 1 VC)
+test_prefixes.adb:137:42: info: pointer dereference check proved (CVC5: 1 VC)
+test_prefixes.adb:142:25: warning: unused initial value of "Obj"
+test_prefixes.adb:142:49: info: data dependencies proved
+test_prefixes.adb:144:07: warning: assuming "Set_Bad_Values" always terminates
+test_prefixes.adb:144:07: warning: no Always_Terminates aspect available for "Set_Bad_Values" [assumed-always-terminates]
+test_prefixes.adb:144:26: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:144:26: medium: in value of subprogram parameter after the call at test_prefixes.adb:144
+test_prefixes.adb:144:26: medium: predicate check might fail (e.g. when Obj = (Low => 20, High => 10))
+test_prefixes.adb:144:35: info: in value of subprogram parameter after the call at test_prefixes.adb:144
+test_prefixes.adb:144:35: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:152:11: info: data dependencies proved
+test_prefixes.adb:155:07: warning: assuming "Set_Bad_Indexed" always terminates
+test_prefixes.adb:155:07: warning: no Always_Terminates aspect available for "Set_Bad_Indexed" [assumed-always-terminates]
+test_prefixes.adb:155:31: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:155:31: medium: in value of subprogram parameter after the call at test_prefixes.adb:155
+test_prefixes.adb:155:31: medium: predicate check might fail
+test_prefixes.adb:155:44: info: in value of subprogram parameter after the call at test_prefixes.adb:155
+test_prefixes.adb:155:44: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:166:26: info: initialization of "Obj" proved
+test_prefixes.adb:166:56: info: data dependencies proved
+test_prefixes.adb:168:07: warning: assuming "Set_Negative" always terminates
+test_prefixes.adb:168:07: warning: no Always_Terminates aspect available for "Set_Negative" [assumed-always-terminates]
+test_prefixes.adb:168:21: medium: in value of subprogram parameter after the call at test_prefixes.adb:168
+test_prefixes.adb:168:21: medium: predicate check might fail (e.g. when Obj = (Value => -1))
+test_prefixes.adb:174:55: info: data dependencies proved
+test_prefixes.adb:176:07: warning: assuming "Set_Bad_Parent" always terminates
+test_prefixes.adb:176:07: warning: no Always_Terminates aspect available for "Set_Bad_Parent" [assumed-always-terminates]
+test_prefixes.adb:176:31: medium: in value of subprogram parameter after the call at test_prefixes.adb:176
+test_prefixes.adb:176:31: medium: predicate check might fail [possible fix: subprogram at line 174 should mention Obj in a precondition]
+test_prefixes.adb:192:14: warning: not dispatching (must be defined in a package spec) [enabled by default]
+test_prefixes.adb:198:11: info: data dependencies proved
+test_prefixes.adb:198:54: info: exceptional case proved (Trivial: 1 VC)
+test_prefixes.adb:201:07: info: only expected exception raised (CVC5: 1 VC)
+test_prefixes.adb:201:07: warning: assuming "Set_Exceptional" always terminates
+test_prefixes.adb:201:07: warning: no Always_Terminates aspect available for "Set_Exceptional" [assumed-always-terminates]
+test_prefixes.adb:201:27: info: in value of subprogram parameter after the call at test_prefixes.adb:201
+test_prefixes.adb:201:27: info: in value of subprogram parameter after the call when an exception is raised at test_prefixes.adb:201
+test_prefixes.adb:201:27: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:201:27: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:201:27: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:201:36: info: in value of subprogram parameter after the call at test_prefixes.adb:201
+test_prefixes.adb:201:36: info: in value of subprogram parameter after the call when an exception is raised at test_prefixes.adb:201
+test_prefixes.adb:201:36: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:201:36: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:210:11: info: data dependencies proved
+test_prefixes.adb:210:54: info: exceptional case proved (Trivial: 1 VC)
+test_prefixes.adb:213:07: info: only expected exception raised (CVC5: 1 VC)
+test_prefixes.adb:213:07: warning: assuming "Set_Bad_Exceptional" always terminates
+test_prefixes.adb:213:07: warning: no Always_Terminates aspect available for "Set_Bad_Exceptional" [assumed-always-terminates]
+test_prefixes.adb:213:31: info: in value of subprogram parameter after the call at test_prefixes.adb:213
+test_prefixes.adb:213:31: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:213:31: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:213:31: medium: in value of subprogram parameter after the call when an exception is raised at test_prefixes.adb:213
+test_prefixes.adb:213:31: medium: predicate check might fail [possible fix: subprogram at line 209 should mention Obj in a precondition]
+test_prefixes.adb:213:40: info: in value of subprogram parameter after the call at test_prefixes.adb:213
+test_prefixes.adb:213:40: info: in value of subprogram parameter after the call when an exception is raised at test_prefixes.adb:213
+test_prefixes.adb:213:40: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:213:40: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:221:11: info: data dependencies proved
+test_prefixes.adb:225:07: warning: assuming "Set_Indexed" always terminates
+test_prefixes.adb:225:07: warning: no Always_Terminates aspect available for "Set_Indexed" [assumed-always-terminates]
+test_prefixes.adb:226:26: info: in value of subprogram parameter after the call at test_prefixes.adb:226
+test_prefixes.adb:226:26: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:226:26: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:226:48: info: in value of subprogram parameter after the call at test_prefixes.adb:226
+test_prefixes.adb:226:48: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:227:22: info: assertion proved (CVC5: 2 VC)
+test_prefixes.adb:233:11: info: data dependencies proved
+test_prefixes.adb:236:07: warning: assuming "Set_Bad_Indexed" always terminates
+test_prefixes.adb:236:07: warning: no Always_Terminates aspect available for "Set_Bad_Indexed" [assumed-always-terminates]
+test_prefixes.adb:237:26: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:237:26: medium: in value of subprogram parameter after the call at test_prefixes.adb:237
+test_prefixes.adb:237:26: medium: predicate check might fail
+test_prefixes.adb:237:48: info: in value of subprogram parameter after the call at test_prefixes.adb:237
+test_prefixes.adb:237:48: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:241:11: info: data dependencies proved
+test_prefixes.adb:245:07: warning: assuming "Set_Indexed" always terminates
+test_prefixes.adb:245:07: warning: no Always_Terminates aspect available for "Set_Indexed" [assumed-always-terminates]
+test_prefixes.adb:246:10: info: range check proved (CVC5: 4 VC)
+test_prefixes.adb:246:24: info: index check proved (CVC5: 2 VC)
+test_prefixes.adb:246:26: info: in value of subprogram parameter after the call at test_prefixes.adb:246
+test_prefixes.adb:246:26: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:246:26: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:246:26: warning: aliasing check on components of an array is handled imprecisely [alias-array]
+test_prefixes.adb:246:32: info: range check proved (CVC5: 4 VC)
+test_prefixes.adb:246:46: info: index check proved (CVC5: 2 VC)
+test_prefixes.adb:246:48: info: in value of subprogram parameter after the call at test_prefixes.adb:246
+test_prefixes.adb:246:48: info: predicate check proved (CVC5: 1 VC)
+test_prefixes.adb:247:22: info: assertion proved (CVC5: 2 VC)
+test_prefixes.adb:252:11: info: data dependencies proved
+test_prefixes.adb:255:07: warning: assuming "Set_Bad_Indexed" always terminates
+test_prefixes.adb:255:07: warning: no Always_Terminates aspect available for "Set_Bad_Indexed" [assumed-always-terminates]
+test_prefixes.adb:256:10: info: range check proved (CVC5: 4 VC)
+test_prefixes.adb:256:24: info: index check proved (CVC5: 2 VC)
+test_prefixes.adb:256:26: info: non-aliasing of formal parameters "Low" and "High" proved
+test_prefixes.adb:256:26: medium: in value of subprogram parameter after the call at test_prefixes.adb:256
+test_prefixes.adb:256:26: medium: predicate check might fail
+test_prefixes.adb:256:26: warning: aliasing check on components of an array is handled imprecisely [alias-array]
+test_prefixes.adb:256:32: info: range check proved (CVC5: 4 VC)
+test_prefixes.adb:256:46: info: index check proved (CVC5: 2 VC)
+test_prefixes.adb:256:48: info: in value of subprogram parameter after the call at test_prefixes.adb:256
+test_prefixes.adb:256:48: info: predicate check proved (CVC5: 1 VC)

@@ -5051,6 +5051,12 @@ update their components (see ``Transform_Target``). This preserves the other
 components of the selected object even when the call changes variables used
 in its indices or slice bounds.
 
+When several mutable actuals update parts of the same object, predicates on
+enclosing objects are checked after all copy-back stores. This allows the
+intermediate states of the copy-back to violate these predicates, provided the
+completed update restores them. Checks on the actuals themselves remain part of
+their individual copy-back operations.
+
 Additional Checks
 """""""""""""""""
 When a subprogram call is translated in the program domain, the precondition is
