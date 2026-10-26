@@ -1,0 +1,6 @@
+borrower.adb:2:35: medium: in reconstructed value at the end of the borrow at borrower.adb:2
+borrower.adb:2:35: medium: initialization check might fail (e.g. when X.all = 9) [possible fix: subprogram at line 1 should mention X in a precondition]
+borrower.adb:10:23: info: data dependencies proved
+borrower.adb:11:14: info: postcondition proved (CVC5: 2 VC)
+borrower.adb:11:32: info: initialization check proved (CVC5: 1 VC)
+borrower.adb:11:34: info: initialization check proved (CVC5: 1 VC)
