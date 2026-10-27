@@ -427,7 +427,10 @@ package Gnat2Why.Expr is
       Ty       : Type_Kind_Id;
       Params   : Transformation_Params := Body_Params;
       Use_Pred : Boolean := True) return W_Pred_Id
-   with Pre => Eq_Base (Type_Of_Node (Retysp (Ty)), Get_Type (+Expr));
+   with
+     Pre =>
+       Has_Invariants_In_SPARK (Retysp (Ty))
+       and then Eq_Base (Type_Of_Node (Retysp (Ty)), Get_Type (+Expr));
    --  @param Expr Why3 term expression on which to express the type invariant
    --  @param Ty type with the type invariant
    --  @param Params transformation parameters
@@ -741,7 +744,8 @@ package Gnat2Why.Expr is
       Domain            : EW_Domain;
       Selector          : Selection_Kind := Why.Inter.Standard;
       No_Init_Check     : Boolean := False;
-      No_Validity_Check : Boolean := False) return W_Expr_Id;
+      No_Validity_Check : Boolean := False) return W_Expr_Id
+   with Pre => (if Selector = Why.Inter.Refine then Domain = EW_Prog);
    --  Transform an Ada identifier to a Why item.
    --
    --  This also deals with volatility, so that an object with a Async_Writers
