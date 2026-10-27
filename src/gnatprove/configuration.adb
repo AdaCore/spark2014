@@ -133,15 +133,24 @@ package body Configuration is
 
    --  Published invocation settings exposed through read-only queries
    Checks_As_Errors_Value : Boolean := False;
+   Debug_Value            : Boolean := False;
    Debug_Exec_RAC_Value   : Boolean := False;
    Only_Given_Value       : Boolean := False;
+   Parallel_Value         : Integer := 0;
+   Use_Semaphores_Value   : Boolean := False;
 
    function Checks_As_Errors return Boolean
    is (Checks_As_Errors_Value);
+   function Debug return Boolean
+   is (Debug_Value);
    function Debug_Exec_RAC return Boolean
    is (Debug_Exec_RAC_Value);
    function Only_Given return Boolean
    is (Only_Given_Value);
+   function Parallel return Integer
+   is (Parallel_Value);
+   function Use_Semaphores return Boolean
+   is (Use_Semaphores_Value);
 
    --  Private global state to replace public state from CL_Switches
    Debug_Save_VCs      : Boolean := False;
@@ -3896,8 +3905,11 @@ package body Configuration is
          File_Options     : File_Specific_Invocation_Options;
          Selection        : File_Selection;
          Checks_As_Errors : Boolean;
+         Debug            : Boolean;
          Debug_Exec_RAC   : Boolean;
          Only_Given       : Boolean;
+         Parallel         : Integer;
+         Use_Semaphores   : Boolean;
       end record;
       --  Invocation-wide results needed by project traversal and file
       --  selection. Other invocation settings are still published as globals.
@@ -4508,7 +4520,7 @@ package body Configuration is
 
          Result.File_Options := File_Specific_Options_From_Invocation (Parsed);
 
-         Debug :=
+         Result.Debug :=
            Parsed.Values (Sw_D).Boolean_Val
            or Parsed.Values (Sw_Flow_Debug).Boolean_Val;
          Result.Debug_Exec_RAC :=
@@ -4519,11 +4531,11 @@ package body Configuration is
          --  processors available on the machine.
 
          if Parsed.Values (Sw_J).Integer_Val = 0 then
-            Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
+            Result.Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
          elsif Parsed.Values (Sw_J).Integer_Val < 0 then
             Abort_Msg ("error: wrong argument for -j", With_Help => False);
          else
-            Parallel := Parsed.Values (Sw_J).Integer_Val;
+            Result.Parallel := Parsed.Values (Sw_J).Integer_Val;
          end if;
 
          --  Validate the staggering switches before converting them to
@@ -4602,8 +4614,9 @@ package body Configuration is
          Set_Warning_Mode (Parsed);
          Set_Report_Mode (Parsed);
 
-         Use_Semaphores :=
-           not Debug and then not Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
+         Result.Use_Semaphores :=
+           not Result.Debug
+           and then not Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
 
       end Postprocess_Invocation;
 
@@ -5385,8 +5398,11 @@ package body Configuration is
             Maximum_Mode : GP_Mode;
          begin
             Checks_As_Errors_Value := Invocation.Checks_As_Errors;
+            Debug_Value := Invocation.Debug;
             Debug_Exec_RAC_Value := Invocation.Debug_Exec_RAC;
             Only_Given_Value := Invocation.Only_Given;
+            Parallel_Value := Invocation.Parallel;
+            Use_Semaphores_Value := Invocation.Use_Semaphores;
 
             Parse_Analysis_Attributes
               (Command_Line_Switches,
