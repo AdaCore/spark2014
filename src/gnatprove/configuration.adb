@@ -183,6 +183,7 @@ package body Configuration is
       Report                        : Report_Mode_Type := GPR_Fail;
       U                             : Boolean := False;
       Use_Semaphores                : Boolean := False;
+      Verbosity                     : Verbosity_Choice := Normal_Level;
       Warning_Mode                  : SPARK_Warning_Mode_Type := SW_Normal;
       Why3_Logging                  : Boolean := False;
       Why3_Conf                     : Unbounded_String;
@@ -261,6 +262,8 @@ package body Configuration is
    is (Invocation_State.Force);
    function IDE_Mode return Boolean
    is (Invocation_State.IDE_Mode);
+   function Limit_Lines return String_Lists.List
+   is (Invocation_State.Selection.Limit_Lines);
    function Only_Given return Boolean
    is (Invocation_State.Only_Given);
    function Output return Output_Mode_Type
@@ -271,6 +274,8 @@ package body Configuration is
    is (Invocation_State.Report);
    function Use_Semaphores return Boolean
    is (Invocation_State.Use_Semaphores);
+   function Verbosity return Verbosity_Choice
+   is (Invocation_State.Verbosity);
    function Warning_Mode return SPARK_Warning_Mode_Type
    is (Invocation_State.Warning_Mode);
 
@@ -5477,6 +5482,7 @@ package body Configuration is
       begin
          Postprocess_Invocation (Invocation_Switches, Result);
          Result.Cargs_List := Cargs;
+         Result.Verbosity := Parse_Result.Verbosity;
          declare
             Invocation   : constant Invocation_Configuration := Result;
             Maximum_Mode : GP_Mode;
@@ -5490,12 +5496,9 @@ package body Configuration is
                Maximum_Mode);
             Mode := Maximum_Mode;
 
-            Verbosity := Parse_Result.Verbosity;
-
             --  Publish the final invocation settings for legacy consumers
             Copy_To_CL_Switches
               (Invocation_Switches, Invocation.Selection.Files);
-            Limit_Lines := Invocation.Selection.Limit_Lines;
          end;
       end;
 

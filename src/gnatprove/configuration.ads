@@ -128,7 +128,6 @@ package Configuration is
    --  hold switches of the builder itself, this attribute holds compilation
    --  switches.
    GnateT_Switch               : GNAT.Strings.String_Access;
-   Limit_Lines                 : String_Lists.List;
    Mode                        : GP_Mode := GPM_Check;
    Max_Why3_Processes          : Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
@@ -163,6 +162,9 @@ package Configuration is
    function IDE_Mode return Boolean;
    --  Whether --ide-progress-bar was specified
 
+   function Limit_Lines return String_Lists.List;
+   --  Validated line specifications from --limit-line and --limit-lines
+
    function Only_Given return Boolean;
    --  Whether -u or a file-selecting limit switch was given
 
@@ -181,7 +183,8 @@ package Configuration is
    function Warning_Mode return Gnat2Why_Opts.SPARK_Warning_Mode_Type;
    --  Treatment of warnings selected for the invocation
 
-   Verbosity : Verbosity_Choice := Normal_Level;
+   function Verbosity return Verbosity_Choice;
+   --  Diagnostic verbosity selected for the invocation
 
    type File_Specific is record
       Proof                 : Proof_Mode;
