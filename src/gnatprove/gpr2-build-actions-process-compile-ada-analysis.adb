@@ -1,6 +1,5 @@
 with Configuration; use Configuration;
 with Gnat2Why_Opts.Writing;
-with GNAT.Strings;  use GNAT.Strings;
 with GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
 with GPR2.Build.Artifacts.Source_Files;
 with SPARK_Artifacts;
@@ -83,10 +82,8 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
       --  is only set when the user did not specify one in the switches above,
       --  so the target configuration is never passed twice.
 
-      if Configuration.GnateT_Switch /= null
-        and then Configuration.GnateT_Switch.all /= ""
-      then
-         Cmd_Line.Add_Argument (Configuration.GnateT_Switch.all);
+      if Configuration.GnateT_Switch /= "" then
+         Cmd_Line.Add_Argument (Configuration.GnateT_Switch);
       end if;
 
       for Arg of Configuration.CL_Switches.Cargs_List loop

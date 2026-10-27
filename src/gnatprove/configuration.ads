@@ -121,21 +121,21 @@ package Configuration is
    --  Mode - is the maximum analysis mode, taking into account the global
    --         and file-specific modes
 
-   Global_Compilation_Switches : String_Lists.List;
+   function Global_Compilation_Switches return String_Lists.List;
    --  Switches of the Global_Compilation_Switches attribute of the Builder
    --  package for Ada. They are passed to all Ada compilations that GNATprove
    --  performs. Contrary to the other attributes of the Builder package, which
    --  hold switches of the builder itself, this attribute holds compilation
    --  switches.
-   GnateT_Switch               : GNAT.Strings.String_Access;
-   Mode                        : GP_Mode := GPM_Check;
-   Max_Why3_Processes          : Positive;
+   function GnateT_Switch return String;
+   --  Automatically selected target properties switch, or the empty string
+   Mode               : GP_Mode := GPM_Check;
+   Max_Why3_Processes : Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
-   Warning_Status              : Warning_Status_Array :=
-     VC_Kinds.Warning_Status;
-   Has_Manual_Prover           : Boolean;
-   Has_Coq_Prover              : Boolean;
-   CL_Units                    : GPR2.Build.Compilation_Unit.Maps.Map;
+   Warning_Status     : Warning_Status_Array := VC_Kinds.Warning_Status;
+   Has_Manual_Prover  : Boolean;
+   Has_Coq_Prover     : Boolean;
+   CL_Units           : GPR2.Build.Compilation_Unit.Maps.Map;
    --  A "copy" of Cl_Switches.File_List, but units instead of files
 
    function Checks_As_Errors return Boolean;

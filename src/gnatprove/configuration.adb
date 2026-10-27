@@ -166,6 +166,8 @@ package body Configuration is
       Force                         : Boolean := False;
       Function_Sandboxing           : Unbounded_String;
       Generate_Manifest             : Unbounded_String;
+      Global_Compilation_Switches   : String_Lists.List;
+      GnateT_Switch                 : Unbounded_String;
       Gnattest_Values               : Unbounded_String;
       IDE_Mode                      : Boolean := False;
       Limit_Line                    : Unbounded_String;
@@ -260,6 +262,10 @@ package body Configuration is
    is (Invocation_State.Flow_Extra_Debug);
    function Force return Boolean
    is (Invocation_State.Force);
+   function Global_Compilation_Switches return String_Lists.List
+   is (Invocation_State.Global_Compilation_Switches);
+   function GnateT_Switch return String
+   is (To_String (Invocation_State.GnateT_Switch));
    function IDE_Mode return Boolean
    is (Invocation_State.IDE_Mode);
    function Limit_Lines return String_Lists.List
@@ -391,7 +397,8 @@ package body Configuration is
    --  output, derived from the Explain_Code_Kind enumeration. Internal switch
    --  (exercised by the explain codes test), not advertised to users.
 
-   function Check_gnateT_Switch (View : Project.View.Object) return String;
+   function Check_gnateT_Switch
+     (View : Project.View.Object; Switches : String_Lists.List) return String;
    --  Try to compute the gnateT switch to be used for gnat2why. If there is
    --  a target and runtime set, but we can't compute the switch, a warning
    --  is issued.
@@ -1213,7 +1220,9 @@ package body Configuration is
    -- Check_gnateT_Switch --
    -------------------------
 
-   function Check_gnateT_Switch (View : Project.View.Object) return String is
+   function Check_gnateT_Switch
+     (View : Project.View.Object; Switches : String_Lists.List) return String
+   is
    begin
       --  Check first if the target is not the native one, which is available
       --  as Project.Tree.Target_Name, that we have to normalize first. There
@@ -1221,7 +1230,9 @@ package body Configuration is
 
       if View.Tree.Is_Cross_Target then
          --  User has already set the attribute, don't try anything smart
-         if Has_gnateT_Switch then
+         if (for some Switch of Switches =>
+               GNATCOLL.Utils.Starts_With (Switch, "-gnateT="))
+         then
             return "";
          end if;
 
@@ -3964,7 +3975,8 @@ package body Configuration is
       procedure Detect_Installed_Provers;
       --  Set the availability of supported provers based on PATH.
 
-      procedure Initialize_Root_Project_Settings;
+      procedure Initialize_Root_Project_Settings
+        (Switches : out String_Lists.List; GnateT : out Unbounded_String);
       --  Initialize settings derived from the root project.
 
       procedure Postprocess_Invocation
@@ -4072,15 +4084,17 @@ package body Configuration is
       -- Initialize_Root_Project_Settings --
       ------------------------------------
 
-      procedure Initialize_Root_Project_Settings is
+      procedure Initialize_Root_Project_Settings
+        (Switches : out String_Lists.List; GnateT : out Unbounded_String) is
       begin
          --  Read the compilation switches of the Builder package before
          --  computing the target configuration, which depends on whether the
          --  user specified -gnateT there.
 
-         Global_Compilation_Switches :=
-           Read_Global_Compilation_Switches (Tree.Root_Project);
-         GnateT_Switch := new String'(Check_gnateT_Switch (Tree.Root_Project));
+         Switches := Read_Global_Compilation_Switches (Tree.Root_Project);
+         GnateT :=
+           To_Unbounded_String
+             (Check_gnateT_Switch (Tree.Root_Project, Switches));
          Set_Proof_Dir (Tree.Root_Project);
       end Initialize_Root_Project_Settings;
 
@@ -5347,11 +5361,13 @@ package body Configuration is
         [1 .. Ada.Command_Line.Argument_Count => <>];
       Com_Lin      : String_List_Access;
 
-      Parse_Result            : Project_Parsing_Result;
-      Cargs                   : String_Lists.List;
-      Command_Line_Switches   : Parsed_Switches;
-      Invocation_Switches     : Parsed_Switches;
-      Root_Attribute_Switches : Parsed_Switches;
+      Parse_Result              : Project_Parsing_Result;
+      Cargs                     : String_Lists.List;
+      Root_Compilation_Switches : String_Lists.List;
+      Root_GnateT_Switch        : Unbounded_String;
+      Command_Line_Switches     : Parsed_Switches;
+      Invocation_Switches       : Parsed_Switches;
+      Root_Attribute_Switches   : Parsed_Switches;
 
    begin
 
@@ -5472,7 +5488,8 @@ package body Configuration is
         Parse_Switches_Internal (All_Switches, Com_Lin.all);
 
       Detect_Installed_Provers;
-      Initialize_Root_Project_Settings;
+      Initialize_Root_Project_Settings
+        (Root_Compilation_Switches, Root_GnateT_Switch);
 
       Merge_Parsed_Switches (Invocation_Switches, Root_Attribute_Switches);
       Merge_Parsed_Switches (Invocation_Switches, Command_Line_Switches);
@@ -5482,6 +5499,8 @@ package body Configuration is
       begin
          Postprocess_Invocation (Invocation_Switches, Result);
          Result.Cargs_List := Cargs;
+         Result.Global_Compilation_Switches := Root_Compilation_Switches;
+         Result.GnateT_Switch := Root_GnateT_Switch;
          Result.Verbosity := Parse_Result.Verbosity;
          declare
             Invocation   : constant Invocation_Configuration := Result;
