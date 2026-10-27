@@ -74,11 +74,9 @@ package Configuration is
 
    package CL_Switches is
 
-      --  These are the variables that contain the values of the corresponding
-      --  switches of gnatprove. Note that these correspond exactly to the
-      --  commandline as given by the user. If some postprocessing is applied
-      --  to the switch (for example timeout, steps etc are influenced by the
-      --  level switch) another variable is introduced outside of this package.
+      --  Legacy interface for effective switch values from the command line
+      --  and root project. Boolean values are exposed through queries; other
+      --  values remain mutable until they are migrated to the invocation.
       --  Naming of the variable:
       --  * single letter variables correspond to single letter switches with
       --    one dash, like -j, -v
@@ -88,29 +86,29 @@ package Configuration is
       --    some switch)
       --  * Cargs_List is the list of arguments in the --cargs section
 
-      Assumptions                   : aliased Boolean;
-      Benchmark                     : aliased Boolean;
-      Memcached_Server              : aliased GNAT.Strings.String_Access;
-      Cargs_List                    : String_Lists.List;
-      CWE                           : aliased Boolean;
-      Debug_Disable_Prover_Feedback : aliased Boolean;
-      Debug_No_Cache_Output         : aliased Boolean;
-      Exclude_Line                  : aliased GNAT.Strings.String_Access;
-      Flow_Show_GG                  : aliased Boolean;
-      Function_Sandboxing           : aliased GNAT.Strings.String_Access;
-      Gnattest_Values               : aliased GNAT.Strings.String_Access;
-      SARIF_Base_URIs               : String_Lists.List;
+      function Assumptions return Boolean;
+      function Benchmark return Boolean;
+      Memcached_Server    : aliased GNAT.Strings.String_Access;
+      Cargs_List          : String_Lists.List;
+      function CWE return Boolean;
+      function Debug_Disable_Prover_Feedback return Boolean;
+      function Debug_No_Cache_Output return Boolean;
+      Exclude_Line        : aliased GNAT.Strings.String_Access;
+      function Flow_Show_GG return Boolean;
+      Function_Sandboxing : aliased GNAT.Strings.String_Access;
+      Gnattest_Values     : aliased GNAT.Strings.String_Access;
+      SARIF_Base_URIs     : String_Lists.List;
       --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
-      Limit_Line                    : aliased GNAT.Strings.String_Access;
-      Limit_Lines                   : aliased GNAT.Strings.String_Access;
-      Limit_Name                    : aliased GNAT.Strings.String_Access;
-      Limit_Region                  : aliased GNAT.Strings.String_Access;
-      Limit_Subp                    : aliased GNAT.Strings.String_Access;
-      No_Global_Generation          : aliased Boolean;
-      No_Subprojects                : aliased Boolean;
-      Output_Header                 : aliased Boolean;
-      U                             : aliased Boolean;
-      Why3_Server                   : aliased GNAT.Strings.String_Access;
+      Limit_Line          : aliased GNAT.Strings.String_Access;
+      Limit_Lines         : aliased GNAT.Strings.String_Access;
+      Limit_Name          : aliased GNAT.Strings.String_Access;
+      Limit_Region        : aliased GNAT.Strings.String_Access;
+      Limit_Subp          : aliased GNAT.Strings.String_Access;
+      function No_Global_Generation return Boolean;
+      function No_Subprojects return Boolean;
+      function Output_Header return Boolean;
+      function U return Boolean;
+      Why3_Server         : aliased GNAT.Strings.String_Access;
    end CL_Switches;
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);

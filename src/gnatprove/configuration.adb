@@ -145,22 +145,31 @@ package body Configuration is
    end record;
 
    type Invocation_Configuration is record
-      File_Options      : File_Specific_Invocation_Options;
-      Selection         : File_Selection;
-      All_Projects      : Boolean := False;
-      Checks_As_Errors  : Boolean := False;
-      Continue_On_Error : Boolean := False;
-      Debug             : Boolean := False;
-      Debug_Exec_RAC    : Boolean := False;
-      Flow_Extra_Debug  : Boolean := False;
-      Force             : Boolean := False;
-      IDE_Mode          : Boolean := False;
-      Only_Given        : Boolean := False;
-      Output            : Output_Mode_Type := GPO_Pretty_Simple;
-      Parallel          : Natural := 0;
-      Report            : Report_Mode_Type := GPR_Fail;
-      Use_Semaphores    : Boolean := False;
-      Warning_Mode      : SPARK_Warning_Mode_Type := SW_Normal;
+      File_Options                  : File_Specific_Invocation_Options;
+      Selection                     : File_Selection;
+      All_Projects                  : Boolean := False;
+      Assumptions                   : Boolean := False;
+      Benchmark                     : Boolean := False;
+      Checks_As_Errors              : Boolean := False;
+      Continue_On_Error             : Boolean := False;
+      CWE                           : Boolean := False;
+      Debug                         : Boolean := False;
+      Debug_Disable_Prover_Feedback : Boolean := False;
+      Debug_Exec_RAC                : Boolean := False;
+      Debug_No_Cache_Output         : Boolean := False;
+      Flow_Extra_Debug              : Boolean := False;
+      Flow_Show_GG                  : Boolean := False;
+      Force                         : Boolean := False;
+      IDE_Mode                      : Boolean := False;
+      No_Subprojects                : Boolean := False;
+      Only_Given                    : Boolean := False;
+      Output                        : Output_Mode_Type := GPO_Pretty_Simple;
+      Output_Header                 : Boolean := False;
+      Parallel                      : Natural := 0;
+      Report                        : Report_Mode_Type := GPR_Fail;
+      U                             : Boolean := False;
+      Use_Semaphores                : Boolean := False;
+      Warning_Mode                  : SPARK_Warning_Mode_Type := SW_Normal;
    end record;
    --  Other invocation settings are still published as separate globals
 
@@ -169,6 +178,29 @@ package body Configuration is
    Invocation_State   : access constant Invocation_Configuration :=
      Default_Invocation'Access;
    --  Replaced once with the completed invocation; consumers cannot modify it
+
+   package body CL_Switches is
+      function Assumptions return Boolean
+      is (Invocation_State.Assumptions);
+      function Benchmark return Boolean
+      is (Invocation_State.Benchmark);
+      function CWE return Boolean
+      is (Invocation_State.CWE);
+      function Debug_Disable_Prover_Feedback return Boolean
+      is (Invocation_State.Debug_Disable_Prover_Feedback);
+      function Debug_No_Cache_Output return Boolean
+      is (Invocation_State.Debug_No_Cache_Output);
+      function Flow_Show_GG return Boolean
+      is (Invocation_State.Flow_Show_GG);
+      function No_Global_Generation return Boolean
+      is (Invocation_State.File_Options.No_Global_Generation);
+      function No_Subprojects return Boolean
+      is (Invocation_State.No_Subprojects);
+      function Output_Header return Boolean
+      is (Invocation_State.Output_Header);
+      function U return Boolean
+      is (Invocation_State.U);
+   end CL_Switches;
 
    function All_Projects return Boolean
    is (Invocation_State.All_Projects);
@@ -1544,16 +1576,8 @@ package body Configuration is
       Z3_Counterexample := Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
 
       --  CL_Switches state that's still used
-      CL_Switches.Assumptions := Parsed.Values (Sw_Assumptions).Boolean_Val;
-      CL_Switches.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
-      CL_Switches.CWE := Parsed.Values (Sw_CWE).Boolean_Val;
-      CL_Switches.Debug_Disable_Prover_Feedback :=
-        Parsed.Values (Sw_Debug_Disable_Prover_Feedback).Boolean_Val;
-      CL_Switches.Debug_No_Cache_Output :=
-        Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val;
       Move_String
         (Parsed.Values (Sw_Exclude_Line).String_Val, CL_Switches.Exclude_Line);
-      CL_Switches.Flow_Show_GG := Parsed.Values (Sw_Flow_Show_GG).Boolean_Val;
       Move_String
         (Parsed.Values (Sw_Limit_Line).String_Val, CL_Switches.Limit_Line);
       Move_String
@@ -1570,13 +1594,6 @@ package body Configuration is
       Move_String
         (Parsed.Values (Sw_Function_Sandboxing).String_Val,
          CL_Switches.Function_Sandboxing);
-      CL_Switches.No_Global_Generation :=
-        Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
-      CL_Switches.No_Subprojects :=
-        Parsed.Values (Sw_No_Subprojects).Boolean_Val;
-      CL_Switches.Output_Header :=
-        Parsed.Values (Sw_Output_Header).Boolean_Val;
-      CL_Switches.U := Parsed.Values (Sw_U).Boolean_Val;
       Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
       Move_String
         (Parsed.Values (Sw_Why3_Server).String_Val, CL_Switches.Why3_Server);
@@ -4558,10 +4575,22 @@ package body Configuration is
 
          Result.File_Options := File_Specific_Options_From_Invocation (Parsed);
          Result.All_Projects := Parsed.Values (Sw_UU).Boolean_Val;
+         Result.Assumptions := Parsed.Values (Sw_Assumptions).Boolean_Val;
+         Result.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
          Result.Continue_On_Error := Parsed.Values (Sw_K).Boolean_Val;
+         Result.CWE := Parsed.Values (Sw_CWE).Boolean_Val;
+         Result.Debug_Disable_Prover_Feedback :=
+           Parsed.Values (Sw_Debug_Disable_Prover_Feedback).Boolean_Val;
+         Result.Debug_No_Cache_Output :=
+           Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val;
          Result.Flow_Extra_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
+         Result.Flow_Show_GG := Parsed.Values (Sw_Flow_Show_GG).Boolean_Val;
          Result.Force := Parsed.Values (Sw_F).Boolean_Val;
          Result.IDE_Mode := Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
+         Result.No_Subprojects :=
+           Parsed.Values (Sw_No_Subprojects).Boolean_Val;
+         Result.Output_Header := Parsed.Values (Sw_Output_Header).Boolean_Val;
+         Result.U := Parsed.Values (Sw_U).Boolean_Val;
 
          Result.Debug :=
            Parsed.Values (Sw_D).Boolean_Val or Result.Flow_Extra_Debug;
