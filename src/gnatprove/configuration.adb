@@ -165,6 +165,7 @@ package body Configuration is
       Flow_Show_GG                  : Boolean := False;
       Force                         : Boolean := False;
       Function_Sandboxing           : Unbounded_String;
+      Generate_Manifest             : Unbounded_String;
       Gnattest_Values               : Unbounded_String;
       IDE_Mode                      : Boolean := False;
       Limit_Line                    : Unbounded_String;
@@ -178,11 +179,14 @@ package body Configuration is
       Output                        : Output_Mode_Type := GPO_Pretty_Simple;
       Output_Header                 : Boolean := False;
       Parallel                      : Natural := 0;
+      Proof_Manifest_Path           : Unbounded_String;
       Report                        : Report_Mode_Type := GPR_Fail;
       U                             : Boolean := False;
       Use_Semaphores                : Boolean := False;
       Warning_Mode                  : SPARK_Warning_Mode_Type := SW_Normal;
       Why3_Logging                  : Boolean := False;
+      Why3_Conf                     : Unbounded_String;
+      Why3_Debug                    : Unbounded_String;
       Why3_Server                   : Unbounded_String;
       Why3_Stagger_Ms               : Natural := 0;
       Why3_Stagger_Window           : Natural := 0;
@@ -272,11 +276,7 @@ package body Configuration is
 
    --  Private global state to replace public state from CL_Switches
    File_List           : String_Lists.List;
-   Generate_Manifest   : GNAT.Strings.String_Access;
-   Proof_Manifest_Path : GNAT.Strings.String_Access;
    Proof_Manifest_Maps : Manifest_Maps.Map;
-   Why3_Conf           : GNAT.Strings.String_Access;
-   Why3_Debug          : GNAT.Strings.String_Access;
 
    type Spark_Reporter is new GPR2.Reporter.Console.Object with null record;
 
@@ -1557,11 +1557,6 @@ package body Configuration is
         (Source : String_Lists.List; Target : in out String_Lists.List);
       --  Replace Target with Source
 
-      procedure Move_String
-        (Source : GNAT.Strings.String_Access;
-         Target : in out GNAT.Strings.String_Access);
-      --  Move Source into Target, using an empty string for absent values
-
       ---------------
       -- Copy_List --
       ---------------
@@ -1575,39 +1570,12 @@ package body Configuration is
          end loop;
       end Copy_List;
 
-      -----------------
-      -- Move_String --
-      -----------------
-
-      procedure Move_String
-        (Source : GNAT.Strings.String_Access;
-         Target : in out GNAT.Strings.String_Access) is
-      begin
-         if Target /= null then
-            Free (Target);
-         end if;
-
-         if Source = null then
-            Target := new String'("");
-         else
-            Target := new String'(Source.all);
-         end if;
-      end Move_String;
-
    begin
       --  package-internal global state
       Copy_List (Selected_Files, File_List);
-      Move_String
-        (Parsed.Values (Sw_Generate_Manifest).String_Val, Generate_Manifest);
-      Move_String (Parsed.Values (Sw_Why3_Conf).String_Val, Why3_Conf);
-      Move_String (Parsed.Values (Sw_Why3_Debug).String_Val, Why3_Debug);
-
-      --  CL_Switches state that's still used
       Copy_List
         (Parsed.Values (Sw_SARIF_Base_URI).String_List_Val,
          CL_Switches.SARIF_Base_URIs);
-      Move_String
-        (Parsed.Values (Sw_Proof_Manifest).String_Val, Proof_Manifest_Path);
 
       for WK in Misc_Warning_Kind loop
          Configuration.Warning_Status (WK) :=
@@ -1693,7 +1661,7 @@ package body Configuration is
 
    function Generate_Manifest_Path return String is
    begin
-      return (if Generate_Manifest = null then "" else Generate_Manifest.all);
+      return To_String (Invocation_State.Generate_Manifest);
    end Generate_Manifest_Path;
 
    ------------------
@@ -2212,7 +2180,8 @@ package body Configuration is
       use type TOML.Any_Value_Kind;
       use type Ada.Directories.File_Kind;
 
-      Manifest_Path : constant String := Proof_Manifest_Path.all;
+      Manifest_Path : constant String :=
+        To_String (Invocation_State.Proof_Manifest_Path);
       Current_File  : Unbounded_String;
       All_Policies  : Manifest_Subprogram_Vectors.Vector;
       --  All policies loaded so far, across all manifest files. Only used to
@@ -4598,6 +4567,8 @@ package body Configuration is
          Result.Function_Sandboxing :=
            To_Unbounded_String
              (Switch_String (Parsed, Sw_Function_Sandboxing));
+         Result.Generate_Manifest :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Generate_Manifest));
          Result.Gnattest_Values :=
            To_Unbounded_String (Switch_String (Parsed, Sw_Gnattest_Values));
          Result.IDE_Mode := Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
@@ -4616,8 +4587,14 @@ package body Configuration is
          Result.No_Subprojects :=
            Parsed.Values (Sw_No_Subprojects).Boolean_Val;
          Result.Output_Header := Parsed.Values (Sw_Output_Header).Boolean_Val;
+         Result.Proof_Manifest_Path :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Proof_Manifest));
          Result.U := Parsed.Values (Sw_U).Boolean_Val;
          Result.Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
+         Result.Why3_Conf :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Why3_Conf));
+         Result.Why3_Debug :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Why3_Debug));
          Result.Why3_Server :=
            To_Unbounded_String (Switch_String (Parsed, Sw_Why3_Server));
          Result.Z3_Counterexample :=
@@ -5886,18 +5863,19 @@ package body Configuration is
    is
 
       Args          : String_Lists.List;
+      Why3_Conf     : constant String :=
+        To_String (Invocation_State.Why3_Conf);
       Why3_VF       : constant Virtual_File :=
-        (if Why3_Conf.all /= ""
-         then Create (Filesystem_String (Why3_Conf.all))
+        (if Why3_Conf /= ""
+         then Create (Filesystem_String (Why3_Conf))
          else No_File);
       Gnatwhy3_Conf : constant String :=
         (if Why3_VF /= No_File
          then
            (if Is_Absolute_Path (Why3_VF)
-            then Why3_Conf.all
+            then Why3_Conf
             else
-              Ada.Directories.Compose
-                (+Get_Current_Dir.Full_Name, Why3_Conf.all))
+              Ada.Directories.Compose (+Get_Current_Dir.Full_Name, Why3_Conf))
          else "");
 
       -------------------------
@@ -6061,9 +6039,9 @@ package body Configuration is
          Args.Append (Gnatwhy3_Conf);
       end if;
 
-      if Why3_Debug.all /= "" then
+      if Length (Invocation_State.Why3_Debug) /= 0 then
          Args.Append ("--debug-why3");
-         Args.Append (Why3_Debug.all);
+         Args.Append (To_String (Invocation_State.Why3_Debug));
       end if;
 
       if Invocation_State.Why3_Stagger_Ms > 0 then
