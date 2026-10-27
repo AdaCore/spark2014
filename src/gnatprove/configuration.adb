@@ -881,7 +881,8 @@ package body Configuration is
    Current_Parsed_Switches : Parsed_Switches_Access := null;
    --  Temporary target for GNAT.Command_Line callbacks during Parse_Switches
 
-   procedure Copy_To_CL_Switches (Parsed : in out Parsed_Switches);
+   procedure Copy_To_CL_Switches
+     (Parsed : Parsed_Switches; Selected_Files : String_Lists.List);
    --  Copy parsed switch values into CL_Switches for existing consumers
 
    procedure Merge_Parsed_Switches
@@ -1417,7 +1418,9 @@ package body Configuration is
    -- Copy_To_CL_Switches --
    ---------------------------
 
-   procedure Copy_To_CL_Switches (Parsed : in out Parsed_Switches) is
+   procedure Copy_To_CL_Switches
+     (Parsed : Parsed_Switches; Selected_Files : String_Lists.List)
+   is
       procedure Copy_List
         (Source : String_Lists.List; Target : in out String_Lists.List);
       --  Replace Target with Source
@@ -1464,7 +1467,7 @@ package body Configuration is
       Debug_Save_VCs := Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
       Debug_Prover_Errors :=
         Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
-      Copy_List (Parsed.File_List, File_List);
+      Copy_List (Selected_Files, File_List);
       Move_String
         (Parsed.Values (Sw_Generate_Manifest).String_Val, Generate_Manifest);
       Replay := Parsed.Values (Sw_Replay).Boolean_Val;
@@ -3863,6 +3866,14 @@ package body Configuration is
 
    procedure Read_Command_Line (Tree : out Project.Tree.Object) is
 
+      type File_Selection is record
+         Files       : String_Lists.List;
+         Limit_Lines : String_Lists.List;
+      end record;
+      --  Requested files, including those derived from limit switches, and the
+      --  validated line specifications. Project-based resolution happens
+      --  later.
+
       type File_Specific_Invocation_Options is record
          No_Global_Generation : Boolean;
          Output_Msg_Only      : Boolean;
@@ -3891,7 +3902,8 @@ package body Configuration is
       procedure Initialize_Root_Project_Settings;
       --  Initialize settings derived from the root project.
 
-      procedure Postprocess_Invocation (Parsed : in out Parsed_Switches);
+      procedure Postprocess_Invocation
+        (Parsed : Parsed_Switches; Selection : out File_Selection);
       --  Interpret the effective switches from the root project's attributes
       --  and the command line, setting invocation-wide GNATprove state.
 
@@ -3934,7 +3946,8 @@ package body Configuration is
 
       procedure Set_Proof_Mode
         (Parsed : Parsed_Switches; FS : in out File_Specific);
-      procedure Process_Limit_Switches (Parsed : in out Parsed_Switches);
+      function Process_Limit_Switches
+        (Parsed : Parsed_Switches) return File_Selection;
       procedure Set_Provers
         (Parsed             : Parsed_Switches;
          Invocation_Options : File_Specific_Invocation_Options;
@@ -4432,7 +4445,8 @@ package body Configuration is
       -- Postprocess_Invocation --
       ----------------------------
 
-      procedure Postprocess_Invocation (Parsed : in out Parsed_Switches) is
+      procedure Postprocess_Invocation
+        (Parsed : Parsed_Switches; Selection : out File_Selection) is
       begin
          Sanity_Checking (Parsed);
 
@@ -4523,7 +4537,7 @@ package body Configuration is
                & "switch --no-subproject");
          end if;
 
-         Process_Limit_Switches (Parsed);
+         Selection := Process_Limit_Switches (Parsed);
 
          Set_Output_Mode (Parsed);
          Set_Warning_Mode (Parsed);
@@ -4537,9 +4551,12 @@ package body Configuration is
       -- Process_Limit_Switches --
       ----------------------------
 
-      procedure Process_Limit_Switches (Parsed : in out Parsed_Switches) is
+      function Process_Limit_Switches
+        (Parsed : Parsed_Switches) return File_Selection
+      is
 
          Switch_Count : Integer := 0;
+         Result       : File_Selection;
 
          procedure Check_Switch (Arg : GNAT.Strings.String_Access);
          --  Increase Switch_Count by one if arg is not the null pointer or
@@ -4594,7 +4611,7 @@ package body Configuration is
             --  instances of the line/subprogram are analyzed.
 
             if not Parsed.Values (Sw_UU).Boolean_Val then
-               Parsed.File_List.Append
+               Result.Files.Append
                  (Limit_String (Limit_String'First .. Colon_Index - 1));
             end if;
          end Process_Limit_Directive;
@@ -4638,10 +4655,11 @@ package body Configuration is
                         With_Help => False);
                end;
             end if;
-            Limit_Lines.Append (Spec);
+            Result.Limit_Lines.Append (Spec);
          end Process_Limit_Line;
 
       begin
+         Result.Files := Parsed.File_List;
 
          --  We do not allow mixing of --limit-* switches, except for the
          --  combination of --limit-subp + --limit-line or --limit-region,
@@ -4715,6 +4733,7 @@ package body Configuration is
                   Ada.Text_IO.Close (File_Handle);
             end;
          end if;
+         return Result;
       end Process_Limit_Switches;
 
       ---------------------
@@ -5318,18 +5337,20 @@ package body Configuration is
       declare
          Invocation_Options : constant File_Specific_Invocation_Options :=
            File_Specific_Options_From_Invocation (Invocation_Switches);
+         Selection          : File_Selection;
       begin
-         Postprocess_Invocation (Invocation_Switches);
+         Postprocess_Invocation (Invocation_Switches, Selection);
          Parse_Analysis_Attributes
            (Command_Line_Switches,
             Root_Attribute_Switches,
             Invocation_Options);
+
+         Verbosity := Parse_Result.Verbosity;
+
+         --  Publish the final invocation settings for legacy consumers
+         Copy_To_CL_Switches (Invocation_Switches, Selection.Files);
+         Limit_Lines := Selection.Limit_Lines;
       end;
-
-      Verbosity := Parse_Result.Verbosity;
-
-      --  Publish the final invocation settings for legacy consumers
-      Copy_To_CL_Switches (Invocation_Switches);
 
       --  ??? Need to move the proof manifest to the per-project part of
       --  cmd-line parsing, as each project can have its own manifest
