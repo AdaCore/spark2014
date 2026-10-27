@@ -131,6 +131,18 @@ package body Configuration is
         Equivalent_Keys => "=",
         "="             => Manifest_Subprogram_Vectors."=");
 
+   --  Published invocation settings exposed through read-only queries
+   Checks_As_Errors_Value : Boolean := False;
+   Debug_Exec_RAC_Value   : Boolean := False;
+   Only_Given_Value       : Boolean := False;
+
+   function Checks_As_Errors return Boolean
+   is (Checks_As_Errors_Value);
+   function Debug_Exec_RAC return Boolean
+   is (Debug_Exec_RAC_Value);
+   function Only_Given return Boolean
+   is (Only_Given_Value);
+
    --  Private global state to replace public state from CL_Switches
    Debug_Save_VCs      : Boolean := False;
    Debug_Prover_Errors : Boolean := False;
@@ -3881,8 +3893,11 @@ package body Configuration is
       end record;
 
       type Invocation_Configuration is record
-         File_Options : File_Specific_Invocation_Options;
-         Selection    : File_Selection;
+         File_Options     : File_Specific_Invocation_Options;
+         Selection        : File_Selection;
+         Checks_As_Errors : Boolean;
+         Debug_Exec_RAC   : Boolean;
+         Only_Given       : Boolean;
       end record;
       --  Invocation-wide results needed by project traversal and file
       --  selection. Other invocation settings are still published as globals.
@@ -3912,7 +3927,7 @@ package body Configuration is
       --  Initialize settings derived from the root project.
 
       procedure Postprocess_Invocation
-        (Parsed : Parsed_Switches; Selection : out File_Selection);
+        (Parsed : Parsed_Switches; Result : out Invocation_Configuration);
       --  Interpret the effective switches from the root project's attributes
       --  and the command line. Some settings are still written to globals.
 
@@ -4487,14 +4502,17 @@ package body Configuration is
       ----------------------------
 
       procedure Postprocess_Invocation
-        (Parsed : Parsed_Switches; Selection : out File_Selection) is
+        (Parsed : Parsed_Switches; Result : out Invocation_Configuration) is
       begin
          Sanity_Checking (Parsed);
+
+         Result.File_Options := File_Specific_Options_From_Invocation (Parsed);
 
          Debug :=
            Parsed.Values (Sw_D).Boolean_Val
            or Parsed.Values (Sw_Flow_Debug).Boolean_Val;
-         Debug_Exec_RAC := Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
+         Result.Debug_Exec_RAC :=
+           Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
 
          --  Adjust the number of parallel processes. If -j0 was used, the
          --  number of processes should be set to the actual number of
@@ -4550,9 +4568,9 @@ package body Configuration is
          if Switch_String (Parsed, Sw_Checks_As_Errors) = ""
            or else Switch_String (Parsed, Sw_Checks_As_Errors) = "off"
          then
-            Checks_As_Errors := False;
+            Result.Checks_As_Errors := False;
          elsif Switch_String (Parsed, Sw_Checks_As_Errors) = "on" then
-            Checks_As_Errors := True;
+            Result.Checks_As_Errors := True;
          else
             Abort_Msg
               ("error: wrong argument """
@@ -4564,7 +4582,7 @@ package body Configuration is
 
          --  Handling of Only_Given and Filelist
 
-         Only_Given :=
+         Result.Only_Given :=
            Parsed.Values (Sw_U).Boolean_Val
            or else Switch_String (Parsed, Sw_Limit_Subp) /= ""
            or else Switch_String (Parsed, Sw_Limit_Line) /= ""
@@ -4578,7 +4596,7 @@ package body Configuration is
                & "switch --no-subproject");
          end if;
 
-         Selection := Process_Limit_Switches (Parsed);
+         Result.Selection := Process_Limit_Switches (Parsed);
 
          Set_Output_Mode (Parsed);
          Set_Warning_Mode (Parsed);
@@ -5359,16 +5377,17 @@ package body Configuration is
       Merge_Parsed_Switches (Invocation_Switches, Command_Line_Switches);
 
       declare
-         Selection : File_Selection;
+         Result : Invocation_Configuration;
       begin
-         Postprocess_Invocation (Invocation_Switches, Selection);
+         Postprocess_Invocation (Invocation_Switches, Result);
          declare
-            Invocation   : constant Invocation_Configuration :=
-              (File_Options =>
-                 File_Specific_Options_From_Invocation (Invocation_Switches),
-               Selection    => Selection);
+            Invocation   : constant Invocation_Configuration := Result;
             Maximum_Mode : GP_Mode;
          begin
+            Checks_As_Errors_Value := Invocation.Checks_As_Errors;
+            Debug_Exec_RAC_Value := Invocation.Debug_Exec_RAC;
+            Only_Given_Value := Invocation.Only_Given;
+
             Parse_Analysis_Attributes
               (Command_Line_Switches,
                Root_Attribute_Switches,
