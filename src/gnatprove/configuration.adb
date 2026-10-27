@@ -226,6 +226,9 @@ package body Configuration is
    Has_Coq_Prover           : Boolean := False;
    --  Results of processing project and file-specific settings
 
+   CL_Units_Value : GPR2.Build.Compilation_Unit.Maps.Map;
+   --  Requested files resolved against the project tree
+
    package body CL_Switches is
       function Benchmark return Boolean
       is (Invocation_State.Benchmark);
@@ -275,6 +278,8 @@ package body Configuration is
    is (Invocation_State.All_Projects);
    function Checks_As_Errors return Boolean
    is (Invocation_State.Checks_As_Errors);
+   function CL_Units return GPR2.Build.Compilation_Unit.Maps.Map
+   is (CL_Units_Value);
    function Continue_On_Error return Boolean
    is (Invocation_State.Continue_On_Error);
    function Debug return Boolean
@@ -5700,7 +5705,7 @@ package body Configuration is
                              (Cursor,
                               String (CU.Main_Part.Source.Simple_Name));
                            Found := True;
-                           CL_Units.Include (CU.Name, CU);
+                           CL_Units_Value.Include (CU.Name, CU);
                         end if;
                      end if;
                   end;

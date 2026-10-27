@@ -493,16 +493,18 @@ package body Gnatprove_Build is
 
       --  Decide which units to analyze
       declare
-         Main_Units     : Unit_Set;
-         Selected_Units : Unit_Set;
+         Main_Units      : Unit_Set;
+         Selected_Units  : Unit_Set;
+         Requested_Units : constant GPR2.Build.Compilation_Unit.Maps.Map :=
+           Configuration.CL_Units;
       begin
-         if not Configuration.CL_Units.Is_Empty then
+         if not Requested_Units.Is_Empty then
             if Configuration.Only_Given or else Configuration.All_Projects then
-               for Unit of Configuration.CL_Units loop
+               for Unit of Requested_Units loop
                   Include_Unit (Selected_Units, Unit);
                end loop;
             else
-               for Unit of Configuration.CL_Units loop
+               for Unit of Requested_Units loop
                   Include_Unit (Main_Units, Unit);
                end loop;
             end if;

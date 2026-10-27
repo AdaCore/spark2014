@@ -132,8 +132,8 @@ package Configuration is
 
    function Max_Why3_Processes return Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
-   CL_Units : GPR2.Build.Compilation_Unit.Maps.Map;
-   --  A "copy" of Cl_Switches.File_List, but units instead of files
+   function CL_Units return GPR2.Build.Compilation_Unit.Maps.Map;
+   --  Requested files resolved to compilation units
 
    function Checks_As_Errors return Boolean;
    --  Whether unproved checks cause a failure exit status
