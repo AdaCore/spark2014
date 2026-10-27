@@ -1553,8 +1553,9 @@ package body Gnat2Why.Subprograms is
          elsif Item_Is_Mutable (Func_Why_Binders (I))
            and then Entity_In_SPARK (Formal)
          then
-            --  On exceptional paths, formals with relaxed initialization
-            --  might not be initialized at toplevel.
+            --  An exceptional return need not establish that a relaxed formal
+            --  is initialized for copying. For by-reference parameters,
+            --  retain only the dynamic invariant.
 
             if Exceptional then
                if By_Reference (Formal) then
@@ -1593,8 +1594,8 @@ package body Gnat2Why.Subprograms is
                   end;
                end if;
 
-            --  Otherwise, Compute_Dynamic_Inv_And_Initialization can be used
-            --  safely.
+            --  A normal return establishes the initialization required to
+            --  copy values of the modified parameters.
 
             else
                declare

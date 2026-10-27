@@ -6679,6 +6679,9 @@ package body Gnat2Why.Expr is
             end if;
 
             if Has_Mutable_Discriminants (Ty) or else Is_Access_Type (Ty) then
+               --  Copying requires the discriminants or pointer state to be
+               --  initialized, independently of the component values.
+
                Init_Pred :=
                  New_And_Pred
                    (Left  => Init_Pred,
@@ -7822,8 +7825,10 @@ package body Gnat2Why.Expr is
    begin
       Add_All_Dynamic_Predicates (Rep_Ty);
 
-      --  Assume that the object is initialized if it is necessary to check the
-      --  predicate.
+      --  Predicates declared without Relaxed_Initialization require
+      --  initialization, except for subcomponents whose types have the
+      --  aspect. Predicates declared with the aspect can instead use guards
+      --  to read only initialized parts.
 
       if Has_Predicates (Rep_Ty)
         and then Predicate_Requires_Initialization (Rep_Ty)
@@ -13608,8 +13613,9 @@ package body Gnat2Why.Expr is
         Is_Init_Wrapper_Type (Get_Type (+W_Expr))
         and then Has_Predicates (Ty)
         and then Predicate_Requires_Initialization (Ty);
-      --  If Ty's predicate expects an initialized expression, introduce an
-      --  initialization check.
+      --  If an applicable predicate was declared without
+      --  Relaxed_Initialization, first check initialization of the wrapper.
+      --  This excludes subcomponents whose types have the aspect.
       Init_Expr  : constant W_Expr_Id :=
         (if Need_Init
          then
@@ -13622,7 +13628,7 @@ package body Gnat2Why.Expr is
                No_Predicate_Check => True)
          else W_Expr);
       --  Exclude the predicate from the initialization check to avoid
-      --  duplication.
+      --  duplication. Predicates of checked subcomponents are still included.
       Tmp_Expr   : constant W_Expr_Id :=
         (if Need_Init
          then +New_Temp_Identifier (Typ => Get_Type (Init_Expr))
@@ -22762,6 +22768,10 @@ package body Gnat2Why.Expr is
                      T := Bindings_For_Ref_Context (T, Context, Domain);
                   end;
                else
+                  --  Pass No_Init_Check to both prefix and component. For
+                  --  X.F'Initialized, locating F does not require checking
+                  --  X's predicate. Checks needed to select F still apply.
+
                   T :=
                     One_Level_Access
                       (Expr,

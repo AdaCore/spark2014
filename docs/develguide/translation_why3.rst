@@ -2845,10 +2845,9 @@ withheld when using them would create circular reasoning through dispatching.
 
 Wrapper types for Relaxed_Initialization
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The ``Relaxed_Initialization`` aspect is a SPARK specific construct. It allows
-to relax additional initialization rules imposed by SPARK on some objects and to
-verify initialization as precisely as possible using proof instead of flow
-analysis.
+The ``Relaxed_Initialization`` aspect is a SPARK-specific construct. It relaxes
+the additional initialization rules imposed by SPARK on selected objects and
+allows their initialization to be verified by proof instead of flow analysis.
 It was introduced to answer user needs for procedures only
 initializing parts of an object, or only initializing objects conditionally.
 Here is a motivating example:
@@ -2896,31 +2895,6 @@ Here is a motivating example:
 
    end Read;
 
-   procedure Process_1 (Buf  : in out Int_Array;
-                        Size : Natural)
-   with Relaxed_Initialization => Buf,
-        Pre  => Buf'Length >= Size and then
-                Buf (Buf'First .. Buf'First + (Size - 1))'Initialized,
-        Post => Buf (Buf'First .. Buf'First + (Size - 1))'Initialized
-   is
-   begin
-      for I in Buf'First .. Buf'First + (Size - 1) loop
-         pragma Loop_Invariant
-           (Buf (Buf'First .. Buf'First + (Size - 1))'Initialized);
-         Buf (I) := Buf (I) / 2 + 5;
-      end loop;
-   end Process_1;
-
-   procedure Process_2 (Buf  : in out Int_Array;
-                        Size : Natural)
-     with Pre => Buf'Length >= Size
-   is
-   begin
-      for I in Buf'First .. Buf'First + (Size - 1) loop
-         Buf (I) := Buf (I) / 2 + 5;
-      end loop;
-   end Process_2;
-
    Buf   : Int_Array (1 .. 150) with Relaxed_Initialization;
    Error : Boolean;
    X     : Integer;
@@ -2928,20 +2902,13 @@ Here is a motivating example:
    Read (Buf, 100, Error);
    if not Error then
       X := Buf (10);
-      Process_1 (Buf, 100);
-      declare
-         B : Int_Array := Buf (1 .. 100);
-      begin
-         Process_2 (B, 50);
-      end;
-      X := Buf (20);
       X := Buf (110); -- medium: "Buf" might not be initialized
    end if;
   end Init_By_Proof;
 
-In this example, initilization is only assumed if an ``Error`` boolean is
-false.  Additionally, ``Read`` always initializes the array partially (up to
-``Size``) and initializes the array components four by four, which is currently
+In this example, initialization is only guaranteed if ``Error`` is false.
+Additionally, ``Read`` only guarantees initialization of a prefix of length
+``Size`` and initializes the array components four by four, which is currently
 out of reach of the very simple heuristic used by flow analysis to recognize
 loops which fully initialize an array.
 
@@ -2950,21 +2917,63 @@ proof using the ``Relaxed_Initialization`` aspect. It can be supplied on
 standalone objects (like ``Buf`` above), on types (in which case it applies to
 all parts of objects of this
 type), and on subprograms (it applies to either parameters or the return
-object). We use the new attribute ``Initialized`` to express that a part of an
-object is completely initialized.
+object). The attribute ``Initialized`` expresses that an object is initialized,
+except for subcomponents whose types have ``Relaxed_Initialization``. These
+subcomponents keep their initialization flags across ordinary assignments and
+subprogram boundaries.
+
+``Initialized`` is a ghost attribute because its proof meaning cannot be
+implemented by an ordinary runtime test. GNAT implements it using
+``Valid_Scalars``, which checks scalar validity, using ``Valid`` for scalar
+values. An uninitialized value can happen to be valid, so a successful runtime
+test does not establish initialization. The Why3 encoding instead tracks
+initialization through assignments and contracts. At runtime, a test such as
+``if X'Initialized then`` could therefore allow a read of uninitialized ``X``
+inside the branch. Such reads can produce unpredictable behavior, which SPARK's
+initialization checks are intended to prevent. GNATprove therefore assumes that
+code referencing ``Initialized`` is not executed in the delivered program.
+Contracts and other ghost code using the attribute can still be
+executed during testing, under this assumption about the delivered program.
+See ``SPARK_INITIALIZED_ATTRIBUTE`` in the User's Guide's list of proof
+assumptions.
+
+To keep these tests useful, proof does not generally assume that ``Initialized``
+is false on uninitialized data. Otherwise, uninitialized values whose bit
+patterns happen to be valid would cause frequent disagreements between proof
+and execution. This choice keeps the two meanings close for testing; it does
+not remove the non-execution assumption for the delivered program.
 
 In our example, initialization of objects marked with ``Relaxed_Initialization``
 is handled by proof whereas other objects are handled by flow analysis.
-We see on the two versions of ``Process`` that having initialization handled
-by proof requires supplying more annotations as it relaxes assumptions on
-subprogram boundaries.
+Handling initialization by proof requires more annotations because it relaxes
+assumptions at subprogram boundaries. For example, a procedure reading the prefix
+initialized by ``Read`` needs a precondition stating that this prefix is
+initialized; it cannot assume that the whole array is initialized on entry.
+
+Initialization is distinct from value validity. An initialization flag records
+whether a value may be read under SPARK's initialization rules. It does not
+record whether a bit pattern represents a value of its Ada type. Initialized
+but potentially invalid values are tracked separately; initialization wrappers
+do not replace that model.
 
 Wrapper Types
 """""""""""""
 
 If expressions of a given type might have relaxed initialization (see
 ``Has_Init_Wrapper``), we introduce a special Why3 `wrapper` type for
-them (see ``Declare_Init_Wrapper``). For scalar types, the wrapper type is
+them (see ``Declare_Init_Wrapper``).
+
+We use wrappers instead of a separate initialization tree, like the move and
+validity trees, because initialization information must follow values through
+expressions. For example, an aggregate
+containing a partially initialized record must retain which fields of that
+record are initialized. With wrappers, the flags are part of the record value
+used to build the aggregate. With a separate tree, expression translation would
+have to compute and combine both values and initialization trees. Validity and
+move information are generally handled on objects, so their separate trees do
+not need to follow intermediate expression values in this way.
+
+For scalar types, the wrapper type is
 a record with two components, the value of the scalar, and a boolean flag
 encoding whether it is initialized or not. This type is declared in a separate
 ``<My_type>__init_wrapper`` module. For example, in ``Init_By_Proof`` above, the
@@ -2987,48 +2996,25 @@ is the wrapper module introduced for ``Integer``:
     function to_wrapper (x : integer) : integer__init_wrapper =
       { rec__value = x; __attr__init = True }
 
-    type integer__init_wrapper__ref = {
-      mutable integer__init_wrapper__content : integer__init_wrapper
-    }
   end
 
-We see that, in addition to the wrapper type itself and the usual declarations
-for the reference type, we also introduce conversion
-functions to and from the wrapper type. They both assume that initialization has
-been appropriately checked (by proof or by flow) before the conversion.
+The usual reference declarations are omitted here. The conversion to the wrapper
+marks the value as initialized. The conversion from the wrapper extracts the
+value; it does not itself check the flag. Its use for a read must be justified
+by an initialization check or by flow analysis.
 
 The wrapper type of a composite type or access-to-object type is not really a
 wrapper. It is constructed similarly to the usual translation of the type, but
 uses wrapper types for its components. Immutable discriminants of records and
 array bounds do not have an initialization flag as they cannot be modified.
-As an example, let us consider the type ``Int_Array`` above. To
-declare its wrapper type, we first need an array theory module containing
-wrappers for integers:
-
-.. code-block:: whyml
-
-  module Array__Int__Standard__integer__init_wrapper
-
-    type component_type = integer__init_wrapper
-
-    clone export _gnatprove_standard.Array__1 with
-      ...,
-      type component_type = component_type
-  end
-
-Then, we can use the array type declared in this theory to define the wrapper
-type. For this, we simply clone the usual array module, like for the normal
-translation:
-
-.. code-block:: whyml
-
-  module Init_by_proof__int_array__init_wrapper
-
-    clone export ada__model.Unconstr_Array with
-      ...,
-      type map = Array__Int__Standard__integer__init_wrapper.map
-
-  end
+For private types whose full view is outside SPARK, the abstract value has a
+single initialization flag because its components are unavailable. A record
+with a part hidden from SPARK similarly has a flag for that abstract part,
+alongside the wrappers for its visible components.
+For example, ``Int_Array`` uses a map whose elements have the integer wrapper
+type. Each element therefore has its own initialization flag. The shared array
+theories and conversion modules are generated in the same way as for arrays
+with different component types; see :ref:`Array Types`.
 
 Mutable discriminants and access addresses can never be uninitialized in Ada
 but reading them might be inconsistent with the rules of SPARK (for parameters
@@ -3047,66 +3033,81 @@ type as it could not be initialized even if the pointer itself is:
 
 .. code-block:: whyml
 
-  type __rep =
-    {rec__test__int_acc__is_null_pointer : bool;
-     rec__test__int_acc__is_moved        : bool;
-     rec__test__int_acc__pointer_value   : int_array__init_wrapper;
-     __attr__init                        : bool}
+  type __rep = {
+    pointer_value : int_array__init_wrapper;
+    is_null_pointer : bool;
+    __attr__init : bool
+  }
 
-Unlike scalars types (and record types) the conversion functions to and from
-the wrapper type for arrays are not defined in the ``init_wrapper`` module.
-They are handled using specific conversion modules, like regular array
-conversions involving arrays with different subtypes for components. Here is
-the module introduced for converting to the wrapper type of ``Int_Array``:
+The field names are shortened here.
 
-.. code-block:: whyml
-
-  module Array__Int__Standard__integer__init_wrapper__to__Array__Int__Standard__integer
-
-    val function convert (a: Array__Int__Standard__integer__init_wrapper.map) :
-      Array__Int__Standard__integer.map
-
-    axiom convert__def:
-      forall a: Array__Int__Standard__integer__init_wrapper.map.
-       let b = convert a in
-         forall i: int. to_rep (of_wrapper (get a i)) = to_rep (get i)
-  end
-
-In gnat2why, the wrapper type for an Ada type can be created by calling
-``EW_Abstract`` (or ``EW_Split`` see below) with the ``Relaxed_Init`` parameter
-set to true. Whether a Why3 type is a wrapper or not can be decided using the
-``Relaxed_Init`` flag of ``W_Type_Id``, see ``Is_Init_Wrapper_Type``.
+For an access type designating an incomplete type, the wrapper initially uses
+an abstract designated value. Its separate ``Init_Wrapper_Completion`` module
+connects that value to the designated type's wrapper when the full view is
+translated. This is the same mechanism used for ordinary pointer
+representations; see :ref:`Recursive Access Types`.
 
 When translating an expression or an object of a type which has a wrapper type,
 we choose between the wrapper type and the standard type depending on whether or
 not the expression (the object) has relaxed initialization, see
 ``Expr_Has_Relaxed_Init`` and ``Obj_Has_Relaxed_Init``.
+Representation and conversion conventions are described in
+``src/why/why-gen-init.ads``.
 
 Initialization Checks
 """""""""""""""""""""
 
-For subtypes which do not have applicable predicates,
-the fact that an expression is initialized can be translated as the conjunction
-of the initialization flag of all the scalars parts of the expression
-(see ``Compute_Is_Initialized``). For example, the failed initialization check
+Without applicable subtype predicates, ``Initialized`` is a conjunction of
+initialization flags (see ``Compute_Is_Initialized``). Subcomponents whose types
+have ``Relaxed_Initialization`` are excluded. These checks follow the shape of
+the object: only array elements within the bounds and record fields present for
+the current discriminants are considered. A null pointer has no designated
+value to check. These guards prevent unused parts of the Why3 representation
+from imposing initialization requirements on the Ada object.
+
+Translating ``Initialized`` inspects initialization information without reading
+the selected value. Otherwise, the attribute would require the very
+initialization it is meant to test. Checks needed to identify the selected part
+still apply: for example, ``A (I)'Initialized`` requires a valid index within
+the array bounds, but does not require the element's value to be initialized.
+Similarly, ``X.F'Initialized`` does not check the predicate of ``X`` just to
+locate ``F``. If ``F`` is composite, its own predicates can contribute to the
+attribute's Boolean result, as explained below.
+
+For example, the failed initialization check
 at the end of the ``Init_By_Proof`` procedure is translated as:
 
 .. code-block:: whyml
 
   assert { (get (map__content buf) 110).__attr__init }
 
-And the postcondition of ``Process_1`` becomes:
+The initialized-prefix condition in the postcondition of ``Read`` becomes:
 
 .. code-block:: whyml
 
-  ensures { (forall i : int.
-                 if buf__first <= i <= buf__first + size - 1
-                 then (get (map__content buf) i).__attr__init) }
+  ensures { not error ->
+              (forall i : int.
+                 buf__first <= i <= buf__first + size - 1 ->
+                   (get (map__content buf) i).__attr__init) }
+
+When the destination of a composite assignment has relaxed initialization,
+we copy the source's component flags along with their values. If the source is
+only partially initialized, the destination becomes partially initialized too,
+even if it was fully initialized before the assignment. Whether the destination
+has relaxed initialization is determined by its annotations. If it does not,
+an initialization check is performed on the source, except for subcomponents
+whose types have ``Relaxed_Initialization``.
+
+This propagation is possible because a composite copy need not read the values
+of its individual scalar components. A scalar copy does read its value, so it
+requires an initialization check to avoid an Ada bounded error. A subtype
+predicate can impose the same initialization requirement on a composite copy;
+the predicate rules below explain when this happens.
 
 We introduce initialization checks when converting from a wrapper type to any
-normal type (see ``Insert_Checked_Conversion``). In particular cases where these
-checks are not needed, they can be explicitly disabled using the boolean
-parameter ``No_Init`` (to do checks on fetch on out parameters in particular).
+normal type (see ``Insert_Checked_Conversion``). A conversion used to fetch an
+``out`` parameter for a subsequent update need not read its old value and can
+omit this check. The API documents how such checks are disabled.
 
 Note that an initialization check might be required even for a Why3 expression
 which doesn't have a wrapper type (see ``Insert_Initialization_Check``). Indeed,
@@ -3117,21 +3118,30 @@ type, even in the normal translation of the composite
 
 In general, initialization checks inserted on conversions are partial
 in the sense that they do not include components whose type is annotated
-with ``Relaxed_Initialization`` (``Insert_Initialization_Check`` is called
-with ``Exclude_Always_Relaxed`` set to ``False``). This is because the
+with ``Relaxed_Initialization``. This is because the
 type of these components is a wrapper type even in the standard translation
 of the type.
 
 Additional initialization checks are manually inserted when translating
 operators on composite types which imply a read of its components (equality,
 logical operations...). As opposed to the ones introduced for conversions, these
-checks always ensure that the whole object is initialized
-(``Insert_Initialization_Check`` is called with ``Exclude_Always_Relaxed`` set
-to ``True``). As a result, there might be two initialization checks on an
+checks include the components read by the operation. Predefined equality on
+arrays and records, for example, reads components recursively. A component
+compared using its user-defined equality only needs the initialization required
+at that subprogram boundary.
+As a result, there might be two initialization checks on an
 operand of an operator. One to convert the operand to its standard type, and one
 to ensure that components whose type is annotated with
-``Relaxed_Initialization`` are also initialized. Thise checks are not
+``Relaxed_Initialization`` are also initialized. These checks are not
 duplicates, one or the other might fail while the other passes.
+
+Composite wrappers normally have a named ``is_initialized`` predicate for
+conversion checks. It checks the parts required by the ordinary representation,
+excluding components whose types have relaxed initialization. Its definition
+also includes applicable subtype predicates, as explained below. For recursive
+types, this predicate can be declared before its definition is available and
+completed by an axiom in the type's main completion module. This lets pointer
+conversions refer to it before the designated full view has been translated.
 
 Types With Predicates
 """""""""""""""""""""
@@ -3141,14 +3151,13 @@ expressions of a type with a predicate (predicate checks are inserted on all
 updates, see ``One_Level_Update``). This makes it possible to assume the
 predicates in the dynamic invariant of the type, provided the object is known
 to be initialized (see ``Compute_Dynamic_Invariant``). This is no longer the
-case with Relaxed_Initialization, as part of a supposedly initialized object
-can still not be initialized (and global variables and parameters of mode IN
-might not be initialized at all in some cases). Therefore, the predicate
-should be subject to the initialization status of the particular object
+case with relaxed initialization, as some components can remain uninitialized
+even at a boundary where initialization is normally assumed. Therefore, the
+predicate should depend on the initialization status of the particular object
 or component. For scalar types, it is easy, as each object or component has its
-own initialization flag. It is therefore enough to condition the predicate to
-the validity of the flag in its dynamic invariant. As an example, consider
-the subtype ''S'' defined below:
+own initialization flag. It is therefore enough to guard the predicate with
+this flag in its dynamic invariant. As an example, consider
+the subtype ``S`` defined below:
 
 .. code-block:: ada
 
@@ -3178,15 +3187,31 @@ invariant of ``H`` defined above:
           of_wrapper temp <= b ()
      else true)
 
-When predicates are specified on composite types, it is more complicated, as
-initialization wrappers for composite types do not have their own initialization
-flag. We could have added a top level initialization flag for composite
-types but we decided against it. It would make the translation more complicated
-as it would require introducing new wrappers of wrapper types. Instead, the
-predicate of composite types with relaxed initialization is simply not assumed
-in the dynamic invariant. Instead, it is part of the 'Initialized attribute
-(see ``Compute_Is_Initialized``). As an example, consider the following record
-type:
+For composite wrappers, the component flags do not establish that the subtype
+predicates hold. These predicates can relate several components and can have
+different initialization requirements. A predicate declared on a type without
+``Relaxed_Initialization`` requires initialization of the parts whose types do
+not have the aspect. A predicate declared on a type with the aspect can allow
+partial initialization. Inherited predicates retain the requirements of the
+type where they were declared, so both kinds can apply to the same type.
+
+We could introduce a flag recording that the applicable predicates hold to
+reduce the number of predicate checks: currently, they are checked at every
+value read, which can generate many checks. We have not done so yet. This is
+consistent with the rest of the tool: the Why3 datatypes represent values and
+properties guaranteed by the Ada type system and SPARK assumptions, rather
+than cache proof results. Subtype predicates need not hold on a partially
+initialized composite, so such a flag would record a property that must be
+proved separately.
+
+The dynamic invariant of a composite wrapper does not assume its subtype
+predicates. Instead, ``Initialized`` combines the initialization checks described
+above with the applicable predicates (see ``Compute_Is_Initialized``). This
+establishes subtype membership for the parts covered by those checks. At object
+and subprogram boundaries where the predicates are required to hold, they are assumed
+separately by ``Compute_Dynamic_Inv_And_Initialization``.
+
+As an example, consider the following record type:
 
 .. code-block:: ada
 
@@ -3195,28 +3220,18 @@ type:
    end record with
      Predicate => F < G;
 
-If ``X`` is an object of type ``R``, the attribute ``X'Initialized`` is
-translated in the following way:
+If ``X`` is an object of type ``R`` with relaxed initialization, the attribute
+``X'Initialized`` is translated in the following way:
 
 .. code-block:: whyml
 
   x.__split_fields.rec__f.__attr__init /\
   x.__split_fields.rec__g.__attr__init /\
   let temp = of_wrapper x in
-     to_rep (temp.rec__f) < to_rep (temp.rec__g)
+     to_rep (temp.__split_fields.rec__f)
+       < to_rep (temp.__split_fields.rec__g)
 
-Usually, the tool assumes that Why3 objects follow the constraints of their
-Ada type everywhere using the dynamic invariant. For objects where we know it
-holds, such as initialized variables, constants, subprogram parameters,
-and result of functions, we need to assume that the predicate of the type itself
-(not its subcomponent) holds separately since it is no longer included in the
-dynamic invariant. This is done by the function
-``Compute_Dynamic_Inv_And_Initialization``. In addition, if the type annotated
-with the invariant is not itself annotated with ``Relaxed_Initialization``,
-the initialization of the object (excluding the subcomponents annotated with
-``Relaxed_Initialization``) is included in the predicate (see
-``Compute_Dynamic_Predicate`` and ``New_Predicate_Check``). As an example,
-consider the following type ``H1``:
+The following type ``H1`` has a predicate that allows partial initialization:
 
 .. code-block:: ada
 
@@ -3226,7 +3241,7 @@ consider the following type ``H1``:
       B : Boolean;
    end record with
      Relaxed_Initialization,
-     Predicate => B'Initialized
+     Ghost_Predicate => B'Initialized
      and then
        (if B then C'Initialized and then I'Initialized and then C.G < I);
 
@@ -3247,19 +3262,20 @@ consider the following type ``H1``:
       null;
    end Q1;
 
+The example uses ``Ghost_Predicate`` because ``Initialized`` is ghost.
 At the beginning of ``P1``, we can assume that the predicate of ``H1`` holds,
-as Ada mandates a predicate check on input parameters. Since ``H1`` is
+as SPARK checks the predicate at the subprogram boundary. Since ``H1`` is
 annotated with ``Relaxed_Initialization``, its predicate does not enforce the
 initialization of ``X`` completely, but it is enough to prove the assertion
 inside ``P1``. Similarly, the predicate check at the end of ``Q1`` does not
-include an initialization check as can be seen below:
+require the whole object to be initialized, as can be seen below:
 
 .. code-block:: whyml
 
     assert
         { x.__split_fields.rec__b.__attr__init
           /\
-           (if x.__split_fields.rec__b then
+           (if of_wrapper x.__split_fields.rec__b then
 
 	      (* X.C'Initialized *)
               (let temp___c  = x.__split_fields.rec__c in
@@ -3275,7 +3291,8 @@ include an initialization check as can be seen below:
 	      (* X.C.G < X.I *)
 	      /\ to_rep
 	            (of_wrapper x.__split_fields.rec__c.__split_fields.rec__g)
-		       < to_rep (of_wrapper x.__split_fields.rec__i)) }
+		       < to_rep (of_wrapper x.__split_fields.rec__i)
+            else true) }
 
 For the type ``H2`` below, it is different. As it is not annotated with
 ``Relaxed_Initialization``, its predicate enforces the complete initialization
@@ -3322,42 +3339,42 @@ verified:
    (* Predicate check *)
    assert
        { to_rep (of_wrapper x.__split_fields.rec__c.__split_fields.rec__g)
-	  < to_rep (of_wrapper x.__split_fields.rec__i)) }
+	  < to_rep (of_wrapper x.__split_fields.rec__i) }
 
 
-For parameters of mode IN or IN OUT like the parameter ``X`` of ``P2``, it is
-not possible to de-initialize the object, so we simply do not use the wrapper
-type for them.
+For parameters of mode IN or IN OUT like the parameter ``X`` of ``P2``, the
+predicate requires initialization on entry and on subsequent copies into the
+object. These checks prevent ``X`` from becoming uninitialized,
+so we do not use the wrapper type for them. Scalar input parameters similarly
+use the ordinary representation because passing them already requires a read
+of their value.
+
+The null bodies of ``Q1`` and ``Q2`` illustrate the generated obligations;
+they do not satisfy them. ``Q1`` has not established even ``B'Initialized``,
+and ``Q2`` has not established initialization or its predicate.
 
 Note that, like for normal objects, the predicate of objects annotated with
 ``Relaxed_Initialization`` is enforced at every update. In addition, we have
-chosen to also check it at every read (namely on identifiers and component
+chosen to also check it at every value read (namely on identifiers and component
 accesses, see ``Transform_Identifier`` and ``One_Level_Access``). Unlike
 normal objects, checks on updates are not sufficient as the predicate still
 might not hold if the object is not initialized. Still, we could have chosen
 to only verify it where mandated by Ada (parameter passing, default
 initialization, type conversion etc). We chose to check all reads as it was
-simpler to be sure that no language mandated checks were missed. Also note
-that, if we had the boolean flag for composite objects with predicates, it would
-avoid redoing the predicate checks entirely, as we could just check the flag.
+simpler to be sure that no language mandated checks were missed. Accesses used
+only to locate a part for an update or to test ``Initialized`` do not require
+these read-time predicate checks on their prefixes.
 
 Split Form For Wrappers
 """""""""""""""""""""""
 
-Scalar objects with relaxed initialization can be in split form. We introduce a
-new field in ``Item_Type`` named ``Init`` to store their initialization flag.
-The flag is not present for all objects of a scalar type annotated with
-``Relaxed_Initialization``, but only when it is actually needed, ie for objects
-which are not always initialized (out parameters and variables initialized by
-default whose type does not define full default initialization, see
-``Mk_Item_Of_Entity``).
-
-Items with such a field are seen as having a wrapper type in split form
-(see ``Transform_Identifier``).
-This does not change the actual Why3 type used for them (the translation of a
-split wrapper type is the same as the translation of regular split scalar types,
-see ``New_Kind_Base_Type``) but enforces the introduction of initialization
-checks at use.
+Scalar objects with relaxed initialization can be in split form. Their value
+and initialization flag are then stored separately, so updating the flag does
+not require rebuilding a record wrapper. The flag is only introduced when
+initialization is not always known, for example for an ``out`` parameter or a
+variable without full default initialization. Reads still require the same
+initialization checks. The item layout and flag conventions are
+described in ``src/why/why-gen-binders.ads``.
 
 Objects
 -------
