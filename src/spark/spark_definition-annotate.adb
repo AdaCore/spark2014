@@ -4594,6 +4594,12 @@ package body SPARK_Definition.Annotate is
                       ("both parameters of an equality function shall have the"
                        & " same subtype"));
                return;
+            elsif Obj_Has_Relaxed_Init (First_Param)
+              /= Obj_Has_Relaxed_Init (Snd_Param)
+            then
+               Mark_Incorrect_Use_Of_Annotation
+                 (Annot_Logical_Equal_Relaxed_Init, E);
+               return;
             end if;
          end;
       end if;
