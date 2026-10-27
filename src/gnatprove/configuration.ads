@@ -88,16 +88,16 @@ package Configuration is
 
       function Assumptions return Boolean;
       function Benchmark return Boolean;
-      Memcached_Server    : aliased GNAT.Strings.String_Access;
-      Cargs_List          : String_Lists.List;
+      Memcached_Server : aliased GNAT.Strings.String_Access;
+      Cargs_List       : String_Lists.List;
       function CWE return Boolean;
       function Debug_Disable_Prover_Feedback return Boolean;
       function Debug_No_Cache_Output return Boolean;
-      Exclude_Line        : aliased GNAT.Strings.String_Access;
+      function Exclude_Line return String;
       function Flow_Show_GG return Boolean;
-      Function_Sandboxing : aliased GNAT.Strings.String_Access;
-      Gnattest_Values     : aliased GNAT.Strings.String_Access;
-      SARIF_Base_URIs     : String_Lists.List;
+      function Function_Sandboxing return String;
+      function Gnattest_Values return String;
+      SARIF_Base_URIs  : String_Lists.List;
       --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
       function Limit_Line return String;
       function Limit_Lines return String;
@@ -108,7 +108,7 @@ package Configuration is
       function No_Subprojects return Boolean;
       function Output_Header return Boolean;
       function U return Boolean;
-      Why3_Server         : aliased GNAT.Strings.String_Access;
+      Why3_Server      : aliased GNAT.Strings.String_Access;
    end CL_Switches;
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);

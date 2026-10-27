@@ -109,9 +109,9 @@ package body Gnat2Why_Opts.Writing is
 
       Hash (Global_Gen_Mode_Name, Boolean'Image (Phase = Global_Generation));
       Hash (Output_Mode_Name, Gnat2Why_Opts.Output_Mode_Type'Image (Output));
-      Hash (Exclude_Line_Name, CL_Switches.Exclude_Line.all);
+      Hash (Exclude_Line_Name, CL_Switches.Exclude_Line);
       Hash (Target_Name_Name, Configuration.Target_Name);
-      Hash (Gnattest_Values_Name, CL_Switches.Gnattest_Values.all);
+      Hash (Gnattest_Values_Name, CL_Switches.Gnattest_Values);
       Hash (Debug_Exec_RAC_Name, Boolean'Image (Debug_Exec_RAC));
       Hash
         (Debug_Disable_Prover_Feedback_Name,
@@ -141,8 +141,8 @@ package body Gnat2Why_Opts.Writing is
          Hash (Flow_Show_GG_Name, Boolean'Image (CL_Switches.Flow_Show_GG));
 
          --  Mirror the if/else logic in Pass_Extra_Options_To_Gnat2why
-         if CL_Switches.Function_Sandboxing.all = ""
-           or else CL_Switches.Function_Sandboxing.all = "on"
+         if CL_Switches.Function_Sandboxing = ""
+           or else CL_Switches.Function_Sandboxing = "on"
          then
             Hash (Proof_Generate_Guards_Name, Boolean'Image (True));
          else
@@ -299,10 +299,9 @@ package body Gnat2Why_Opts.Writing is
            (Obj,
             Output_Mode_Name,
             Gnat2Why_Opts.Output_Mode_Type'Image (Output));
-         Set_Field (Obj, Exclude_Line_Name, CL_Switches.Exclude_Line.all);
+         Set_Field (Obj, Exclude_Line_Name, CL_Switches.Exclude_Line);
          Set_Field (Obj, Target_Name_Name, Configuration.Target_Name);
-         Set_Field
-           (Obj, Gnattest_Values_Name, CL_Switches.Gnattest_Values.all);
+         Set_Field (Obj, Gnattest_Values_Name, CL_Switches.Gnattest_Values);
 
          --  Always store debug options
 
@@ -342,12 +341,12 @@ package body Gnat2Why_Opts.Writing is
 
             Set_Field (Obj, Flow_Show_GG_Name, CL_Switches.Flow_Show_GG);
 
-            if CL_Switches.Function_Sandboxing.all = ""
-              or else CL_Switches.Function_Sandboxing.all = "on"
+            if CL_Switches.Function_Sandboxing = ""
+              or else CL_Switches.Function_Sandboxing = "on"
             then
                Set_Field (Obj, Proof_Generate_Guards_Name, True);
             else
-               pragma Assert (CL_Switches.Function_Sandboxing.all = "off");
+               pragma Assert (CL_Switches.Function_Sandboxing = "off");
                Set_Field (Obj, Proof_Generate_Guards_Name, False);
             end if;
 

@@ -157,9 +157,12 @@ package body Configuration is
       Debug_Disable_Prover_Feedback : Boolean := False;
       Debug_Exec_RAC                : Boolean := False;
       Debug_No_Cache_Output         : Boolean := False;
+      Exclude_Line                  : Unbounded_String;
       Flow_Extra_Debug              : Boolean := False;
       Flow_Show_GG                  : Boolean := False;
       Force                         : Boolean := False;
+      Function_Sandboxing           : Unbounded_String;
+      Gnattest_Values               : Unbounded_String;
       IDE_Mode                      : Boolean := False;
       Limit_Line                    : Unbounded_String;
       Limit_Lines                   : Unbounded_String;
@@ -195,8 +198,14 @@ package body Configuration is
       is (Invocation_State.Debug_Disable_Prover_Feedback);
       function Debug_No_Cache_Output return Boolean
       is (Invocation_State.Debug_No_Cache_Output);
+      function Exclude_Line return String
+      is (To_String (Invocation_State.Exclude_Line));
       function Flow_Show_GG return Boolean
       is (Invocation_State.Flow_Show_GG);
+      function Function_Sandboxing return String
+      is (To_String (Invocation_State.Function_Sandboxing));
+      function Gnattest_Values return String
+      is (To_String (Invocation_State.Gnattest_Values));
       function Limit_Line return String
       is (To_String (Invocation_State.Limit_Line));
       function Limit_Lines return String
@@ -1592,22 +1601,14 @@ package body Configuration is
 
       --  CL_Switches state that's still used
       Move_String
-        (Parsed.Values (Sw_Exclude_Line).String_Val, CL_Switches.Exclude_Line);
-      Move_String
         (Parsed.Values (Sw_Memcached_Server).String_Val,
          CL_Switches.Memcached_Server);
-      Move_String
-        (Parsed.Values (Sw_Function_Sandboxing).String_Val,
-         CL_Switches.Function_Sandboxing);
       Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
       Move_String
         (Parsed.Values (Sw_Why3_Server).String_Val, CL_Switches.Why3_Server);
       Copy_List
         (Parsed.Values (Sw_SARIF_Base_URI).String_List_Val,
          CL_Switches.SARIF_Base_URIs);
-      Move_String
-        (Parsed.Values (Sw_Gnattest_Values).String_Val,
-         CL_Switches.Gnattest_Values);
       Move_String
         (Parsed.Values (Sw_Proof_Manifest).String_Val, Proof_Manifest_Path);
 
@@ -4588,9 +4589,16 @@ package body Configuration is
            Parsed.Values (Sw_Debug_Disable_Prover_Feedback).Boolean_Val;
          Result.Debug_No_Cache_Output :=
            Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val;
+         Result.Exclude_Line :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Exclude_Line));
          Result.Flow_Extra_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
          Result.Flow_Show_GG := Parsed.Values (Sw_Flow_Show_GG).Boolean_Val;
          Result.Force := Parsed.Values (Sw_F).Boolean_Val;
+         Result.Function_Sandboxing :=
+           To_Unbounded_String
+             (Switch_String (Parsed, Sw_Function_Sandboxing));
+         Result.Gnattest_Values :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Gnattest_Values));
          Result.IDE_Mode := Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
          Result.Limit_Line :=
            To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Line));
