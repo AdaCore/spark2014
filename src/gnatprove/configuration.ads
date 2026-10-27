@@ -75,8 +75,8 @@ package Configuration is
    package CL_Switches is
 
       --  Legacy interface for effective switch values from the command line
-      --  and root project. Boolean values are exposed through queries; other
-      --  values remain mutable until they are migrated to the invocation.
+      --  and root project. Switch values are exposed through queries; the
+      --  remaining lists are mutable until migrated to the invocation.
       --  Naming of the variable:
       --  * single letter variables correspond to single letter switches with
       --    one dash, like -j, -v
@@ -88,8 +88,8 @@ package Configuration is
 
       function Assumptions return Boolean;
       function Benchmark return Boolean;
-      Memcached_Server : aliased GNAT.Strings.String_Access;
-      Cargs_List       : String_Lists.List;
+      function Memcached_Server return String;
+      Cargs_List      : String_Lists.List;
       function CWE return Boolean;
       function Debug_Disable_Prover_Feedback return Boolean;
       function Debug_No_Cache_Output return Boolean;
@@ -97,7 +97,7 @@ package Configuration is
       function Flow_Show_GG return Boolean;
       function Function_Sandboxing return String;
       function Gnattest_Values return String;
-      SARIF_Base_URIs  : String_Lists.List;
+      SARIF_Base_URIs : String_Lists.List;
       --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
       function Limit_Line return String;
       function Limit_Lines return String;
@@ -108,7 +108,7 @@ package Configuration is
       function No_Subprojects return Boolean;
       function Output_Header return Boolean;
       function U return Boolean;
-      Why3_Server      : aliased GNAT.Strings.String_Access;
+      function Why3_Server return String;
    end CL_Switches;
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);

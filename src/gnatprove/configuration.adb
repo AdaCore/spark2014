@@ -169,6 +169,7 @@ package body Configuration is
       Limit_Name                    : Unbounded_String;
       Limit_Region                  : Unbounded_String;
       Limit_Subp                    : Unbounded_String;
+      Memcached_Server              : Unbounded_String;
       No_Subprojects                : Boolean := False;
       Only_Given                    : Boolean := False;
       Output                        : Output_Mode_Type := GPO_Pretty_Simple;
@@ -178,6 +179,7 @@ package body Configuration is
       U                             : Boolean := False;
       Use_Semaphores                : Boolean := False;
       Warning_Mode                  : SPARK_Warning_Mode_Type := SW_Normal;
+      Why3_Server                   : Unbounded_String;
    end record;
    --  Other invocation settings are still published as separate globals
 
@@ -216,6 +218,8 @@ package body Configuration is
       is (To_String (Invocation_State.Limit_Region));
       function Limit_Subp return String
       is (To_String (Invocation_State.Limit_Subp));
+      function Memcached_Server return String
+      is (To_String (Invocation_State.Memcached_Server));
       function No_Global_Generation return Boolean
       is (Invocation_State.File_Options.No_Global_Generation);
       function No_Subprojects return Boolean
@@ -224,6 +228,8 @@ package body Configuration is
       is (Invocation_State.Output_Header);
       function U return Boolean
       is (Invocation_State.U);
+      function Why3_Server return String
+      is (To_String (Invocation_State.Why3_Server));
    end CL_Switches;
 
    function All_Projects return Boolean
@@ -1600,12 +1606,7 @@ package body Configuration is
       Z3_Counterexample := Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
 
       --  CL_Switches state that's still used
-      Move_String
-        (Parsed.Values (Sw_Memcached_Server).String_Val,
-         CL_Switches.Memcached_Server);
       Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
-      Move_String
-        (Parsed.Values (Sw_Why3_Server).String_Val, CL_Switches.Why3_Server);
       Copy_List
         (Parsed.Values (Sw_SARIF_Base_URI).String_List_Val,
          CL_Switches.SARIF_Base_URIs);
@@ -4610,10 +4611,14 @@ package body Configuration is
            To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Region));
          Result.Limit_Subp :=
            To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Subp));
+         Result.Memcached_Server :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Memcached_Server));
          Result.No_Subprojects :=
            Parsed.Values (Sw_No_Subprojects).Boolean_Val;
          Result.Output_Header := Parsed.Values (Sw_Output_Header).Boolean_Val;
          Result.U := Parsed.Values (Sw_U).Boolean_Val;
+         Result.Why3_Server :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Why3_Server));
 
          Result.Debug :=
            Parsed.Values (Sw_D).Boolean_Val or Result.Flow_Extra_Debug;
@@ -5966,14 +5971,12 @@ package body Configuration is
          Args.Append ("spark_semaphore_wrapper");
       end if;
 
-      if CL_Switches.Memcached_Server /= null
-        and then CL_Switches.Memcached_Server.all /= ""
-      then
+      if CL_Switches.Memcached_Server /= "" then
          Args.Append ("spark_memcached_wrapper");
          --  The first argument of spark_memcached_wrapper is the salt. We
          --  don't use the salt for gnatwhy3, so use any dummy string.
          Args.Append ("salt");
-         Args.Append (CL_Switches.Memcached_Server.all);
+         Args.Append (CL_Switches.Memcached_Server);
       end if;
 
       Args.Append ("gnatwhy3");
