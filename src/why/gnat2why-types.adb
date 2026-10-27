@@ -130,7 +130,10 @@ package body Gnat2Why.Types is
            Binder_Array'(1 => (B_Name => Main_Arg, others => <>))
            & To_Binder_Array (Items);
          Def     : W_Pred_Id;
-         Name    : W_Identifier_Id := E_Symb (E, WNE_Is_Initialized_Pred);
+         Name    : constant W_Identifier_Id :=
+           (if Predeclare or else not Has_Predeclared_Init_Predicate (E)
+            then To_Local (E_Symb (E, WNE_Is_Initialized_Pred))
+            else E_Symb (E, WNE_Is_Initialized_Pred));
 
       begin
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
@@ -141,7 +144,7 @@ package body Gnat2Why.Types is
               (Th,
                New_Function_Decl
                  (Domain   => EW_Pred,
-                  Name     => To_Local (Name),
+                  Name     => Name,
                   Location => No_Location,
                   Labels   => Symbol_Sets.Empty_Set,
                   Binders  => Binders));
@@ -165,7 +168,6 @@ package body Gnat2Why.Types is
                      Dep_Kind => EW_Axdep_Pred,
                      Def      => Def));
             else
-               Name := To_Local (Name);
                Emit
                  (Th,
                   New_Function_Decl
@@ -175,6 +177,69 @@ package body Gnat2Why.Types is
                      Location => No_Location,
                      Labels   => Symbol_Sets.Empty_Set,
                      Binders  => Binders));
+            end if;
+
+            --  For recursive access types, establishing initialization after
+            --  conversion requires induction over the designated values.
+            --  Generate the property alongside the initialization predicate,
+            --  where its inputs are already bound and both predicates are
+            --  available without introducing cyclic module dependencies.
+
+            if Has_Predeclared_Wrapper_Conversions (E) then
+               declare
+                  X_Ident     : constant W_Identifier_Id :=
+                    New_Identifier (Name => "x", Typ => EW_Abstract (E));
+                  Inv_Ident   : constant W_Identifier_Id :=
+                    New_Identifier (Name => "do_typ_inv", Typ => EW_Bool_Type);
+                  To_Wrapper  : constant W_Identifier_Id :=
+                    E_Symb (E, WNE_To_Wrapper);
+                  Wrapped     : constant W_Term_Id :=
+                    New_Call
+                      (Name => To_Wrapper,
+                       Args => (1 => +X_Ident),
+                       Typ  => Abstr_Ty);
+                  Inputs      : constant W_Expr_Array :=
+                    Get_Args_From_Variables
+                      (Variables, Logic_Params.Ref_Allowed);
+                  Guard       : constant W_Pred_Id :=
+                    New_Call
+                      (Name => To_Local (E_Symb (E, WNE_Dynamic_Invariant)),
+                       Args =>
+                         (1 => +X_Ident,
+                          2 => +True_Term,
+                          3 => +False_Term,
+                          4 => +True_Term,
+                          5 => +Inv_Ident)
+                         & Inputs,
+                       Typ  => EW_Bool_Type);
+                  Initialized : constant W_Pred_Id :=
+                    New_Call
+                      (Name => Name,
+                       Args => (1 => +Wrapped) & Inputs,
+                       Typ  => EW_Bool_Type);
+
+               begin
+                  Emit
+                    (Th,
+                     New_Guarded_Axiom
+                       (Name     => NID ("to_wrapper__initialized"),
+                        Binders  =>
+                          Binder_Array'(1 => (B_Name => X_Ident, others => <>))
+                          & To_Binder_Array (Items)
+                          & Binder_Array'
+                              (1 => (B_Name => Inv_Ident, others => <>)),
+                        Triggers =>
+                          New_Triggers
+                            (Triggers =>
+                               (1 =>
+                                  New_Trigger
+                                    (Terms => (1 => +Wrapped, 2 => +Guard)))),
+                        Pre      => Guard,
+                        Def      => Initialized,
+                        Dep      =>
+                          New_Axiom_Dep
+                            (Name => To_Wrapper, Kind => EW_Axdep_Func)));
+               end;
             end if;
          end if;
 
