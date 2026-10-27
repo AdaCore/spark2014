@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Hashed_Sets;
-with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Hash;
@@ -203,15 +202,8 @@ package Configuration is
       Warning_Status        : Warning_Status_Array;
    end record;
 
-   package File_Specific_Maps is new
-     Ada.Containers.Indefinite_Hashed_Maps
-       (Key_Type        => String,
-        Element_Type    => File_Specific,
-        Hash            => Ada.Strings.Hash,
-        Equivalent_Keys => "=",
-        "="             => "=");
-
-   File_Specific_Map : File_Specific_Maps.Map;
+   function File_Settings (Key : String) return File_Specific;
+   --  Return the effective settings associated with a source-file key
 
    Max_Non_Blank_Lines : constant := 6;
    --  Maximum number of consecutive non blank lines on standard output

@@ -26,6 +26,7 @@
 with Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Containers;        use Ada.Containers;
+with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.IO_Exceptions;
 with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -130,6 +131,19 @@ package body Configuration is
         Hash            => Ada.Strings.Hash,
         Equivalent_Keys => "=",
         "="             => Manifest_Subprogram_Vectors."=");
+
+   package File_Specific_Maps is new
+     Ada.Containers.Indefinite_Hashed_Maps
+       (Key_Type        => String,
+        Element_Type    => File_Specific,
+        Hash            => Ada.Strings.Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
+
+   File_Specific_Map : File_Specific_Maps.Map;
+
+   function File_Settings (Key : String) return File_Specific
+   is (File_Specific_Map (Key));
 
    type File_Selection is record
       Files       : String_Lists.List;

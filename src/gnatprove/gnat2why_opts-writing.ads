@@ -43,7 +43,7 @@ package Gnat2Why_Opts.Writing is
    --  Why3_Dir is the directory where gnatwhy3 is intended to run,
    --  and find the why3.conf file.
    --  Source_Path_Key selects the file-specific settings from
-   --  File_Specific_Map; it is the source-file key computed by
+   --  Configuration.File_Settings; it is the source-file key computed by
    --  Configuration.File_Specific_Key, not the Ada unit name.
    --  Data_Rep_Files lists the data representation files that the analysis of
    --  this unit may read; it is empty when data representation is not

@@ -97,8 +97,8 @@ package body Gnat2Why_Opts.Writing is
       Proof_Manifest  : Manifest_Subprogram_Vectors.Vector;
       Data_Rep_Files  : String_Lists.List) return Options
    is
-      FS : Configuration.File_Specific renames
-        Configuration.File_Specific_Map (Source_Path_Key);
+      FS : constant Configuration.File_Specific :=
+        Configuration.File_Settings (Source_Path_Key);
    begin
       pragma Assert (CL_Switches.Function_Sandboxing in "" | "on" | "off");
 
