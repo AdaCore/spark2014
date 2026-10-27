@@ -26,6 +26,7 @@
 with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Common_Containers;           use Common_Containers;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
+with Flow_Types;                  use Flow_Types;
 with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
 with Gnat2Why.Expr;               use Gnat2Why.Expr;
 with SPARK_Definition;            use SPARK_Definition;
@@ -180,11 +181,20 @@ package body Why.Gen.Init is
            and then not No_Predicate_Check
            and then Exclude_Components = Relaxed
          then
-            P :=
-              New_Call
-                (Name => E_Symb (E => Rep_Ty, S => WNE_Is_Initialized_Pred),
-                 Args => (1 => +Tmp),
-                 Typ  => EW_Bool_Type);
+            declare
+               Variables : Flow_Id_Sets.Set;
+            begin
+               Variables_In_Dynamic_Invariant
+                 (Rep_Ty, Variables, Scop => Empty);
+               P :=
+                 New_Call
+                   (Name => E_Symb (E => Rep_Ty, S => WNE_Is_Initialized_Pred),
+                    Args =>
+                      (1 => +Tmp)
+                      & Get_Args_From_Variables
+                          (Variables, Params.Ref_Allowed),
+                    Typ  => EW_Bool_Type);
+            end;
 
          --  Initialization of composite types
 

@@ -78,7 +78,8 @@ package body Gnat2Why.Types is
    with Pre => Has_Init_Wrapper (E);
    --  Create a function to state that objects of type E are initialized.
    --  If Predeclare is True, only emit a declaration and use a local name for
-   --  the type associated to E.
+   --  the type associated to E. Otherwise, supply its definition, using a
+   --  completion axiom if it has been predeclared.
 
    function Use_User_Eq_Definition (E : Type_Kind_Id) return Boolean
    is (declare
@@ -116,34 +117,69 @@ package body Gnat2Why.Types is
         New_Temp_Identifier (Typ => Main_Ty, Base_Name => "expr");
       --  Expression on which we want to assume the property
 
-      Binders : constant Binder_Array :=
-        Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg, others => <>));
-
-      Def : constant W_Pred_Id :=
-        (if Predeclare
-         then Why_Empty
-         else
-           +Compute_Is_Initialized
-              (E                  => E,
-               Name               => +Main_Arg,
-               Params             => Logic_Params,
-               Domain             => EW_Pred,
-               Exclude_Components => Relaxed,
-               Use_Pred           => False));
+      Variables : Flow_Id_Sets.Set;
 
    begin
-      --  ??? Here we should probably consider variable inputs occurring in
-      --  potential predicates.
+      Variables_In_Dynamic_Invariant (E, Variables, Scop => Empty);
 
-      Emit
-        (Th,
-         New_Function_Decl
-           (Domain   => EW_Pred,
-            Name     => To_Local (E_Symb (E, WNE_Is_Initialized_Pred)),
-            Def      => +Def,
-            Location => No_Location,
-            Labels   => Symbol_Sets.Empty_Set,
-            Binders  => Binders));
+      declare
+         Items   : constant Item_Array :=
+           Get_Localized_Binders_From_Variables
+             (Variables, Only_Variables => False);
+         Binders : constant Binder_Array :=
+           Binder_Array'(1 => (B_Name => Main_Arg, others => <>))
+           & To_Binder_Array (Items);
+         Def     : W_Pred_Id;
+         Name    : W_Identifier_Id := E_Symb (E, WNE_Is_Initialized_Pred);
+
+      begin
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+         Push_Binders_To_Symbol_Table (Items);
+
+         if Predeclare then
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain   => EW_Pred,
+                  Name     => To_Local (Name),
+                  Location => No_Location,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Binders  => Binders));
+         else
+            Def :=
+              +Compute_Is_Initialized
+                 (E                  => E,
+                  Name               => +Main_Arg,
+                  Params             => Logic_Params,
+                  Domain             => EW_Pred,
+                  Exclude_Components => Relaxed,
+                  Use_Pred           => False);
+
+            if Has_Predeclared_Init_Predicate (E) then
+               Emit
+                 (Th,
+                  New_Defining_Bool_Axiom
+                    (Name     => Name,
+                     Fun_Name => To_String (WNE_Is_Initialized_Pred),
+                     Binders  => Binders,
+                     Dep_Kind => EW_Axdep_Pred,
+                     Def      => Def));
+            else
+               Name := To_Local (Name);
+               Emit
+                 (Th,
+                  New_Function_Decl
+                    (Domain   => EW_Pred,
+                     Name     => Name,
+                     Def      => +Def,
+                     Location => No_Location,
+                     Labels   => Symbol_Sets.Empty_Set,
+                     Binders  => Binders));
+            end if;
+         end if;
+
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      end;
    end Create_Initialization_Predicate;
 
    ------------------------------
@@ -153,12 +189,6 @@ package body Gnat2Why.Types is
    procedure Generate_Type_Completion (E : Type_Kind_Id) is
 
       --  Local subprograms
-
-      procedure Complete_Initialization_Predicate
-        (Th : Theory_UC; E : Type_Kind_Id)
-      with Pre => Has_Init_Wrapper (E);
-      --  Generate axioms to complete the definitions of Is_Initializes if it
-      --  has been predeclared.
 
       procedure Create_Axioms_For_Scalar_Bounds
         (Th : Theory_UC; E : Type_Kind_Id);
@@ -181,42 +211,6 @@ package body Gnat2Why.Types is
       procedure Generate_Axioms_For_Equality (E : Type_Kind_Id);
       --  Generate axioms defining the equality functions __user_eq and
       --  __dispatch_eq on E.
-
-      ---------------------------------------
-      -- Complete_Initialization_Predicate --
-      ---------------------------------------
-
-      procedure Complete_Initialization_Predicate
-        (Th : Theory_UC; E : Type_Kind_Id)
-      is
-         Main_Arg : constant W_Identifier_Id :=
-           New_Temp_Identifier
-             (Typ       => EW_Abstract (E, Relaxed_Init => True),
-              Base_Name => "expr");
-         --  Expression on which we want to assume the property
-
-         Binders : constant Binder_Array :=
-           Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg, others => <>));
-
-         Def : constant W_Pred_Id :=
-           +Compute_Is_Initialized
-              (E                  => E,
-               Name               => +Main_Arg,
-               Params             => Logic_Params,
-               Domain             => EW_Pred,
-               Exclude_Components => Relaxed,
-               Use_Pred           => False);
-
-      begin
-         Emit
-           (Th,
-            New_Defining_Bool_Axiom
-              (Name     => E_Symb (E, WNE_Is_Initialized_Pred),
-               Fun_Name => To_String (WNE_Is_Initialized_Pred),
-               Binders  => Binders,
-               Dep_Kind => EW_Axdep_Pred,
-               Def      => Def));
-      end Complete_Initialization_Predicate;
 
       -------------------------------------
       -- Create_Axioms_For_Scalar_Bounds --
@@ -965,11 +959,7 @@ package body Gnat2Why.Types is
         and then not Is_Scalar_Type (E)
         and then not Is_Itype (E)
       then
-         if Has_Predeclared_Init_Predicate (E) then
-            Complete_Initialization_Predicate (Th, E);
-         else
-            Create_Initialization_Predicate (Th, E);
-         end if;
+         Create_Initialization_Predicate (Th, E);
       end if;
 
       Close_Theory (Th, Kind => Axiom_Theory, Defined_Entity => E);

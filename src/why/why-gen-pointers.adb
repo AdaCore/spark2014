@@ -873,6 +873,7 @@ package body Why.Gen.Pointers is
       end if;
 
       if Relaxed_Init then
+         pragma Assert (Separated = Has_Predeclared_Wrapper_Conversions (E));
          Declare_Wrapper_Conversions (As_Axioms => Separated);
       end if;
    end Complete_Rep_Pointer_Type;
@@ -1857,6 +1858,15 @@ package body Why.Gen.Pointers is
    function Has_Predeclared_Init_Predicate (E : Entity_Id) return Boolean
    is (Has_Incomplete_Access (E)
        and then Has_Init_Wrapper (Retysp (Get_Incomplete_Access (E))));
+
+   -----------------------------------------
+   -- Has_Predeclared_Wrapper_Conversions --
+   -----------------------------------------
+
+   function Has_Predeclared_Wrapper_Conversions (E : Entity_Id) return Boolean
+   is (Has_Access_Type (E)
+       and then not Is_Access_Subprogram_Type (E)
+       and then Designates_Incomplete_Type (Repr_Pointer_Type (E)));
 
    ----------------------------------
    -- Insert_Pointer_Subtype_Check --
