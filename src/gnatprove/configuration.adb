@@ -217,6 +217,8 @@ package body Configuration is
      Default_Invocation'Access;
    --  Replaced once with the completed invocation; consumers cannot modify it
 
+   Invocation_Published : Boolean := False;
+
    Resolved_SARIF_Base_URIs : String_Lists.List;
    --  Validated invocation entries with the project-derived default added
 
@@ -225,6 +227,12 @@ package body Configuration is
    Has_Manual_Prover        : Boolean := False;
    Has_Coq_Prover           : Boolean := False;
    --  Results of processing project and file-specific settings
+
+   Z3_Present      : Boolean := False;
+   CVC5_Present    : Boolean := False;
+   Colibri_Present : Boolean := False;
+   Proof_Dir       : GNAT.Strings.String_Access;
+   --  Prover availability and the root project's proof directory
 
    CL_Units_Value : GPR2.Build.Compilation_Unit.Maps.Map;
    --  Requested files resolved against the project tree
@@ -3979,7 +3987,7 @@ package body Configuration is
       procedure Postprocess_Invocation
         (Parsed : Parsed_Switches; Result : out Invocation_Configuration);
       --  Interpret the effective switches from the root project's attributes
-      --  and the command line. Some settings are still written to globals.
+      --  and the command line, validating them and producing the invocation.
 
       procedure Warn_And_Strip_Non_Root_Invocation_Switches
         (View           : Project.View.Object;
@@ -4072,9 +4080,9 @@ package body Configuration is
          end On_Path;
 
       begin
-         SPARK_Install.Z3_Present := On_Path ("z3");
-         SPARK_Install.CVC5_Present := On_Path ("cvc5");
-         SPARK_Install.Colibri_Present := On_Path ("colibri");
+         Z3_Present := On_Path ("z3");
+         CVC5_Present := On_Path ("cvc5");
+         Colibri_Present := On_Path ("colibri");
       end Detect_Installed_Provers;
 
       ------------------------------------
@@ -5061,7 +5069,7 @@ package body Configuration is
 
          FS.Counterexamples :=
            FS.Counterexamples
-           and then SPARK_Install.CVC5_Present
+           and then CVC5_Present
            and then not Has_Manual_Prover
            and then not Invocation_Options.Output_Msg_Only;
 
@@ -5277,11 +5285,9 @@ package body Configuration is
             --  are missing from the install.
 
             for Prover of FS.Provers loop
-               if (Prover = "cvc5" and then not SPARK_Install.CVC5_Present)
-                 or else (Prover = "z3" and then not SPARK_Install.Z3_Present)
-                 or else
-                   (Prover = "colibri"
-                    and then not SPARK_Install.Colibri_Present)
+               if (Prover = "cvc5" and then not CVC5_Present)
+                 or else (Prover = "z3" and then not Z3_Present)
+                 or else (Prover = "colibri" and then not Colibri_Present)
                then
                   Abort_Msg
                     ("error: prover "
@@ -5294,13 +5300,13 @@ package body Configuration is
          --  prover switch is set to "all"
 
          else
-            if SPARK_Install.CVC5_Present then
+            if CVC5_Present then
                FS.Provers.Append ("cvc5");
             end if;
-            if SPARK_Install.Z3_Present then
+            if Z3_Present then
                FS.Provers.Append ("z3");
             end if;
-            if SPARK_Install.Colibri_Present then
+            if Colibri_Present then
                FS.Provers.Append ("colibri");
             end if;
             FS.Provers.Append ("altergo");
@@ -5376,6 +5382,10 @@ package body Configuration is
       Root_Attribute_Switches   : Parsed_Switches;
 
    begin
+
+      if Invocation_Published then
+         raise Program_Error with "invocation configuration already published";
+      end if;
 
       for Index in 1 .. Full_Com_Lin'Last loop
          Full_Com_Lin (Index) :=
@@ -5513,6 +5523,7 @@ package body Configuration is
             Maximum_Mode : GP_Mode;
          begin
             Invocation_State := new Invocation_Configuration'(Invocation);
+            Invocation_Published := True;
 
             Parse_Analysis_Attributes
               (Command_Line_Switches,
@@ -6115,7 +6126,7 @@ package body Configuration is
 
       if FS.Check_Counterexamples and then not FS.Provers.Is_Empty then
          Args.Append ("--rac-prover");
-         if SPARK_Install.CVC5_Present then
+         if CVC5_Present then
             Args.Append ("cvc5");
          else
             Args.Append ("altergo");
@@ -6128,7 +6139,7 @@ package body Configuration is
       end if;
 
       Args.Append ("--warn-prover");
-      if SPARK_Install.CVC5_Present then
+      if CVC5_Present then
          Args.Append ("cvc5");
       else
          Args.Append ("altergo");

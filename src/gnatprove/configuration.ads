@@ -262,22 +262,12 @@ package Configuration is
          else Libexec_Spark);
       GNSA_Dir_Bin              : constant String :=
         Ada.Directories.Compose (GNSA_Dir, "bin");
-      Z3_Present                : Boolean;
-      CVC5_Present              : Boolean;
-      Colibri_Present           : Boolean;
       Help_Message              : constant String :=
         Read_File_Into_String (Help_Msg_File);
    end SPARK_Install;
 
    Label_Length : constant := 26;
    --  Maximum length of label in report. Other characters are discarded
-
-   Proof_Dir : GNAT.Strings.String_Access;
-   --  The name of the directory in which will be stored Why3 session file and
-   --  manual proof files (Attribute of gpr package Prove).
-
-   --  The name of a why3 configuration file to be used in a single run of
-   --  gnatprove.
 
    Socket_Name : GNAT.Strings.String_Access;
    --  Name of the socket used by why3server, based on a hash of the main
