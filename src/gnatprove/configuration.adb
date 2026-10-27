@@ -156,8 +156,11 @@ package body Configuration is
       Force             : Boolean := False;
       IDE_Mode          : Boolean := False;
       Only_Given        : Boolean := False;
+      Output            : Output_Mode_Type := GPO_Pretty_Simple;
       Parallel          : Natural := 0;
+      Report            : Report_Mode_Type := GPR_Fail;
       Use_Semaphores    : Boolean := False;
+      Warning_Mode      : SPARK_Warning_Mode_Type := SW_Normal;
    end record;
    --  Other invocation settings are still published as separate globals
 
@@ -185,10 +188,16 @@ package body Configuration is
    is (Invocation_State.IDE_Mode);
    function Only_Given return Boolean
    is (Invocation_State.Only_Given);
+   function Output return Output_Mode_Type
+   is (Invocation_State.Output);
    function Parallel return Integer
    is (Invocation_State.Parallel);
+   function Report return Report_Mode_Type
+   is (Invocation_State.Report);
    function Use_Semaphores return Boolean
    is (Invocation_State.Use_Semaphores);
+   function Warning_Mode return SPARK_Warning_Mode_Type
+   is (Invocation_State.Warning_Mode);
 
    --  Private global state to replace public state from CL_Switches
    Debug_Save_VCs      : Boolean := False;
@@ -3994,9 +4003,12 @@ package body Configuration is
       --  no compiler configuration, so the analysis cannot proceed.
 
       procedure Set_Mode (Parsed : Parsed_Switches; FS : in out File_Specific);
-      procedure Set_Output_Mode (Parsed : Parsed_Switches);
-      procedure Set_Warning_Mode (Parsed : Parsed_Switches);
-      procedure Set_Report_Mode (Parsed : Parsed_Switches);
+      procedure Set_Output_Mode
+        (Parsed : Parsed_Switches; Output : out Output_Mode_Type);
+      procedure Set_Warning_Mode
+        (Parsed : Parsed_Switches; Warning_Mode : out SPARK_Warning_Mode_Type);
+      procedure Set_Report_Mode
+        (Parsed : Parsed_Switches; Report : out Report_Mode_Type);
 
       procedure Set_Level_Timeout_Steps_Provers
         (Parsed             : Parsed_Switches;
@@ -4640,9 +4652,9 @@ package body Configuration is
 
          Result.Selection := Process_Limit_Switches (Parsed);
 
-         Set_Output_Mode (Parsed);
-         Set_Warning_Mode (Parsed);
-         Set_Report_Mode (Parsed);
+         Set_Output_Mode (Parsed, Result.Output);
+         Set_Warning_Mode (Parsed, Result.Warning_Mode);
+         Set_Report_Mode (Parsed, Result.Report);
 
          Result.Use_Semaphores :=
            not Result.Debug
@@ -5052,7 +5064,8 @@ package body Configuration is
       -- Set_Output_Mode --
       ---------------------
 
-      procedure Set_Output_Mode (Parsed : Parsed_Switches) is
+      procedure Set_Output_Mode
+        (Parsed : Parsed_Switches; Output : out Output_Mode_Type) is
       begin
          if Switch_String (Parsed, Sw_Output) = "" then
             Output := GPO_Pretty_Simple;
@@ -5241,7 +5254,8 @@ package body Configuration is
       -- Set_Report_Mode --
       ---------------------
 
-      procedure Set_Report_Mode (Parsed : Parsed_Switches) is
+      procedure Set_Report_Mode
+        (Parsed : Parsed_Switches; Report : out Report_Mode_Type) is
       begin
          if Switch_String (Parsed, Sw_Report) = "" then
             Report := GPR_Fail;
@@ -5263,7 +5277,9 @@ package body Configuration is
       -- Set_Warning_Mode --
       ----------------------
 
-      procedure Set_Warning_Mode (Parsed : Parsed_Switches) is
+      procedure Set_Warning_Mode
+        (Parsed : Parsed_Switches; Warning_Mode : out SPARK_Warning_Mode_Type)
+      is
          Warn_Switch : constant String := Switch_String (Parsed, Sw_Warnings);
       begin
          --  Note that "on" here is retained for backwards compatibility

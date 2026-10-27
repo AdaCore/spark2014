@@ -132,11 +132,8 @@ package Configuration is
    GnateT_Switch               : GNAT.Strings.String_Access;
    Limit_Lines                 : String_Lists.List;
    Mode                        : GP_Mode := GPM_Check;
-   Output                      : Output_Mode_Type;
    Max_Why3_Processes          : Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
-   Report                      : Report_Mode_Type;
-   Warning_Mode                : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
    Warning_Status              : Warning_Status_Array :=
      VC_Kinds.Warning_Status;
    Has_Manual_Prover           : Boolean;
@@ -171,11 +168,20 @@ package Configuration is
    function Only_Given return Boolean;
    --  Whether -u or a file-selecting limit switch was given
 
+   function Output return Output_Mode_Type;
+   --  Output format selected for diagnostics
+
    function Parallel return Integer;
    --  Maximum number of parallel jobs
 
+   function Report return Report_Mode_Type;
+   --  Report detail selected for the invocation
+
    function Use_Semaphores return Boolean;
    --  Whether gnatwhy3 processes are limited by a semaphore
+
+   function Warning_Mode return Gnat2Why_Opts.SPARK_Warning_Mode_Type;
+   --  Treatment of warnings selected for the invocation
 
    Verbosity : Verbosity_Choice := Normal_Level;
 
