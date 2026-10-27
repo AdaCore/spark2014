@@ -158,6 +158,8 @@ package body Configuration is
       Debug_Disable_Prover_Feedback : Boolean := False;
       Debug_Exec_RAC                : Boolean := False;
       Debug_No_Cache_Output         : Boolean := False;
+      Debug_Prover_Errors           : Boolean := False;
+      Debug_Save_VCs                : Boolean := False;
       Exclude_Line                  : Unbounded_String;
       Flow_Extra_Debug              : Boolean := False;
       Flow_Show_GG                  : Boolean := False;
@@ -180,7 +182,9 @@ package body Configuration is
       U                             : Boolean := False;
       Use_Semaphores                : Boolean := False;
       Warning_Mode                  : SPARK_Warning_Mode_Type := SW_Normal;
+      Why3_Logging                  : Boolean := False;
       Why3_Server                   : Unbounded_String;
+      Z3_Counterexample             : Boolean := False;
    end record;
    --  Other invocation settings are still published as separate globals
 
@@ -265,19 +269,14 @@ package body Configuration is
    is (Invocation_State.Warning_Mode);
 
    --  Private global state to replace public state from CL_Switches
-   Debug_Save_VCs      : Boolean := False;
-   Debug_Prover_Errors : Boolean := False;
    File_List           : String_Lists.List;
    Generate_Manifest   : GNAT.Strings.String_Access;
-   Replay              : Boolean := False;
    Proof_Manifest_Path : GNAT.Strings.String_Access;
    Proof_Manifest_Maps : Manifest_Maps.Map;
    Why3_Conf           : GNAT.Strings.String_Access;
    Why3_Debug          : GNAT.Strings.String_Access;
-   Why3_Logging        : Boolean := False;
    Why3_Stagger_Ms     : Natural := 0;
    Why3_Stagger_Window : Natural := 0;
-   Z3_Counterexample   : Boolean := False;
 
    type Spark_Reporter is new GPR2.Reporter.Console.Object with null record;
 
@@ -1597,19 +1596,13 @@ package body Configuration is
 
    begin
       --  package-internal global state
-      Debug_Save_VCs := Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
-      Debug_Prover_Errors :=
-        Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
       Copy_List (Selected_Files, File_List);
       Move_String
         (Parsed.Values (Sw_Generate_Manifest).String_Val, Generate_Manifest);
-      Replay := Parsed.Values (Sw_Replay).Boolean_Val;
       Move_String (Parsed.Values (Sw_Why3_Conf).String_Val, Why3_Conf);
       Move_String (Parsed.Values (Sw_Why3_Debug).String_Val, Why3_Debug);
-      Z3_Counterexample := Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
 
       --  CL_Switches state that's still used
-      Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
       Copy_List
         (Parsed.Values (Sw_SARIF_Base_URI).String_List_Val,
          CL_Switches.SARIF_Base_URIs);
@@ -4593,6 +4586,10 @@ package body Configuration is
            Parsed.Values (Sw_Debug_Disable_Prover_Feedback).Boolean_Val;
          Result.Debug_No_Cache_Output :=
            Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val;
+         Result.Debug_Prover_Errors :=
+           Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
+         Result.Debug_Save_VCs :=
+           Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
          Result.Exclude_Line :=
            To_Unbounded_String (Switch_String (Parsed, Sw_Exclude_Line));
          Result.Flow_Extra_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
@@ -4620,8 +4617,11 @@ package body Configuration is
            Parsed.Values (Sw_No_Subprojects).Boolean_Val;
          Result.Output_Header := Parsed.Values (Sw_Output_Header).Boolean_Val;
          Result.U := Parsed.Values (Sw_U).Boolean_Val;
+         Result.Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
          Result.Why3_Server :=
            To_Unbounded_String (Switch_String (Parsed, Sw_Why3_Server));
+         Result.Z3_Counterexample :=
+           Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
 
          Result.Debug :=
            Parsed.Values (Sw_D).Boolean_Val or Result.Flow_Extra_Debug;
@@ -6009,7 +6009,7 @@ package body Configuration is
          Args.Append ("--debug");
       end if;
 
-      if Debug_Save_VCs then
+      if Invocation_State.Debug_Save_VCs then
          Args.Append ("--debug-save-vcs");
       end if;
 
@@ -6021,7 +6021,7 @@ package body Configuration is
          Args.Append ("--prove-all");
       end if;
 
-      if Replay then
+      if Invocation_State.File_Options.Replay then
          Args.Append ("--replay");
       end if;
 
@@ -6091,7 +6091,7 @@ package body Configuration is
          end if;
       end if;
 
-      if Z3_Counterexample then
+      if Invocation_State.Z3_Counterexample then
          Args.Append ("--ce-prover");
          Args.Append ("z3_ce");
       end if;
@@ -6108,11 +6108,11 @@ package body Configuration is
          Args.Append (Image (FS.Proof_Warn_Timeout, 1));
       end if;
 
-      if Debug_Prover_Errors then
+      if Invocation_State.Debug_Prover_Errors then
          Args.Append ("--debug-prover-errors");
       end if;
 
-      if Why3_Logging then
+      if Invocation_State.Why3_Logging then
          Args.Append ("--logging");
       end if;
 
