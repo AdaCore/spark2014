@@ -145,14 +145,19 @@ package body Configuration is
    end record;
 
    type Invocation_Configuration is record
-      File_Options     : File_Specific_Invocation_Options;
-      Selection        : File_Selection;
-      Checks_As_Errors : Boolean := False;
-      Debug            : Boolean := False;
-      Debug_Exec_RAC   : Boolean := False;
-      Only_Given       : Boolean := False;
-      Parallel         : Natural := 0;
-      Use_Semaphores   : Boolean := False;
+      File_Options      : File_Specific_Invocation_Options;
+      Selection         : File_Selection;
+      All_Projects      : Boolean := False;
+      Checks_As_Errors  : Boolean := False;
+      Continue_On_Error : Boolean := False;
+      Debug             : Boolean := False;
+      Debug_Exec_RAC    : Boolean := False;
+      Flow_Extra_Debug  : Boolean := False;
+      Force             : Boolean := False;
+      IDE_Mode          : Boolean := False;
+      Only_Given        : Boolean := False;
+      Parallel          : Natural := 0;
+      Use_Semaphores    : Boolean := False;
    end record;
    --  Other invocation settings are still published as separate globals
 
@@ -162,12 +167,22 @@ package body Configuration is
      Default_Invocation'Access;
    --  Replaced once with the completed invocation; consumers cannot modify it
 
+   function All_Projects return Boolean
+   is (Invocation_State.All_Projects);
    function Checks_As_Errors return Boolean
    is (Invocation_State.Checks_As_Errors);
+   function Continue_On_Error return Boolean
+   is (Invocation_State.Continue_On_Error);
    function Debug return Boolean
    is (Invocation_State.Debug);
    function Debug_Exec_RAC return Boolean
    is (Invocation_State.Debug_Exec_RAC);
+   function Flow_Extra_Debug return Boolean
+   is (Invocation_State.Flow_Extra_Debug);
+   function Force return Boolean
+   is (Invocation_State.Force);
+   function IDE_Mode return Boolean
+   is (Invocation_State.IDE_Mode);
    function Only_Given return Boolean
    is (Invocation_State.Only_Given);
    function Parallel return Integer
@@ -1518,13 +1533,6 @@ package body Configuration is
       Move_String (Parsed.Values (Sw_Why3_Conf).String_Val, Why3_Conf);
       Move_String (Parsed.Values (Sw_Why3_Debug).String_Val, Why3_Debug);
       Z3_Counterexample := Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
-
-      --  public global state
-      Flow_Extra_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
-      IDE_Mode := Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
-      All_Projects := Parsed.Values (Sw_UU).Boolean_Val;
-      Continue_On_Error := Parsed.Values (Sw_K).Boolean_Val;
-      Force := Parsed.Values (Sw_F).Boolean_Val;
 
       --  CL_Switches state that's still used
       CL_Switches.Assumptions := Parsed.Values (Sw_Assumptions).Boolean_Val;
@@ -4537,10 +4545,14 @@ package body Configuration is
          Sanity_Checking (Parsed);
 
          Result.File_Options := File_Specific_Options_From_Invocation (Parsed);
+         Result.All_Projects := Parsed.Values (Sw_UU).Boolean_Val;
+         Result.Continue_On_Error := Parsed.Values (Sw_K).Boolean_Val;
+         Result.Flow_Extra_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
+         Result.Force := Parsed.Values (Sw_F).Boolean_Val;
+         Result.IDE_Mode := Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
 
          Result.Debug :=
-           Parsed.Values (Sw_D).Boolean_Val
-           or Parsed.Values (Sw_Flow_Debug).Boolean_Val;
+           Parsed.Values (Sw_D).Boolean_Val or Result.Flow_Extra_Debug;
          Result.Debug_Exec_RAC :=
            Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
 

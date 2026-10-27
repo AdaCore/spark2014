@@ -147,11 +147,26 @@ package Configuration is
    function Checks_As_Errors return Boolean;
    --  Whether unproved checks cause a failure exit status
 
+   function All_Projects return Boolean;
+   --  Whether -U was specified
+
+   function Continue_On_Error return Boolean;
+   --  Whether -k was specified
+
    function Debug return Boolean;
    --  Whether debugging is enabled
 
    function Debug_Exec_RAC return Boolean;
    --  Whether to debug RAC execution
+
+   function Flow_Extra_Debug return Boolean;
+   --  Whether --flow-debug was specified
+
+   function Force return Boolean;
+   --  Whether -f was specified
+
+   function IDE_Mode return Boolean;
+   --  Whether --ide-progress-bar was specified
 
    function Only_Given return Boolean;
    --  Whether -u or a file-selecting limit switch was given
@@ -162,12 +177,7 @@ package Configuration is
    function Use_Semaphores return Boolean;
    --  Whether gnatwhy3 processes are limited by a semaphore
 
-   All_Projects      : Boolean := False;  --  -U
-   Continue_On_Error : Boolean := False;  --  -k
-   Flow_Extra_Debug  : Boolean := False;  --  --flow-debug
-   Force             : Boolean := False;  --  -f
-   IDE_Mode          : Boolean := False;  --  --ide-progress-bar
-   Verbosity         : Verbosity_Choice := Normal_Level;
+   Verbosity : Verbosity_Choice := Normal_Level;
 
    type File_Specific is record
       Proof                 : Proof_Mode;
