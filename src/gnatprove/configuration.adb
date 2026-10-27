@@ -3984,6 +3984,10 @@ package body Configuration is
         (Switches : out String_Lists.List; GnateT : out Unbounded_String);
       --  Initialize settings derived from the root project.
 
+      procedure Collect_Invocation_Switches
+        (Parsed : Parsed_Switches; Result : in out Invocation_Configuration);
+      --  Copy effective switches that need no further interpretation
+
       procedure Postprocess_Invocation
         (Parsed : Parsed_Switches; Result : out Invocation_Configuration);
       --  Interpret the effective switches from the root project's attributes
@@ -4560,15 +4564,13 @@ package body Configuration is
          end loop;
       end Parse_Analysis_Attributes;
 
-      ----------------------------
-      -- Postprocess_Invocation --
-      ----------------------------
+      ---------------------------------
+      -- Collect_Invocation_Switches --
+      ---------------------------------
 
-      procedure Postprocess_Invocation
-        (Parsed : Parsed_Switches; Result : out Invocation_Configuration) is
+      procedure Collect_Invocation_Switches
+        (Parsed : Parsed_Switches; Result : in out Invocation_Configuration) is
       begin
-         Sanity_Checking (Parsed);
-
          Result.File_Options := File_Specific_Options_From_Invocation (Parsed);
          Result.All_Projects := Parsed.Values (Sw_UU).Boolean_Val;
          Result.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
@@ -4624,6 +4626,19 @@ package body Configuration is
            To_Unbounded_String (Switch_String (Parsed, Sw_Why3_Server));
          Result.Z3_Counterexample :=
            Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
+
+      end Collect_Invocation_Switches;
+
+      ----------------------------
+      -- Postprocess_Invocation --
+      ----------------------------
+
+      procedure Postprocess_Invocation
+        (Parsed : Parsed_Switches; Result : out Invocation_Configuration) is
+      begin
+         Sanity_Checking (Parsed);
+
+         Collect_Invocation_Switches (Parsed, Result);
 
          Result.Debug :=
            Parsed.Values (Sw_D).Boolean_Val or Result.Flow_Extra_Debug;
