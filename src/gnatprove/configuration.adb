@@ -3899,9 +3899,11 @@ package body Configuration is
       procedure Parse_Analysis_Attributes
         (Command_Line       : Parsed_Switches;
          Root_Attributes    : Parsed_Switches;
-         Invocation_Options : File_Specific_Invocation_Options);
+         Invocation_Options : File_Specific_Invocation_Options;
+         Maximum_Mode       : out GP_Mode);
       --  Parse the Switches and Proof_Switches attributes in project files.
       --  The regular command line is needed to interpret them properly.
+      --  Maximum_Mode combines the modes of all processed file settings.
 
       procedure Detect_Installed_Provers;
       --  Set the availability of supported provers based on PATH.
@@ -4290,9 +4292,38 @@ package body Configuration is
       procedure Parse_Analysis_Attributes
         (Command_Line       : Parsed_Switches;
          Root_Attributes    : Parsed_Switches;
-         Invocation_Options : File_Specific_Invocation_Options)
+         Invocation_Options : File_Specific_Invocation_Options;
+         Maximum_Mode       : out GP_Mode)
       is
          use type Project.View.Object;
+
+         procedure Include_Mode (File_Mode : GP_Mode);
+         --  Include File_Mode in the maximum mode seen during traversal.
+         --  The ordering is Check < Check_All < Flow | Prove < All.
+
+         ------------------
+         -- Include_Mode --
+         ------------------
+
+         procedure Include_Mode (File_Mode : GP_Mode) is
+         begin
+            if Maximum_Mode = GPM_All then
+               null;
+            elsif (Maximum_Mode = GPM_Flow
+                   and then File_Mode in GPM_Prove | GPM_All)
+              or else
+                (Maximum_Mode = GPM_Prove
+                 and then File_Mode in GPM_Flow | GPM_All)
+            then
+               Maximum_Mode := GPM_All;
+            elsif Maximum_Mode = GPM_Check_All
+              and then File_Mode in GPM_Prove | GPM_Flow | GPM_All
+            then
+               Maximum_Mode := File_Mode;
+            elsif Maximum_Mode = GPM_Check then
+               Maximum_Mode := File_Mode;
+            end if;
+         end Include_Mode;
 
          procedure Expand_Ada_Switches (View : Project.View.Object);
          --  Replace the "Ada" section of the File_Specific_Map by entries for
@@ -4322,6 +4353,7 @@ package body Configuration is
 
          First : Boolean := True;
       begin
+         Maximum_Mode := GPM_Check;
 
          for Cursor in
            Tree.Iterate
@@ -4389,6 +4421,7 @@ package body Configuration is
                   Merge_Parsed_Switches (Effective, Command_Line);
                   File_Specific_Postprocess
                     (Effective, Invocation_Options, FS);
+                  Include_Mode (FS.Mode);
                end;
                File_Specific_Map.Include ("Ada", FS);
                Has_Coq_Prover := Case_Insensitive_Contains (FS.Provers, "coq");
@@ -4429,6 +4462,7 @@ package body Configuration is
                         Merge_Parsed_Switches (Effective, Command_Line);
                         File_Specific_Postprocess
                           (Effective, Invocation_Options, FS);
+                        Include_Mode (FS.Mode);
                         File_Specific_Map.Include
                           (Source_Key (View, Attr.Index.Text), FS);
                      end;
@@ -4951,24 +4985,6 @@ package body Configuration is
          else
             Abort_Msg ("error: wrong argument for --mode", With_Help => False);
          end if;
-
-         --  Update mode to the highest we have seen
-         --  This follows the logic that Check < Check_All < Flow | Proof <
-         --  All.
-
-         if Mode = GPM_All then
-            null;
-         elsif (Mode = GPM_Flow and then FS.Mode in GPM_Prove | GPM_All)
-           or else (Mode = GPM_Prove and then FS.Mode in GPM_Flow | GPM_All)
-         then
-            Mode := GPM_All;
-         elsif Mode = GPM_Check_All
-           and then FS.Mode in GPM_Prove | GPM_Flow | GPM_All
-         then
-            Mode := FS.Mode;
-         elsif Mode = GPM_Check then
-            Mode := FS.Mode;
-         end if;
       end Set_Mode;
 
       ---------------------
@@ -5347,15 +5363,18 @@ package body Configuration is
       begin
          Postprocess_Invocation (Invocation_Switches, Selection);
          declare
-            Invocation : constant Invocation_Configuration :=
+            Invocation   : constant Invocation_Configuration :=
               (File_Options =>
                  File_Specific_Options_From_Invocation (Invocation_Switches),
                Selection    => Selection);
+            Maximum_Mode : GP_Mode;
          begin
             Parse_Analysis_Attributes
               (Command_Line_Switches,
                Root_Attribute_Switches,
-               Invocation.File_Options);
+               Invocation.File_Options,
+               Maximum_Mode);
+            Mode := Maximum_Mode;
 
             Verbosity := Parse_Result.Verbosity;
 
