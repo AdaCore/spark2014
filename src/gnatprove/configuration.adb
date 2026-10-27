@@ -1030,10 +1030,6 @@ package body Configuration is
    Current_Parsed_Switches : Parsed_Switches_Access := null;
    --  Temporary target for GNAT.Command_Line callbacks during Parse_Switches
 
-   procedure Copy_To_CL_Switches
-     (Parsed : Parsed_Switches; Selected_Files : String_Lists.List);
-   --  Copy parsed switch values into CL_Switches for existing consumers
-
    procedure Merge_Parsed_Switches
      (Base : in out Parsed_Switches; Over : Parsed_Switches);
    --  Merge Over onto Base using command-line precedence semantics
@@ -1566,42 +1562,6 @@ package body Configuration is
 
       Append_List (Over.File_List, Base.File_List);
    end Merge_Parsed_Switches;
-
-   ---------------------------
-   -- Copy_To_CL_Switches --
-   ---------------------------
-
-   procedure Copy_To_CL_Switches
-     (Parsed : Parsed_Switches; Selected_Files : String_Lists.List)
-   is
-      procedure Copy_List
-        (Source : String_Lists.List; Target : in out String_Lists.List);
-      --  Replace Target with Source
-
-      ---------------
-      -- Copy_List --
-      ---------------
-
-      procedure Copy_List
-        (Source : String_Lists.List; Target : in out String_Lists.List) is
-      begin
-         Target.Clear;
-         for Element of Source loop
-            Target.Append (Element);
-         end loop;
-      end Copy_List;
-
-   begin
-      --  package-internal global state
-      Copy_List (Selected_Files, File_List);
-
-      for WK in Misc_Warning_Kind loop
-         Configuration.Warning_Status (WK) :=
-           (if Parsed.Warning_Status (WK) /= WS_None
-            then Parsed.Warning_Status (WK)
-            else VC_Kinds.Warning_Status (WK));
-      end loop;
-   end Copy_To_CL_Switches;
 
    ----------------------------
    -- Create_Dir_And_Parents --
@@ -5532,9 +5492,8 @@ package body Configuration is
                Maximum_Mode);
             Mode := Maximum_Mode;
 
-            --  Publish the final invocation settings for legacy consumers
-            Copy_To_CL_Switches
-              (Invocation_Switches, Invocation.Selection.Files);
+            --  File names are resolved against the project tree below
+            File_List := Invocation.Selection.Files;
          end;
       end;
 

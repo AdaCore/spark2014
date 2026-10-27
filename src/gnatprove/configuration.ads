@@ -131,7 +131,6 @@ package Configuration is
    Mode               : GP_Mode := GPM_Check;
    Max_Why3_Processes : Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
-   Warning_Status     : Warning_Status_Array := VC_Kinds.Warning_Status;
    Has_Manual_Prover  : Boolean;
    Has_Coq_Prover     : Boolean;
    CL_Units           : GPR2.Build.Compilation_Unit.Maps.Map;
