@@ -131,26 +131,49 @@ package body Configuration is
         Equivalent_Keys => "=",
         "="             => Manifest_Subprogram_Vectors."=");
 
-   --  Published invocation settings exposed through read-only queries
-   Checks_As_Errors_Value : Boolean := False;
-   Debug_Value            : Boolean := False;
-   Debug_Exec_RAC_Value   : Boolean := False;
-   Only_Given_Value       : Boolean := False;
-   Parallel_Value         : Integer := 0;
-   Use_Semaphores_Value   : Boolean := False;
+   type File_Selection is record
+      Files       : String_Lists.List;
+      Limit_Lines : String_Lists.List;
+   end record;
+   --  Requested files, including those derived from limit switches, and the
+   --  validated line specifications. Project-based resolution happens later.
+
+   type File_Specific_Invocation_Options is record
+      No_Global_Generation : Boolean := False;
+      Output_Msg_Only      : Boolean := False;
+      Replay               : Boolean := False;
+   end record;
+
+   type Invocation_Configuration is record
+      File_Options     : File_Specific_Invocation_Options;
+      Selection        : File_Selection;
+      Checks_As_Errors : Boolean := False;
+      Debug            : Boolean := False;
+      Debug_Exec_RAC   : Boolean := False;
+      Only_Given       : Boolean := False;
+      Parallel         : Natural := 0;
+      Use_Semaphores   : Boolean := False;
+   end record;
+   --  Other invocation settings are still published as separate globals
+
+   Default_Invocation : aliased constant Invocation_Configuration :=
+     (others => <>);
+   Invocation_State   : access constant Invocation_Configuration :=
+     Default_Invocation'Access;
+   --  Replaced once with the completed invocation; consumers cannot modify it
 
    function Checks_As_Errors return Boolean
-   is (Checks_As_Errors_Value);
+   is (Invocation_State.Checks_As_Errors);
    function Debug return Boolean
-   is (Debug_Value);
+   is (Invocation_State.Debug);
    function Debug_Exec_RAC return Boolean
-   is (Debug_Exec_RAC_Value);
+   is (Invocation_State.Debug_Exec_RAC);
    function Only_Given return Boolean
-   is (Only_Given_Value);
+   is (Invocation_State.Only_Given);
    function Parallel return Integer
-   is (Parallel_Value);
+   is (Invocation_State.Parallel);
    function Use_Semaphores return Boolean
-   is (Use_Semaphores_Value);
+   is (Invocation_State.Use_Semaphores);
 
    --  Private global state to replace public state from CL_Switches
    Debug_Save_VCs      : Boolean := False;
@@ -3887,33 +3910,6 @@ package body Configuration is
 
    procedure Read_Command_Line (Tree : out Project.Tree.Object) is
 
-      type File_Selection is record
-         Files       : String_Lists.List;
-         Limit_Lines : String_Lists.List;
-      end record;
-      --  Requested files, including those derived from limit switches, and the
-      --  validated line specifications. Project-based resolution happens
-      --  later.
-
-      type File_Specific_Invocation_Options is record
-         No_Global_Generation : Boolean;
-         Output_Msg_Only      : Boolean;
-         Replay               : Boolean;
-      end record;
-
-      type Invocation_Configuration is record
-         File_Options     : File_Specific_Invocation_Options;
-         Selection        : File_Selection;
-         Checks_As_Errors : Boolean;
-         Debug            : Boolean;
-         Debug_Exec_RAC   : Boolean;
-         Only_Given       : Boolean;
-         Parallel         : Integer;
-         Use_Semaphores   : Boolean;
-      end record;
-      --  Invocation-wide results needed by project traversal and file
-      --  selection. Other invocation settings are still published as globals.
-
       function File_Specific_Options_From_Invocation
         (Invocation : Parsed_Switches) return File_Specific_Invocation_Options;
       --  Extract file-specific options from merged invocation switches.
@@ -4535,7 +4531,7 @@ package body Configuration is
          elsif Parsed.Values (Sw_J).Integer_Val < 0 then
             Abort_Msg ("error: wrong argument for -j", With_Help => False);
          else
-            Result.Parallel := Parsed.Values (Sw_J).Integer_Val;
+            Result.Parallel := Natural (Parsed.Values (Sw_J).Integer_Val);
          end if;
 
          --  Validate the staggering switches before converting them to
@@ -5397,12 +5393,7 @@ package body Configuration is
             Invocation   : constant Invocation_Configuration := Result;
             Maximum_Mode : GP_Mode;
          begin
-            Checks_As_Errors_Value := Invocation.Checks_As_Errors;
-            Debug_Value := Invocation.Debug;
-            Debug_Exec_RAC_Value := Invocation.Debug_Exec_RAC;
-            Only_Given_Value := Invocation.Only_Given;
-            Parallel_Value := Invocation.Parallel;
-            Use_Semaphores_Value := Invocation.Use_Semaphores;
+            Invocation_State := new Invocation_Configuration'(Invocation);
 
             Parse_Analysis_Attributes
               (Command_Line_Switches,
