@@ -195,8 +195,7 @@ package body Gnat2Why.Subprograms is
    function Compute_Cases_Others_Expr
      (Aggr : Node_Id; Guard_Map : Ada_Node_To_Why_Id.Map) return W_Term_Id;
    --  Return the Why3 expression that should be used to define the identifier
-   --  for the others case in Aggr. If there is no "others" case, return
-   --  Why_Empty.
+   --  for the others case in Aggr, which must contain an "others" case.
 
    function Compute_Exit_Cases_Simple_Checks
      (E : Entity_Id; Name : Name_Id; Guard_Map : Ada_Node_To_Why_Id.Map)
@@ -1745,8 +1744,20 @@ package body Gnat2Why.Subprograms is
                   --  If Write_Id is in the symbol table, use this mapping
 
                   if Ada_Ent_To_Why.Has_Element (Cu) then
+                     --  Ordinary callbacks cannot have global effects, and
+                     --  higher-order specializations cannot have global
+                     --  outputs. Handler compatibility checks do not compute
+                     --  call effects because handlers cannot have
+                     --  postconditions.
+
+                     pragma
+                       Annotate
+                         (Xcov,
+                          Exempt_On,
+                          "No supported caller writes a mapped opaque global");
                      Effects_Append_Binder_To_Writes
                        (Eff, Ada_Ent_To_Why.Element (Cu));
+                     pragma Annotate (Xcov, Exempt_Off);
 
                   --  Otherwise, use the id name
 
@@ -2641,12 +2652,8 @@ package body Gnat2Why.Subprograms is
 
       Contract_Case := Last (Component_Associations (Aggr));
       Case_Guard := First (Choice_List (Contract_Case));
-
-      if Nkind (Case_Guard) = N_Others_Choice then
-         Prev (Contract_Case);
-      else
-         return Why_Empty;
-      end if;
+      pragma Assert (Nkind (Case_Guard) = N_Others_Choice);
+      Prev (Contract_Case);
 
       while Present (Contract_Case) loop
          Case_Guard := First (Choice_List (Contract_Case));
