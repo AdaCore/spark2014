@@ -1,4 +1,3 @@
 gen.ads:6:25: info: initialization of "R" proved, in instantiation at inst.ads:10
 gen.ads:7:12: info: data dependencies proved, in instantiation at inst.ads:10
-main.adb:7:19: info: initialization of "R" proved
-main.adb:9:12: info: data dependencies proved <-- WRONG The contract is inaccurate
+main.adb:14:11: high: "Real_Time.Clock_Time" must be listed in the Global aspect of "Sub" (SPARK RM 6.1.4(15))
