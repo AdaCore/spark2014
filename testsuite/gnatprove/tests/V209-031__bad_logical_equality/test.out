@@ -7,4 +7,6 @@ bad_logical_equal.adb:21:13: error: Entity parameter of a pragma Logical_Equal s
 bad_logical_equal.adb:24:13: error: Entity parameter of a pragma Logical_Equal shall not have post-conditions
 bad_logical_equal.adb:29:13: error: Entity parameter of a pragma Logical_Equal shall not have post-conditions
 bad_logical_equal.adb:35:13: error: Entity parameter of a pragma Logical_Equal shall not access any global data
+bad_logical_equal.adb:44:13: error: both parameters of a logical equality function shall have the same relaxed initialization status
+bad_logical_equal.adb:49:13: error: both parameters of a logical equality function shall have the same relaxed initialization status
 gnatprove: error during flow analysis and proof

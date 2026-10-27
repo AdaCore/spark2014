@@ -1,0 +1,20 @@
+main.adb:12:13: info: data dependencies proved
+main.adb:20:22: info: assertion proved (CVC5: 2 VC)
+main.adb:21:22: info: assertion proved (CVC5: 2 VC)
+main.adb:23:25: info: assertion proved (CVC5: 1 VC)
+main.adb:25:25: info: assertion proved (CVC5: 1 VC)
+main.adb:30:13: info: data dependencies proved
+main.adb:33:14: info: postcondition proved (CVC5: 4 VC)
+main.adb:48:13: info: data dependencies proved
+main.adb:50:14: info: postcondition proved (CVC5: 2 VC)
+main.adb:62:13: info: data dependencies proved
+main.adb:68:22: info: assertion proved (CVC5: 2 VC)
+main.adb:72:13: info: data dependencies proved
+main.adb:75:14: info: postcondition proved (CVC5: 2 VC)
+main.adb:87:13: info: data dependencies proved
+main.adb:93:22: info: assertion proved (CVC5: 2 VC)
+main.adb:97:13: info: data dependencies proved
+main.adb:100:14: info: postcondition proved (CVC5: 2 VC)
+main.adb:113:13: info: implicit aspect Always_Terminates on "Wrapped_Eq" has been proved, subprogram will terminate
+main.adb:117:13: info: data dependencies proved
+main.adb:132:10: medium: assertion might fail
