@@ -3880,6 +3880,13 @@ package body Configuration is
          Replay               : Boolean;
       end record;
 
+      type Invocation_Configuration is record
+         File_Options : File_Specific_Invocation_Options;
+         Selection    : File_Selection;
+      end record;
+      --  Invocation-wide results needed by project traversal and file
+      --  selection. Other invocation settings are still published as globals.
+
       function File_Specific_Options_From_Invocation
         (Invocation : Parsed_Switches) return File_Specific_Invocation_Options;
       --  Extract file-specific options from merged invocation switches.
@@ -3905,7 +3912,7 @@ package body Configuration is
       procedure Postprocess_Invocation
         (Parsed : Parsed_Switches; Selection : out File_Selection);
       --  Interpret the effective switches from the root project's attributes
-      --  and the command line, setting invocation-wide GNATprove state.
+      --  and the command line. Some settings are still written to globals.
 
       procedure Warn_And_Strip_Non_Root_Invocation_Switches
         (View           : Project.View.Object;
@@ -4545,6 +4552,7 @@ package body Configuration is
 
          Use_Semaphores :=
            not Debug and then not Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
+
       end Postprocess_Invocation;
 
       ----------------------------
@@ -5335,21 +5343,27 @@ package body Configuration is
       Merge_Parsed_Switches (Invocation_Switches, Command_Line_Switches);
 
       declare
-         Invocation_Options : constant File_Specific_Invocation_Options :=
-           File_Specific_Options_From_Invocation (Invocation_Switches);
-         Selection          : File_Selection;
+         Selection : File_Selection;
       begin
          Postprocess_Invocation (Invocation_Switches, Selection);
-         Parse_Analysis_Attributes
-           (Command_Line_Switches,
-            Root_Attribute_Switches,
-            Invocation_Options);
+         declare
+            Invocation : constant Invocation_Configuration :=
+              (File_Options =>
+                 File_Specific_Options_From_Invocation (Invocation_Switches),
+               Selection    => Selection);
+         begin
+            Parse_Analysis_Attributes
+              (Command_Line_Switches,
+               Root_Attribute_Switches,
+               Invocation.File_Options);
 
-         Verbosity := Parse_Result.Verbosity;
+            Verbosity := Parse_Result.Verbosity;
 
-         --  Publish the final invocation settings for legacy consumers
-         Copy_To_CL_Switches (Invocation_Switches, Selection.Files);
-         Limit_Lines := Selection.Limit_Lines;
+            --  Publish the final invocation settings for legacy consumers
+            Copy_To_CL_Switches
+              (Invocation_Switches, Invocation.Selection.Files);
+            Limit_Lines := Invocation.Selection.Limit_Lines;
+         end;
       end;
 
       --  ??? Need to move the proof manifest to the per-project part of
