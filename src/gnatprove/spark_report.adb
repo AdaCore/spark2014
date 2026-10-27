@@ -124,11 +124,11 @@ package body Spark_Report is
       Assumptions        : constant Boolean := CL_Switches.Assumptions;
       Output_Header      : constant Boolean := CL_Switches.Output_Header;
       Has_Limit_Switches : constant Boolean :=
-        not Null_Or_Empty_String (CL_Switches.Limit_Name)
-        or else not Null_Or_Empty_String (CL_Switches.Limit_Subp)
-        or else not Null_Or_Empty_String (CL_Switches.Limit_Line)
-        or else not Null_Or_Empty_String (CL_Switches.Limit_Lines)
-        or else not Null_Or_Empty_String (CL_Switches.Limit_Region);
+        CL_Switches.Limit_Name /= ""
+        or else CL_Switches.Limit_Subp /= ""
+        or else CL_Switches.Limit_Line /= ""
+        or else CL_Switches.Limit_Lines /= ""
+        or else CL_Switches.Limit_Region /= "";
       Colors             : constant Boolean :=
         Configuration.Output = GPO_Pretty_Color;
 

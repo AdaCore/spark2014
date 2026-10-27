@@ -129,9 +129,9 @@ package body Gnat2Why_Opts.Writing is
 
       if Phase = Translation then
          Hash (Limit_Units_Name, Boolean'Image (CL_Switches.U));
-         Hash (Limit_Subp_Name, CL_Switches.Limit_Subp.all);
-         Hash (Limit_Region_Name, CL_Switches.Limit_Region.all);
-         Hash (Limit_Name_Name, CL_Switches.Limit_Name.all);
+         Hash (Limit_Subp_Name, CL_Switches.Limit_Subp);
+         Hash (Limit_Region_Name, CL_Switches.Limit_Region);
+         Hash (Limit_Name_Name, CL_Switches.Limit_Name);
          Hash (Limit_Lines_Name, Limit_Lines);
          Hash
            (Report_Mode_Name, Gnat2Why_Opts.Report_Mode_Type'Image (Report));
@@ -325,9 +325,9 @@ package body Gnat2Why_Opts.Writing is
          --  Options needed only in phase 2
          if Phase = Translation then
             Set_Field (Obj, Limit_Units_Name, CL_Switches.U);
-            Set_Field (Obj, Limit_Subp_Name, CL_Switches.Limit_Subp.all);
-            Set_Field (Obj, Limit_Region_Name, CL_Switches.Limit_Region.all);
-            Set_Field (Obj, Limit_Name_Name, CL_Switches.Limit_Name.all);
+            Set_Field (Obj, Limit_Subp_Name, CL_Switches.Limit_Subp);
+            Set_Field (Obj, Limit_Region_Name, CL_Switches.Limit_Region);
+            Set_Field (Obj, Limit_Name_Name, CL_Switches.Limit_Name);
             Set_Field (Obj, Limit_Lines_Name, To_JSON (Limit_Lines));
 
             Set_Field

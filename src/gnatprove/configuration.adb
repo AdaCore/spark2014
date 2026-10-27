@@ -161,6 +161,11 @@ package body Configuration is
       Flow_Show_GG                  : Boolean := False;
       Force                         : Boolean := False;
       IDE_Mode                      : Boolean := False;
+      Limit_Line                    : Unbounded_String;
+      Limit_Lines                   : Unbounded_String;
+      Limit_Name                    : Unbounded_String;
+      Limit_Region                  : Unbounded_String;
+      Limit_Subp                    : Unbounded_String;
       No_Subprojects                : Boolean := False;
       Only_Given                    : Boolean := False;
       Output                        : Output_Mode_Type := GPO_Pretty_Simple;
@@ -192,6 +197,16 @@ package body Configuration is
       is (Invocation_State.Debug_No_Cache_Output);
       function Flow_Show_GG return Boolean
       is (Invocation_State.Flow_Show_GG);
+      function Limit_Line return String
+      is (To_String (Invocation_State.Limit_Line));
+      function Limit_Lines return String
+      is (To_String (Invocation_State.Limit_Lines));
+      function Limit_Name return String
+      is (To_String (Invocation_State.Limit_Name));
+      function Limit_Region return String
+      is (To_String (Invocation_State.Limit_Region));
+      function Limit_Subp return String
+      is (To_String (Invocation_State.Limit_Subp));
       function No_Global_Generation return Boolean
       is (Invocation_State.File_Options.No_Global_Generation);
       function No_Subprojects return Boolean
@@ -1578,16 +1593,6 @@ package body Configuration is
       --  CL_Switches state that's still used
       Move_String
         (Parsed.Values (Sw_Exclude_Line).String_Val, CL_Switches.Exclude_Line);
-      Move_String
-        (Parsed.Values (Sw_Limit_Line).String_Val, CL_Switches.Limit_Line);
-      Move_String
-        (Parsed.Values (Sw_Limit_Lines).String_Val, CL_Switches.Limit_Lines);
-      Move_String
-        (Parsed.Values (Sw_Limit_Name).String_Val, CL_Switches.Limit_Name);
-      Move_String
-        (Parsed.Values (Sw_Limit_Region).String_Val, CL_Switches.Limit_Region);
-      Move_String
-        (Parsed.Values (Sw_Limit_Subp).String_Val, CL_Switches.Limit_Subp);
       Move_String
         (Parsed.Values (Sw_Memcached_Server).String_Val,
          CL_Switches.Memcached_Server);
@@ -4587,6 +4592,16 @@ package body Configuration is
          Result.Flow_Show_GG := Parsed.Values (Sw_Flow_Show_GG).Boolean_Val;
          Result.Force := Parsed.Values (Sw_F).Boolean_Val;
          Result.IDE_Mode := Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
+         Result.Limit_Line :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Line));
+         Result.Limit_Lines :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Lines));
+         Result.Limit_Name :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Name));
+         Result.Limit_Region :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Region));
+         Result.Limit_Subp :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Subp));
          Result.No_Subprojects :=
            Parsed.Values (Sw_No_Subprojects).Boolean_Val;
          Result.Output_Header := Parsed.Values (Sw_Output_Header).Boolean_Val;
@@ -5998,18 +6013,18 @@ package body Configuration is
       Args.Append ("-j");
       Args.Append (Image (Parallel, 1));
 
-      if CL_Switches.Limit_Line.all /= "" then
+      if CL_Switches.Limit_Line /= "" then
          Args.Append ("--limit-line");
-         Args.Append (CL_Switches.Limit_Line.all);
+         Args.Append (CL_Switches.Limit_Line);
       end if;
 
-      if CL_Switches.Limit_Lines.all /= "" then
+      if CL_Switches.Limit_Lines /= "" then
          Args.Append ("--limit-lines");
-         Args.Append (Ada.Directories.Full_Name (CL_Switches.Limit_Lines.all));
+         Args.Append (Ada.Directories.Full_Name (CL_Switches.Limit_Lines));
       end if;
-      if CL_Switches.Limit_Region.all /= "" then
+      if CL_Switches.Limit_Region /= "" then
          Args.Append ("--limit-region");
-         Args.Append (CL_Switches.Limit_Region.all);
+         Args.Append (CL_Switches.Limit_Region);
       end if;
 
       if Proof_Dir /= null then

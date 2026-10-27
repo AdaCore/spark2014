@@ -99,11 +99,11 @@ package Configuration is
       Gnattest_Values     : aliased GNAT.Strings.String_Access;
       SARIF_Base_URIs     : String_Lists.List;
       --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
-      Limit_Line          : aliased GNAT.Strings.String_Access;
-      Limit_Lines         : aliased GNAT.Strings.String_Access;
-      Limit_Name          : aliased GNAT.Strings.String_Access;
-      Limit_Region        : aliased GNAT.Strings.String_Access;
-      Limit_Subp          : aliased GNAT.Strings.String_Access;
+      function Limit_Line return String;
+      function Limit_Lines return String;
+      function Limit_Name return String;
+      function Limit_Region return String;
+      function Limit_Subp return String;
       function No_Global_Generation return Boolean;
       function No_Subprojects return Boolean;
       function Output_Header return Boolean;
