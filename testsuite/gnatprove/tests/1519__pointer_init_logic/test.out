@@ -1,0 +1,21 @@
+split_pointer_init.adb:6:13: info: implicit aspect Always_Terminates on "Ready" has been proved, subprogram will terminate
+split_pointer_init.adb:7:13: info: implicit aspect Always_Terminates on "Is_Null" has been proved, subprogram will terminate
+split_pointer_init.adb:7:40: info: initialization check proved (CVC5: 1 VC)
+split_pointer_init.adb:10:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+split_pointer_init.adb:10:36: info: initialization check proved (CVC5: 1 VC)
+split_pointer_init.adb:10:38: info: initialization check proved (CVC5: 1 VC)
+split_pointer_init.adb:10:38: info: pointer dereference check proved (CVC5: 1 VC)
+split_pointer_init.adb:12:32: info: precondition proved (CVC5: 1 VC)
+split_pointer_init.adb:15:13: info: implicit aspect Always_Terminates on "Unguarded_Is_Null" has been proved, subprogram will terminate
+split_pointer_init.adb:15:50: medium: initialization check might fail [possible fix: subprogram at line 15 should mention P'Initialized in a precondition]
+split_pointer_init.adb:18:19: info: assertion proved (CVC5: 1 VC)
+split_pointer_init.adb:19:19: info: assertion proved (CVC5: 1 VC)
+split_pointer_init.adb:19:19: info: precondition proved (CVC5: 1 VC)
+split_pointer_init.adb:20:19: info: assertion proved (CVC5: 1 VC)
+split_pointer_init.adb:22:19: info: assertion proved (CVC5: 1 VC)
+split_pointer_init.adb:23:19: info: assertion proved (CVC5: 1 VC)
+split_pointer_init.adb:23:23: info: precondition proved (CVC5: 1 VC)
+split_pointer_init.adb:24:19: info: assertion proved (CVC5: 1 VC)
+split_pointer_init.adb:24:19: info: precondition proved (CVC5: 2 VC)
+split_pointer_init.adb:26:19: info: precondition proved (CVC5: 1 VC)
+split_pointer_init.adb:26:19: medium: assertion might fail

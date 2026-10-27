@@ -1,0 +1,20 @@
+boxed_records.adb:6:13: info: implicit aspect Always_Terminates on "Defaults" has been proved, subprogram will terminate
+boxed_records.adb:13:13: info: implicit aspect Always_Terminates on "Partial_Defaults" has been proved, subprogram will terminate
+boxed_records.adb:18:19: info: assertion proved (CVC5: 2 VC)
+boxed_records.adb:18:19: info: for mutable discriminants at boxed_records.adb:2
+boxed_records.adb:18:19: info: initialization check proved (CVC5: 1 VC)
+boxed_records.adb:19:19: info: assertion proved (CVC5: 1 VC)
+boxed_records.adb:19:19: info: for mutable discriminants at boxed_records.adb:2
+boxed_records.adb:19:19: info: initialization check proved (CVC5: 1 VC)
+boxed_records.adb:19:24: info: initialization check proved (CVC5: 1 VC)
+boxed_records.adb:20:19: info: assertion proved (CVC5: 1 VC)
+boxed_records.adb:21:19: info: assertion proved (CVC5: 1 VC)
+boxed_records.adb:21:19: info: for mutable discriminants at boxed_records.adb:8
+boxed_records.adb:21:19: info: initialization check proved (CVC5: 1 VC)
+boxed_records.adb:22:19: info: assertion proved (CVC5: 1 VC)
+boxed_records.adb:22:19: info: for mutable discriminants at boxed_records.adb:8
+boxed_records.adb:22:19: info: initialization check proved (CVC5: 1 VC)
+boxed_records.adb:22:24: info: initialization check proved (CVC5: 1 VC)
+boxed_records.adb:24:19: info: for mutable discriminants at boxed_records.adb:8
+boxed_records.adb:24:19: info: initialization check proved (CVC5: 1 VC)
+boxed_records.adb:24:19: medium: assertion might fail
