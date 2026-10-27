@@ -182,6 +182,7 @@ package body Configuration is
       Parallel                      : Natural := 0;
       Proof_Manifest_Path           : Unbounded_String;
       Report                        : Report_Mode_Type := GPR_Fail;
+      SARIF_Base_URIs               : String_Lists.List;
       U                             : Boolean := False;
       Use_Semaphores                : Boolean := False;
       Verbosity                     : Verbosity_Choice := Normal_Level;
@@ -201,6 +202,9 @@ package body Configuration is
    Invocation_State   : access constant Invocation_Configuration :=
      Default_Invocation'Access;
    --  Replaced once with the completed invocation; consumers cannot modify it
+
+   Resolved_SARIF_Base_URIs : String_Lists.List;
+   --  Validated invocation entries with the project-derived default added
 
    package body CL_Switches is
       function Benchmark return Boolean
@@ -239,6 +243,8 @@ package body Configuration is
       is (Invocation_State.No_Subprojects);
       function Output_Header return Boolean
       is (Invocation_State.Output_Header);
+      function SARIF_Base_URIs return String_Lists.List
+      is (Resolved_SARIF_Base_URIs);
       function U return Boolean
       is (Invocation_State.U);
       function Why3_Server return String
@@ -376,10 +382,11 @@ package body Configuration is
    --  At the same time we check if the unit/file name is unique in the case of
    --  an aggregate project. If it is not, an error is issued.
 
-   procedure Sanity_Check_SARIF_Base_URI (Tree : Project.Tree.Object);
-   --  Validate each entry in CL_Switches.SARIF_Base_URIs (must have the form
-   --  <id>:<path>). If no entry provides the %SRCROOT% identifier, append a
-   --  default one rooted at the project's root directory.
+   function Resolve_SARIF_Base_URIs
+     (Tree : Project.Tree.Object; Raw_URIs : String_Lists.List)
+      return String_Lists.List;
+   --  Validate each entry (which must have the form <id>:<path>). If no entry
+   --  provides %SRCROOT%, add a default rooted at the project's directory.
 
    procedure Produce_Version_Output;
    --  Print the version of gnatprove, why3 and shipped provers
@@ -1587,9 +1594,6 @@ package body Configuration is
    begin
       --  package-internal global state
       Copy_List (Selected_Files, File_List);
-      Copy_List
-        (Parsed.Values (Sw_SARIF_Base_URI).String_List_Val,
-         CL_Switches.SARIF_Base_URIs);
 
       for WK in Misc_Warning_Kind loop
          Configuration.Warning_Status (WK) :=
@@ -4611,6 +4615,8 @@ package body Configuration is
          Result.Output_Header := Parsed.Values (Sw_Output_Header).Boolean_Val;
          Result.Proof_Manifest_Path :=
            To_Unbounded_String (Switch_String (Parsed, Sw_Proof_Manifest));
+         Result.SARIF_Base_URIs :=
+           Parsed.Values (Sw_SARIF_Base_URI).String_List_Val;
          Result.U := Parsed.Values (Sw_U).Boolean_Val;
          Result.Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
          Result.Why3_Conf :=
@@ -5576,7 +5582,8 @@ package body Configuration is
          end if;
       end;
       Sanitize_File_List (Tree);
-      Sanity_Check_SARIF_Base_URI (Tree);
+      Resolved_SARIF_Base_URIs :=
+        Resolve_SARIF_Base_URIs (Tree, Invocation_State.SARIF_Base_URIs);
 
       --  Set the maximum number of concurrent gnatwhy3 processes based on
       --  semaphore usage and the calculated parallelism level.
@@ -5726,14 +5733,18 @@ package body Configuration is
       end loop;
    end Sanitize_File_List;
 
-   ---------------------------------
-   -- Sanity_Check_SARIF_Base_URI --
-   ---------------------------------
+   -----------------------------
+   -- Resolve_SARIF_Base_URIs --
+   -----------------------------
 
-   procedure Sanity_Check_SARIF_Base_URI (Tree : Project.Tree.Object) is
+   function Resolve_SARIF_Base_URIs
+     (Tree : Project.Tree.Object; Raw_URIs : String_Lists.List)
+      return String_Lists.List
+   is
       Has_SRCROOT : Boolean := False;
+      Result      : String_Lists.List := Raw_URIs;
    begin
-      for Raw of CL_Switches.SARIF_Base_URIs loop
+      for Raw of Raw_URIs loop
          declare
             Colon : constant Natural := Index (Raw, ":");
             --  Split on the first colon. Identifiers never contain ':'
@@ -5759,10 +5770,11 @@ package body Configuration is
          end;
       end loop;
       if not Has_SRCROOT then
-         CL_Switches.SARIF_Base_URIs.Append
+         Result.Append
            ("%SRCROOT%:" & Tree.Root_Project.Dir_Name.String_Value);
       end if;
-   end Sanity_Check_SARIF_Base_URI;
+      return Result;
+   end Resolve_SARIF_Base_URIs;
 
    procedure Set_Project_Attributes is
 

@@ -75,8 +75,7 @@ package Configuration is
    package CL_Switches is
 
       --  Legacy interface for effective switch values from the command line
-      --  and root project. Switch values are exposed through queries; the
-      --  remaining lists are mutable until migrated to the invocation.
+      --  and root project. Values are exposed through read-only queries.
       --  Naming of the variable:
       --  * single letter variables correspond to single letter switches with
       --    one dash, like -j, -v
@@ -96,8 +95,8 @@ package Configuration is
       function Flow_Show_GG return Boolean;
       function Function_Sandboxing return String;
       function Gnattest_Values return String;
-      SARIF_Base_URIs : String_Lists.List;
-      --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
+      function SARIF_Base_URIs return String_Lists.List;
+      --  Validated "IDENTIFIER:PATH" entries, including the %SRCROOT% default
       function Limit_Line return String;
       function Limit_Lines return String;
       function Limit_Name return String;
