@@ -1,0 +1,13 @@
+derived.adb:1:11: warning: subprogram "Derived" has no effect
+derived.adb:4:07: info: range check proved (CVC5: 2 VC)
+derived.adb:9:19: info: assertion proved (CVC5: 1 VC)
+derived.adb:10:12: info: index check proved (CVC5: 2 VC)
+derived.adb:11:19: info: assertion proved (CVC5: 1 VC)
+derived.adb:11:20: info: initialization check proved (CVC5: 1 VC)
+derived.adb:11:27: info: index check proved (CVC5: 2 VC)
+derived.adb:13:15: info: index check proved (CVC5: 2 VC)
+derived.adb:14:22: info: assertion proved (CVC5: 1 VC)
+derived.adb:17:22: info: for mutable discriminants at derived.adb:6
+derived.adb:17:22: info: initialization check proved (Trivial: 1 VC)
+derived.adb:17:22: medium: assertion might fail
+derived.adb:17:30: info: index check proved (CVC5: 2 VC)
