@@ -132,8 +132,8 @@ switch sources that these actions assemble explicitly are seen by the analysis:
 
 * switches of the ``Compiler`` package are added by the GPR2 library itself,
   when the actions call the inherited ``Compute_Command``;
-* switches following ``-cargs`` are appended by each action from
-  ``CL_Switches.Cargs_List``;
+* switches following ``-cargs`` are stored in the invocation snapshot and
+  appended by each action using ``CL_Switches.Cargs_List``;
 * switches of the ``Builder.Global_Compilation_Switches`` attribute for Ada
   are read into ``Configuration.Global_Compilation_Switches`` when the project
   is loaded, and appended by each Ada action. Despite belonging to the

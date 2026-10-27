@@ -150,6 +150,7 @@ package body Configuration is
       All_Projects                  : Boolean := False;
       Assumptions                   : Boolean := False;
       Benchmark                     : Boolean := False;
+      Cargs_List                    : String_Lists.List;
       Checks_As_Errors              : Boolean := False;
       Continue_On_Error             : Boolean := False;
       CWE                           : Boolean := False;
@@ -194,6 +195,8 @@ package body Configuration is
       is (Invocation_State.Assumptions);
       function Benchmark return Boolean
       is (Invocation_State.Benchmark);
+      function Cargs_List return String_Lists.List
+      is (Invocation_State.Cargs_List);
       function CWE return Boolean
       is (Invocation_State.CWE);
       function Debug_Disable_Prover_Feedback return Boolean
@@ -5363,6 +5366,7 @@ package body Configuration is
       Com_Lin      : String_List_Access;
 
       Parse_Result            : Project_Parsing_Result;
+      Cargs                   : String_Lists.List;
       Command_Line_Switches   : Parsed_Switches;
       Invocation_Switches     : Parsed_Switches;
       Root_Attribute_Switches : Parsed_Switches;
@@ -5389,10 +5393,9 @@ package body Configuration is
       Set_Project_Attributes;
       Parse_Result := Parse_Switches_Before_Project_Parsing (Full_Com_Lin);
       Free (Full_Com_Lin);
-      CL_Switches.Cargs_List.Clear;
       if Parse_Result.Cargs /= null then
          for Arg of Parse_Result.Cargs.all loop
-            CL_Switches.Cargs_List.Append (Arg.all);
+            Cargs.Append (Arg.all);
          end loop;
          Free (Parse_Result.Cargs);
       end if;
@@ -5496,6 +5499,7 @@ package body Configuration is
          Result : Invocation_Configuration;
       begin
          Postprocess_Invocation (Invocation_Switches, Result);
+         Result.Cargs_List := Cargs;
          declare
             Invocation   : constant Invocation_Configuration := Result;
             Maximum_Mode : GP_Mode;

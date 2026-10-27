@@ -89,7 +89,7 @@ package Configuration is
       function Assumptions return Boolean;
       function Benchmark return Boolean;
       function Memcached_Server return String;
-      Cargs_List      : String_Lists.List;
+      function Cargs_List return String_Lists.List;
       function CWE return Boolean;
       function Debug_Disable_Prover_Feedback return Boolean;
       function Debug_No_Cache_Output return Boolean;
