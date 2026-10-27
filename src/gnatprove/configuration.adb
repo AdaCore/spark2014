@@ -206,6 +206,12 @@ package body Configuration is
    Resolved_SARIF_Base_URIs : String_Lists.List;
    --  Validated invocation entries with the project-derived default added
 
+   Mode_Value               : GP_Mode := GPM_Check;
+   Max_Why3_Processes_Value : Positive := 1;
+   Has_Manual_Prover        : Boolean := False;
+   Has_Coq_Prover           : Boolean := False;
+   --  Results of processing project and file-specific settings
+
    package body CL_Switches is
       function Benchmark return Boolean
       is (Invocation_State.Benchmark);
@@ -274,6 +280,10 @@ package body Configuration is
    is (Invocation_State.IDE_Mode);
    function Limit_Lines return not null access constant String_Lists.List
    is (Invocation_State.Selection.Limit_Lines'Access);
+   function Mode return GP_Mode
+   is (Mode_Value);
+   function Max_Why3_Processes return Positive
+   is (Max_Why3_Processes_Value);
    function Only_Given return Boolean
    is (Invocation_State.Only_Given);
    function Output return Output_Mode_Type
@@ -5490,7 +5500,7 @@ package body Configuration is
                Root_Attribute_Switches,
                Invocation.File_Options,
                Maximum_Mode);
-            Mode := Maximum_Mode;
+            Mode_Value := Maximum_Mode;
 
             --  File names are resolved against the project tree below
             File_List := Invocation.Selection.Files;
@@ -5552,11 +5562,12 @@ package body Configuration is
               Integer'Max
                 (1, Integer (File_Specific_Map ("default").Provers.Length));
          begin
-            Max_Why3_Processes := Integer'Max (1, Parallel / Num_Provers);
+            Max_Why3_Processes_Value :=
+              Integer'Max (1, Parallel / Num_Provers);
          end;
       else
          --  Sequential mode: limit to 1 process
-         Max_Why3_Processes := 1;
+         Max_Why3_Processes_Value := 1;
       end if;
 
       --  Set reporter for build process

@@ -128,12 +128,12 @@ package Configuration is
    --  switches.
    function GnateT_Switch return String;
    --  Automatically selected target properties switch, or the empty string
-   Mode               : GP_Mode := GPM_Check;
-   Max_Why3_Processes : Positive;
+   function Mode return GP_Mode;
+   --  Maximum mode across the file-specific settings
+
+   function Max_Why3_Processes return Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
-   Has_Manual_Prover  : Boolean;
-   Has_Coq_Prover     : Boolean;
-   CL_Units           : GPR2.Build.Compilation_Unit.Maps.Map;
+   CL_Units : GPR2.Build.Compilation_Unit.Maps.Map;
    --  A "copy" of Cl_Switches.File_List, but units instead of files
 
    function Checks_As_Errors return Boolean;
