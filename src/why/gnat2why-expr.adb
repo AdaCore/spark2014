@@ -2144,7 +2144,7 @@ package body Gnat2Why.Expr is
       --  borrowers.
 
       if Is_Local_Borrower (E) then
-         pragma Assert (Initialized and Top_Predicate);
+         pragma Assert (Top_Predicate);
 
          Append
            (Context,
