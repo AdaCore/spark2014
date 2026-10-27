@@ -184,6 +184,8 @@ package body Configuration is
       Warning_Mode                  : SPARK_Warning_Mode_Type := SW_Normal;
       Why3_Logging                  : Boolean := False;
       Why3_Server                   : Unbounded_String;
+      Why3_Stagger_Ms               : Natural := 0;
+      Why3_Stagger_Window           : Natural := 0;
       Z3_Counterexample             : Boolean := False;
    end record;
    --  Other invocation settings are still published as separate globals
@@ -275,8 +277,6 @@ package body Configuration is
    Proof_Manifest_Maps : Manifest_Maps.Map;
    Why3_Conf           : GNAT.Strings.String_Access;
    Why3_Debug          : GNAT.Strings.String_Access;
-   Why3_Stagger_Ms     : Natural := 0;
-   Why3_Stagger_Window : Natural := 0;
 
    type Spark_Reporter is new GPR2.Reporter.Console.Object with null record;
 
@@ -4649,7 +4649,7 @@ package body Configuration is
               ("error: wrong argument for --why3-stagger-ms",
                With_Help => False);
          else
-            Why3_Stagger_Ms :=
+            Result.Why3_Stagger_Ms :=
               (if Parsed.Present (Sw_Why3_Stagger_Ms)
                then Parsed.Values (Sw_Why3_Stagger_Ms).Integer_Val
                else Default_Stagger_Ms);
@@ -4666,7 +4666,7 @@ package body Configuration is
               ("error: wrong argument for --why3-stagger-window",
                With_Help => False);
          else
-            Why3_Stagger_Window :=
+            Result.Why3_Stagger_Window :=
               Parsed.Values (Sw_Why3_Stagger_Window).Integer_Val;
          end if;
 
@@ -6066,14 +6066,14 @@ package body Configuration is
          Args.Append (Why3_Debug.all);
       end if;
 
-      if Why3_Stagger_Ms > 0 then
+      if Invocation_State.Why3_Stagger_Ms > 0 then
          Args.Append ("--stagger-ms");
-         Args.Append (Image (Why3_Stagger_Ms, 1));
+         Args.Append (Image (Invocation_State.Why3_Stagger_Ms, 1));
       end if;
 
-      if Why3_Stagger_Window > 0 then
+      if Invocation_State.Why3_Stagger_Window > 0 then
          Args.Append ("--stagger-window");
-         Args.Append (Image (Why3_Stagger_Window, 1));
+         Args.Append (Image (Invocation_State.Why3_Stagger_Window, 1));
       end if;
 
       Args.Append ("--counterexample");
