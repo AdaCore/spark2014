@@ -655,6 +655,28 @@ package body Gnat2Why.Subprograms.Pointers is
       More_Globals :=
         Get_Globals_From_Specialized_Parameters (Specialized_Call_Params);
 
+      --  Specializations can be created while translating a logic definition,
+      --  where globals are mapped to immutable parameters. Restore their
+      --  initial bindings for the independent declarations generated here.
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+      declare
+         Reads, Writes : Flow_Id_Sets.Set;
+      begin
+         Get_Proof_Globals (Caller, Reads, Writes, Erase_Constants => True);
+         Reads.Union (Writes);
+         Reads.Union (More_Globals);
+
+         for G of Reads loop
+            Push_Binders_To_Symbol_Table
+              ((1 =>
+                  (if G.Kind = Direct_Mapping
+                   then Mk_Item_Of_Entity (Get_Direct_Mapping_Id (G))
+                   else Mk_Item_Of_Opaque_Global (G))));
+         end loop;
+      end;
+
       --  Generate the logic function declarations
 
       Th :=
@@ -803,6 +825,7 @@ package body Gnat2Why.Subprograms.Pointers is
 
       --  Restore the state
 
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       Result_Name := Result_Name_Save;
       Result_Is_Mutable := Result_Is_Mutable_Save;
       Specialized_Call_Params := Specialized_Call_Params_Save;

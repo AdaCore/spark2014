@@ -4657,6 +4657,14 @@ contain checks in the program domain. This occurs when the ``Access`` attribute
 is used on a type with a precondition, as checks are needed to ensure that the
 precondition holds at the point of call (see ``Compute_Call_Args``).
 
+Specialization modules may be generated while translating a logic definition,
+where global objects are temporarily mapped to immutable parameters. Their
+generation therefore uses a separate symbol-table scope in which the globals
+of the specialized subprogram and its callbacks have their initial bindings.
+These bindings are constructed by ``Mk_Item_Of_Entity`` as during initial
+object registration, or by ``Mk_Item_Of_Opaque_Global`` for opaque flow effects.
+Popping this scope restores the mappings of the surrounding translation.
+
 Modules for Checks
 ==================
 

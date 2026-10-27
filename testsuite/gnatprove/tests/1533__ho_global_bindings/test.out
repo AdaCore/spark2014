@@ -1,0 +1,31 @@
+opaque_specialization.adb:16:22: info: assertion proved (CVC5: 1 VC)
+opaque_specialization.adb:17:22: medium: assertion might fail [possible fix: subprogram at opaque_specialization.ads:32 should mention Opaque_State.State in a precondition]
+opaque_specialization.adb:23:07: warning: assuming "Change" always terminates
+opaque_specialization.adb:23:07: warning: no Always_Terminates aspect available for "Change" [assumed-always-terminates]
+opaque_specialization.adb:28:22: medium: assertion might fail [possible fix: call at line 23 should mention Opaque_State.State in a postcondition]
+opaque_specialization.adb:32:07: info: initialization of "Before" proved
+opaque_specialization.adb:38:22: info: assertion proved (CVC5: 1 VC)
+opaque_specialization.adb:40:22: info: assertion proved (CVC5: 1 VC)
+opaque_specialization.adb:41:22: medium: assertion might fail (e.g. when Before = 1 and Visible = 2)
+opaque_specialization.ads:15:13: info: implicit aspect Always_Terminates on "Read_Visible" has been proved, subprogram will terminate
+opaque_specialization.ads:17:13: info: implicit aspect Always_Terminates on "Eval" has been proved, subprogram will terminate
+opaque_specialization.ads:17:39: info: function contract feasibility proved (CVC5: 1 VC)
+opaque_specialization.ads:22:14: info: postcondition proved (CVC5: 1 VC)
+opaque_specialization.ads:24:13: info: implicit aspect Always_Terminates on "Wrapped" has been proved, subprogram will terminate
+opaque_specialization.ads:25:14: info: postcondition proved (CVC5: 1 VC)
+opaque_specialization.ads:26:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
+opaque_specialization.ads:28:13: info: implicit aspect Always_Terminates on "Wrapped_Visible" has been proved, subprogram will terminate
+opaque_specialization.ads:29:14: info: postcondition proved (CVC5: 1 VC)
+opaque_specialization.ads:30:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
+opaque_specialization.ads:32:14: warning: subprogram "Check" has no effect
+opaque_state.ads:5:03: info: flow dependencies proved
+own_globals.adb:10:22: info: assertion proved (CVC5: 1 VC)
+own_globals.adb:12:22: info: assertion proved (CVC5: 1 VC)
+own_globals.adb:16:22: medium: assertion might fail (e.g. when Flag = True)
+own_globals.ads:8:13: info: implicit aspect Always_Terminates on "Always_False" has been proved, subprogram will terminate
+own_globals.ads:10:13: info: implicit aspect Always_Terminates on "Eval" has been proved, subprogram will terminate
+own_globals.ads:10:39: info: function contract feasibility proved (Trivial: 1 VC)
+own_globals.ads:15:14: info: postcondition proved (CVC5: 2 VC)
+own_globals.ads:17:13: info: implicit aspect Always_Terminates on "Wrapped" has been proved, subprogram will terminate
+own_globals.ads:18:14: info: postcondition proved (CVC5: 2 VC)
+own_globals.ads:19:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)

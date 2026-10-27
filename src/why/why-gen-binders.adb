@@ -245,7 +245,6 @@ package body Why.Gen.Binders is
    begin
       for F of Variables loop
          declare
-            V       : constant Entity_Name := To_Name (F);
             Use_Ent : constant Boolean := F.Kind = Direct_Mapping;
             Entity  : constant Entity_Id :=
               (if Use_Ent then Get_Direct_Mapping_Id (F) else Empty);
@@ -308,20 +307,7 @@ package body Why.Gen.Binders is
             --  dummy binder with the appropriate name.
 
             else
-               pragma Assert (Is_Opaque_For_Proof (F));
-
-               Binders (I) :=
-                 (Regular,
-                  Local    => False,
-                  Init     => <>,
-                  Is_Moved => <>,
-                  Valid    => <>,
-                  Main     =>
-                    (Ada_Node => Empty,
-                     B_Name   => To_Why_Id (V, Local => False),
-                     B_Ent    => V,
-                     Mutable  => True,
-                     Labels   => <>));
+               Binders (I) := Mk_Item_Of_Opaque_Global (F);
                I := I + 1;
             end if;
          end;
@@ -1089,6 +1075,28 @@ package body Why.Gen.Binders is
          end;
       end if;
    end Mk_Item_Of_Entity;
+
+   ------------------------------
+   -- Mk_Item_Of_Opaque_Global --
+   ------------------------------
+
+   function Mk_Item_Of_Opaque_Global (G : Flow_Id) return Item_Type is
+   begin
+      pragma Assert (Is_Opaque_For_Proof (G));
+
+      return
+        (Regular,
+         Local    => False,
+         Init     => <>,
+         Is_Moved => <>,
+         Valid    => <>,
+         Main     =>
+           (Ada_Node => Empty,
+            B_Name   => To_Why_Id (G.Name, Local => False),
+            B_Ent    => G.Name,
+            Mutable  => True,
+            Labels   => <>));
+   end Mk_Item_Of_Opaque_Global;
 
    ---------------------------------
    -- New_Constant_Record_Binders --

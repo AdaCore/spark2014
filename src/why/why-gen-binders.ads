@@ -367,6 +367,11 @@ package Why.Gen.Binders is
    --    scope.
    --  @return an Item representing the Entity E.
 
+   function Mk_Item_Of_Opaque_Global (G : Flow_Id) return Item_Type
+   with Pre => G.Kind = Magic_String;
+   --  Create the initial item for an opaque flow effect,
+   --  independently of its current mapping in Symbol_Table.
+
    function Get_Ada_Node_From_Item (B : Item_Type) return Node_Id;
    --  Get the Ada Node of an item.
    --  @param B item whose Ada node we query.
