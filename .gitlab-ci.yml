@@ -336,10 +336,23 @@ sparklib:
   variables:
     GENERIC_ANOD_CI_OPTIONS: "--add-dep eng/spark/sparklib"
     ANOD_TARGET: test_sparklib
-    ANOD_QUALIFIERS: $ANOD_BUILD_QUALIFIERS,large
   script:
     - *setup_repos
     - *deploy_package
+    # If ANOD_QUALIFIERS contains "coverage", we need to translate it to
+    # "spark2014-coverage". We can't use the sparklib `coverage` qualifier which
+    # means something else.
+    - |
+      ANOD_QUALIFIERS=large
+      IFS=, read -ra build_qualifiers <<< "$ANOD_BUILD_QUALIFIERS"
+      for qualifier in "${build_qualifiers[@]}"; do
+        case "$qualifier" in
+          coverage) qualifier=spark2014-coverage ;;
+          '') continue ;;
+        esac
+        ANOD_QUALIFIERS="$ANOD_QUALIFIERS,$qualifier"
+      done
+      export ANOD_QUALIFIERS
     - anod run $ANOD_TARGET --latest
     - testsuite_reports
     - ANOD_BUILDSPACE=`anod eval sparklib build_space_name --primitive test --qualifier=$ANOD_QUALIFIERS`
