@@ -2816,6 +2816,8 @@ package body Gnat2Why.Subprograms is
                   --  Retrieve the list of scalar elements from an object Expr
                   --  of type Typ located at a given Offset and of a given
                   --  Size, and append these to Elements.
+                  --  Offsets are relative to the start of the complete source
+                  --  object.
 
                   function Reconstruct_Value
                     (Base   : W_Type_Id;
@@ -3101,7 +3103,8 @@ package body Gnat2Why.Subprograms is
                                  Get_Source_Elements
                                    (Typ      => Retysp (Component_Type (Typ)),
                                     Offset   =>
-                                      (Cur - Low) * Component_Size (Typ),
+                                      Offset
+                                      + (Cur - Low) * Component_Size (Typ),
                                     Size     => Component_Size (Typ),
                                     Expr     =>
                                       New_Array_Access
