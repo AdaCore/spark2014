@@ -478,6 +478,7 @@ package body Gnat2Why.Unchecked_Conversion is
       --  Retrieve the list of scalar elements from an object Expr
       --  of type Typ located at a given Offset and of a given
       --  Size, and append these to Elements.
+      --  Offsets are relative to the start of the complete source object.
 
       function Reconstruct_Value
         (Base   : W_Type_Id;
@@ -789,7 +790,7 @@ package body Gnat2Why.Unchecked_Conversion is
                   while Cur <= High loop
                      Get_Source_Elements
                        (Typ      => Retysp (Component_Type (Typ)),
-                        Offset   => (Cur - Low) * Comp_Size,
+                        Offset   => Offset + (Cur - Low) * Comp_Size,
                         Size     => Comp_Size,
                         Expr     =>
                           New_Array_Access
