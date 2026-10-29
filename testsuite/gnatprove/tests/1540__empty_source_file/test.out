@@ -1,0 +1,2 @@
+foo.adb:1:01: error: compilation unit expected
+gnatprove: error during flow analysis and proof

@@ -781,9 +781,6 @@ package body Gnat2Why.Driver is
 
       --  Local variables
 
-      E : constant Entity_Id := Unique_Defining_Entity (Unit (GNAT_Root));
-      --  Unique entity of the current compilation unit
-
       Progress : Analysis_Progress := Progress_None;
       --  Indicates whether proof have been attempted anywhere in the unit
 
@@ -802,7 +799,7 @@ package body Gnat2Why.Driver is
          goto Leave;
       end if;
 
-      if Is_Generic_Unit (E) then
+      if Is_Generic_Unit (Unique_Defining_Entity (Unit (GNAT_Root))) then
 
          --  We do nothing for generic units currently. If this get revised
          --  at some point to provide proof of generics, then the special
