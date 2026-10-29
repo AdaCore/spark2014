@@ -33,7 +33,6 @@ with Sem_Ch7;     use Sem_Ch7;
 with Sem_Util;
 with Sem_Prag;
 with SPARK_Util.Types;
-with Interfaces;
 
 package body SPARK_Atree.Entities is
 
@@ -621,19 +620,15 @@ package body SPARK_Atree.Entities is
    --------------------------
 
    function Max_Size_Of_Img_Attr (Typ : Scalar_Kind_Id) return Uint is
-      use type Interfaces.Unsigned_64;
-
-      function Max_Size_Of_Integer (Size : Int) return Int
-      is (Interfaces.Unsigned_64'Image (2 ** Natural (Size))'Length + 1);
+      function Max_Size_Of_Integer (Size : Uint) return Int
+      is (UI_Image (Uint_2 ** Size, Decimal)'Length + 2);
       --  Maximal size of integer values (positive values are prefixed by a
       --  space).
 
    begin
       return
         (if Einfo.Utils.Is_Integer_Type (Typ)
-         then
-           UI_From_Int
-             (Max_Size_Of_Integer (UI_To_Int (Einfo.Entities.Esize (Typ))))
+         then UI_From_Int (Max_Size_Of_Integer (Einfo.Entities.Esize (Typ)))
          --  Maximal size of an identifier:
          --    maximum_line_length (255) * length_of_a_wide_character (8)
 

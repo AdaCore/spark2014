@@ -1,0 +1,6 @@
+image_size_bounds.adb:5:27: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+image_size_bounds.adb:7:28: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+image_size_bounds.adb:9:19: info: assertion proved (CVC5: 1 VC)
+image_size_bounds.adb:10:19: info: assertion proved (CVC5: 1 VC)
+image_size_bounds.adb:12:19: high: assertion might fail (e.g. when Signed_Image = "-9223372036854775808" and Signed_Image'First = 1)
+image_size_bounds.adb:13:19: medium: assertion might fail
