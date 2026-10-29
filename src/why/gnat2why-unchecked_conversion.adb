@@ -827,6 +827,18 @@ package body Gnat2Why.Unchecked_Conversion is
                  Size   => Size,
                  Typ    => Typ);
 
+         elsif Is_Record_Type (Typ)
+           and then Count_Why_Top_Level_Fields (Typ) = 0
+         then
+            --  Null records have an abstract Why type, so use the dummy of
+            --  the root type as for ordinary null-record aggregates. Their
+            --  validity flag is unused since they have no invalid components.
+
+            return
+              (Value      => +E_Symb (Root_Retysp (Typ), WNE_Dummy),
+               Valid_Flag =>
+                 (if Potentially_Invalid then True_Term else Why_Empty));
+
          elsif Is_Record_Type (Typ) then
             declare
                Comps   : constant Component_Sets.Set :=
