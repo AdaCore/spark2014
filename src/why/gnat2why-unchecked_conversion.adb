@@ -1427,11 +1427,17 @@ package body Gnat2Why.Unchecked_Conversion is
                      return;
                   end if;
 
-                  Size :=
-                    Size
-                    * (Expr_Value (High_Bound (Rng))
-                       - Expr_Value (Low_Bound (Rng))
-                       + 1);
+                  if Expr_Value (High_Bound (Rng))
+                    < Expr_Value (Low_Bound (Rng))
+                  then
+                     Size := Uint_0;
+                  else
+                     Size :=
+                       Size
+                       * (Expr_Value (High_Bound (Rng))
+                          - Expr_Value (Low_Bound (Rng))
+                          + 1);
+                  end if;
                   Next_Index (Index);
                end;
             end loop;
