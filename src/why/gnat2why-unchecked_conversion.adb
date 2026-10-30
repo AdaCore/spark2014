@@ -1289,7 +1289,10 @@ package body Gnat2Why.Unchecked_Conversion is
             end if;
 
          when Enumeration_Kind =>
-            if Has_Enumeration_Rep_Clause (Typ) then
+            if Has_Biased_Representation (Typ) then
+               return False_With_Explain ("type with biased representation");
+
+            elsif Has_Enumeration_Rep_Clause (Typ) then
                declare
                   Lit : Node_Id := First_Literal (Typ);
                   Pos : Uint := Uint_0;
@@ -1322,7 +1325,12 @@ package body Gnat2Why.Unchecked_Conversion is
             end if;
 
             for Comp of Get_Component_Set (Typ) loop
-               if No (Component_Bit_Offset (Comp)) then
+               if Has_Biased_Representation (Comp) then
+                  return
+                    False_With_Explain
+                      ("component with biased representation");
+
+               elsif No (Component_Bit_Offset (Comp)) then
                   return False_With_Explain ("component offset not known");
                end if;
 
