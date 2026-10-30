@@ -904,7 +904,10 @@ package body Gnat2Why.Unchecked_Conversion is
                      Index := Index + 1;
 
                      if Potentially_Invalid
-                       and then not Comp_Has_Only_Valid_Values (Comp, Typ).Ok
+                       and then
+                         not Comp_Has_Only_Valid_Values
+                               (Comp, Typ, Assume_Valid_Discriminants => True)
+                               .Ok
                      then
                         Flags (F_Index) :=
                           New_Field_Association
@@ -2205,7 +2208,9 @@ package body Gnat2Why.Unchecked_Conversion is
                  "; aliased object could have invalid values "
                  & "[SPARK RM 13.7]");
          begin
-            Res := Type_Has_Only_Valid_Values (Typ, Size, Size_Str);
+            Res :=
+              Type_Has_Only_Valid_Values
+                (Typ, Size, Size_Str, Assume_Valid_Discriminants => False);
 
             Result := Res.Ok;
             if not Result then

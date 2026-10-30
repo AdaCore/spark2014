@@ -5009,7 +5009,8 @@ package body SPARK_Definition is
                --  We emit a warning when the value read might not be valid.
                --  This addresses assumption SPARK_EXTERNAL_VALID.
 
-               if not Obj_Has_Only_Valid_Values (E)
+               if not Obj_Has_Only_Valid_Values
+                        (E, Assume_Valid_Discriminants => False)
                  and then not Is_Potentially_Invalid (E)
                then
                   Nb_Warn := Nb_Warn + 1;
@@ -8230,7 +8231,8 @@ package body SPARK_Definition is
 
                --  If E cannot have invalid values, emit a warning
 
-               if Obj_Has_Only_Valid_Values (E)
+               if Obj_Has_Only_Valid_Values
+                    (E, Assume_Valid_Discriminants => True)
                  and then Emit_Warning_Info_Messages
                then
                   Warning_Msg_N (Warn_Useless_Potentially_Invalid_Obj, E);
@@ -8317,7 +8319,8 @@ package body SPARK_Definition is
 
                   --  If E cannot have invalid values, emit a warning
 
-                  if Obj_Has_Only_Valid_Values (E)
+                  if Obj_Has_Only_Valid_Values
+                       (E, Assume_Valid_Discriminants => True)
                     and then Emit_Warning_Info_Messages
                   then
 
@@ -13944,7 +13947,10 @@ package body SPARK_Definition is
       --  use case.
 
       if Is_Scalar_Type (Rep_Ty)
-        or else not Type_Has_Only_Valid_Values (Rep_Ty, No_Uint, "").Ok
+        or else
+          not Type_Has_Only_Valid_Values
+                (Rep_Ty, No_Uint, "", Assume_Valid_Discriminants => True)
+                .Ok
       then
          Potentially_Invalid.Include (Base_Retysp (Rep_Ty));
 

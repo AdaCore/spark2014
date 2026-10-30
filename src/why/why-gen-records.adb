@@ -1362,7 +1362,10 @@ package body Why.Gen.Records is
 
          for Field of Get_Component_Set (E) loop
             if Ekind (Field) = E_Component
-              and then not Comp_Has_Only_Valid_Values (Field, E).Ok
+              and then
+                not Comp_Has_Only_Valid_Values
+                      (Field, E, Assume_Valid_Discriminants => True)
+                      .Ok
             then
                Index := Index + 1;
                declare
