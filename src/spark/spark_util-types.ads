@@ -400,10 +400,11 @@ package SPARK_Util.Types is
    function Type_Has_Only_Valid_Values
      (ArgTyp : Type_Kind_Id; Size : Uint; Size_Str : String)
       return True_Or_Explain
-   with Pre => ((Size /= Uint_0) = Is_Scalar_Type (ArgTyp));
+   with Pre => (Present (Size) = Is_Scalar_Type (ArgTyp));
    --  Return True if Type is known to have only valid values. Otherwise,
    --  return an explanation for why Ty might have invalid values.
-   --  If Typ is scalar, use the passed size to check for invalid values.
+   --  If Typ is scalar, use the passed size, which may be zero, to check for
+   --  invalid values. Otherwise, Size must be No_Uint.
 
    function Obj_Has_Only_Valid_Values (Obj : Entity_Id) return Boolean;
    --  Wrapper on Type_Has_Only_Valid_Values for objects
