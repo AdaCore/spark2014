@@ -10,7 +10,7 @@ dynamic_preds.adb:29:22: info: in value of subprogram parameter after the call a
 dynamic_preds.adb:29:22: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds.adb:34:19: medium: in inlined predicate at dynamic_preds.ads:14
 dynamic_preds.adb:34:19: medium: in value of subprogram parameter after the call at dynamic_preds.adb:34
-dynamic_preds.adb:34:19: medium: predicate check might fail, cannot prove Ext_Even_Pair.A in Even (e.g. when X = (A => 0, B => 0)) [possible fix: subprogram at dynamic_preds.ads:23 should mention X in a precondition]
+dynamic_preds.adb:34:19: medium: predicate check might fail, cannot prove Ext_Even_Pair.A in Even (e.g. when X = (A => 1, B => 0)) [possible fix: subprogram at dynamic_preds.ads:23 should mention X in a precondition]
 dynamic_preds.adb:35:22: info: in value of subprogram parameter after the call at dynamic_preds.adb:35
 dynamic_preds.adb:35:22: info: predicate check proved (CVC5: 6 VC)
 dynamic_preds.adb:39:27: info: range check proved (CVC5: 2 VC)
