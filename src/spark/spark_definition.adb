@@ -13922,7 +13922,7 @@ package body SPARK_Definition is
       --  use case.
 
       if Is_Scalar_Type (Rep_Ty)
-        or else not Type_Has_Only_Valid_Values (Rep_Ty, Uint_0, "").Ok
+        or else not Type_Has_Only_Valid_Values (Rep_Ty, No_Uint, "").Ok
       then
          Potentially_Invalid.Include (Base_Retysp (Rep_Ty));
 

@@ -537,7 +537,7 @@ package body SPARK_Util.Types is
      (Comp : E_Component_Id; Rec : Type_Kind_Id) return True_Or_Explain
    is
       Comp_Ty   : constant Type_Kind_Id := Retysp (Etype (Comp));
-      Used_Size : Uint := Uint_0;
+      Used_Size : Uint := No_Uint;
       Size_Str  : Unbounded_String := Null_Unbounded_String;
       Unused    : Unbounded_String;
    begin
@@ -903,7 +903,7 @@ package body SPARK_Util.Types is
          Valid :=
            Type_Has_Only_Valid_Values
              (Ty,
-              (if Is_Scalar_Type (Ty) then Size else Uint_0),
+              (if Is_Scalar_Type (Ty) then Size else No_Uint),
               To_String (Size_Str));
          return Valid.Ok;
       end if;
@@ -2100,7 +2100,7 @@ package body SPARK_Util.Types is
 
    function Obj_Has_Only_Valid_Values (Obj : Entity_Id) return Boolean is
       Ty          : constant Type_Kind_Id := Retysp (Etype (Obj));
-      Size        : Uint := Uint_0;
+      Size        : Uint := No_Uint;
       Explanation : Unbounded_String;
       Size_Str    : Unbounded_String;
       Valid       : True_Or_Explain;
@@ -3003,7 +3003,7 @@ package body SPARK_Util.Types is
       elsif Is_Array_Type (Typ) then
          declare
             Comp_Ty   : constant Type_Kind_Id := Retysp (Component_Type (Typ));
-            Used_Size : Uint := Uint_0;
+            Used_Size : Uint := No_Uint;
             Size_Str  : Unbounded_String;
          begin
             if Is_Scalar_Type (Comp_Ty) then

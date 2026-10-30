@@ -2166,7 +2166,7 @@ package body Gnat2Why.Unchecked_Conversion is
       Explanation    : out Unbounded_String;
       Check_Validity : Boolean := True)
    is
-      Size     : Uint := Uint_0;
+      Size     : Uint := No_Uint;
       Size_Str : Unbounded_String;
    begin
       if Is_Scalar_Type (Typ) then
@@ -2196,7 +2196,7 @@ package body Gnat2Why.Unchecked_Conversion is
       Explanation    : out Unbounded_String;
       Check_Validity : Boolean := True)
    is
-      Size : Uint := Uint_0;
+      Size : Uint := No_Uint;
    begin
       if Is_Scalar_Type (Typ) then
          --  ARM K.2 226
