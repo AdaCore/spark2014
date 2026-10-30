@@ -528,6 +528,12 @@ package body Gnat2Why.Unchecked_Conversion is
       is
          Value : W_Expr_Id;
       begin
+         --  Zero-sized components contribute no bits
+
+         if Size = Uint_0 then
+            return New_Modular_Constant (Value => Uint_0, Typ => Base);
+         end if;
+
          --  Special case for Boolean
          if Is_Standard_Boolean_Type (Typ) then
             Value :=
@@ -616,26 +622,34 @@ package body Gnat2Why.Unchecked_Conversion is
          Size   : Uint;
          Typ    : Type_Kind_Id) return Target_Value
       is
-         Mask    : constant W_Expr_Id :=
-           New_Modular_Constant
-             (Value => Uint_2 ** (Offset + Size) - Uint_1, Typ => Base);
-         Divisor : constant W_Expr_Id :=
-           New_Modular_Constant (Value => Uint_2 ** Offset, Typ => Base);
-         --  Value is (Bits and (2**(Offset+Size)-1)) / 2**(Offset)
-         Value   : constant W_Expr_Id :=
-           New_Call
-             (Domain => EW_Term,
-              Name   => MF_BVs (Base).Udiv,
-              Typ    => Base,
-              Args   =>
-                (1 =>
-                   New_Call
-                     (Domain => EW_Term,
-                      Name   => MF_BVs (Base).BW_And,
-                      Typ    => Base,
-                      Args   => (1 => Bits, 2 => Mask)),
-                 2 => Divisor));
-         Res     : Target_Value;
+         --  An empty component has value zero. Otherwise, extract its bits
+         --  with (Bits and (2**(Offset+Size)-1)) / 2**Offset. The empty case
+         --  avoids constructing 2**Offset at the end of the bitvector.
+
+         Value : constant W_Expr_Id :=
+           (if Size = Uint_0
+            then New_Modular_Constant (Value => Uint_0, Typ => Base)
+            else
+              New_Call
+                (Domain => EW_Term,
+                 Name   => MF_BVs (Base).Udiv,
+                 Typ    => Base,
+                 Args   =>
+                   (1 =>
+                      New_Call
+                        (Domain => EW_Term,
+                         Name   => MF_BVs (Base).BW_And,
+                         Typ    => Base,
+                         Args   =>
+                           (1 => Bits,
+                            2 =>
+                              New_Modular_Constant
+                                (Value => Uint_2 ** (Offset + Size) - Uint_1,
+                                 Typ   => Base))),
+                    2 =>
+                      New_Modular_Constant
+                        (Value => Uint_2 ** Offset, Typ => Base))));
+         Res   : Target_Value;
       begin
          --  Special case for Boolean
          if Is_Standard_Boolean_Type (Typ) then
@@ -678,9 +692,10 @@ package body Gnat2Why.Unchecked_Conversion is
          --  If the value is to a modular type, or an enumeration
          --  with default 0-based representation, or to a signed
          --  type with no negative value, then simply convert it
-         --  to Typ.
+         --  to Typ. An empty representation has no sign bit and
+         --  also uses this conversion.
 
-         elsif Is_Unsigned_Type (Typ) then
+         elsif Size = Uint_0 or else Is_Unsigned_Type (Typ) then
             Res :=
               (Value      =>
                  +Insert_Scalar_Conversion
