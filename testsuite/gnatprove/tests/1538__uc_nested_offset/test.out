@@ -1,0 +1,5 @@
+uc_nested.adb:15:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+uc_nested.adb:15:13: info: types in unchecked conversion have the same size (Trivial)
+uc_nested.adb:15:54: info: type is suitable as source for unchecked conversion (Trivial)
+uc_nested.adb:15:62: info: type is suitable for unchecked conversion (Trivial)
+uc_nested.adb:21:19: medium: assertion might fail
