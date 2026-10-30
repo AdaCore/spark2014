@@ -1,0 +1,16 @@
+custom_image.adb:22:37: error: attribute "Image" with user-defined Put_Image is not yet supported
+custom_image.adb:24:19: error: "Image" is not allowed in SPARK (due to attribute "Image" with user-defined Put_Image)
+custom_image.adb:24:19: error: violation of aspect SPARK_Mode at line 3
+reject_images.adb:29:72: error: attribute "Image" with user-defined Put_Image is not yet supported
+reject_images.adb:50:71: error: attribute "Image" with user-defined Put_Image is not yet supported
+reject_images.adb:51:65: error: attribute "Image" with user-defined Put_Image is not yet supported
+reject_images.adb:52:63: error: attribute "Img" with user-defined Put_Image is not yet supported
+reject_images.adb:54:21: error: attribute "Image" with user-defined Put_Image is not yet supported
+reject_images.adb:56:28: error: attribute "Image" with user-defined Put_Image is not yet supported
+reject_images.adb:58:19: error: attribute "Image" with user-defined Put_Image is not yet supported
+reject_images.adb:60:25: error: attribute "Image" with user-defined Put_Image is not yet supported
+reject_images.adb:62:34: error: attribute "Image" with user-defined Put_Image is not yet supported
+reject_images.adb:68:24: error: attribute "Image" with user-defined Put_Image is not yet supported
+reject_images.adb:70:08: error: attribute "Image" with user-defined Put_Image is not yet supported
+reject_images.adb:72:08: error: attribute "Img" with user-defined Put_Image is not yet supported
+gnatprove: error during flow analysis and proof

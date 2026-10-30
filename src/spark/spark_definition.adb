@@ -37,6 +37,7 @@ with Elists;                         use Elists;
 with Errout;
 with Errout_Wrapper;                 use Errout_Wrapper;
 with Exp_SPARK;
+with Exp_Tss;                        use Exp_Tss;
 with Exp_Util;                       use Exp_Util;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
@@ -283,6 +284,11 @@ package body SPARK_Definition is
 
    function Full_View_Not_In_SPARK (E : Type_Kind_Id) return Boolean
    is (Full_Views_Not_In_SPARK.Contains (E));
+
+   function Has_Custom_Image (Typ : Entity_Id) return Boolean
+   is (Present (Find_Inherited_TSS (Typ, TSS_Put_Image)));
+   --  Return whether Typ has a custom Put_Image, including inherited images
+   --  and definitions on underlying types or anonymous base types.
 
    function Has_Incomplete_Access (E : Type_Kind_Id) return Boolean
    is (Access_To_Incomplete_Views.Contains (Retysp (E)));
@@ -5957,6 +5963,12 @@ package body SPARK_Definition is
             then
                Mark_Unsupported
                  (Lim_Img_On_Non_Scalar, N, Name => Get_Name_String (Aname));
+
+            elsif Has_Custom_Image (Etype (P)) then
+               Mark_Unsupported
+                 (Lim_Image_With_Custom_Put_Image,
+                  N,
+                  Name => Get_Name_String (Aname));
 
             elsif Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
