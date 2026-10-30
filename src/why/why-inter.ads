@@ -203,8 +203,13 @@ package Why.Inter is
    function EW_Split
      (N : Node_Id; Relaxed_Init : Boolean := False) return W_Type_Id
    with Pre => Is_Type (N);
-   --  This function does the exact same thing as EW_Abstract, but changes the
-   --  kind of the node to EW_Split.
+   --  Return a scalar's representative type, or an array's content map type.
+   --  Scalars represented directly as Boolean have no split type. A static
+   --  array already uses its map in abstract form, so it keeps EW_Abstract.
+   --  This is a single Why3 type, not the split layout of an object. Record
+   --  and access objects can have several independently mutable parts without
+   --  having an EW_Split type. Their parts are described by
+   --  Why.Gen.Binders.Item_Type.
 
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id;
    function New_Named_Type (S : String) return W_Type_Id;

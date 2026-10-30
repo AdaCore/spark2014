@@ -1295,17 +1295,17 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
 
-      --  In our Why translation, all objects are declared at top-level.
-      --  Object declarations in Ada inside Subprograms are therefore
-      --  translated to assignments to initialize these objects.
-      --  We can only generate an assignment when the Lvalue is mutable; if it
-      --  is not, there are two cases. If the expression is static, we already
-      --  have generated an axiom upon declaration of the object, and we are
-      --  done. If it is not, we replace the assignment by an assumption of
-      --  the following form:
-
+      --  Objects handled here have Why3 declarations at module level. Their
+      --  Ada declarations become code that establishes values at elaboration,
+      --  with assignments to mutable parts and assumptions for immutable
+      --  parts. Translate the declaration's expression with checks. For an
+      --  immutable Lvalue, assume equality with the computed value:
+      --
       --  let var_name__assume = <rexpr> in
-      --    assume (var_name = var_name_assume);
+      --    assume (var_name = var_name__assume);
+      --
+      --  Assume_Declaration_Of_Entity supplies value assumptions in nested
+      --  scopes without repeating the checks on the constant's expression.
 
       --  Some objects have two declarations, i.e. the partial and full view of
       --  a package level object. In this case, we always use the type of the

@@ -98,8 +98,11 @@ package Why.Gen.Binders is
       end case;
    end record;
 
-   --  An item is like a generalized binder. It is used to represent the
-   --  mapping (Ada object -> Why variables) which is not always 1 to 1.
+   --  An item is a generalized binder for the mapping from an Ada entity to
+   --  its Why3 declarations. Mutable objects can have several value parts,
+   --  each with its own mutability. Reconstruct_Item combines them into a
+   --  complete expression value. Init, Is_Moved, and Valid carry additional
+   --  object state separately from these value parts.
    type Item_Type (Kind : Item_Enum := Regular) is record
       Local : Boolean;
       --  True if the names of constant parts of the binder are local objects
@@ -120,7 +123,7 @@ package Why.Gen.Binders is
       --  Optional validity flag for potentially invalid objects
 
       case Kind is
-         --  Common case where mapping from Ada object to Why object is 1 to 1
+         --  Common case with a single value binder
 
          when Regular
 
@@ -133,18 +136,20 @@ package Why.Gen.Binders is
          =>
             Main : Binder_Type;
 
-            --  Case of unconstrained arrays, where extra objects are created
-            --  to represent the bounds.
+            --  Mutable arrays whose bounds are not static. Content is a
+            --  reference to the map; Bounds contains immutable first and last
+            --  bounds for each dimension. Static arrays use Regular because
+            --  their bounds are already provided by the type's module.
 
          when UCArray =>
             Content : Binder_Type;
             Dim     : Positive;
             Bounds  : Array_Bounds;
 
-            --  Case of pointers, with disjoint parts for their value and
-            --  is_null components, as well as a Mutable boolean registering
-            --  whether the pointer itself is mutable (as opposed to its
-            --  designated value only).
+            --  Mutable access-to-object items. Value is a reference to the
+            --  designated value. Mutable controls whether Is_Null is also a
+            --  reference; it is False for a constant access object whose
+            --  designated value can still change. P_Typ is the access type.
 
          when Pointer =>
             P_Typ   : Entity_Id;
@@ -152,9 +157,13 @@ package Why.Gen.Binders is
             Is_Null : W_Identifier_Id;
             Mutable : Boolean;
 
-            --  Case of records where we can have up to four objects, a set of
-            --  fields, a set of discriminants, a 'Constrained attribute, and a
-            --  'Tag attribute.
+            --  Mutable records with separately represented top-level parts.
+            --  Typ is the record representation type. Fields holds regular
+            --  components in a mutable binder. Discrs is mutable only when
+            --  Typ has mutable discriminants. Constr is an immutable object
+            --  flag, included for assignable objects of types with defaulted
+            --  discriminants. Tag is immutable and present for tagged types.
+            --  Parts absent from the representation have Present set False.
 
          when DRecord =>
             Typ    : Entity_Id;
@@ -357,12 +366,14 @@ package Why.Gen.Binders is
         then
           Present (Mk_Item_Of_Entity'Result.Main.Ada_Node)
           or else Mk_Item_Of_Entity'Result.Main.B_Ent /= Null_Entity_Name);
-   --  Create an Item from an Entity
+   --  Create an item from an entity, independently of its current mapping in
+   --  Gnat2Why.Util.Symbol_Table. Loop parameters and completely private types
+   --  do not use composite split layouts.
    --  @param E Ada Entity to be translated into an item.
    --  @param Local do not prefix names.
-   --  @param In_Fun_Decl Use the type expected in function declaration for
-   --    parameters of subprograms (Do not use Actual_Subtype; use
-   --    representation type for scalars...).
+   --  @param In_Fun_Decl use the parameter types expected in a subprogram
+   --    declaration and omit move trees. Otherwise, mutable objects use
+   --    Actual_Subtype when it is available and in SPARK.
    --  @param Hide_Info True if information for E is hidden in the current
    --    scope.
    --  @return an Item representing the Entity E.

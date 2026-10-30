@@ -30,6 +30,9 @@ with SPARK_Definition;     use SPARK_Definition;
 with SPARK_Util;           use SPARK_Util;
 
 package Gnat2Why.Decls is
+   --  Declare object symbols and value axioms in contextual modules.
+   --  Why.Gen.Binders selects object layouts. Gnat2Why.Expr checks the
+   --  expressions in declarations and establishes values at elaboration.
 
    procedure Translate_Constant (E : Object_Kind_Id)
    with
@@ -37,33 +40,38 @@ package Gnat2Why.Decls is
        Ekind (E)
        in E_Constant | E_Discriminant | E_In_Parameter | E_In_Out_Parameter
        or else Is_Quantified_Loop_Param (E);
-   --  Generate a function declaration for objects that appear as constant
-   --  in Why.
+   --  Declare an immutable object's value as a parameterless logic function
+   --  available in program expressions, together with its validity flag when
+   --  needed. Translate_Constant_Value supplies defining axioms separately.
 
    procedure Translate_Constant_Value (E : E_Constant_Id);
-   --  Possibly generate an axiom to define the value of the function
-   --  previously declared by a call to Translate_Constant for a constant
-   --  object.
+   --  Generate defining axioms for the value and any validity flag declared
+   --  by Translate_Constant, when suitable logical translations are
+   --  available. Imported overlays use their unchecked-conversion model.
+   --
+   --  Add_Axiom_Imports in Why.Inter controls where these axioms can be used.
 
    procedure Translate_External_Object (E : Entity_Name);
-   --  Generate Why declarations for an object E that is only known to proof
-   --  as a generated Global of some subprogram.
+   --  Declare a __private reference for an object E known to proof only
+   --  through the explicit or generated Global effects of a subprogram.
+   --  Its identity is needed in reads and writes; its value is not modeled.
    --
-   --  This object is either a variable which is not in SPARK, or an abstract
-   --  state which represents its hidden constituents. It is never a constant,
-   --  because those in SPARK are translated elsewhere and those not in SPARK
-   --  do not appear in Global for they are considered as without variable
-   --  input. Other objects, e.g. parameters or loop variables, can only appear
-   --  in Global contract of subprograms nested inside their scopes, but if
-   --  such an object is not in SPARK then such a nested subprogram is also not
-   --  in SPARK (and so it ignored in proof).
+   --  E is either a variable outside SPARK or an abstract state representing
+   --  hidden constituents. Constants in SPARK are translated elsewhere.
+   --  Constants outside SPARK are treated as having no variable input and do
+   --  not appear in Global contracts. Parameters and loop variables can only
+   --  appear in Global contracts of nested subprograms. If such an object is
+   --  outside SPARK, those subprograms are also outside SPARK and ignored in
+   --  proof.
 
    procedure Translate_Loop_Entity (E : E_Loop_Id);
 
    procedure Translate_Variable (E : Object_Kind_Id)
    with Pre => Entity_In_SPARK (E);
-   --  Generate Why declarations that correspond to an Ada top-level object
-   --  declaration.
+   --  Declare the parts of an object mutable in Why3, including fixed parts
+   --  of split layouts, initialization and validity flags, move trees, and
+   --  predicted end-of-borrow values when needed. For overlays, mutable parts
+   --  are functions of the ultimate overlaid object instead of references.
 
    procedure Translate_Exceptions;
    --  Generate a Why3 module for all the visible exceptions

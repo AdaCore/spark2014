@@ -613,10 +613,11 @@ package body Why.Inter is
             declare
                Node : constant Node_Id := Get_Ada_Node (M);
             begin
-               --  Special case for local constants. The closure contains the
-               --  axiom module for local constants, but we don't need these
-               --  axioms in the subprogram/package that directly contains the
-               --  constant, so we filter this here.
+               --  Exclude local constants' value axioms from verification of
+               --  the subprogram or package containing the declaration.
+               --  Checks on the constant's expression must not rely on the
+               --  axiom they establish. Nested scopes can use the axiom
+               --  subject to the dependency filter above.
 
                if Present (Node)
                  and then Nkind (Node) in N_Entity
