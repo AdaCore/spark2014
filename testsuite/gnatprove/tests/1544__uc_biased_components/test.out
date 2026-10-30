@@ -1,0 +1,21 @@
+biased_component.adb:12:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion)
+biased_component.adb:12:13: info: types in unchecked conversion have the same size (Trivial)
+biased_component.adb:12:54: high: type is unsuitable for unchecked conversion [possible explanation: type Rec has minimal size 9, but Size was declared as 8]
+biased_component.adb:12:59: info: type is suitable for unchecked conversion (Trivial)
+biased_component.adb:17:19: medium: assertion might fail (e.g. when Y = Byte'Last)
+biased_enum.adb:13:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion)
+biased_enum.adb:13:13: info: types in unchecked conversion have the same size (Trivial)
+biased_enum.adb:13:54: high: type is unsuitable for unchecked conversion [possible explanation: type Rec has minimal size 2, but Size was declared as 1]
+biased_enum.adb:13:59: info: type is suitable for unchecked conversion (Trivial)
+biased_enum.adb:18:19: medium: assertion might fail (e.g. when Y = 0)
+biased_enum_array.adb:9:13: info: imprecise handling of Unchecked_Conversion (type with biased representation)
+biased_enum_array.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+biased_enum_array.adb:9:54: info: type is suitable as source for unchecked conversion (Trivial)
+biased_enum_array.adb:9:59: info: type is suitable for unchecked conversion (Trivial)
+biased_enum_array.adb:15:19: medium: assertion might fail
+unbiased_control.adb:12:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion)
+unbiased_control.adb:12:13: info: types in unchecked conversion have the same size (Trivial)
+unbiased_control.adb:12:54: high: type is unsuitable for unchecked conversion [possible explanation: type Rec has minimal size 9, but Size was declared as 16]
+unbiased_control.adb:12:59: info: type is suitable for unchecked conversion (Trivial)
+unbiased_control.adb:16:19: medium: assertion might fail (e.g. when Y = Word'Last)
+unbiased_control.adb:17:19: medium: assertion might fail (e.g. when Y = 1)
