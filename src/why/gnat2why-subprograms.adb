@@ -9859,7 +9859,10 @@ package body Gnat2Why.Subprograms is
             return W_Term_Id
          is (if No (Name)
                or else Ekind (Field) /= E_Component
-               or else Comp_Has_Only_Valid_Values (Field, Ty).Ok
+               or else
+                 Comp_Has_Only_Valid_Values
+                   (Field, Ty, Assume_Valid_Discriminants => True)
+                   .Ok
              then W_Term_Id'(Why_Empty)
              else
                +New_Validity_Tree_Record_Access

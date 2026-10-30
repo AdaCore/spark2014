@@ -1,0 +1,43 @@
+array_control.adb:6:04: warning: "X" cannot have invalid values [useless-potentially-invalid-object]
+array_control.adb:6:35: info: discriminant check proved (CVC5: 1 VC)
+array_control.adb:9:19: info: assertion proved (Trivial)
+array_control.adb:10:19: info: assertion proved (Trivial)
+array_control.adb:11:19: info: assertion proved (Trivial: 1 VC)
+array_control.adb:11:19: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+array_control.adb:12:19: info: assertion proved (CVC5: 1 VC)
+array_control.adb:13:19: high: assertion might fail (e.g. when X = (others => (D => 0, Value => 42)))
+function_result.adb:5:26: info: range check proved (CVC5: 2 VC)
+function_result.adb:7:13: info: implicit aspect Always_Terminates on "Make" has been proved, subprogram will terminate
+function_result.adb:7:13: warning: the result of "Make" cannot have invalid values [useless-potentially-invalid-func-result]
+function_result.adb:8:14: info: postcondition proved (CVC5: 1 VC)
+function_result.adb:12:14: info: discriminant check proved (CVC5: 1 VC)
+function_result.adb:15:04: warning: "X" cannot have invalid values [useless-potentially-invalid-object]
+function_result.adb:17:19: info: assertion proved (Trivial)
+function_result.adb:18:19: info: assertion proved (Trivial: 1 VC)
+function_result.adb:18:19: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+function_result.adb:19:19: info: assertion proved (CVC5: 1 VC)
+function_result.adb:20:19: high: assertion might fail (e.g. when X = (D => 0, Value => 42))
+nested_validity.adb:8:22: info: range check proved (CVC5: 2 VC)
+nested_validity.adb:12:27: info: discriminant check proved (CVC5: 1 VC)
+nested_validity.adb:13:16: info: discriminant check proved (CVC5: 1 VC)
+nested_validity.adb:17:19: info: assertion proved (Trivial)
+nested_validity.adb:18:19: info: assertion proved (Trivial: 1 VC)
+nested_validity.adb:18:19: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+nested_validity.adb:19:19: info: assertion proved (CVC5: 1 VC)
+nested_validity.adb:20:19: info: assertion proved (Trivial)
+nested_validity.adb:21:19: info: assertion proved (Trivial: 1 VC)
+nested_validity.adb:21:19: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+nested_validity.adb:22:19: info: assertion proved (CVC5: 1 VC)
+nested_validity.adb:23:19: info: assertion proved (CVC5: 1 VC)
+nested_validity.adb:24:19: info: assertion proved (CVC5: 1 VC)
+nested_validity.adb:24:20: info: validity check proved (CVC5: 1 VC)
+nested_validity.adb:25:19: medium: assertion might fail
+nested_validity.adb:25:20: info: validity check proved (CVC5: 1 VC)
+plain_record.adb:5:04: warning: "X" cannot have invalid values [useless-potentially-invalid-object]
+plain_record.adb:5:13: info: range check proved (CVC5: 2 VC)
+plain_record.adb:5:19: info: discriminant check proved (CVC5: 1 VC)
+plain_record.adb:7:19: info: assertion proved (Trivial)
+plain_record.adb:8:19: info: assertion proved (Trivial: 1 VC)
+plain_record.adb:8:19: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+plain_record.adb:9:19: info: assertion proved (CVC5: 1 VC)
+plain_record.adb:10:19: high: assertion might fail (e.g. when X = (D => 0, Value => 0))
