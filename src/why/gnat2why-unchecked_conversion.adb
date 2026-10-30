@@ -72,23 +72,9 @@ package body Gnat2Why.Unchecked_Conversion is
    --  unchecked conversion".
 
    function Is_Valid_Scalar
-     (Range_Ty : Type_Kind_Id; Value : W_Term_Id) return W_Term_Id
-   is (if Is_Standard_Boolean_Type (Range_Ty)
-       then
-         New_Call
-           (Name => M_Boolean.Range_Pred,
-            Args => (1 => +Value),
-            Typ  => EW_Bool_Type)
-       elsif Type_Is_Modeled_As_Base (Range_Ty)
-       then
-         +New_Dynamic_Property
-            (Domain => EW_Term, Ty => Range_Ty, Expr => Value)
-       else
-         New_Call
-           (Name => E_Symb (Range_Ty, WNE_Range_Pred),
-            Args => (1 => +Value),
-            Typ  => EW_Bool_Type));
-   --  Return a term checking whether Value is in Range_Ty
+     (Range_Ty : Type_Kind_Id; Value : W_Term_Id) return W_Term_Id;
+   --  Return a term checking whether Value is in Range_Ty. Use a common base
+   --  type for Value and the bounds so the check does not narrow Value.
 
    function Get_UC_Theory_Name
      (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
@@ -335,6 +321,46 @@ package body Gnat2Why.Unchecked_Conversion is
 
       return (Ok => True);
    end Is_UC_With_Precise_Definition;
+
+   ---------------------
+   -- Is_Valid_Scalar --
+   ---------------------
+
+   function Is_Valid_Scalar
+     (Range_Ty : Type_Kind_Id; Value : W_Term_Id) return W_Term_Id
+   is
+      Check_Base : constant W_Type_Id :=
+        Base_Why_Type
+          (Base_Why_Type_No_Bool (Range_Ty),
+           Base_Why_Type_No_Bool (Get_Type (+Value)));
+
+   begin
+      return
+        +New_Range_Expr
+           (Domain => EW_Term,
+            Low    =>
+              Insert_Simple_Conversion
+                (Domain => EW_Term,
+                 Expr   =>
+                   New_Attribute_Expr
+                     (Ty     => Range_Ty,
+                      Domain => EW_Term,
+                      Attr   => Attribute_First,
+                      Params => Logic_Params),
+                 To     => Check_Base),
+            High   =>
+              Insert_Simple_Conversion
+                (Domain => EW_Term,
+                 Expr   =>
+                   New_Attribute_Expr
+                     (Ty     => Range_Ty,
+                      Domain => EW_Term,
+                      Attr   => Attribute_Last,
+                      Params => Logic_Params),
+                 To     => Check_Base),
+            Expr   =>
+              +Insert_Simple_Conversion (Expr => Value, To => Check_Base));
+   end Is_Valid_Scalar;
 
    -----------------------------------
    -- Object_Suitable_For_UC_Source --
@@ -664,13 +690,7 @@ package body Gnat2Why.Unchecked_Conversion is
                      To     => EW_Abstract (Typ)),
                Valid_Flag =>
                  (if Potentially_Invalid
-                  then
-                    Is_Valid_Scalar
-                      (Typ,
-                       +Insert_Scalar_Conversion
-                          (Domain => EW_Term,
-                           Expr   => Value,
-                           To     => EW_Split (Typ)))
+                  then Is_Valid_Scalar (Typ, +Value)
                   else Why_Empty));
 
          --  Otherwise, we need to consider the bit representation
@@ -1197,18 +1217,15 @@ package body Gnat2Why.Unchecked_Conversion is
 
       if Potentially_Invalid then
          declare
-            Range_Ty     : constant Type_Kind_Id := Retysp (Ada_Target);
-            Conv_To_Base : constant W_Term_Id :=
-              New_Temp_For_Expr
-                (Insert_Simple_Conversion
-                   (Expr => Conv, To => Target_Base_Type));
-            Valid_Flag   : constant W_Term_Id :=
-              New_Temp_For_Expr (Is_Valid_Scalar (Range_Ty, Conv_To_Base));
+            Range_Ty   : constant Type_Kind_Id := Retysp (Ada_Target);
+            Value      : constant W_Term_Id := New_Temp_For_Expr (Conv);
+            Valid_Flag : constant W_Term_Id :=
+              New_Temp_For_Expr (Is_Valid_Scalar (Range_Ty, Value));
 
          begin
             return
               Binding_For_Temp
-                (Tmp     => Conv_To_Base,
+                (Tmp     => Value,
                  Context =>
                    Binding_For_Temp
                      (Tmp     => Valid_Flag,
@@ -1221,8 +1238,7 @@ package body Gnat2Why.Unchecked_Conversion is
                                  (Condition => Valid_Flag,
                                   Then_Part =>
                                     Insert_Simple_Conversion
-                                      (Expr => Conv_To_Base,
-                                       To   => Target_Type),
+                                      (Expr => Value, To => Target_Type),
                                   Else_Part =>
                                     Insert_Simple_Conversion
                                       (Expr =>
