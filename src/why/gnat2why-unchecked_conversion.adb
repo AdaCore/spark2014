@@ -755,30 +755,25 @@ package body Gnat2Why.Unchecked_Conversion is
                  (Typ => Typ, Offset => Offset, Size => Size, Expr => Expr));
 
          elsif Is_Record_Type (Typ) then
-            declare
-               Comp : Node_Id := First_Component (Typ);
-            begin
-               while Present (Comp) loop
-                  declare
-                     Size          : Uint;
-                     Size_Str, Exp : Unbounded_String;
-                  begin
-                     Record_Component_Size (Typ, Comp, Size, Exp, Size_Str);
-                     Get_Source_Elements
-                       (Typ      => Retysp (Etype (Comp)),
-                        Offset   => Offset + Component_Bit_Offset (Comp),
-                        Size     => Size,
-                        Expr     =>
-                          New_Ada_Record_Access
-                            (Ada_Node => Types.Empty,
-                             Name     => +Expr,
-                             Ty       => Typ,
-                             Field    => Comp),
-                        Elements => Elements);
-                     Next_Component (Comp);
-                  end;
-               end loop;
-            end;
+            for Comp of Get_Component_Set (Typ) loop
+               declare
+                  Size          : Uint;
+                  Size_Str, Exp : Unbounded_String;
+               begin
+                  Record_Component_Size (Typ, Comp, Size, Exp, Size_Str);
+                  Get_Source_Elements
+                    (Typ      => Retysp (Etype (Comp)),
+                     Offset   => Offset + Component_Bit_Offset (Comp),
+                     Size     => Size,
+                     Expr     =>
+                       New_Ada_Record_Access
+                         (Ada_Node => Types.Empty,
+                          Name     => +Expr,
+                          Ty       => Typ,
+                          Field    => Comp),
+                     Elements => Elements);
+               end;
+            end loop;
 
          elsif Is_Array_Type (Typ) then
             declare
@@ -831,6 +826,18 @@ package body Gnat2Why.Unchecked_Conversion is
                  Offset => Offset,
                  Size   => Size,
                  Typ    => Typ);
+
+         elsif Is_Record_Type (Typ)
+           and then Count_Why_Top_Level_Fields (Typ) = 0
+         then
+            --  Null records have an abstract Why type, so use the dummy of
+            --  the root type as for ordinary null-record aggregates. Their
+            --  validity flag is unused since they have no invalid components.
+
+            return
+              (Value      => +E_Symb (Root_Retysp (Typ), WNE_Dummy),
+               Valid_Flag =>
+                 (if Potentially_Invalid then True_Term else Why_Empty));
 
          elsif Is_Record_Type (Typ) then
             declare
@@ -1270,25 +1277,20 @@ package body Gnat2Why.Unchecked_Conversion is
                return False_With_Explain ("type has reverse storage order");
             end if;
 
-            declare
-               Comp : Entity_Id := First_Component (Typ);
-            begin
-               while Present (Comp) loop
-                  if No (Component_Bit_Offset (Comp)) then
-                     return False_With_Explain ("component offset not known");
-                  end if;
+            for Comp of Get_Component_Set (Typ) loop
+               if No (Component_Bit_Offset (Comp)) then
+                  return False_With_Explain ("component offset not known");
+               end if;
 
-                  declare
-                     Check : constant True_Or_Explain :=
-                       Suitable_For_Precise_UC (Etype (Comp));
-                  begin
-                     if not Check.Ok then
-                        return Check;
-                     end if;
-                  end;
-                  Next_Component (Comp);
-               end loop;
-            end;
+               declare
+                  Check : constant True_Or_Explain :=
+                    Suitable_For_Precise_UC (Etype (Comp));
+               begin
+                  if not Check.Ok then
+                     return Check;
+                  end if;
+               end;
+            end loop;
 
          when Array_Kind       =>
             declare
