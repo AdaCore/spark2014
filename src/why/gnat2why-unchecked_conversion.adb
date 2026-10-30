@@ -2147,13 +2147,44 @@ package body Gnat2Why.Unchecked_Conversion is
       For_UC         : Boolean;
       Result         : out Boolean;
       Explanation    : out Unbounded_String;
-      Check_Validity : Boolean := True) is
+      Check_Validity : Boolean := True)
+   is
+      function Is_Discriminated (Ty : Type_Kind_Id) return Test_Result;
+      --  Return Pass and set Explanation if Ty has discriminants
+
+      function Has_Discriminated_Part is new
+        Traverse_Subcomponents (Is_Discriminated);
+
+      ----------------------
+      -- Is_Discriminated --
+      ----------------------
+
+      function Is_Discriminated (Ty : Type_Kind_Id) return Test_Result is
+      begin
+         --  Access types are already rejected by Suitable_For_UC. Do not
+         --  traverse their designated types, which might not be marked yet.
+
+         if Is_Access_Type (Ty) then
+            return Fail;
+         elsif Has_Discriminants (Ty) then
+            Explanation :=
+              To_Unbounded_String
+                (Pretty_Source_Name (Ty) & " has discriminants");
+            return Pass;
+         else
+            return Continue;
+         end if;
+      end Is_Discriminated;
+
    begin
       Suitable_For_UC (Typ, Result, Explanation);
 
       --  Check for invalid values
 
-      if Result and then Check_Validity then
+      if not Result then
+         null;
+
+      elsif Check_Validity then
          declare
             Res          : True_Or_Explain := (Ok => True);
             Continuation : constant String :=
@@ -2172,6 +2203,18 @@ package body Gnat2Why.Unchecked_Conversion is
                Explanation := Res.Explanation & Continuation;
             end if;
          end;
+
+      --  When the validity query is skipped, still reject discriminated
+      --  records: their discriminants must be valid and satisfy their
+      --  constraints even when ordinary components are allowed to be invalid.
+
+      elsif Has_Discriminated_Part (Typ) then
+         Result := False;
+         Append
+           (Explanation,
+            "; Potentially_Invalid requires discriminants to be valid "
+            & "and satisfy their constraints"
+            & (if For_UC then " [SPARK RM 13.9]" else " [SPARK RM 13.7]"));
       end if;
    end Suitable_For_UC_Target;
 

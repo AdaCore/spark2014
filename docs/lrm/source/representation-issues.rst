@@ -122,7 +122,11 @@ respect to the program semantics of |SPARK|.
    be suitable as the target of an unchecked conversion.
    The overlaid object ``X`` shall be suitable for unchecked
    conversion. If it is not annotated with the aspect `Potentially_Invalid`, it
-   shall also be suitable as the target of an unchecked conversion. Moreover,
+   shall also be suitable as the target of an unchecked conversion. Otherwise,
+   neither the subtype of ``X`` nor any of its subcomponent subtypes shall have
+   discriminants.
+   [Discriminants of potentially invalid objects still need to be valid.]
+   Moreover,
    if it is mutable in SPARK, it shall also be suitable as the source of an
    unchecked conversion.
    [A constant overlay is similar to an unchecked conversion from the object
@@ -214,10 +218,12 @@ could be misaligned (as GNAT ensures).
 4. The source subtype shall be suitable as the source of an unchecked
    conversion.
 
-5. The target subtype should be suitable for unchecked conversion and it
-   should be suitable as the target of an unchecked
-   conversion unless the instance of ``Unchecked_Conversion`` has the
-   Potentially_Invalid aspect, see :ref:`Data Validity`.
+5. The target subtype should be suitable for unchecked conversion. If the
+   instance of ``Unchecked_Conversion`` does not have the Potentially_Invalid
+   aspect (see :ref:`Data Validity`), the target subtype should also be suitable
+   as the target of an unchecked conversion. Otherwise, neither the target
+   subtype nor any of its subcomponent subtypes shall have discriminants.
+   [Discriminants of potentially invalid objects still need to be valid.]
 
 .. index:: Potentially_Invalid
 

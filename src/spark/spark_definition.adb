@@ -4847,6 +4847,18 @@ package body SPARK_Definition is
    ------------------
 
    procedure Mark_Address (E : Entity_Id) is
+      function Is_Discriminated (Ty : Type_Kind_Id) return Test_Result
+      is (if Is_Access_Type (Ty)
+          then Fail
+          elsif Has_Discriminants (Ty)
+          then Pass
+          else Continue);
+      --  Stop at access types, which Potentially_Invalid forbids. Their
+      --  designated types might not have been marked yet.
+
+      function Has_Discriminated_Part is new
+        Traverse_Subcomponents (Is_Discriminated);
+
       Address      : constant Node_Id := Address_Clause (E);
       Address_Expr : constant Node_Id :=
         (if Present (Address) then Expression (Address) else Empty);
@@ -4985,6 +4997,16 @@ package body SPARK_Definition is
                then
                   Nb_Warn := Nb_Warn + 1;
                   Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
+
+               --  Potentially_Invalid does not cover discriminants
+
+               elsif Is_Potentially_Invalid (E)
+                 and then Has_Discriminated_Part (Retysp (Etype (E)))
+               then
+                  Nb_Warn := Nb_Warn + 1;
+                  Warnings (Nb_Warn) :=
+                    To_Unbounded_String
+                      ("valid discriminants that satisfy their constraints");
                end if;
 
                --  Emit composite warning
