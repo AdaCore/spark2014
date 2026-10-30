@@ -9,12 +9,12 @@ package P_Warn with SPARK_Mode is
    X2 : Integer := 1;
 
    pragma Assert (X2'Img'First = 1);
-   pragma Assert (Integer'Image (X2)'Length <= 21);
+   pragma Assert (Integer'Image (X2)'Length <= 12);
 
    X3 : Long_Long_Integer := 1;
 
    pragma Assert (X3'Img'First = 1);
-   pragma Assert (Long_Long_Integer'Image (X3)'Length <= 21);
+   pragma Assert (Long_Long_Integer'Image (X3)'Length <= 22);
 
    X4 : Short_Short_Integer := 1;
 
