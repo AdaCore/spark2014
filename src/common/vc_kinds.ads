@@ -458,6 +458,7 @@ package VC_Kinds is
       Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
       Lim_Hidden_Private_Relaxed_Init,
+      Lim_Image_With_Custom_Put_Image,
       Lim_Img_On_Non_Scalar,
       Lim_Incomplete_Type_Early_Usage,
       Lim_Inherited_Controlling_Result_From_Hidden_Part,
@@ -709,6 +710,10 @@ package VC_Kinds is
            & "for declarations",
          when Lim_Non_Static_Attribute =>
            "non-static attribute """ & Standard_Ada_Case (Name) & """",
+         when Lim_Image_With_Custom_Put_Image =>
+           "attribute """
+           & (if Name = "" then "Image" else Standard_Ada_Case (Name))
+           & """ with user-defined Put_Image",
          when Lim_Img_On_Non_Scalar =>
            "attribute """ & Standard_Ada_Case (Name) & """ on non-scalar type",
          when Lim_Incomplete_Type_Early_Usage =>
