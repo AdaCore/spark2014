@@ -1,5 +1,5 @@
-from subprocess import call
-from test_support import prove_all, gprbuild
+from e3.os.process import Run
+from test_support import prove_all, gprbuild, print_sorted
 import os
 
 contains_manual_proof = False
@@ -14,4 +14,5 @@ if __name__ == "__main__":
     prove_all(replay=True, sparklib=True)
 
     gprbuild(["-q", "-P", "test.gpr"])
-    call(["./obj/test"])
+    process = Run(["./obj/test"])
+    print_sorted(str.splitlines(process.out))

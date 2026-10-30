@@ -45,7 +45,7 @@ test_set.adb:66:10: info: precondition proved
 test_set.adb:67:25: info: assertion proved
 test_set.adb:67:28: info: precondition proved
 test_set.adb:67:40: info: precondition proved
-test_set.adb:68:10: info: precondition proved
+test_set.adb:68:10: medium: precondition might fail
 test_set.adb:72:07: info: precondition proved
 test_set.adb:73:22: info: assertion proved
 test_set.adb:76:22: info: assertion proved

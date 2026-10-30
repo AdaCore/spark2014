@@ -1,5 +1,5 @@
-sliding_1.adb:19:22: high: assertion might fail (e.g. when B = (1 => 10, 2 => 20, 3 => 30))
-sliding_1.adb:32:22: high: assertion might fail (e.g. when B = (-1 => 10, 0 => 20, 1 => 30))
+sliding_1.adb:19:22: high: assertion might fail (e.g. when B = (1 => 10, 2 => 20))
+sliding_1.adb:32:22: high: assertion might fail (e.g. when B = (0 => 20, 1 => 30))
 sliding_1.ads:5:09: info: data dependencies proved
 sliding_1.ads:7:09: info: data dependencies proved
 sliding_2.adb:16:15: info: index check proved (CVC5: 2 VC)
