@@ -4781,6 +4781,22 @@ variables it might contain cannot have been modified since the beginning of the
 subprogram. Recursive calls in nested packages declared anywhere else in the
 subprogram are not supported, and an unprovable check is generated instead.
 
+Reusing entry values requires the referenced objects to be preserved during
+declaration elaboration. Independent package elaboration proofs rely on the
+same invariant: they assume the enclosing precondition for packages in a
+subprogram's initial declarations, and check the package specification and
+body consecutively without modeling intervening declarations from the enclosing
+scope. Facts from the specification must therefore remain valid when the body
+elaborates. See ``Generate_VCs_For_Package_Elaboration`` in
+:file:`src/why/gnat2why-subprograms.adb`.
+
+Initializing an overlay can modify an existing object and invalidate these
+assumptions. Marking preserves the invariant by rejecting overlays without
+``Import`` in a declarative part containing a package declaration or body;
+see ``Mark_Address`` in :file:`src/spark/spark_definition.adb`. Imported overlays
+perform no initialization, so their declarations preserve the referenced
+objects.
+
 Exceptions
 ^^^^^^^^^^
 All Ada exceptions are translated into a single Why3 exception called
