@@ -567,12 +567,6 @@ package SPARK_Atree.Entities is
    --  Same as Einfo.Has_Discriminants except that it ignores hidden
    --  discriminants.
 
-   function First_Component (Typ : Type_Kind_Id) return E_Component_Id
-   is (Einfo.Utils.First_Component (Typ))
-   with Pre => not Has_Discriminants (Typ);
-
-   procedure Next_Component (Comp : in out Opt_E_Component_Id);
-
    function First_Discriminant (Typ : Type_Kind_Id) return E_Discriminant_Id
    with
      Pre  => Has_Discriminants (Typ),
