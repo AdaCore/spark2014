@@ -48,7 +48,7 @@ SPARK2014 = "eng/spark/spark2014"
 
 # Subdirectories (relative to the testsuite root) that hold tests with a
 # legacy test.opt file.
-LEGACY_TEST_DIRS = ["tests", "internal", "sparklib"]
+LEGACY_TEST_DIRS = ["tests", "internal"]
 
 
 def get_issue(gl, cache, issue_ref):

@@ -557,7 +557,7 @@ class SPARKTestFinder(TestFinder):
         parent_name = os.path.dirname(dirpath)
         testname = os.path.basename(dirpath)
         parent_dir = os.path.basename(parent_name)
-        allowed_testdirs = ["tests", "internal", "sparklib"]
+        allowed_testdirs = ["tests", "internal"]
         # If the dir is not a direct subdir of <root_dir/tests>, skip it
         if (
             parent_dir not in allowed_testdirs
