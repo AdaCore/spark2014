@@ -188,9 +188,11 @@ different sizes and ``With_Holes`` has unused bits in its representation:
   result of such a call. A warning for such situations can be enabled using
   ``-W imprecise-unchecked-conversion`` or using the ``--info``
   switch, see :ref:`Proof Limitations`.
-  Currently, overlays are always imprecisely supported by |GNATprove|, so
-  nothing will be known about an object after it has been initialized or modified
-  through one of its overlays.
+  Similarly, overlays are sometimes handled imprecisely by |GNATprove|. In
+  such cases, nothing will be known about an object after it has been
+  initialized or modified through one of its overlays. A warning for such
+  situations can be enabled using ``-W imprecise-overlay`` or using the
+  ``--info`` switch.
 
 |SPARK| allows conversions from (suitable) integer types or
 ``System.Address`` to general access-to-object types. When
@@ -466,11 +468,11 @@ Two more restrictions are worth mentioning here, and are detailed in
 Absence of Interferences
 ------------------------
 
-In |SPARK|, an assignment to a variable cannot change the value of another
-variable. This is enforced by restricting the use of access types (pointers) in
-|SPARK|, and by restricting aliasing between parameters and global variables so
-that only benign aliasing is accepted (i.e. aliasing that does not cause
-interference).
+Except for overlays (see :ref:`Data Validity`), an assignment to a variable in
+|SPARK| cannot change the value of another variable. This is enforced by
+restricting the use of access types (pointers) in |SPARK|, and by restricting
+aliasing between parameters and global variables so that only benign aliasing
+is accepted (i.e. aliasing that does not cause interference).
 
 The precise rules detailed in SPARK RM 6.4.2 can be summarized as follows:
 
@@ -536,8 +538,9 @@ messages:
    :language: none
    :lines: 6-9,21-24
 
-Note that |SPARK| currently does not detect aliasing between objects that
-arises due to the use of Address clauses or aspects.
+These aliasing checks take into account overlays introduced by supported
+Address clauses or aspects. Aliasing introduced by other address specifications
+is ignored (see :ref:`Complete List of Assumptions`).
 
 .. index:: generics; analysis of instances
 

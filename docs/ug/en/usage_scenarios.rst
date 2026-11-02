@@ -1024,8 +1024,9 @@ In particular, features that bypass the type system of Ada for reinterpreting
 values (``Unchecked_Conversion``) and memory locations (``Address`` clause
 overlays, in which multiple objects are defined to share the same address,
 something that can also be achieved by sharing the same ``Link_Name`` or
-``External_Name``) have no impact on |SPARK| analysis, yet they may lead to
-portability issues.
+``External_Name``) may lead to portability issues. The precision of
+|GNATprove|'s analysis of unchecked conversions and overlays depends on the
+types and representation information available (see :ref:`Data Validity`).
 
 By using the following restrictions (or a subset thereof), one can ensure that
 the corresponding non-portable features are not used in the program:
@@ -1706,7 +1707,7 @@ it as a parameter of mode ``in`` to a subprogram. In the same way, it is
 possible to create an overlay with a part of an object by passing it as a
 parameter (of mode ``in`` or ``in out``) to a subprogram. For example, we could
 call ``Parse_Invalid_Values`` on a variable or a component of an object. Also
-note that, currently, the value of overlaid objects is not tracked precisely by
+note that the value of overlaid objects is not always tracked precisely by
 |GNATprove|.
 
 All the possibilities discussed above have limitations and are sometimes
