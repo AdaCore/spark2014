@@ -21923,7 +21923,7 @@ package body Gnat2Why.Expr is
                                (Ada_Node   => Expr,
                                 Pred       =>
                                   New_Comparison
-                                    (Why_Neq,
+                                    (MF_Floats (Base_Type).Neq,
                                      +Tmp,
                                      +MF_Floats (Base_Type).Plus_Zero),
                                 Reason     => VC_Division_Check,

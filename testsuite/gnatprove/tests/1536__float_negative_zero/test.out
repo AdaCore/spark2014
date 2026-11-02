@@ -2,3 +2,57 @@ negative_zero.adb:8:11: info: float overflow check proved (CVC5: 1 VC)
 negative_zero.adb:8:11: medium: divide by zero might fail
 positive_zero.adb:7:11: info: float overflow check proved (CVC5: 1 VC)
 positive_zero.adb:7:11: medium: divide by zero might fail
+zero_powers.adb:6:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:5
+zero_powers.adb:6:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:6
+zero_powers.adb:6:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:7
+zero_powers.adb:6:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:8
+zero_powers.adb:6:14: medium: divide by zero might fail, in instantiation at instances.ads:10
+zero_powers.adb:6:14: medium: divide by zero might fail, in instantiation at instances.ads:5
+zero_powers.adb:6:14: medium: divide by zero might fail, in instantiation at instances.ads:6
+zero_powers.adb:6:14: medium: divide by zero might fail, in instantiation at instances.ads:7
+zero_powers.adb:6:14: medium: divide by zero might fail, in instantiation at instances.ads:8
+zero_powers.adb:6:14: medium: divide by zero might fail, in instantiation at instances.ads:9
+zero_powers.adb:6:14: medium: float overflow check might fail, in instantiation at instances.ads:10 [reason for check: result of floating-point exponentiation must be bounded]
+zero_powers.adb:6:14: medium: float overflow check might fail, in instantiation at instances.ads:9 [reason for check: result of floating-point exponentiation must be bounded]
+zero_powers.adb:12:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:5
+zero_powers.adb:12:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:6
+zero_powers.adb:12:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:7
+zero_powers.adb:12:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:8
+zero_powers.adb:12:14: medium: divide by zero might fail, in instantiation at instances.ads:10
+zero_powers.adb:12:14: medium: divide by zero might fail, in instantiation at instances.ads:5
+zero_powers.adb:12:14: medium: divide by zero might fail, in instantiation at instances.ads:6
+zero_powers.adb:12:14: medium: divide by zero might fail, in instantiation at instances.ads:7
+zero_powers.adb:12:14: medium: divide by zero might fail, in instantiation at instances.ads:8
+zero_powers.adb:12:14: medium: divide by zero might fail, in instantiation at instances.ads:9
+zero_powers.adb:12:14: medium: float overflow check might fail, in instantiation at instances.ads:10 [reason for check: result of floating-point exponentiation must be bounded]
+zero_powers.adb:12:14: medium: float overflow check might fail, in instantiation at instances.ads:9 [reason for check: result of floating-point exponentiation must be bounded]
+zero_powers.adb:18:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:5
+zero_powers.adb:18:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:6
+zero_powers.adb:18:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:7
+zero_powers.adb:18:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at instances.ads:8
+zero_powers.adb:18:14: medium: divide by zero might fail, in instantiation at instances.ads:10
+zero_powers.adb:18:14: medium: divide by zero might fail, in instantiation at instances.ads:5
+zero_powers.adb:18:14: medium: divide by zero might fail, in instantiation at instances.ads:6
+zero_powers.adb:18:14: medium: divide by zero might fail, in instantiation at instances.ads:7
+zero_powers.adb:18:14: medium: divide by zero might fail, in instantiation at instances.ads:8
+zero_powers.adb:18:14: medium: divide by zero might fail, in instantiation at instances.ads:9
+zero_powers.adb:18:14: medium: float overflow check might fail, in instantiation at instances.ads:10 [reason for check: result of floating-point exponentiation must be bounded]
+zero_powers.adb:18:14: medium: float overflow check might fail, in instantiation at instances.ads:9 [reason for check: result of floating-point exponentiation must be bounded]
+zero_powers.ads:5:25: info: initialization of "Y" proved, in instantiation at instances.ads:10
+zero_powers.ads:5:25: info: initialization of "Y" proved, in instantiation at instances.ads:5
+zero_powers.ads:5:25: info: initialization of "Y" proved, in instantiation at instances.ads:6
+zero_powers.ads:5:25: info: initialization of "Y" proved, in instantiation at instances.ads:7
+zero_powers.ads:5:25: info: initialization of "Y" proved, in instantiation at instances.ads:8
+zero_powers.ads:5:25: info: initialization of "Y" proved, in instantiation at instances.ads:9
+zero_powers.ads:6:25: info: initialization of "Y" proved, in instantiation at instances.ads:10
+zero_powers.ads:6:25: info: initialization of "Y" proved, in instantiation at instances.ads:5
+zero_powers.ads:6:25: info: initialization of "Y" proved, in instantiation at instances.ads:6
+zero_powers.ads:6:25: info: initialization of "Y" proved, in instantiation at instances.ads:7
+zero_powers.ads:6:25: info: initialization of "Y" proved, in instantiation at instances.ads:8
+zero_powers.ads:6:25: info: initialization of "Y" proved, in instantiation at instances.ads:9
+zero_powers.ads:7:27: info: initialization of "Y" proved, in instantiation at instances.ads:10
+zero_powers.ads:7:27: info: initialization of "Y" proved, in instantiation at instances.ads:5
+zero_powers.ads:7:27: info: initialization of "Y" proved, in instantiation at instances.ads:6
+zero_powers.ads:7:27: info: initialization of "Y" proved, in instantiation at instances.ads:7
+zero_powers.ads:7:27: info: initialization of "Y" proved, in instantiation at instances.ads:8
+zero_powers.ads:7:27: info: initialization of "Y" proved, in instantiation at instances.ads:9
