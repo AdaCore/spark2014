@@ -853,7 +853,10 @@ package body Gnat2Why.Expr.Loops.Inv is
                     and then
                       (not For_Valid
                        or else
-                         not Comp_Has_Only_Valid_Values (Component, Expr_Ty)
+                         not Comp_Has_Only_Valid_Values
+                               (Component,
+                                Expr_Ty,
+                                Assume_Valid_Discriminants => True)
                                .Ok)
                   then
                      Handle_Record_Component (Component);

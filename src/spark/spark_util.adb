@@ -4544,17 +4544,23 @@ package body SPARK_Util is
          when E_Variable | Formal_Kind =>
             return
               Has_Potentially_Invalid (E)
-              and then not Obj_Has_Only_Valid_Values (E);
+              and then
+                not Obj_Has_Only_Valid_Values
+                      (E, Assume_Valid_Discriminants => True);
 
          when E_Constant               =>
             if Is_Full_View (E) then
                return
                  Has_Potentially_Invalid (Partial_View (E))
-                 and then not Obj_Has_Only_Valid_Values (E);
+                 and then
+                   not Obj_Has_Only_Valid_Values
+                         (E, Assume_Valid_Discriminants => True);
             else
                return
                  Has_Potentially_Invalid (E)
-                 and then not Obj_Has_Only_Valid_Values (E);
+                 and then
+                   not Obj_Has_Only_Valid_Values
+                         (E, Assume_Valid_Discriminants => True);
             end if;
 
          when others                   =>
@@ -4592,7 +4598,10 @@ package body SPARK_Util is
                return
                  Ekind (Comp) /= E_Discriminant
                  and then
-                   not Comp_Has_Only_Valid_Values (Comp, Retysp (Etype (Pref)))
+                   not Comp_Has_Only_Valid_Values
+                         (Comp,
+                          Retysp (Etype (Pref)),
+                          Assume_Valid_Discriminants => True)
                          .Ok
                  and then Is_Potentially_Invalid_Expr (Pref);
             end;

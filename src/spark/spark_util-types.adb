@@ -534,7 +534,9 @@ package body SPARK_Util.Types is
    --------------------------------
 
    function Comp_Has_Only_Valid_Values
-     (Comp : E_Component_Id; Rec : Type_Kind_Id) return True_Or_Explain
+     (Comp                       : E_Component_Id;
+      Rec                        : Type_Kind_Id;
+      Assume_Valid_Discriminants : Boolean) return True_Or_Explain
    is
       Comp_Ty   : constant Type_Kind_Id := Retysp (Etype (Comp));
       Used_Size : Uint := No_Uint;
@@ -545,7 +547,11 @@ package body SPARK_Util.Types is
          Record_Component_Size (Rec, Comp, Used_Size, Size_Str, Unused);
       end if;
       return
-        Type_Has_Only_Valid_Values (Comp_Ty, Used_Size, To_String (Size_Str));
+        Type_Has_Only_Valid_Values
+          (Comp_Ty,
+           Used_Size,
+           To_String (Size_Str),
+           Assume_Valid_Discriminants);
    end Comp_Has_Only_Valid_Values;
 
    -----------------------------------
@@ -904,7 +910,8 @@ package body SPARK_Util.Types is
            Type_Has_Only_Valid_Values
              (Ty,
               (if Is_Scalar_Type (Ty) then Size else No_Uint),
-              To_String (Size_Str));
+              To_String (Size_Str),
+              Assume_Valid_Discriminants => True);
          return Valid.Ok;
       end if;
    end Fun_Has_Only_Valid_Values;
@@ -2098,7 +2105,9 @@ package body SPARK_Util.Types is
    -- Obj_Has_Only_Valid_Values --
    -------------------------------
 
-   function Obj_Has_Only_Valid_Values (Obj : Entity_Id) return Boolean is
+   function Obj_Has_Only_Valid_Values
+     (Obj : Entity_Id; Assume_Valid_Discriminants : Boolean) return Boolean
+   is
       Ty          : constant Type_Kind_Id := Retysp (Etype (Obj));
       Size        : Uint := No_Uint;
       Explanation : Unbounded_String;
@@ -2111,7 +2120,9 @@ package body SPARK_Util.Types is
             return False;
          end if;
       end if;
-      Valid := Type_Has_Only_Valid_Values (Ty, Size, To_String (Size_Str));
+      Valid :=
+        Type_Has_Only_Valid_Values
+          (Ty, Size, To_String (Size_Str), Assume_Valid_Discriminants);
       return Valid.Ok;
    end Obj_Has_Only_Valid_Values;
 
@@ -2844,8 +2855,10 @@ package body SPARK_Util.Types is
    --------------------------------
 
    function Type_Has_Only_Valid_Values
-     (ArgTyp : Type_Kind_Id; Size : Uint; Size_Str : String)
-      return True_Or_Explain
+     (ArgTyp                     : Type_Kind_Id;
+      Size                       : Uint;
+      Size_Str                   : String;
+      Assume_Valid_Discriminants : Boolean) return True_Or_Explain
    is
       Typ : constant Type_Kind_Id := Retysp (ArgTyp);
 
@@ -2893,10 +2906,11 @@ package body SPARK_Util.Types is
             Explanation =>
               To_Unbounded_String (Typ_Name & " is an access type"));
 
-      --  Types with constrained/immutable discriminants have invalid
-      --  values. We could support mutable discriminants.
+      --  Consider types with discriminants to have invalid values unless
+      --  discriminant validity is assumed.
 
-      elsif Has_Discriminants (Typ) then
+      elsif not Assume_Valid_Discriminants and then Has_Discriminants (Typ)
+      then
          return
            (Ok          => False,
             Explanation =>
@@ -3016,7 +3030,10 @@ package body SPARK_Util.Types is
             end if;
             return
               Type_Has_Only_Valid_Values
-                (Comp_Ty, Used_Size, To_String (Size_Str));
+                (Comp_Ty,
+                 Used_Size,
+                 To_String (Size_Str),
+                 Assume_Valid_Discriminants);
          end;
       elsif Is_Record_Type (Typ) then
          declare
@@ -3024,7 +3041,9 @@ package body SPARK_Util.Types is
             Result : True_Or_Explain;
          begin
             while Present (Comp) loop
-               Result := Comp_Has_Only_Valid_Values (Comp, Typ);
+               Result :=
+                 Comp_Has_Only_Valid_Values
+                   (Comp, Typ, Assume_Valid_Discriminants);
                if not Result.Ok then
                   return Result;
                end if;
