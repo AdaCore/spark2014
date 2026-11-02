@@ -4189,7 +4189,9 @@ package body Why.Gen.Expr is
                              New_Integer_Constant (Value => Uint_0));
                         Value_Zero     : constant W_Pred_Id :=
                           New_Comparison
-                            (Why_Neq, +Value, +MF_Floats (Typ).Plus_Zero);
+                            (MF_Floats (Typ).Neq,
+                             +Value,
+                             +MF_Floats (Typ).Plus_Zero);
                         Ass            : constant W_Prog_Id :=
                           New_Located_Assert
                             (Ada_Node   => Ada_Node,
