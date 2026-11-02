@@ -1238,6 +1238,9 @@ package body VC_Kinds is
          when Lim_Overlay_With_Deep_Object                                =>
            "a reference to the ""Address"" attribute in an address clause"
            & " whose prefix has subcomponents of an access-to-variable type",
+         when Lim_Overlay_With_Package                                    =>
+           "an overlay without Import in the same declarative part as a "
+           & "package declaration or body",
          when Lim_Deep_Object_Declaration_Outside_Block                   =>
            "a declaration of an object of an ownership type outside a block "
            & "for declarations",
@@ -3650,6 +3653,8 @@ package body VC_Kinds is
            "overlay-uninitialized",
          when Lim_Overlay_With_Deep_Object                                =>
            "overlay-with-deep-object",
+         when Lim_Overlay_With_Package                                    =>
+           "overlay-with-package",
          when Lim_Overriding_With_Precondition_Discrepancy_Hiding         =>
            "overriding-with-precondition-discrepancy-hiding",
          when Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy =>
