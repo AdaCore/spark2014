@@ -14,10 +14,18 @@ Assume the environment is already set up.
 - The gnatprove testsuite does not rebuild tools automatically. Re-run `make`
   and `make install-all` before testing source changes.
 - Format Ada code with `make format`; verify formatting with `make check-format`.
-- Before long test runs, proof-session regeneration, or baseline updates,
+- Before big test runs or expensive proof-session/baseline regeneration,
   finish the edits and formatting, present the diff for the user's validation,
   and wait for approval. Keep preliminary checks short so the user can review
   the changes before expensive validation begins.
+- That review is a checkpoint before expensive runs, not a separate approval
+  requirement for writing expected output. Once a run is authorized, inspect
+  its results and generate the corresponding baselines without asking again.
+  Short targeted tests and their baselines can be completed without this
+  checkpoint unless the user requests otherwise.
+- Run tests once, inspect output diffs, then use `update-expected-outputs` for
+  intended changes; do not rerun with `--rewrite`. Include new tests' `test.out`
+  baselines in the completed change.
 - Run tests from `testsuite/gnatprove/` with `./run-tests`.
 - Useful test commands:
   - `./run-tests <test_name1> <test_name2> ...`
@@ -42,17 +50,23 @@ Assume the environment is already set up.
 ## Developer Documentation
 
 - `docs/develguide/` is the developer documentation for GNATprove internals.
+- Before deciding whether or how to document a change, read "Purpose and
+  Organization" in `docs/develguide/index.rst`, including "What to Document"
+  and "Maintaining the Guide". Its design-focused scope governs additions.
 - Before changing behavior or architecture in `src/gnatprove/`, `gnat2why/`,
   `src/flow/`, `src/spark/`, `src/why/`, or `why3/`, read the relevant page(s)
   in `docs/develguide/`.
 - Start with the mapped page in `docs/develguide/` and only read additional
   pages when the change clearly crosses subsystem boundaries or the mapped page
   points elsewhere.
-- If a change affects documented behavior, architecture, data flow, debug
-  workflow, or developer procedures, update the corresponding page in
-  `docs/develguide/` in the same change.
-- If no existing page is a good fit, update the closest page or add a new page
-  and link it from `docs/develguide/index.rst`.
+- Update the guide when a change alters its architectural explanation, design
+  rationale, soundness constraints, or a documented workflow. Routine fixes,
+  implementation details, and regression tests often need no guide update.
+  Keep implementation explanations beside the code and use the User's Guide,
+  Reference Manual, or tooling documentation when those are the proper home.
+- Add a section or page only when there is a useful design explanation within
+  the guide's scope. Follow the chapter map in `docs/develguide/index.rst` and
+  link any new page there.
 
 ### Developer Guide Routing
 
@@ -74,6 +88,13 @@ Assume the environment is already set up.
 
 - Tests live in `testsuite/gnatprove/tests/<test_name>/`.
 - `test.out` stores expected output; `test.yaml` or `test.py` customize execution.
+- Prefer no `test.yaml` or `test.py` when the default test driver is sufficient.
+  Add configuration only for a concrete requirement of the regression, and
+  prefer `test.yaml` over `test.py` when YAML can express it.
+- Keep configuration minimal. Do not add options such as disabling
+  counterexamples or `--output-header` without a test-specific reason; options
+  used for ad hoc proof runs, including skill defaults, are not requirements
+  for regression test configuration.
 - Tests with `__flow` in the name run flow analysis; most others run proof.
 - `ug__` tests mirror User's Guide examples and use fixed commands.
 - Most tests don't need a ".gpr" file - the test harness creates one.
