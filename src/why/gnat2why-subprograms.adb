@@ -2546,9 +2546,9 @@ package body Gnat2Why.Subprograms is
          Target_Status : Scalar_Status)
          return W_Term_Id;
       --  Return Arg of Source_Type converted to Target_Type, when both are of
-      --  scalar types. Size is the shared size of both types, when arguments
-      --  of the UC are integer types, which is used for conversion from an
-      --  Unsigned type to a Signed one. Otherwise it is No_Uint.
+      --  scalar types. Size is the representation size of the converted value.
+      --  It is used for conversions between Signed and Unsigned or Modular
+      --  types.
 
       ------------------------
       -- Precise_Integer_UC --
@@ -2585,11 +2585,12 @@ package body Gnat2Why.Subprograms is
          then
             null;  --  Modular value can be directly converted to unsigned
 
-         --  Apply the appropriate UC function for conversions between Modular
-         --  and Signed.
+         --  Use the bitvector UC functions when the representation size and
+         --  bitvector width match, so that they use the correct sign bit.
 
          elsif Source_Status = Modular
            and then Target_Status = Signed
+            and then Size = BitVector_Type_Size (Source_Base_Type)
          then
             Conv := New_Call
               (Name => MF_BVs (Source_Base_Type).UC_To_Int,
@@ -2598,20 +2599,25 @@ package body Gnat2Why.Subprograms is
 
          elsif Source_Status = Signed
            and then Target_Status = Modular
+            and then Size = BitVector_Type_Size (Target_Base_Type)
          then
             Conv := New_Call
               (Name => MF_BVs (Target_Base_Type).UC_Of_Int,
                Args => (1 => +Conv),
                Typ  => Target_Base_Type);
 
-         --  Otherwise, this is a conversion between Unsigned and Signed.
-         --  We need to consider the bit representation of that (possibly
-         --  negative) signed value, to see if the high bit is 1, in which
-         --  case the Signed value is negative.
+         --  Interpret an unsigned or modular value as signed. The sign bit is
+         --  determined by the representation size, which can be smaller than
+         --  the Why bitvector width.
 
-         elsif Source_Status = Unsigned
+         elsif Source_Status in Unsigned | Modular
            and then Target_Status = Signed
          then
+            if Source_Status = Modular then
+               Conv :=
+                 Insert_Simple_Conversion (Expr => Conv, To => EW_Int_Type);
+            end if;
+
             --  Generate the value
             --  if Conv >= 2**(Size-1) then Conv-2**Size else Conv
             declare
@@ -2639,7 +2645,12 @@ package body Gnat2Why.Subprograms is
 
          else
             pragma Assert (Source_Status = Signed);
-            pragma Assert (Target_Status = Unsigned);
+            pragma Assert (Target_Status in Unsigned | Modular);
+
+            --  Interpret a signed value as an unsigned Size-bit pattern before
+            --  converting it to the target type. Using the wider Why bitvector
+            --  width instead would retain sign-extension bits.
+            --
 
             --  Generate the value
             --  if Conv < 0 then Conv+2**Size else Conv
@@ -3226,14 +3237,14 @@ package body Gnat2Why.Subprograms is
                begin
                   --  1. Convert the argument to a value of modular type Base
 
-                  --  1.a Conversion from a scalar type should be identity or
-                  --  call to uc_of_int.
+                  --  1.a Convert a scalar source to a Target_Size-bit pattern
+                  --  in Base.
 
                   if Is_Scalar_Type (Source_Type) then
                      Conv :=
                        Precise_Integer_UC
                          (Arg           => +Arg,
-                          Size          => No_Uint,
+                          Size          => Target_Size,
                           Source_Type   => EW_Abstract (Source_Type),
                           Target_Type   => Base,
                           Source_Status => Get_Scalar_Status (Source_Type),
@@ -3268,14 +3279,14 @@ package body Gnat2Why.Subprograms is
                   --  2. Convert the converted argument to a value of the
                   --  target type.
 
-                  --  2.a Conversion to a scalar type should be identity or
-                  --  call to uc_to_int.
+                  --  2.a Interpret the bits as a scalar target, using its
+                  --  representation size to determine the sign bit.
 
                   if Is_Scalar_Type (Target_Type) then
                      Def :=
                        Precise_Integer_UC
                          (Arg           => Conv,
-                          Size          => No_Uint,
+                          Size          => Target_Size,
                           Source_Type   => Base,
                           Target_Type   => Base_Why_Type_No_Bool (Target_Type),
                           Source_Status => Modular,
