@@ -486,6 +486,7 @@ package VC_Kinds is
       Lim_Op_Fixed_Float,
       Lim_Op_Incompatible_Fixed,
       Lim_Overlay_With_Deep_Object,
+      Lim_Overlay_With_Package,
       Lim_Overriding_With_Precondition_Discrepancy_Hiding,
       Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy,
       Lim_Deep_Object_Declaration_Outside_Block,
@@ -705,6 +706,8 @@ package VC_Kinds is
             "interface derived from other interfaces",
          when Lim_Overlay_With_Deep_Object =>
            "overlay with an object of an ownership type",
+         when Lim_Overlay_With_Package =>
+           "overlay without Import in a declarative part containing a package",
          when Lim_Deep_Object_Declaration_Outside_Block =>
            "declaration of an object of an ownership type outside a block "
            & "for declarations",
