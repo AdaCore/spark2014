@@ -1,0 +1,42 @@
+scalar_boundaries.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+scalar_boundaries.adb:6:13: info: types in unchecked conversion have the same size (Trivial)
+scalar_boundaries.adb:6:56: info: type is suitable as source for unchecked conversion (Trivial)
+scalar_boundaries.adb:6:61: info: type is suitable for unchecked conversion (Trivial)
+scalar_boundaries.adb:10:13: info: implicit function contract might not be available on calls from enclosing unit
+scalar_boundaries.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
+scalar_boundaries.adb:10:56: info: type is suitable as source for unchecked conversion (Trivial)
+scalar_boundaries.adb:10:61: info: type is suitable for unchecked conversion (Trivial)
+scalar_boundaries.adb:12:19: info: assertion proved (CVC5: 1 VC)
+scalar_boundaries.adb:13:19: info: assertion proved (CVC5: 1 VC)
+scalar_boundaries.adb:14:19: info: assertion proved (CVC5: 1 VC)
+scalar_boundaries.adb:15:19: info: assertion proved (CVC5: 1 VC)
+scalar_boundaries.adb:18:19: info: assertion proved (CVC5: 1 VC)
+scalar_boundaries.adb:19:19: medium: assertion might fail
+scalar_boundaries.adb:20:19: medium: assertion might fail
+scalar_boundaries.adb:21:19: info: assertion proved (CVC5: 1 VC)
+signed_to_modular.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+signed_to_modular.adb:6:13: info: types in unchecked conversion have the same size (Trivial)
+signed_to_modular.adb:6:54: info: type is suitable as source for unchecked conversion (Trivial)
+signed_to_modular.adb:6:59: info: type is suitable for unchecked conversion (Trivial)
+signed_to_modular.adb:11:19: medium: assertion might fail (e.g. when Y = U24'Last)
+signed_to_modular_boundaries.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+signed_to_modular_boundaries.adb:6:13: info: types in unchecked conversion have the same size (Trivial)
+signed_to_modular_boundaries.adb:6:54: info: type is suitable as source for unchecked conversion (Trivial)
+signed_to_modular_boundaries.adb:6:59: info: type is suitable for unchecked conversion (Trivial)
+signed_to_modular_boundaries.adb:10:13: info: implicit function contract might not be available on calls from enclosing unit
+signed_to_modular_boundaries.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
+signed_to_modular_boundaries.adb:10:54: info: type is suitable as source for unchecked conversion (Trivial)
+signed_to_modular_boundaries.adb:10:59: info: type is suitable for unchecked conversion (Trivial)
+signed_to_modular_boundaries.adb:12:19: info: assertion proved (CVC5: 1 VC)
+signed_to_modular_boundaries.adb:13:19: info: assertion proved (CVC5: 1 VC)
+signed_to_modular_boundaries.adb:14:19: info: assertion proved (CVC5: 1 VC)
+signed_to_modular_boundaries.adb:15:19: info: assertion proved (CVC5: 1 VC)
+signed_to_modular_boundaries.adb:18:19: info: assertion proved (CVC5: 1 VC)
+signed_to_modular_boundaries.adb:19:19: info: assertion proved (CVC5: 1 VC)
+signed_to_modular_boundaries.adb:20:19: info: assertion proved (CVC5: 1 VC)
+signed_to_modular_boundaries.adb:21:19: info: assertion proved (CVC5: 1 VC)
+uc_size.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
+uc_size.adb:6:13: info: types in unchecked conversion have the same size (Trivial)
+uc_size.adb:6:54: info: type is suitable as source for unchecked conversion (Trivial)
+uc_size.adb:6:59: info: type is suitable for unchecked conversion (Trivial)
+uc_size.adb:12:19: medium: assertion might fail (e.g. when Y = S24'First)

@@ -27,6 +27,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Atree;
 with Debug;
+with Einfo.Entities;
 with Errout;                         use Errout;
 with Exp_Util;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
@@ -2752,6 +2753,8 @@ package body Gnat2Why.Subprograms is
             Target_Type : constant Entity_Id := Retysp (Etype (E));
             Arg         : constant W_Identifier_Id :=
               Logic_Why_Binders (1).B_Name;
+            Size        : constant Uint :=
+              Einfo.Entities.RM_Size (Source_Type);
 
          begin
             if Is_Signed_Integer_Type (Source_Type)
@@ -2767,17 +2770,60 @@ package body Gnat2Why.Subprograms is
                Def := +Arg;  --  Trivial case of UC between modular types
 
             elsif Is_Modular_Integer_Type (Source_Type) then
-               Def := New_Call
-                 (Name    => MF_BVs (Base_Why_Type (Source_Type)).UC_To_Int,
-                  Binders => Logic_Why_Binders,
-                  Typ     => Why_Type);
+               if Size = BitVector_Type_Size (Base_Why_Type (Source_Type)) then
+                  Def := New_Call
+                    (Name    => MF_BVs (Base_Why_Type (Source_Type)).UC_To_Int,
+                     Binders => Logic_Why_Binders,
+                     Typ     => Why_Type);
+               else
+                  --  Use the representation size to locate the sign bit
+
+                  Def := Insert_Simple_Conversion
+                    (Expr => +Arg, To => EW_Int_Type);
+                  Def := New_Conditional
+                    (Condition => New_Comparison
+                       (Symbol => Int_Infix_Ge,
+                        Left   => Def,
+                        Right  => New_Integer_Constant
+                          (Value => Uint_2 ** (Size - Uint_1))),
+                     Then_Part => New_Call
+                       (Name => Int_Infix_Subtr,
+                        Args => (1 => +Def,
+                                 2 => New_Integer_Constant
+                                   (Value => Uint_2 ** Size)),
+                        Typ  => EW_Int_Type),
+                     Else_Part => Def,
+                     Typ       => EW_Int_Type);
+               end if;
 
             else
                pragma Assert (Is_Modular_Integer_Type (Target_Type));
-               Def := New_Call
-                 (Name    => MF_BVs (Base_Why_Type (Target_Type)).UC_Of_Int,
-                  Binders => Logic_Why_Binders,
-                  Typ     => Why_Type);
+               if Size = BitVector_Type_Size (Base_Why_Type (Target_Type)) then
+                  Def := New_Call
+                    (Name    => MF_BVs (Base_Why_Type (Target_Type)).UC_Of_Int,
+                     Binders => Logic_Why_Binders,
+                     Typ     => Why_Type);
+               else
+                  --  Remove sign-extension bits beyond the representation size
+
+                  Def := Insert_Simple_Conversion
+                    (Expr => +Arg, To => EW_Int_Type);
+                  Def := New_Conditional
+                    (Condition => New_Comparison
+                       (Symbol => Int_Infix_Lt,
+                        Left   => Def,
+                        Right  => New_Integer_Constant (Value => Uint_0)),
+                     Then_Part => New_Call
+                       (Name => Int_Infix_Add,
+                        Args => (1 => +Def,
+                                 2 => New_Integer_Constant
+                                   (Value => Uint_2 ** Size)),
+                        Typ  => EW_Int_Type),
+                     Else_Part => Def,
+                     Typ       => EW_Int_Type);
+                  Def := Insert_Simple_Conversion
+                    (Expr => Def, To => Why_Type);
+               end if;
             end if;
          end;
 
