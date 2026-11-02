@@ -3,7 +3,7 @@
 import os
 import yaml
 
-TEST_DIRS = ["tests", "internal", "sparklib"]
+TEST_DIRS = ["tests", "internal"]
 
 
 def find_test_dir(name):

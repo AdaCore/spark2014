@@ -21,7 +21,7 @@ from lib.python.gitlab_util import (
 from lib.python.suite_util import is_large, make_large, make_nonlarge
 
 # Mapping test origin to a subdir
-ORIGIN_TO_DIR = {"main": "tests", "internal": "internal", "sparklib": "sparklib"}
+ORIGIN_TO_DIR = {"main": "tests", "internal": "internal"}
 
 descr = """This script updates the outputs from a previous run of the
 testsuite."""
@@ -86,7 +86,10 @@ class BaselineRewriter(BaseBaselineRewriter):
                 result = entry.load()
                 assert result.env is not None
                 origin = result.env.get("origin", "main")
-                origin_dir = ORIGIN_TO_DIR.get(origin, "tests")
+                origin_dir = ORIGIN_TO_DIR.get(origin)
+                if origin_dir is None:
+                    self.skipped_by_origin.setdefault(origin, []).append(test_name)
+                    continue
 
                 # Skip if top-level origin directory doesn't exist locally
                 if not os.path.isdir(origin_dir):
@@ -144,11 +147,17 @@ def update_sessions_from_gaia(gaia_id):
         tmpdir = tempfile.mkdtemp()
         with tarfile.open(name, mode="r:gz") as tar:
             tar.extractall(tmpdir)
-        updated, deleted = sync_tree(tmpdir, "../..", delete=False)
-        assert deleted == []
-        for fn in updated:
-            if os.path.isfile(fn):
-                print(f"updated {fn}")
+        for origin_dir in ORIGIN_TO_DIR.values():
+            path = os.path.join("testsuite", "gnatprove", origin_dir)
+            source = os.path.join(tmpdir, path)
+            if os.path.isdir(source):
+                updated, deleted = sync_tree(
+                    source, os.path.join("../..", path), delete=False
+                )
+                assert deleted == []
+                for fn in updated:
+                    if os.path.isfile(fn):
+                        print(f"updated {fn}")
     except Exception as e:
         print(
             "warning: failed to update sessions, "
@@ -190,7 +199,7 @@ def main():
         tmpdir = download_from_gaia(args.gaia_id)
         outputdirs = [tmpdir]
     elif args.gitlab_id:
-        p = GitLabProjectDescription(SPARK2014_GITLAB_ID, ["spark2014", "sparklib"])
+        p = GitLabProjectDescription(SPARK2014_GITLAB_ID, ["spark2014"])
         gl = make_gitlab_client()
         pipeline_id = resolve_pipeline_id(gl, SPARK2014_GITLAB_ID, args.gitlab_id)
         outputdirs = download_test_results(gl, p, pipeline_id)
