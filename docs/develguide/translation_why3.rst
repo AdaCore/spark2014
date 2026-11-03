@@ -3003,6 +3003,10 @@ marks the value as initialized. The conversion from the wrapper extracts the
 value; it does not itself check the flag. Its use for a read must be justified
 by an initialization check or by flow analysis.
 
+For recursive access types, proving initialization after conversion would
+require induction. An axiom supplies this property, assuming the source value
+satisfies its dynamic invariant.
+
 The wrapper type of a composite type or access-to-object type is not really a
 wrapper. It is constructed similarly to the usual translation of the type, but
 uses wrapper types for its components. Immutable discriminants of records and

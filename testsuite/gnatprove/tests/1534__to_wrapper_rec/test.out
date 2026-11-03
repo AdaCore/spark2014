@@ -1,0 +1,36 @@
+bounds.adb:1:11: warning: subprogram "Bounds" has no effect
+bounds.adb:20:23: info: initialization of "N" proved
+bounds.adb:22:07: info: initialization of "OK" proved
+bounds.adb:24:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+bounds.adb:28:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
+bounds.adb:28:15: info: initialization check proved (CVC5: 1 VC)
+predicates.adb:1:11: warning: subprogram "Predicates" has no effect
+predicates.adb:12:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+predicates.adb:14:15: info: absence of resource or memory leak proved (CVC5: 1 VC)
+predicates.adb:15:22: info: assertion proved (altergo: 1 VC)
+predicates.adb:16:22: info: assertion proved (CVC5: 1 VC)
+predicates.adb:16:22: info: initialization check proved (CVC5: 1 VC)
+predicates.adb:16:30: info: initialization check proved (CVC5: 2 VC)
+predicates.adb:16:30: info: pointer dereference check proved (CVC5: 1 VC)
+predicates.adb:16:30: info: predicate check proved (CVC5: 1 VC)
+predicates.adb:16:33: info: initialization check proved (CVC5: 1 VC)
+predicates.adb:17:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+predicates.adb:17:12: info: initialization check proved (CVC5: 1 VC)
+relaxed_parts.adb:24:21: info: absence of resource or memory leak proved (CVC5: 1 VC)
+relaxed_parts.adb:25:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+relaxed_parts.adb:26:22: info: assertion proved (CVC5: 1 VC)
+relaxed_parts.adb:26:29: info: for pointer allocation at relaxed_parts.adb:8
+relaxed_parts.adb:26:29: info: initialization check proved (CVC5: 1 VC)
+relaxed_parts.adb:27:22: medium: assertion might fail
+relaxed_parts.adb:27:29: info: for pointer allocation at relaxed_parts.adb:8
+relaxed_parts.adb:27:29: info: initialization check proved (CVC5: 1 VC)
+relaxed_parts.adb:27:36: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:20:23: info: initialization of "N" proved
+test.adb:23:07: info: initialization of "OK" proved
+test.adb:25:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test.adb:27:10: warning: assuming "Wibble" always terminates
+test.adb:27:10: warning: assuming "Wibble" has no effect on global items
+test.adb:27:10: warning: no Always_Terminates aspect available for "Wibble" [assumed-always-terminates]
+test.adb:27:10: warning: no Global contract available for "Wibble" [assumed-global-null]
+test.adb:29:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test.adb:29:15: info: initialization check proved (Z3: 1 VC)

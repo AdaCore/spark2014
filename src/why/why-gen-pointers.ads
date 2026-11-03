@@ -125,6 +125,12 @@ package Why.Gen.Pointers is
    --  of an incomplete type designated by an access type with an
    --  initialization wrapper).
 
+   function Has_Predeclared_Wrapper_Conversions (E : Entity_Id) return Boolean
+   with Pre => Is_Type (E) and then Has_Init_Wrapper (E);
+   --  Return True if the wrapper conversions are declared separately from
+   --  their definitions because E's representation designates an incomplete
+   --  type.
+
    function New_Ada_Pointer_Update
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;

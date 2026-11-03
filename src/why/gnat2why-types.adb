@@ -78,7 +78,8 @@ package body Gnat2Why.Types is
    with Pre => Has_Init_Wrapper (E);
    --  Create a function to state that objects of type E are initialized.
    --  If Predeclare is True, only emit a declaration and use a local name for
-   --  the type associated to E.
+   --  the type associated to E. Otherwise, supply its definition, using a
+   --  completion axiom if it has been predeclared.
 
    function Use_User_Eq_Definition (E : Type_Kind_Id) return Boolean
    is (declare
@@ -116,34 +117,134 @@ package body Gnat2Why.Types is
         New_Temp_Identifier (Typ => Main_Ty, Base_Name => "expr");
       --  Expression on which we want to assume the property
 
-      Binders : constant Binder_Array :=
-        Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg, others => <>));
-
-      Def : constant W_Pred_Id :=
-        (if Predeclare
-         then Why_Empty
-         else
-           +Compute_Is_Initialized
-              (E                  => E,
-               Name               => +Main_Arg,
-               Params             => Logic_Params,
-               Domain             => EW_Pred,
-               Exclude_Components => Relaxed,
-               Use_Pred           => False));
+      Variables : Flow_Id_Sets.Set;
 
    begin
-      --  ??? Here we should probably consider variable inputs occurring in
-      --  potential predicates.
+      Variables_In_Dynamic_Invariant (E, Variables, Scop => Empty);
 
-      Emit
-        (Th,
-         New_Function_Decl
-           (Domain   => EW_Pred,
-            Name     => To_Local (E_Symb (E, WNE_Is_Initialized_Pred)),
-            Def      => +Def,
-            Location => No_Location,
-            Labels   => Symbol_Sets.Empty_Set,
-            Binders  => Binders));
+      declare
+         Items   : constant Item_Array :=
+           Get_Localized_Binders_From_Variables
+             (Variables, Only_Variables => False);
+         Binders : constant Binder_Array :=
+           Binder_Array'(1 => (B_Name => Main_Arg, others => <>))
+           & To_Binder_Array (Items);
+         Def     : W_Pred_Id;
+         Name    : constant W_Identifier_Id :=
+           (if Predeclare or else not Has_Predeclared_Init_Predicate (E)
+            then To_Local (E_Symb (E, WNE_Is_Initialized_Pred))
+            else E_Symb (E, WNE_Is_Initialized_Pred));
+
+      begin
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+         Push_Binders_To_Symbol_Table (Items);
+
+         if Predeclare then
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain   => EW_Pred,
+                  Name     => Name,
+                  Location => No_Location,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Binders  => Binders));
+         else
+            Def :=
+              +Compute_Is_Initialized
+                 (E                  => E,
+                  Name               => +Main_Arg,
+                  Params             => Logic_Params,
+                  Domain             => EW_Pred,
+                  Exclude_Components => Relaxed,
+                  Use_Pred           => False);
+
+            if Has_Predeclared_Init_Predicate (E) then
+               Emit
+                 (Th,
+                  New_Defining_Bool_Axiom
+                    (Name     => Name,
+                     Fun_Name => To_String (WNE_Is_Initialized_Pred),
+                     Binders  => Binders,
+                     Dep_Kind => EW_Axdep_Pred,
+                     Def      => Def));
+            else
+               Emit
+                 (Th,
+                  New_Function_Decl
+                    (Domain   => EW_Pred,
+                     Name     => Name,
+                     Def      => +Def,
+                     Location => No_Location,
+                     Labels   => Symbol_Sets.Empty_Set,
+                     Binders  => Binders));
+            end if;
+
+            --  For recursive access types, establishing initialization after
+            --  conversion requires induction over the designated values.
+            --  Generate the property alongside the initialization predicate,
+            --  where its inputs are already bound and both predicates are
+            --  available without introducing cyclic module dependencies.
+
+            if Has_Predeclared_Wrapper_Conversions (E) then
+               declare
+                  X_Ident     : constant W_Identifier_Id :=
+                    New_Identifier (Name => "x", Typ => EW_Abstract (E));
+                  Inv_Ident   : constant W_Identifier_Id :=
+                    New_Identifier (Name => "do_typ_inv", Typ => EW_Bool_Type);
+                  To_Wrapper  : constant W_Identifier_Id :=
+                    E_Symb (E, WNE_To_Wrapper);
+                  Wrapped     : constant W_Term_Id :=
+                    New_Call
+                      (Name => To_Wrapper,
+                       Args => (1 => +X_Ident),
+                       Typ  => Abstr_Ty);
+                  Inputs      : constant W_Expr_Array :=
+                    Get_Args_From_Variables
+                      (Variables, Logic_Params.Ref_Allowed);
+                  Guard       : constant W_Pred_Id :=
+                    New_Call
+                      (Name => To_Local (E_Symb (E, WNE_Dynamic_Invariant)),
+                       Args =>
+                         (1 => +X_Ident,
+                          2 => +True_Term,
+                          3 => +False_Term,
+                          4 => +True_Term,
+                          5 => +Inv_Ident)
+                         & Inputs,
+                       Typ  => EW_Bool_Type);
+                  Initialized : constant W_Pred_Id :=
+                    New_Call
+                      (Name => Name,
+                       Args => (1 => +Wrapped) & Inputs,
+                       Typ  => EW_Bool_Type);
+
+               begin
+                  Emit
+                    (Th,
+                     New_Guarded_Axiom
+                       (Name     => NID ("to_wrapper__initialized"),
+                        Binders  =>
+                          Binder_Array'(1 => (B_Name => X_Ident, others => <>))
+                          & To_Binder_Array (Items)
+                          & Binder_Array'
+                              (1 => (B_Name => Inv_Ident, others => <>)),
+                        Triggers =>
+                          New_Triggers
+                            (Triggers =>
+                               (1 =>
+                                  New_Trigger
+                                    (Terms => (1 => +Wrapped, 2 => +Guard)))),
+                        Pre      => Guard,
+                        Def      => Initialized,
+                        Dep      =>
+                          New_Axiom_Dep
+                            (Name => To_Wrapper, Kind => EW_Axdep_Func)));
+               end;
+            end if;
+         end if;
+
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      end;
    end Create_Initialization_Predicate;
 
    ------------------------------
@@ -153,12 +254,6 @@ package body Gnat2Why.Types is
    procedure Generate_Type_Completion (E : Type_Kind_Id) is
 
       --  Local subprograms
-
-      procedure Complete_Initialization_Predicate
-        (Th : Theory_UC; E : Type_Kind_Id)
-      with Pre => Has_Init_Wrapper (E);
-      --  Generate axioms to complete the definitions of Is_Initializes if it
-      --  has been predeclared.
 
       procedure Create_Axioms_For_Scalar_Bounds
         (Th : Theory_UC; E : Type_Kind_Id);
@@ -181,42 +276,6 @@ package body Gnat2Why.Types is
       procedure Generate_Axioms_For_Equality (E : Type_Kind_Id);
       --  Generate axioms defining the equality functions __user_eq and
       --  __dispatch_eq on E.
-
-      ---------------------------------------
-      -- Complete_Initialization_Predicate --
-      ---------------------------------------
-
-      procedure Complete_Initialization_Predicate
-        (Th : Theory_UC; E : Type_Kind_Id)
-      is
-         Main_Arg : constant W_Identifier_Id :=
-           New_Temp_Identifier
-             (Typ       => EW_Abstract (E, Relaxed_Init => True),
-              Base_Name => "expr");
-         --  Expression on which we want to assume the property
-
-         Binders : constant Binder_Array :=
-           Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg, others => <>));
-
-         Def : constant W_Pred_Id :=
-           +Compute_Is_Initialized
-              (E                  => E,
-               Name               => +Main_Arg,
-               Params             => Logic_Params,
-               Domain             => EW_Pred,
-               Exclude_Components => Relaxed,
-               Use_Pred           => False);
-
-      begin
-         Emit
-           (Th,
-            New_Defining_Bool_Axiom
-              (Name     => E_Symb (E, WNE_Is_Initialized_Pred),
-               Fun_Name => To_String (WNE_Is_Initialized_Pred),
-               Binders  => Binders,
-               Dep_Kind => EW_Axdep_Pred,
-               Def      => Def));
-      end Complete_Initialization_Predicate;
 
       -------------------------------------
       -- Create_Axioms_For_Scalar_Bounds --
@@ -965,11 +1024,7 @@ package body Gnat2Why.Types is
         and then not Is_Scalar_Type (E)
         and then not Is_Itype (E)
       then
-         if Has_Predeclared_Init_Predicate (E) then
-            Complete_Initialization_Predicate (Th, E);
-         else
-            Create_Initialization_Predicate (Th, E);
-         end if;
+         Create_Initialization_Predicate (Th, E);
       end if;
 
       Close_Theory (Th, Kind => Axiom_Theory, Defined_Entity => E);
