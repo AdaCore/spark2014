@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Ordered_Sets;
 with Common_Containers; use Common_Containers;
@@ -63,11 +62,6 @@ package Why.Types is
         Element_Type    => Why_Node_Id,
         Hash            => Why_Node_Hash,
         Equivalent_Keys => "=");
-
-   package Why_Node_Maps_Lists is new
-     Ada.Containers.Doubly_Linked_Lists
-       (Element_Type => Why_Node_Maps.Map,
-        "="          => Why_Node_Maps."=");
 
    package Why_Node_Sets is new
      Ada.Containers.Ordered_Sets (Element_Type => Why_Node_Id);

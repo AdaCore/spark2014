@@ -25,7 +25,6 @@
 
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Maps;
-with Ada.Containers.Indefinite_Holders;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Hash;
@@ -265,8 +264,6 @@ package Configuration is
 
    Label_Length : constant := 26;
    --  Maximum length of label in report. Other characters are discarded
-
-   package String_Holders is new Ada.Containers.Indefinite_Holders (String);
 
    Proof_Dir : GNAT.Strings.String_Access;
    --  The name of the directory in which will be stored Why3 session file and

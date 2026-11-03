@@ -1996,13 +1996,6 @@ package VC_Kinds is
       end case;
    end record;
 
-   package Cntexample_Elt_Maps is new
-     Ada.Containers.Indefinite_Ordered_Maps
-       (Key_Type     => String,
-        Element_Type => Cntexample_Elt,
-        "<"          => "<",
-        "="          => "=");
-
    function Eq_List (A, B : Cntexample_Elt) return Boolean
    is (A.Name = B.Name);
 
