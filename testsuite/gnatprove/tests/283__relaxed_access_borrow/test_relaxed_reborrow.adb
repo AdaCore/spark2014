@@ -98,7 +98,7 @@ procedure Test_Relaxed_Reborrow with SPARK_Mode is
       declare
          X : not null access List := L with Relaxed_Initialization; -- @INIT_BY_PROOF:FAIL
       begin
-         pragma Assert (X'Initialized); -- Not provable as it would require inductive reasoning.
+         pragma Assert (X'Initialized);
          loop
             pragma Loop_Invariant (X.Next /= null);
             pragma Loop_Invariant (X'Initialized);
