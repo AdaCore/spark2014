@@ -826,21 +826,18 @@ package body Gnat2Why.Unchecked_Conversion is
                Comp_Size : constant Uint :=
                  Get_Attribute_Value (Typ, Attribute_Component_Size);
             begin
-               if Low <= High then
-                  Cur := Low;
-                  while Cur <= High loop
-                     Get_Source_Elements
-                       (Typ      => Retysp (Component_Type (Typ)),
-                        Offset   => Offset + (Cur - Low) * Comp_Size,
-                        Size     => Comp_Size,
-                        Expr     =>
-                          New_Array_Access
-                            (Ar    => Expr,
-                             Index => (1 => Expr_Index (Typ, Cur))),
-                        Elements => Elements);
-                     Cur := Cur + Uint_1;
-                  end loop;
-               end if;
+               Cur := Low;
+               while Cur <= High loop
+                  Get_Source_Elements
+                    (Typ      => Retysp (Component_Type (Typ)),
+                     Offset   => Offset + (Cur - Low) * Comp_Size,
+                     Size     => Comp_Size,
+                     Expr     =>
+                       New_Array_Access
+                         (Ar => Expr, Index => (1 => Expr_Index (Typ, Cur))),
+                     Elements => Elements);
+                  Cur := Cur + Uint_1;
+               end loop;
             end;
 
          else
