@@ -5,10 +5,13 @@ import os
 import shutil
 import subprocess
 import config
+from corpus import write_manifest
 
 descr = """
 Create VC files for selected tests from the testsuite. Store the VCs in the
-target folder, using subfolders for tests and provers.
+target folder, using subfolders for tests and provers. Write
+corpus-manifest.json at the corpus root with the VC inventory and generation
+metadata.
 """
 
 
@@ -31,6 +34,7 @@ def create_if_needed(p):
 
 def copy_vcs(tmpdir, resultdir, prover):
     create_if_needed(resultdir)
+    count = 0
     for path, _dirs, files in os.walk(tmpdir):
         for f in files:
             if f.endswith(".smt2") or f.endswith(".psmt2"):
@@ -39,7 +43,11 @@ def copy_vcs(tmpdir, resultdir, prover):
                 create_if_needed(os.path.join(resultdir, testname, prover))
                 src = os.path.join(path, f)
                 dest = os.path.join(resultdir, testname, prover, f)
+                if os.path.exists(dest):
+                    raise RuntimeError(f"duplicate corpus path: {dest} (source: {src})")
                 shutil.copyfile(src, dest)
+                count += 1
+    return count
 
 
 def create_benchmarks(testsuitedir, tmpdir, resultdir, testlist):
@@ -58,6 +66,7 @@ def create_benchmarks(testsuitedir, tmpdir, resultdir, testlist):
     """
 
     driver = os.path.join(testsuitedir, "run-tests")
+    runs = []
     for prover in config.all_provers:
         if os.path.exists(tmpdir):
             shutil.rmtree(tmpdir)
@@ -66,7 +75,7 @@ def create_benchmarks(testsuitedir, tmpdir, resultdir, testlist):
             testlistargs = []
         else:
             testlistargs = ["--testlist=" + testlist]
-        subprocess.run(
+        completed = subprocess.run(
             [
                 driver,
                 "--benchmark=" + prover,
@@ -76,9 +85,24 @@ def create_benchmarks(testsuitedir, tmpdir, resultdir, testlist):
             ]
             + testlistargs
         )
-        copy_vcs(tmpdir, resultdir, prover)
+        count = copy_vcs(tmpdir, resultdir, prover)
+        if not count:
+            raise RuntimeError(f"no VCs generated for {prover}")
+        runs.append(
+            {
+                "prover": prover,
+                "testsuite_exit_code": completed.returncode,
+                "vc_count": count,
+            }
+        )
+        if completed.returncode:
+            print(
+                f"warning: {prover} testsuite exited {completed.returncode}; "
+                "benchmark output can differ from ordinary baselines"
+            )
     if os.path.exists(os.path.join(testsuitedir, "internal")):
         print("warning: collected VCs include internal tests")
+    write_manifest(resultdir, testsuitedir, testlist, runs)
 
 
 def create_collated_benchs(testsuitedir, benchdir, testlist):

@@ -28,8 +28,8 @@ GNAT-*
 /gnat2why/obj-gnat2why
 /gnat2why/obj-tools
 /obj
-/benchmark_script/data
-/benchmark_script/bench
+/bench/
+/benchout/
 /gnat2why/why/xgen/b__xtree.ad?
 /testsuite/gnatprove/temp
 /testsuite/gnatprove/sparklib
