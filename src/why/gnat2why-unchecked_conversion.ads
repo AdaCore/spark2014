@@ -76,7 +76,8 @@ package Gnat2Why.Unchecked_Conversion is
       Check_Validity : Boolean := True);
    --  This procedure implements the notion of "suitable as a target of an
    --  unchecked conversion" of SPARK RM 13.9. Possibility of invalid values is
-   --  checked using the passed size.
+   --  checked using the passed size. Size must be known for scalar types and
+   --  No_Uint for other types.
    --  If For_UC is True, the explanation mentions UC, otherwise, it mentions
    --  aliased objects.
    --  If Check_Validity is False, do not check that Typ does not have invalid

@@ -398,22 +398,37 @@ package SPARK_Util.Types is
    --  array by the size of a component.
 
    function Type_Has_Only_Valid_Values
-     (ArgTyp : Type_Kind_Id; Size : Uint; Size_Str : String)
-      return True_Or_Explain
-   with Pre => ((Size /= Uint_0) = Is_Scalar_Type (ArgTyp));
-   --  Return True if Type is known to have only valid values. Otherwise,
-   --  return an explanation for why Ty might have invalid values.
-   --  If Typ is scalar, use the passed size to check for invalid values.
+     (ArgTyp                     : Type_Kind_Id;
+      Size                       : Uint;
+      Size_Str                   : String;
+      Assume_Valid_Discriminants : Boolean) return True_Or_Explain
+   with Pre => (Present (Size) = Is_Scalar_Type (ArgTyp));
+   --  Return True if ArgTyp is known to have only valid values. Otherwise,
+   --  return an explanation for why ArgTyp might have invalid values.
+   --  If ArgTyp is scalar, use the passed size, which may be zero, to check
+   --  for invalid values. Otherwise, Size must be No_Uint.
+   --  If Assume_Valid_Discriminants is True, assume discriminants are valid
+   --  when analyzing the type and its components. Otherwise, return False for
+   --  any type with discriminants. This applies recursively to components.
+   --
+   --  Assume_Valid_Discriminants is True for validity tracking of entities
+   --  with aspect Potentially_Invalid, whose discriminant validity is
+   --  enforced. It is False for unchecked conversion and overlay suitability
+   --  checks and validity diagnostics for external objects.
 
-   function Obj_Has_Only_Valid_Values (Obj : Entity_Id) return Boolean;
+   function Obj_Has_Only_Valid_Values
+     (Obj : Entity_Id; Assume_Valid_Discriminants : Boolean) return Boolean;
    --  Wrapper on Type_Has_Only_Valid_Values for objects
 
    function Fun_Has_Only_Valid_Values (Ret_Ty : Type_Kind_Id) return Boolean;
    --  Wrapper on Type_Has_Only_Valid_Values for the return type of functions.
    --  It uses the Size of the return type Ret_Ty.
+   --  Discriminants are assumed valid when classifying function results.
 
    function Comp_Has_Only_Valid_Values
-     (Comp : E_Component_Id; Rec : Type_Kind_Id) return True_Or_Explain;
+     (Comp                       : E_Component_Id;
+      Rec                        : Type_Kind_Id;
+      Assume_Valid_Discriminants : Boolean) return True_Or_Explain;
    --  Wrapper on Type_Has_Only_Valid_Values for record components
 
    function Contains_Access_Subcomponents (Typ : Type_Kind_Id) return Boolean;

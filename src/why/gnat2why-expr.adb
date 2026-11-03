@@ -6891,7 +6891,10 @@ package body Gnat2Why.Expr is
               +New_Validity_Tree_Array_Access
                  (+Valid, Idx, Retysp (Ty), EW_Term)
             elsif Ekind (E) = E_Discriminant
-              or else Comp_Has_Only_Valid_Values (E, Retysp (Ty)).Ok
+              or else
+                Comp_Has_Only_Valid_Values
+                  (E, Retysp (Ty), Assume_Valid_Discriminants => True)
+                  .Ok
             then Why_Empty
             else +New_Validity_Tree_Record_Access (+Valid, E, Retysp (Ty)));
          T_Comp  : W_Pred_Id;

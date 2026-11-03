@@ -4847,6 +4847,18 @@ package body SPARK_Definition is
    ------------------
 
    procedure Mark_Address (E : Entity_Id) is
+      function Is_Discriminated (Ty : Type_Kind_Id) return Test_Result
+      is (if Is_Access_Type (Ty)
+          then Fail
+          elsif Has_Discriminants (Ty)
+          then Pass
+          else Continue);
+      --  Stop at access types, which Potentially_Invalid forbids. Their
+      --  designated types might not have been marked yet.
+
+      function Has_Discriminated_Part is new
+        Traverse_Subcomponents (Is_Discriminated);
+
       Address      : constant Node_Id := Address_Clause (E);
       Address_Expr : constant Node_Id :=
         (if Present (Address) then Expression (Address) else Empty);
@@ -4980,11 +4992,22 @@ package body SPARK_Definition is
                --  We emit a warning when the value read might not be valid.
                --  This addresses assumption SPARK_EXTERNAL_VALID.
 
-               if not Obj_Has_Only_Valid_Values (E)
+               if not Obj_Has_Only_Valid_Values
+                        (E, Assume_Valid_Discriminants => False)
                  and then not Is_Potentially_Invalid (E)
                then
                   Nb_Warn := Nb_Warn + 1;
                   Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
+
+               --  Potentially_Invalid does not cover discriminants
+
+               elsif Is_Potentially_Invalid (E)
+                 and then Has_Discriminated_Part (Retysp (Etype (E)))
+               then
+                  Nb_Warn := Nb_Warn + 1;
+                  Warnings (Nb_Warn) :=
+                    To_Unbounded_String
+                      ("valid discriminants that satisfy their constraints");
                end if;
 
                --  Emit composite warning
@@ -8190,7 +8213,8 @@ package body SPARK_Definition is
 
                --  If E cannot have invalid values, emit a warning
 
-               if Obj_Has_Only_Valid_Values (E)
+               if Obj_Has_Only_Valid_Values
+                    (E, Assume_Valid_Discriminants => True)
                  and then Emit_Warning_Info_Messages
                then
                   Warning_Msg_N (Warn_Useless_Potentially_Invalid_Obj, E);
@@ -8277,7 +8301,8 @@ package body SPARK_Definition is
 
                   --  If E cannot have invalid values, emit a warning
 
-                  if Obj_Has_Only_Valid_Values (E)
+                  if Obj_Has_Only_Valid_Values
+                       (E, Assume_Valid_Discriminants => True)
                     and then Emit_Warning_Info_Messages
                   then
 
@@ -13899,7 +13924,10 @@ package body SPARK_Definition is
       --  use case.
 
       if Is_Scalar_Type (Rep_Ty)
-        or else not Type_Has_Only_Valid_Values (Rep_Ty, Uint_0, "").Ok
+        or else
+          not Type_Has_Only_Valid_Values
+                (Rep_Ty, No_Uint, "", Assume_Valid_Discriminants => True)
+                .Ok
       then
          Potentially_Invalid.Include (Base_Retysp (Rep_Ty));
 

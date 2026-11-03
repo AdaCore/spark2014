@@ -528,6 +528,12 @@ package body Gnat2Why.Unchecked_Conversion is
       is
          Value : W_Expr_Id;
       begin
+         --  Zero-sized components contribute no bits
+
+         if Size = Uint_0 then
+            return New_Modular_Constant (Value => Uint_0, Typ => Base);
+         end if;
+
          --  Special case for Boolean
          if Is_Standard_Boolean_Type (Typ) then
             Value :=
@@ -616,26 +622,34 @@ package body Gnat2Why.Unchecked_Conversion is
          Size   : Uint;
          Typ    : Type_Kind_Id) return Target_Value
       is
-         Mask    : constant W_Expr_Id :=
-           New_Modular_Constant
-             (Value => Uint_2 ** (Offset + Size) - Uint_1, Typ => Base);
-         Divisor : constant W_Expr_Id :=
-           New_Modular_Constant (Value => Uint_2 ** Offset, Typ => Base);
-         --  Value is (Bits and (2**(Offset+Size)-1)) / 2**(Offset)
-         Value   : constant W_Expr_Id :=
-           New_Call
-             (Domain => EW_Term,
-              Name   => MF_BVs (Base).Udiv,
-              Typ    => Base,
-              Args   =>
-                (1 =>
-                   New_Call
-                     (Domain => EW_Term,
-                      Name   => MF_BVs (Base).BW_And,
-                      Typ    => Base,
-                      Args   => (1 => Bits, 2 => Mask)),
-                 2 => Divisor));
-         Res     : Target_Value;
+         --  An empty component has value zero. Otherwise, extract its bits
+         --  with (Bits and (2**(Offset+Size)-1)) / 2**Offset. The empty case
+         --  avoids constructing 2**Offset at the end of the bitvector.
+
+         Value : constant W_Expr_Id :=
+           (if Size = Uint_0
+            then New_Modular_Constant (Value => Uint_0, Typ => Base)
+            else
+              New_Call
+                (Domain => EW_Term,
+                 Name   => MF_BVs (Base).Udiv,
+                 Typ    => Base,
+                 Args   =>
+                   (1 =>
+                      New_Call
+                        (Domain => EW_Term,
+                         Name   => MF_BVs (Base).BW_And,
+                         Typ    => Base,
+                         Args   =>
+                           (1 => Bits,
+                            2 =>
+                              New_Modular_Constant
+                                (Value => Uint_2 ** (Offset + Size) - Uint_1,
+                                 Typ   => Base))),
+                    2 =>
+                      New_Modular_Constant
+                        (Value => Uint_2 ** Offset, Typ => Base))));
+         Res   : Target_Value;
       begin
          --  Special case for Boolean
          if Is_Standard_Boolean_Type (Typ) then
@@ -678,9 +692,10 @@ package body Gnat2Why.Unchecked_Conversion is
          --  If the value is to a modular type, or an enumeration
          --  with default 0-based representation, or to a signed
          --  type with no negative value, then simply convert it
-         --  to Typ.
+         --  to Typ. An empty representation has no sign bit and
+         --  also uses this conversion.
 
-         elsif Is_Unsigned_Type (Typ) then
+         elsif Size = Uint_0 or else Is_Unsigned_Type (Typ) then
             Res :=
               (Value      =>
                  +Insert_Scalar_Conversion
@@ -888,7 +903,10 @@ package body Gnat2Why.Unchecked_Conversion is
                      Index := Index + 1;
 
                      if Potentially_Invalid
-                       and then not Comp_Has_Only_Valid_Values (Comp, Typ).Ok
+                       and then
+                         not Comp_Has_Only_Valid_Values
+                               (Comp, Typ, Assume_Valid_Discriminants => True)
+                               .Ok
                      then
                         Flags (F_Index) :=
                           New_Field_Association
@@ -2132,13 +2150,44 @@ package body Gnat2Why.Unchecked_Conversion is
       For_UC         : Boolean;
       Result         : out Boolean;
       Explanation    : out Unbounded_String;
-      Check_Validity : Boolean := True) is
+      Check_Validity : Boolean := True)
+   is
+      function Is_Discriminated (Ty : Type_Kind_Id) return Test_Result;
+      --  Return Pass and set Explanation if Ty has discriminants
+
+      function Has_Discriminated_Part is new
+        Traverse_Subcomponents (Is_Discriminated);
+
+      ----------------------
+      -- Is_Discriminated --
+      ----------------------
+
+      function Is_Discriminated (Ty : Type_Kind_Id) return Test_Result is
+      begin
+         --  Access types are already rejected by Suitable_For_UC. Do not
+         --  traverse their designated types, which might not be marked yet.
+
+         if Is_Access_Type (Ty) then
+            return Fail;
+         elsif Has_Discriminants (Ty) then
+            Explanation :=
+              To_Unbounded_String
+                (Pretty_Source_Name (Ty) & " has discriminants");
+            return Pass;
+         else
+            return Continue;
+         end if;
+      end Is_Discriminated;
+
    begin
       Suitable_For_UC (Typ, Result, Explanation);
 
       --  Check for invalid values
 
-      if Result and then Check_Validity then
+      if not Result then
+         null;
+
+      elsif Check_Validity then
          declare
             Res          : True_Or_Explain := (Ok => True);
             Continuation : constant String :=
@@ -2150,13 +2199,27 @@ package body Gnat2Why.Unchecked_Conversion is
                  "; aliased object could have invalid values "
                  & "[SPARK RM 13.7]");
          begin
-            Res := Type_Has_Only_Valid_Values (Typ, Size, Size_Str);
+            Res :=
+              Type_Has_Only_Valid_Values
+                (Typ, Size, Size_Str, Assume_Valid_Discriminants => False);
 
             Result := Res.Ok;
             if not Result then
                Explanation := Res.Explanation & Continuation;
             end if;
          end;
+
+      --  When the validity query is skipped, still reject discriminated
+      --  records: their discriminants must be valid and satisfy their
+      --  constraints even when ordinary components are allowed to be invalid.
+
+      elsif Has_Discriminated_Part (Typ) then
+         Result := False;
+         Append
+           (Explanation,
+            "; Potentially_Invalid requires discriminants to be valid "
+            & "and satisfy their constraints"
+            & (if For_UC then " [SPARK RM 13.9]" else " [SPARK RM 13.7]"));
       end if;
    end Suitable_For_UC_Target;
 
@@ -2171,7 +2234,7 @@ package body Gnat2Why.Unchecked_Conversion is
       Explanation    : out Unbounded_String;
       Check_Validity : Boolean := True)
    is
-      Size     : Uint := Uint_0;
+      Size     : Uint := No_Uint;
       Size_Str : Unbounded_String;
    begin
       if Is_Scalar_Type (Typ) then
@@ -2201,7 +2264,7 @@ package body Gnat2Why.Unchecked_Conversion is
       Explanation    : out Unbounded_String;
       Check_Validity : Boolean := True)
    is
-      Size : Uint := Uint_0;
+      Size : Uint := No_Uint;
    begin
       if Is_Scalar_Type (Typ) then
          --  ARM K.2 226

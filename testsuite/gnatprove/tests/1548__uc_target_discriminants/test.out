@@ -1,0 +1,90 @@
+array_control.adb:12:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+array_control.adb:12:13: info: types in unchecked conversion have the same size (Trivial)
+array_control.adb:12:55: info: type is suitable as source for unchecked conversion (Trivial)
+array_control.adb:12:61: info: type is suitable for unchecked conversion (Trivial)
+array_control.adb:14:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+array_control.adb:14:13: info: types in unchecked conversion have the same size (Trivial)
+array_control.adb:14:56: info: type is suitable as source for unchecked conversion (Trivial)
+array_control.adb:14:62: info: type is suitable for unchecked conversion (Trivial)
+array_control.adb:19:19: info: assertion proved (Trivial)
+array_control.adb:20:19: info: assertion proved (CVC5: 1 VC)
+array_control.adb:21:19: info: assertion proved (CVC5: 1 VC)
+array_control.adb:22:19: info: assertion proved (CVC5: 2 VC)
+array_control.adb:22:19: info: validity check proved (CVC5: 1 VC)
+array_control.adb:22:34: info: validity check proved (CVC5: 1 VC)
+array_control.adb:23:19: info: validity check proved (CVC5: 1 VC)
+array_control.adb:23:19: medium: assertion might fail
+constrained_target.adb:8:26: info: range check proved (CVC5: 2 VC)
+constrained_target.adb:9:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+constrained_target.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+constrained_target.adb:9:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+constrained_target.adb:9:54: info: type is suitable as source for unchecked conversion (Trivial)
+constrained_target.adb:9:60: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "Fixed" has discriminants; Potentially_Invalid requires discriminants to be valid and satisfy their constraints [SPARK RM 13.9]]
+constrained_target.adb:13:19: medium: assertion might fail (e.g. when X = (D => 0, Value => ?) and X.Value'Valid = False)
+external_objects.ads:12:19: info: range check proved (CVC5: 2 VC)
+external_objects.ads:19:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
+external_objects.ads:19:04: warning: address specification on "Ordinary" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
+external_objects.ads:19:04: warning: consider making "Ordinary" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
+external_objects.ads:19:04: warning: launch "gnatprove --explain=E0012" for more information
+external_objects.ads:19:20: info: range check proved (CVC5: 2 VC)
+external_objects.ads:21:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
+external_objects.ads:21:04: warning: address specification on "Annotated" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid discriminants that satisfy their constraints [imprecise-address-specification] [E0012]
+external_objects.ads:21:04: warning: consider making "Annotated" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
+external_objects.ads:21:04: warning: launch "gnatprove --explain=E0012" for more information
+external_objects.ads:21:21: info: range check proved (CVC5: 2 VC)
+external_objects.ads:23:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
+external_objects.ads:23:04: warning: address specification on "Nat_Annotated" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid discriminants that satisfy their constraints [imprecise-address-specification] [E0012]
+external_objects.ads:23:04: warning: consider making "Nat_Annotated" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
+external_objects.ads:23:04: warning: launch "gnatprove --explain=E0012" for more information
+external_objects.ads:23:29: info: range check proved (CVC5: 2 VC)
+external_objects.ads:25:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
+external_objects.ads:25:04: warning: address specification on "Array_Annotated" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid discriminants that satisfy their constraints [imprecise-address-specification] [E0012]
+external_objects.ads:25:04: warning: consider making "Array_Annotated" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
+external_objects.ads:25:04: warning: launch "gnatprove --explain=E0012" for more information
+external_objects.ads:27:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
+external_objects.ads:27:04: warning: address specification on "Record_Annotated" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid discriminants that satisfy their constraints [imprecise-address-specification] [E0012]
+external_objects.ads:27:04: warning: consider making "Record_Annotated" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
+external_objects.ads:27:04: warning: launch "gnatprove --explain=E0012" for more information
+external_objects.ads:29:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
+external_objects.ads:29:04: warning: address specification on "Control" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [imprecise-address-specification] [E0012]
+external_objects.ads:29:04: warning: consider making "Control" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
+external_objects.ads:29:04: warning: launch "gnatprove --explain=E0012" for more information
+imprecise_constraint.adb:18:26: info: range check proved (CVC5: 2 VC)
+imprecise_constraint.adb:19:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+imprecise_constraint.adb:19:13: info: types in unchecked conversion have the same size (Trivial)
+imprecise_constraint.adb:19:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+imprecise_constraint.adb:19:54: info: type is suitable as source for unchecked conversion (Trivial)
+imprecise_constraint.adb:19:59: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "Fixed" has discriminants; Potentially_Invalid requires discriminants to be valid and satisfy their constraints [SPARK RM 13.9]]
+imprecise_constraint.adb:22:13: info: implicit aspect Always_Terminates on "Read_D" has been proved, subprogram will terminate
+imprecise_constraint.adb:23:14: info: postcondition proved (CVC5: 1 VC)
+imprecise_constraint.adb:33:19: info: assertion proved (CVC5: 1 VC)
+imprecise_discriminant.adb:18:26: info: range check proved (CVC5: 2 VC)
+imprecise_discriminant.adb:19:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+imprecise_discriminant.adb:19:13: info: types in unchecked conversion have the same size (Trivial)
+imprecise_discriminant.adb:19:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+imprecise_discriminant.adb:19:54: info: type is suitable as source for unchecked conversion (Trivial)
+imprecise_discriminant.adb:19:59: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "Fixed" has discriminants; Potentially_Invalid requires discriminants to be valid and satisfy their constraints [SPARK RM 13.9]]
+imprecise_discriminant.adb:22:14: warning: subprogram "Inspect" has no effect
+imprecise_discriminant.adb:27:22: info: assertion proved (CVC5: 1 VC)
+imprecise_discriminant.adb:33:04: info: precondition proved (Trivial: 1 VC)
+nested_array.adb:9:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+nested_array.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+nested_array.adb:9:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+nested_array.adb:9:54: info: type is suitable as source for unchecked conversion (Trivial)
+nested_array.adb:9:60: high: type is unsuitable as a target for unchecked conversion [possible explanation: subtype of "Inner" has discriminants; Potentially_Invalid requires discriminants to be valid and satisfy their constraints [SPARK RM 13.9]]
+nested_array.adb:13:19: medium: assertion might fail
+nested_record.adb:9:21: info: range check proved (CVC5: 2 VC)
+nested_record.adb:11:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+nested_record.adb:11:13: info: types in unchecked conversion have the same size (Trivial)
+nested_record.adb:11:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+nested_record.adb:11:54: info: type is suitable as source for unchecked conversion (Trivial)
+nested_record.adb:11:60: high: type is unsuitable as a target for unchecked conversion [possible explanation: type of "Data" has discriminants; Potentially_Invalid requires discriminants to be valid and satisfy their constraints [SPARK RM 13.9]]
+nested_record.adb:15:19: medium: assertion might fail (e.g. when X = (Data => (D => 0, Value => ?)) and X.Data.Value'Valid = False)
+overlay_target.adb:6:26: info: range check proved (CVC5: 2 VC)
+overlay_target.adb:8:04: high: object is unsuitable for aliasing via address clause [possible explanation: type "Fixed" has discriminants; Potentially_Invalid requires discriminants to be valid and satisfy their constraints [SPARK RM 13.7]]
+overlay_target.adb:8:04: info: address in address clause is compatible with object alignment (Trivial)
+overlay_target.adb:8:04: warning: imprecise handling of overlay (type is unsuitable as target for unchecked conversion) [imprecise-overlay]
+overlay_target.adb:8:47: info: object is suitable for aliasing via address clause (Trivial)
+overlay_target.adb:8:47: info: type is suitable as source for unchecked conversion (Trivial)
+overlay_target.adb:8:47: info: types of aliased objects have the same size (Trivial)
+overlay_target.adb:11:19: medium: assertion might fail
