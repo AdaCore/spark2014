@@ -32,7 +32,6 @@ with Ada.Containers.Vectors;
 with Einfo.Entities;   use Einfo.Entities;
 with GNATCOLL.Symbols; use GNATCOLL.Symbols;
 with Hashing;          use Hashing;
-with Namet;            use Namet;
 with Sinfo.Nodes;      use Sinfo.Nodes;
 with Types;            use Types;
 
@@ -145,9 +144,6 @@ package Common_Containers is
 
    package Name_Lists is new
      Ada.Containers.Doubly_Linked_Lists (Element_Type => Entity_Name);
-
-   package Name_Id_Lists is new
-     Ada.Containers.Doubly_Linked_Lists (Element_Type => Name_Id);
 
    function Lexical_Less (Left, Right : Entity_Name) return Boolean
    is (To_String (Left) < To_String (Right));
