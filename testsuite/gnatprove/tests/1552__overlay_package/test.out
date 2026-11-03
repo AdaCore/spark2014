@@ -1,5 +1,7 @@
 between_parts.adb:5:04: error: consider annotating "Y" with Import
 between_parts.adb:5:04: error: overlay without Import in a declarative part containing a package is not yet supported
+body_stub.adb:5:04: error: consider annotating "Y" with Import
+body_stub.adb:5:04: error: overlay without Import in a declarative part containing a package is not yet supported
 declare_block.adb:7:07: error: consider annotating "Y" with Import
 declare_block.adb:7:07: error: overlay without Import in a declarative part containing a package is not yet supported
 default_init.adb:8:07: error: consider annotating "Y" with Import

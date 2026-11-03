@@ -5029,10 +5029,10 @@ elaborates. See ``Generate_VCs_For_Package_Elaboration`` in
 
 Initializing an overlay can modify an existing object and invalidate these
 assumptions. Marking preserves the invariant by rejecting overlays without
-``Import`` in a declarative part containing a package declaration or body;
-see ``Mark_Address`` in :file:`src/spark/spark_definition.adb`. Imported overlays
-perform no initialization, so their declarations preserve the referenced
-objects.
+``Import`` in a declarative part containing a package declaration, body, or body
+stub; see ``Mark_Address`` in :file:`src/spark/spark_definition.adb`. Imported
+overlays perform no initialization, so their declarations preserve the
+referenced objects.
 
 Exceptions
 ^^^^^^^^^^
