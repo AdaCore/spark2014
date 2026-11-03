@@ -720,6 +720,9 @@ package body VC_Kinds is
             "private type whose full view contains only subcomponents whose "
           & "type is annotated with Relaxed_Initialization in a package whose "
           & "private part is hidden for proof",
+         when Lim_Image_With_Custom_Put_Image =>
+           "a reference to the ""Image"" or ""Img"" attribute on a type with"
+           & " a user-defined Put_Image, including an inherited definition",
          when Lim_Img_On_Non_Scalar =>
            "a reference to the ""Image"" or ""Img"" attribute on a type or "
           & "an object of a type which is not a scalar type",
