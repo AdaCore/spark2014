@@ -131,6 +131,50 @@ package body Configuration is
         Equivalent_Keys => "=",
         "="             => Manifest_Subprogram_Vectors."=");
 
+   type File_Selection is record
+      Files       : String_Lists.List;
+      Limit_Lines : String_Lists.List;
+   end record;
+   --  Requested files, including those derived from limit switches, and the
+   --  validated line specifications. Project-based resolution happens later.
+
+   type File_Specific_Invocation_Options is record
+      No_Global_Generation : Boolean := False;
+      Output_Msg_Only      : Boolean := False;
+      Replay               : Boolean := False;
+   end record;
+
+   type Invocation_Configuration is record
+      File_Options     : File_Specific_Invocation_Options;
+      Selection        : File_Selection;
+      Checks_As_Errors : Boolean := False;
+      Debug            : Boolean := False;
+      Debug_Exec_RAC   : Boolean := False;
+      Only_Given       : Boolean := False;
+      Parallel         : Natural := 0;
+      Use_Semaphores   : Boolean := False;
+   end record;
+   --  Other invocation settings are still published as separate globals
+
+   Default_Invocation : aliased constant Invocation_Configuration :=
+     (others => <>);
+   Invocation_State   : access constant Invocation_Configuration :=
+     Default_Invocation'Access;
+   --  Replaced once with the completed invocation; consumers cannot modify it
+
+   function Checks_As_Errors return Boolean
+   is (Invocation_State.Checks_As_Errors);
+   function Debug return Boolean
+   is (Invocation_State.Debug);
+   function Debug_Exec_RAC return Boolean
+   is (Invocation_State.Debug_Exec_RAC);
+   function Only_Given return Boolean
+   is (Invocation_State.Only_Given);
+   function Parallel return Integer
+   is (Invocation_State.Parallel);
+   function Use_Semaphores return Boolean
+   is (Invocation_State.Use_Semaphores);
+
    --  Private global state to replace public state from CL_Switches
    Debug_Save_VCs      : Boolean := False;
    Debug_Prover_Errors : Boolean := False;
@@ -881,7 +925,8 @@ package body Configuration is
    Current_Parsed_Switches : Parsed_Switches_Access := null;
    --  Temporary target for GNAT.Command_Line callbacks during Parse_Switches
 
-   procedure Copy_To_CL_Switches (Parsed : in out Parsed_Switches);
+   procedure Copy_To_CL_Switches
+     (Parsed : Parsed_Switches; Selected_Files : String_Lists.List);
    --  Copy parsed switch values into CL_Switches for existing consumers
 
    procedure Merge_Parsed_Switches
@@ -1417,7 +1462,9 @@ package body Configuration is
    -- Copy_To_CL_Switches --
    ---------------------------
 
-   procedure Copy_To_CL_Switches (Parsed : in out Parsed_Switches) is
+   procedure Copy_To_CL_Switches
+     (Parsed : Parsed_Switches; Selected_Files : String_Lists.List)
+   is
       procedure Copy_List
         (Source : String_Lists.List; Target : in out String_Lists.List);
       --  Replace Target with Source
@@ -1464,7 +1511,7 @@ package body Configuration is
       Debug_Save_VCs := Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
       Debug_Prover_Errors :=
         Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
-      Copy_List (Parsed.File_List, File_List);
+      Copy_List (Selected_Files, File_List);
       Move_String
         (Parsed.Values (Sw_Generate_Manifest).String_Val, Generate_Manifest);
       Replay := Parsed.Values (Sw_Replay).Boolean_Val;
@@ -3863,12 +3910,6 @@ package body Configuration is
 
    procedure Read_Command_Line (Tree : out Project.Tree.Object) is
 
-      type File_Specific_Invocation_Options is record
-         No_Global_Generation : Boolean;
-         Output_Msg_Only      : Boolean;
-         Replay               : Boolean;
-      end record;
-
       function File_Specific_Options_From_Invocation
         (Invocation : Parsed_Switches) return File_Specific_Invocation_Options;
       --  Extract file-specific options from merged invocation switches.
@@ -3881,9 +3922,11 @@ package body Configuration is
       procedure Parse_Analysis_Attributes
         (Command_Line       : Parsed_Switches;
          Root_Attributes    : Parsed_Switches;
-         Invocation_Options : File_Specific_Invocation_Options);
+         Invocation_Options : File_Specific_Invocation_Options;
+         Maximum_Mode       : out GP_Mode);
       --  Parse the Switches and Proof_Switches attributes in project files.
       --  The regular command line is needed to interpret them properly.
+      --  Maximum_Mode combines the modes of all processed file settings.
 
       procedure Detect_Installed_Provers;
       --  Set the availability of supported provers based on PATH.
@@ -3891,9 +3934,10 @@ package body Configuration is
       procedure Initialize_Root_Project_Settings;
       --  Initialize settings derived from the root project.
 
-      procedure Postprocess_Invocation (Parsed : in out Parsed_Switches);
+      procedure Postprocess_Invocation
+        (Parsed : Parsed_Switches; Result : out Invocation_Configuration);
       --  Interpret the effective switches from the root project's attributes
-      --  and the command line, setting invocation-wide GNATprove state.
+      --  and the command line. Some settings are still written to globals.
 
       procedure Warn_And_Strip_Non_Root_Invocation_Switches
         (View           : Project.View.Object;
@@ -3934,7 +3978,8 @@ package body Configuration is
 
       procedure Set_Proof_Mode
         (Parsed : Parsed_Switches; FS : in out File_Specific);
-      procedure Process_Limit_Switches (Parsed : in out Parsed_Switches);
+      function Process_Limit_Switches
+        (Parsed : Parsed_Switches) return File_Selection;
       procedure Set_Provers
         (Parsed             : Parsed_Switches;
          Invocation_Options : File_Specific_Invocation_Options;
@@ -4270,9 +4315,38 @@ package body Configuration is
       procedure Parse_Analysis_Attributes
         (Command_Line       : Parsed_Switches;
          Root_Attributes    : Parsed_Switches;
-         Invocation_Options : File_Specific_Invocation_Options)
+         Invocation_Options : File_Specific_Invocation_Options;
+         Maximum_Mode       : out GP_Mode)
       is
          use type Project.View.Object;
+
+         procedure Include_Mode (File_Mode : GP_Mode);
+         --  Include File_Mode in the maximum mode seen during traversal.
+         --  The ordering is Check < Check_All < Flow | Prove < All.
+
+         ------------------
+         -- Include_Mode --
+         ------------------
+
+         procedure Include_Mode (File_Mode : GP_Mode) is
+         begin
+            if Maximum_Mode = GPM_All then
+               null;
+            elsif (Maximum_Mode = GPM_Flow
+                   and then File_Mode in GPM_Prove | GPM_All)
+              or else
+                (Maximum_Mode = GPM_Prove
+                 and then File_Mode in GPM_Flow | GPM_All)
+            then
+               Maximum_Mode := GPM_All;
+            elsif Maximum_Mode = GPM_Check_All
+              and then File_Mode in GPM_Prove | GPM_Flow | GPM_All
+            then
+               Maximum_Mode := File_Mode;
+            elsif Maximum_Mode = GPM_Check then
+               Maximum_Mode := File_Mode;
+            end if;
+         end Include_Mode;
 
          procedure Expand_Ada_Switches (View : Project.View.Object);
          --  Replace the "Ada" section of the File_Specific_Map by entries for
@@ -4302,6 +4376,7 @@ package body Configuration is
 
          First : Boolean := True;
       begin
+         Maximum_Mode := GPM_Check;
 
          for Cursor in
            Tree.Iterate
@@ -4369,6 +4444,7 @@ package body Configuration is
                   Merge_Parsed_Switches (Effective, Command_Line);
                   File_Specific_Postprocess
                     (Effective, Invocation_Options, FS);
+                  Include_Mode (FS.Mode);
                end;
                File_Specific_Map.Include ("Ada", FS);
                Has_Coq_Prover := Case_Insensitive_Contains (FS.Provers, "coq");
@@ -4409,6 +4485,7 @@ package body Configuration is
                         Merge_Parsed_Switches (Effective, Command_Line);
                         File_Specific_Postprocess
                           (Effective, Invocation_Options, FS);
+                        Include_Mode (FS.Mode);
                         File_Specific_Map.Include
                           (Source_Key (View, Attr.Index.Text), FS);
                      end;
@@ -4432,25 +4509,29 @@ package body Configuration is
       -- Postprocess_Invocation --
       ----------------------------
 
-      procedure Postprocess_Invocation (Parsed : in out Parsed_Switches) is
+      procedure Postprocess_Invocation
+        (Parsed : Parsed_Switches; Result : out Invocation_Configuration) is
       begin
          Sanity_Checking (Parsed);
 
-         Debug :=
+         Result.File_Options := File_Specific_Options_From_Invocation (Parsed);
+
+         Result.Debug :=
            Parsed.Values (Sw_D).Boolean_Val
            or Parsed.Values (Sw_Flow_Debug).Boolean_Val;
-         Debug_Exec_RAC := Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
+         Result.Debug_Exec_RAC :=
+           Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
 
          --  Adjust the number of parallel processes. If -j0 was used, the
          --  number of processes should be set to the actual number of
          --  processors available on the machine.
 
          if Parsed.Values (Sw_J).Integer_Val = 0 then
-            Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
+            Result.Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
          elsif Parsed.Values (Sw_J).Integer_Val < 0 then
             Abort_Msg ("error: wrong argument for -j", With_Help => False);
          else
-            Parallel := Parsed.Values (Sw_J).Integer_Val;
+            Result.Parallel := Natural (Parsed.Values (Sw_J).Integer_Val);
          end if;
 
          --  Validate the staggering switches before converting them to
@@ -4495,9 +4576,9 @@ package body Configuration is
          if Switch_String (Parsed, Sw_Checks_As_Errors) = ""
            or else Switch_String (Parsed, Sw_Checks_As_Errors) = "off"
          then
-            Checks_As_Errors := False;
+            Result.Checks_As_Errors := False;
          elsif Switch_String (Parsed, Sw_Checks_As_Errors) = "on" then
-            Checks_As_Errors := True;
+            Result.Checks_As_Errors := True;
          else
             Abort_Msg
               ("error: wrong argument """
@@ -4509,7 +4590,7 @@ package body Configuration is
 
          --  Handling of Only_Given and Filelist
 
-         Only_Given :=
+         Result.Only_Given :=
            Parsed.Values (Sw_U).Boolean_Val
            or else Switch_String (Parsed, Sw_Limit_Subp) /= ""
            or else Switch_String (Parsed, Sw_Limit_Line) /= ""
@@ -4523,23 +4604,28 @@ package body Configuration is
                & "switch --no-subproject");
          end if;
 
-         Process_Limit_Switches (Parsed);
+         Result.Selection := Process_Limit_Switches (Parsed);
 
          Set_Output_Mode (Parsed);
          Set_Warning_Mode (Parsed);
          Set_Report_Mode (Parsed);
 
-         Use_Semaphores :=
-           not Debug and then not Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
+         Result.Use_Semaphores :=
+           not Result.Debug
+           and then not Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
+
       end Postprocess_Invocation;
 
       ----------------------------
       -- Process_Limit_Switches --
       ----------------------------
 
-      procedure Process_Limit_Switches (Parsed : in out Parsed_Switches) is
+      function Process_Limit_Switches
+        (Parsed : Parsed_Switches) return File_Selection
+      is
 
          Switch_Count : Integer := 0;
+         Result       : File_Selection;
 
          procedure Check_Switch (Arg : GNAT.Strings.String_Access);
          --  Increase Switch_Count by one if arg is not the null pointer or
@@ -4594,7 +4680,7 @@ package body Configuration is
             --  instances of the line/subprogram are analyzed.
 
             if not Parsed.Values (Sw_UU).Boolean_Val then
-               Parsed.File_List.Append
+               Result.Files.Append
                  (Limit_String (Limit_String'First .. Colon_Index - 1));
             end if;
          end Process_Limit_Directive;
@@ -4638,10 +4724,11 @@ package body Configuration is
                         With_Help => False);
                end;
             end if;
-            Limit_Lines.Append (Spec);
+            Result.Limit_Lines.Append (Spec);
          end Process_Limit_Line;
 
       begin
+         Result.Files := Parsed.File_List;
 
          --  We do not allow mixing of --limit-* switches, except for the
          --  combination of --limit-subp + --limit-line or --limit-region,
@@ -4715,6 +4802,7 @@ package body Configuration is
                   Ada.Text_IO.Close (File_Handle);
             end;
          end if;
+         return Result;
       end Process_Limit_Switches;
 
       ---------------------
@@ -4923,24 +5011,6 @@ package body Configuration is
             FS.Mode := GPM_All;
          else
             Abort_Msg ("error: wrong argument for --mode", With_Help => False);
-         end if;
-
-         --  Update mode to the highest we have seen
-         --  This follows the logic that Check < Check_All < Flow | Proof <
-         --  All.
-
-         if Mode = GPM_All then
-            null;
-         elsif (Mode = GPM_Flow and then FS.Mode in GPM_Prove | GPM_All)
-           or else (Mode = GPM_Prove and then FS.Mode in GPM_Flow | GPM_All)
-         then
-            Mode := GPM_All;
-         elsif Mode = GPM_Check_All
-           and then FS.Mode in GPM_Prove | GPM_Flow | GPM_All
-         then
-            Mode := FS.Mode;
-         elsif Mode = GPM_Check then
-            Mode := FS.Mode;
          end if;
       end Set_Mode;
 
@@ -5316,20 +5386,30 @@ package body Configuration is
       Merge_Parsed_Switches (Invocation_Switches, Command_Line_Switches);
 
       declare
-         Invocation_Options : constant File_Specific_Invocation_Options :=
-           File_Specific_Options_From_Invocation (Invocation_Switches);
+         Result : Invocation_Configuration;
       begin
-         Postprocess_Invocation (Invocation_Switches);
-         Parse_Analysis_Attributes
-           (Command_Line_Switches,
-            Root_Attribute_Switches,
-            Invocation_Options);
+         Postprocess_Invocation (Invocation_Switches, Result);
+         declare
+            Invocation   : constant Invocation_Configuration := Result;
+            Maximum_Mode : GP_Mode;
+         begin
+            Invocation_State := new Invocation_Configuration'(Invocation);
+
+            Parse_Analysis_Attributes
+              (Command_Line_Switches,
+               Root_Attribute_Switches,
+               Invocation.File_Options,
+               Maximum_Mode);
+            Mode := Maximum_Mode;
+
+            Verbosity := Parse_Result.Verbosity;
+
+            --  Publish the final invocation settings for legacy consumers
+            Copy_To_CL_Switches
+              (Invocation_Switches, Invocation.Selection.Files);
+            Limit_Lines := Invocation.Selection.Limit_Lines;
+         end;
       end;
-
-      Verbosity := Parse_Result.Verbosity;
-
-      --  Publish the final invocation settings for legacy consumers
-      Copy_To_CL_Switches (Invocation_Switches);
 
       --  ??? Need to move the proof manifest to the per-project part of
       --  cmd-line parsing, as each project can have its own manifest

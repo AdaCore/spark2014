@@ -124,9 +124,6 @@ package Configuration is
    --  Mode - is the maximum analysis mode, taking into account the global
    --         and file-specific modes
 
-   Checks_As_Errors            : Boolean;
-   Debug                       : Boolean;
-   Debug_Exec_RAC              : Boolean;
    Global_Compilation_Switches : String_Lists.List;
    --  Switches of the Global_Compilation_Switches attribute of the Builder
    --  package for Ada. They are passed to all Ada compilations that GNATprove
@@ -136,13 +133,10 @@ package Configuration is
    GnateT_Switch               : GNAT.Strings.String_Access;
    Limit_Lines                 : String_Lists.List;
    Mode                        : GP_Mode := GPM_Check;
-   Only_Given                  : Boolean;
    Output                      : Output_Mode_Type;
-   Parallel                    : Integer;
    Max_Why3_Processes          : Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
    Report                      : Report_Mode_Type;
-   Use_Semaphores              : Boolean;
    Warning_Mode                : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
    Warning_Status              : Warning_Status_Array :=
      VC_Kinds.Warning_Status;
@@ -150,6 +144,24 @@ package Configuration is
    Has_Coq_Prover              : Boolean;
    CL_Units                    : GPR2.Build.Compilation_Unit.Maps.Map;
    --  A "copy" of Cl_Switches.File_List, but units instead of files
+
+   function Checks_As_Errors return Boolean;
+   --  Whether unproved checks cause a failure exit status
+
+   function Debug return Boolean;
+   --  Whether debugging is enabled
+
+   function Debug_Exec_RAC return Boolean;
+   --  Whether to debug RAC execution
+
+   function Only_Given return Boolean;
+   --  Whether -u or a file-selecting limit switch was given
+
+   function Parallel return Integer;
+   --  Maximum number of parallel jobs
+
+   function Use_Semaphores return Boolean;
+   --  Whether gnatwhy3 processes are limited by a semaphore
 
    All_Projects      : Boolean := False;  --  -U
    Continue_On_Error : Boolean := False;  --  -k
