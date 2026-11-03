@@ -701,6 +701,9 @@ package body VC_Kinds is
            "a goto statement occuring in a loop before the invariant which"
           & " refers to a label occuring inside the loop but after the "
           & "invariant",
+         when Lim_Image_With_Custom_Put_Image =>
+           "a reference to the ""Image"" or ""Img"" attribute on a type with"
+           & " a user-defined Put_Image, including an inherited definition",
          when Lim_Img_On_Non_Scalar =>
            "a reference to the ""Image"" or ""Img"" attribute on a type or "
           & "an object of a type which is not a scalar type",

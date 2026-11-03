@@ -438,6 +438,7 @@ package VC_Kinds is
       Lim_Ext_Aggregate_With_Type_Ancestor,
       Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
+      Lim_Image_With_Custom_Put_Image,
       Lim_Img_On_Non_Scalar,
       Lim_Interpolated_String_Literal,
       Lim_Iterated_Element_Association,
@@ -674,6 +675,10 @@ package VC_Kinds is
            "overlay with an object of an ownership type",
          when Lim_Non_Static_Attribute =>
            "non-static attribute """ & Standard_Ada_Case (Name) & """",
+         when Lim_Image_With_Custom_Put_Image =>
+           "attribute """
+           & (if Name = "" then "Image" else Standard_Ada_Case (Name))
+           & """ with user-defined Put_Image",
          when Lim_Img_On_Non_Scalar =>
            "attribute """ & Standard_Ada_Case (Name) & """ on non-scalar type",
          when Lim_Interpolated_String_Literal =>
