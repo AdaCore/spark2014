@@ -249,6 +249,7 @@ unsupported-generic-in-hidden-private - unsupported-generic-in-hidden-private - 
 unsupported-generic-in-type-inv - unsupported-generic-in-type-inv - instance of a generic unit declared in a package containing a type with an invariant outside of this package - HIGH
 unsupported-goto-cross-inv - unsupported-goto-cross-inv - a goto statement occurring in a loop before the invariant which refers to a label occurring inside the loop but after the invariant - HIGH
 unsupported-hidden-private-relaxed-init - unsupported-hidden-private-relaxed-init - private type whose full view contains only subcomponents whose type is annotated with Relaxed_Initialization in a package whose private part is hidden for proof - HIGH
+unsupported-image-with-custom-put-image - unsupported-image-with-custom-put-image - a reference to the "Image" or "Img" attribute on a type with a user-defined Put_Image, including an inherited definition - HIGH
 unsupported-img-on-non-scalar - unsupported-img-on-non-scalar - a reference to the "Image" or "Img" attribute on a type or an object of a type which is not a scalar type - HIGH
 unsupported-incomplete-type-early-usage - unsupported-incomplete-type-early-usage - usage of incomplete type completed in package body outside of an access type declaration - HIGH
 unsupported-indexed-container-aggregate - unsupported-indexed-container-aggregate - an indexed container aggregate - HIGH
