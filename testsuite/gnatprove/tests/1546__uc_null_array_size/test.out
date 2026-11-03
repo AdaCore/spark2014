@@ -1,0 +1,37 @@
+double_null.adb:7:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
+double_null.adb:7:13: info: types in unchecked conversion have the same size (Trivial)
+double_null.adb:7:55: info: type is suitable as source for unchecked conversion (Trivial)
+double_null.adb:7:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Arr has minimal size 0, but Size was declared as 8]
+double_null.adb:8:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion)
+double_null.adb:8:13: info: types in unchecked conversion have the same size (Trivial)
+double_null.adb:8:54: high: type is unsuitable for unchecked conversion [possible explanation: type Arr has minimal size 0, but Size was declared as 8]
+double_null.adb:8:59: info: type is suitable for unchecked conversion (Trivial)
+double_null.adb:14:19: medium: assertion might fail
+empty_control.adb:8:13: info: imprecise handling of Unchecked_Conversion (array has multiple dimensions)
+empty_control.adb:8:13: info: types in unchecked conversion have the same size (Trivial)
+empty_control.adb:8:55: info: type is suitable as source for unchecked conversion (Trivial)
+empty_control.adb:8:60: info: type is suitable for unchecked conversion (Trivial)
+empty_control.adb:9:13: info: imprecise handling of Unchecked_Conversion (array has multiple dimensions)
+empty_control.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+empty_control.adb:9:56: info: type is suitable as source for unchecked conversion (Trivial)
+empty_control.adb:9:61: info: type is suitable for unchecked conversion (Trivial)
+empty_control.adb:15:19: info: assertion proved (Trivial)
+empty_control.adb:16:19: info: assertion proved (CVC5: 1 VC)
+nested_null.adb:8:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
+nested_null.adb:8:13: info: types in unchecked conversion have the same size (Trivial)
+nested_null.adb:8:55: info: type is suitable as source for unchecked conversion (Trivial)
+nested_null.adb:8:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Outer has minimal size 0, but Size was declared as 8]
+nested_null.adb:9:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion)
+nested_null.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+nested_null.adb:9:54: high: type is unsuitable for unchecked conversion [possible explanation: type Outer has minimal size 0, but Size was declared as 8]
+nested_null.adb:9:61: info: type is suitable for unchecked conversion (Trivial)
+nested_null.adb:14:19: medium: assertion might fail
+record_padding.adb:16:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion)
+record_padding.adb:16:13: info: types in unchecked conversion have the same size (Trivial)
+record_padding.adb:16:54: high: type is unsuitable for unchecked conversion [possible explanation: type Rec has minimal size 8, but Size was declared as 16]
+record_padding.adb:16:59: info: type is suitable for unchecked conversion (Trivial)
+record_padding.adb:18:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Rec has minimal size 8, but Object_Size was declared as 16]
+record_padding.adb:18:04: info: address in address clause is compatible with object alignment (Trivial)
+record_padding.adb:18:36: info: object is suitable for aliasing via address clause (Trivial)
+record_padding.adb:18:36: info: types of aliased objects have the same size (Trivial)
+record_padding.adb:22:19: medium: assertion might fail

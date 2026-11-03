@@ -2635,10 +2635,16 @@ package body SPARK_Util.Types is
                   declare
                      Rng : constant Node_Id := Get_Range (Index);
                   begin
-                     Size :=
-                       Size *
-                         (Expr_Value (High_Bound (Rng)) -
-                            Expr_Value (Low_Bound (Rng)) + 1);
+                     if Expr_Value (High_Bound (Rng)) <
+                       Expr_Value (Low_Bound (Rng))
+                     then
+                        Size := Uint_0;
+                     else
+                        Size :=
+                          Size *
+                            (Expr_Value (High_Bound (Rng)) -
+                               Expr_Value (Low_Bound (Rng)) + 1);
+                     end if;
                      Next_Index (Index);
                   end;
                end loop;
