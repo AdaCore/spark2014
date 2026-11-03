@@ -3129,6 +3129,28 @@ package body Configuration is
             Ada.Text_IO.Put_Line
               ("Note: use ""--function-sandboxing=off"" instead.");
          end if;
+
+         if Parsed.Present (Sw_Mode) then
+            declare
+               Mode        : constant String :=
+                 Parsed.Values (Sw_Mode).String_Val.all;
+               Replacement : constant String :=
+                 (if Mode = "stone"
+                  then "check_all"
+                  elsif Mode = "bronze"
+                  then "flow"
+                  elsif Mode in "silver" | "gold"
+                  then "all"
+                  else "");
+            begin
+               if Replacement /= "" then
+                  Ada.Text_IO.Put_Line
+                    ("Note: switch ""--mode=" & Mode & """ is deprecated.");
+                  Ada.Text_IO.Put_Line
+                    ("Note: use ""--mode=" & Replacement & """ instead.");
+               end if;
+            end;
+         end if;
       end Warn_Obsolete_Switches;
 
    begin

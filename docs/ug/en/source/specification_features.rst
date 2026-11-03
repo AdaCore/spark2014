@@ -359,8 +359,7 @@ True even if the stack ``S`` contains uninitialized elements.
 .. note::
 
   When the ``Relaxed_Initialization`` aspect is used, correct initialization is
-  verified by proof (``--mode=all`` or ``--mode=silver``), and not flow analysis
-  (``--mode=flow`` or ``--mode=bronze``).
+  verified by proof (``--mode=all``), and not flow analysis (``--mode=flow``).
 
   It is possible to annotate an object with the ``Relaxed_Initialization``
   aspect to use proof to verify its initialization. For example, it allows to
