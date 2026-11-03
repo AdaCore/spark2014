@@ -44,8 +44,6 @@ project GNAT2Why is
         (--  Exclude source files leading to false positives. Exclude
          --  gnat2why-expr.adb as it prevents parallelism in the infer
          --  analysis, leading to long analysis time.
-         "assumptions.ads",
-         "assumptions.adb",
          "flow.ads",
          "flow-analysis.adb",
          "flow-analysis-sanity.adb",

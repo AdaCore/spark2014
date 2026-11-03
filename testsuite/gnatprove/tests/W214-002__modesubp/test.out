@@ -39,12 +39,8 @@ in unit nested, 3 subprograms and packages out of 3 analyzed
  Nested at nested.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
  Nested.P at nested.ads:3 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
  Nested.P.Incr at nested.adb:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
-effects on parameters and Global variables of Nested.P.Incr fully established
 in unit pack, 4 subprograms and packages out of 4 analyzed
  Pack at pack.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-absence of run-time errors of Pack fully established
  Pack.Incr at pack.ads:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
-effects on parameters and Global variables of Pack.Incr fully established
  Pack.Incr_Full at pack.ads:8 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 0 checks out of 1 proved
-effects on parameters and Global variables of Pack.Incr_Full fully established
  Pack.Incr_Glob at pack.ads:3 flow analyzed (0 errors, 1 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)

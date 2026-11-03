@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNATPROVE COMPONENTS                          --
 --                                                                          --
---                         A S S U M P T I O N _ T Y P E S                  --
+--                   S P A R K _ R E P O R T _ T Y P E S                    --
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
@@ -25,12 +25,10 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Vectors;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNATCOLL.Utils;
 with Hash_Cons;
-with SPARK_JSON_Entities;   use SPARK_JSON_Entities;
 
-package body Assumption_Types is
+package body SPARK_Report_Types is
 
    Symbol_Table : constant Symbol_Table_Access := Allocate;
 
@@ -38,9 +36,6 @@ package body Assumption_Types is
    function Hash (S : Base_Sloc) return Ada.Containers.Hash_Type;
    function Hash (S : My_Sloc) return Ada.Containers.Hash_Type;
 
-   function From_Entity_Sloc (Sloc : Sloc_Vectors.Vector) return My_Sloc;
-   function From_Entity_Info
-     (Info : SPARK_JSON_Entities.Entity_Info) return Subp_Type;
    function To_JSON_Internal (S : Subp_Type) return JSON_Value;
 
    function "<" (Left, Right : Symbol) return Boolean;
@@ -88,53 +83,6 @@ package body Assumption_Types is
       end loop;
       return Table;
    end Entity_Table;
-
-   ---------------
-   -- From_JSON --
-   ---------------
-
-   pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
-
-   function From_JSON (V : JSON_Value) return Subp_Type is
-   begin
-      return Subp_Vector (Get (V));
-   end From_JSON;
-
-   ----------------------
-   -- From_Entity_Info --
-   ----------------------
-
-   function From_Entity_Info
-     (Info : SPARK_JSON_Entities.Entity_Info) return Subp_Type is
-   begin
-      return
-        Mk_Subp
-          (Name             => To_String (Info.Name),
-           Sloc             => From_Entity_Sloc (Info.Sloc),
-           Manifest_Kind    => To_String (Info.Manifest_Kind),
-           Manifest_Profile => To_String (Info.Manifest_Profile));
-   end From_Entity_Info;
-
-   function From_Entity_Sloc (Sloc : Sloc_Vectors.Vector) return My_Sloc is
-      Result : My_Sloc;
-   begin
-      for Base of Sloc loop
-         Result.Append
-           (Mk_Base_Sloc (To_String (Base.File), Base.Line, Base.Column));
-      end loop;
-      return Result;
-   end From_Entity_Sloc;
-
-   --------------
-   -- From_Key --
-   --------------
-
-   function From_Key (V : String) return Subp_Type is
-   begin
-      return Subp_Vector (Positive'Value (V));
-   end From_Key;
-
-   pragma Annotate (Xcov, Exempt_Off);
 
    ----------
    -- Hash --
@@ -221,31 +169,6 @@ package body Assumption_Types is
       return Unit_Type (S);
    end Mk_Unit;
    pragma Annotate (Xcov, Exempt_Off);
-
-   ------------------------
-   -- Parse_Entity_Table --
-   ------------------------
-
-   procedure Parse_Entity_Table (Table : JSON_Value) is
-      Entities : constant Entity_Vectors.Vector :=
-        SPARK_JSON_Entities.Parse_Entity_Table (Table);
-   begin
-      Subp_Map.Clear;
-      Subp_Vector.Clear;
-
-      for Entity of Entities loop
-         declare
-            Elt : constant Subp_Type := From_Entity_Info (Entity);
-         begin
-            if Entity.Key_Index > Subp_Vector.Last_Index then
-               Subp_Vector.Set_Length
-                 (Ada.Containers.Count_Type (Entity.Key_Index));
-            end if;
-            Subp_Vector.Replace_Element (Entity.Key_Index, Elt);
-            Subp_Map.Insert (Elt, Entity.Key_Index);
-         end;
-      end loop;
-   end Parse_Entity_Table;
 
    ---------------
    -- Subp_Name --
@@ -404,4 +327,4 @@ package body Assumption_Types is
    function "<" (Left, Right : Unit_Type) return Boolean
    is (Symbol (Left) < Symbol (Right));
 
-end Assumption_Types;
+end SPARK_Report_Types;

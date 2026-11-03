@@ -27,8 +27,8 @@
 private with Ada.Containers.Hashed_Maps;
 private with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Hash;
-with Assumption_Types; use Assumption_Types;
-with GNATCOLL.JSON;    use GNATCOLL.JSON;
+with GNATCOLL.JSON;      use GNATCOLL.JSON;
+with SPARK_Report_Types; use SPARK_Report_Types;
 
 package Debug.Timing is
 

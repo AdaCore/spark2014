@@ -28,8 +28,6 @@ with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;           use Ada.Text_IO;
 
-with Assumption_Types; use Assumption_Types;
-
 with ALI;    use ALI;
 with Namet;  use Namet;
 with Osint;  use Osint;
@@ -42,6 +40,7 @@ with Gnat2Why_Args;
 with SPARK2014VSN;              use SPARK2014VSN;
 with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;    use SPARK_Frame_Conditions;
+with SPARK_Report_Types;        use SPARK_Report_Types;
 with SPARK_Xrefs;               use SPARK_Xrefs;
 
 with Common_Iterators;                 use Common_Iterators;
@@ -529,16 +528,6 @@ package body Flow_Generated_Globals.Phase_2 is
         (if Name_Graphs.Has_Element (C)
          then Direct_Calls (C)
          else Name_Sets.Empty_Set);
-   end Generated_Calls;
-
-   function Generated_Calls (E : Entity_Id) return Node_Lists.List is
-      Direct_Calls : Node_Lists.List := Node_Lists.Empty_List;
-   begin
-      for Callee of Generated_Calls (To_Entity_Name (E)) loop
-         pragma Assert (Present (Find_Entity (Callee)));
-         Direct_Calls.Append (Find_Entity (Callee));
-      end loop;
-      return Direct_Calls;
    end Generated_Calls;
 
    ----------------------------------

@@ -29,8 +29,7 @@ with SPARK_JSON_Entities;
 
 package body SPARK_Report_Data is
 
-   function Decode
-     (Value : JSON_Value; Read_Assumptions : Boolean := True) return Unit_Data;
+   function Decode (Value : JSON_Value) return Unit_Data;
    function Read_Optional
      (Value : JSON_Value; Name : String) return Optional_Text;
    function Read_Strings (Value : JSON_Value) return String_Lists.List;
@@ -38,7 +37,6 @@ package body SPARK_Report_Data is
    function Read_Diagnostics
      (Value : JSON_Value) return Diagnostic_Vectors.Vector;
    function Read_Modes (Value : JSON_Value) return Global_Modes;
-   function Read_Token (Value : JSON_Value) return Token_Reference;
 
    ----------------
    -- Subprogram --
@@ -49,32 +47,6 @@ package body SPARK_Report_Data is
    begin
       return Data.Entities.Element (Entity);
    end Subprogram;
-
-   -------------------------
-   -- Resolve_Assumptions --
-   -------------------------
-
-   function Resolve_Assumptions
-     (Data : Unit_Data) return Assumptions.Rule_Lists.List
-   is
-      Result : Assumptions.Rule_Lists.List;
-   begin
-      for Ref of Data.Assumptions loop
-         declare
-            Item : Assumptions.Rule :=
-              (Claim       =>
-                 (Ref.Claim.Predicate, Subprogram (Data, Ref.Claim.Entity)),
-               Assumptions => <>);
-         begin
-            for T of Ref.Assumptions loop
-               Item.Assumptions.Include
-                 ((T.Predicate, Subprogram (Data, T.Entity)));
-            end loop;
-            Result.Append (Item);
-         end;
-      end loop;
-      return Result;
-   end Resolve_Assumptions;
 
    -------------------
    -- Read_Optional --
@@ -224,26 +196,11 @@ package body SPARK_Report_Data is
       return Result;
    end Read_Modes;
 
-   ----------------
-   -- Read_Token --
-   ----------------
-
-   function Read_Token (Value : JSON_Value) return Token_Reference is
-   begin
-      return
-        (Predicate =>
-           Assumptions.Claim_Kind'Value (String'(Get (Value, "predicate"))),
-         Entity    =>
-           Valid_Entity_Reference (Integer'(Get (Get (Value, "arg")))));
-   end Read_Token;
-
    ------------
    -- Decode --
    ------------
 
-   function Decode
-     (Value : JSON_Value; Read_Assumptions : Boolean := True) return Unit_Data
-   is
+   function Decode (Value : JSON_Value) return Unit_Data is
       Result : Unit_Data;
 
       procedure Read_Status (Name : UTF8_String; Value : JSON_Value);
@@ -343,19 +300,6 @@ package body SPARK_Report_Data is
             Result.Pragma_Assume.Append (Read_Location (Location));
          end loop;
       end if;
-      if Read_Assumptions and then Has_Field (Value, "assumptions") then
-         for Source of JSON_Array'(Get (Get (Value, "assumptions"))) loop
-            declare
-               Item : Rule_Reference :=
-                 (Claim => Read_Token (Get (Source, "claim")), others => <>);
-            begin
-               for Token of JSON_Array'(Get (Get (Source, "assumptions"))) loop
-                  Item.Assumptions.Append (Read_Token (Token));
-               end loop;
-               Result.Assumptions.Append (Item);
-            end;
-         end loop;
-      end if;
       if Has_Field (Value, "generated_globals") then
          Map_JSON_Object
            (Get (Value, "generated_globals"), Read_Global'Access);
@@ -367,20 +311,17 @@ package body SPARK_Report_Data is
    -- Read --
    ----------
 
-   function Read
-     (Input : String; Read_Assumptions : Boolean := True) return Unit_Data is
+   function Read (Input : String) return Unit_Data is
    begin
-      return Decode (GNATCOLL.JSON.Read (Input), Read_Assumptions);
+      return Decode (GNATCOLL.JSON.Read (Input));
    end Read;
 
    ---------------
    -- Read_File --
    ---------------
 
-   function Read_File
-     (Filename : String; Read_Assumptions : Boolean := True) return Unit_Data
-   is
+   function Read_File (Filename : String) return Unit_Data is
    begin
-      return Decode (Read_File_Into_JSON (Filename), Read_Assumptions);
+      return Decode (Read_File_Into_JSON (Filename));
    end Read_File;
 end SPARK_Report_Data;

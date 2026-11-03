@@ -5325,8 +5325,7 @@ package body Why.Gen.Expr is
 
       Sloc : constant Source_Ptr :=
         Compute_VC_Sloc (N, Left_Most => Locate_On_First_Token (Reason));
-      Id   : constant VC_Id :=
-        Register_VC (N, Reason, Current_Subp, Check_Info);
+      Id   : constant VC_Id := Register_VC (N, Reason, Check_Info);
 
       Labels : Symbol_Set;
 

@@ -1,0 +1,9 @@
+===== deprecated switch on command line =====
+main.adb:1:11: warning: subprogram "Main" has no effect
+main.adb:4:19: info: assertion proved (CVC5: 1 VC)
+warning: switch "--assumptions" is deprecated and ignored
+===== deprecated switch in project file =====
+main.adb:1:11: warning: subprogram "Main" has no effect
+main.adb:4:19: info: assertion proved (CVC5: 1 VC)
+warning: switch "--assumptions" is deprecated and ignored
+Legacy assumption dependencies ignored; ordinary report preserved

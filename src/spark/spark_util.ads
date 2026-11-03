@@ -27,7 +27,6 @@ with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Directories;
-with Assumption_Types;      use Assumption_Types;
 with Atree;                 use Atree;
 with Checked_Types;         use Checked_Types;
 with Common_Containers;     use Common_Containers;
@@ -41,6 +40,7 @@ with Sem_Util;              use Sem_Util;
 with Sinfo.Nodes;           use Sinfo.Nodes;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
+with SPARK_Report_Types;    use SPARK_Report_Types;
 with Types;                 use Types;
 with Uintp;                 use Uintp;
 with Urealp;                use Urealp;
@@ -1265,11 +1265,11 @@ package SPARK_Util is
    function Safe_Last_Sloc (N : Node_Id) return Source_Ptr;
    --  Wrapper for Last_Sloc, similar to Safe_First_Sloc.
 
-   function Entity_To_Subp_Assumption (E : Entity_Id) return Subp_Type
+   function Entity_To_Report_Subp (E : Entity_Id) return Subp_Type
    with
      Pre =>
        (if Is_Internal (E) then Is_Type (E) or else Is_Predicate_Function (E));
-   --  Transform an entity into a Assumption_Types.Subp_Type
+   --  Transform an entity into a SPARK_Report_Types.Subp_Type
    --  ??? At the moment we are checking whether E is a predicate function but
    --  this will have to be removed as soon as we will not create graphs for
    --  type predicates.

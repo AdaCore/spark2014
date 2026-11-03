@@ -29,8 +29,7 @@
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Sets;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Assumptions;           use Assumptions;
-with Assumption_Types;      use Assumption_Types;
+with SPARK_Report_Types;    use SPARK_Report_Types;
 with VC_Kinds;              use VC_Kinds;
 
 package Report_Database is
@@ -106,7 +105,6 @@ package Report_Database is
       Proof_Warnings  : Natural;            --  Number of proof warnings
       Proof_Checks    : Natural;            --  Total number of checks
       Proof_Checks_OK : Natural;            --  Number of checks proved
-      Assumptions     : Rule_Lists.List;    --  Final mapping claim->assumption
    end record;
 
    type All_Prover_Stat is record
@@ -188,9 +186,6 @@ package Report_Database is
       Column     : Positive);
    --  For the subprogram in the given unit, register a suppressed check with a
    --  reason.
-
-   procedure Add_Claim_With_Assumptions (Claim : Token; S : Token_Sets.Set);
-   --  Register that claim C ultimately only depends on assumptions S
 
    function Has_Unproved_Check return Boolean
    is (for some Check_Kind in Summary'Range =>

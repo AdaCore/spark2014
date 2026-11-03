@@ -39,21 +39,13 @@ in unit gen, 1 subprograms and packages out of 1 analyzed
  Gen at gen.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 in unit pack, 11 subprograms and packages out of 11 analyzed
  Pack at pack.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-absence of run-time errors of Pack fully established
  Pack.Annot at pack.ads:5 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
  Pack.Annot.Should_Skip1gp237 at pack.adb:12 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
  Pack.Annot.Should_Skip1gp237.Should_Skip1 at pack.adb:12 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
-effects on parameters and Global variables of Pack.Annot.Should_Skip1gp237.Should_Skip1 fully established
  Pack.Annot.Should_Skip2gp293 at pack.adb:13 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
  Pack.Annot.Should_Skip2gp293.Should_Skip2 at pack.adb:13 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
-effects on parameters and Global variables of Pack.Annot.Should_Skip2gp293.Should_Skip2 fully established
  Pack.P at pack.ads:3 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
-absence of run-time errors of Pack.P fully established
  Pack.P.Should_Provegp66 at pack.adb:5 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-absence of run-time errors of Pack.P.Should_Provegp66 fully established
  Pack.P.Should_Provegp66.Should_Prove at pack.adb:5 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 0 checks out of 1 proved
-effects on parameters and Global variables of Pack.P.Should_Provegp66.Should_Prove fully established
  Pack.P.Should_Skipgp122 at pack.adb:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-absence of run-time errors of Pack.P.Should_Skipgp122 fully established
  Pack.P.Should_Skipgp122.Should_Skip at pack.adb:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
-effects on parameters and Global variables of Pack.P.Should_Skipgp122.Should_Skip fully established

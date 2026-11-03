@@ -115,9 +115,7 @@ project GNATprove is
 
       --  Exclude source files leading to false positives
       for Excluded_Source_Files use
-        ("assumptions.ads",
-         "assumptions.adb",
-         "print_table.adb",
+        ("print_table.adb",
          "configuration.adb",
          "report_database.ads"); --  spurious GNAT SAS violation U804-011
 

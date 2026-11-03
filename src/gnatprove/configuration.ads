@@ -86,7 +86,6 @@ package Configuration is
       --    some switch)
       --  * Cargs_List is the list of arguments in the --cargs section
 
-      function Assumptions return Boolean;
       function Benchmark return Boolean;
       function Memcached_Server return String;
       function Cargs_List return not null access constant String_Lists.List;

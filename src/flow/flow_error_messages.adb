@@ -588,12 +588,9 @@ package body Flow_Error_Messages is
          Tracefile     => Tracefile,
          Continuations => Continuations);
 
-      --  Set the Errors_Or_Warnings flag to True for this entity if we are
-      --  with anything but a suppressed warning.
+      --  Record dependency errors for this entity unless suppressed
 
       if not Suppressed then
-         FA.Errors_Or_Warnings := True;
-
          if Tag in Data_Dependency_Tag then
             FA.Data_Dependency_Errors := True;
          end if;

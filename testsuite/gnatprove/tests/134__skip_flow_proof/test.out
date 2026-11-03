@@ -42,10 +42,7 @@ Detailed analysis report
 Analyzed 1 unit
 in unit pack, 4 subprograms and packages out of 5 analyzed
  Pack at pack.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-absence of run-time errors of Pack fully established
  Pack.F at pack.ads:3 skipped; body is SPARK_Mode => Off
  Pack.Process_Normally at pack.ads:15 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 0 checks out of 1 proved
-effects on parameters and Global variables of Pack.Process_Normally depends on
- effects on parameters and Global variables of Pack.F
  Pack.Skip_Entirely at pack.ads:7 not analyzed (pragma Annotate Skip_Flow_And_Proof)
  Pack.Skip_Proof at pack.ads:11 flow analyzed (0 errors, 1 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)

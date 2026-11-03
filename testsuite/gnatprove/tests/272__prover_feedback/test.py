@@ -22,7 +22,6 @@ gnatprove(
         "test.gpr",
         "--output=pretty",
         "--warnings=continue",
-        "--assumptions",
         "--steps=1",
         "--timeout=30",
         "--memlimit=2000",

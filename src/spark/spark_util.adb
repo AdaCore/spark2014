@@ -1945,21 +1945,21 @@ package body SPARK_Util is
       end loop;
    end Enclosing_Unit;
 
-   -------------------------------
-   -- Entity_To_Subp_Assumption --
-   -------------------------------
+   ---------------------------
+   -- Entity_To_Report_Subp --
+   ---------------------------
 
-   function Entity_To_Subp_Assumption (E : Entity_Id) return Subp_Type is
-      function Loc_To_Assume_Sloc (Loc : Source_Ptr) return My_Sloc
+   function Entity_To_Report_Subp (E : Entity_Id) return Subp_Type is
+      function Loc_To_Report_Sloc (Loc : Source_Ptr) return My_Sloc
       with Pre => Loc /= No_Location;
       function Manifest_Kind return String;
       function Manifest_Profile return String;
 
       ------------------------
-      -- Loc_To_Assume_Sloc --
+      -- Loc_To_Report_Sloc --
       ------------------------
 
-      function Loc_To_Assume_Sloc (Loc : Source_Ptr) return My_Sloc is
+      function Loc_To_Report_Sloc (Loc : Source_Ptr) return My_Sloc is
          Sloc : My_Sloc := Sloc_Lists.Empty_List;
          Slc  : Source_Ptr := Loc;
       begin
@@ -1979,7 +1979,7 @@ package body SPARK_Util is
             exit when Slc = No_Location;
          end loop;
          return Sloc;
-      end Loc_To_Assume_Sloc;
+      end Loc_To_Report_Sloc;
 
       -------------------
       -- Manifest_Kind --
@@ -2062,10 +2062,10 @@ package body SPARK_Util is
       return
         Mk_Subp
           (Name             => Full_Source_Name (E),
-           Sloc             => Loc_To_Assume_Sloc (Sloc (E)),
+           Sloc             => Loc_To_Report_Sloc (Sloc (E)),
            Manifest_Kind    => Manifest_Kind,
            Manifest_Profile => Manifest_Profile);
-   end Entity_To_Subp_Assumption;
+   end Entity_To_Report_Subp;
 
    ----------------------------
    -- Expr_Has_Relaxed_Discr --

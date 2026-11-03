@@ -27,8 +27,6 @@ with Ada.Strings.Maps;
 with Ada.Strings;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
-with Assumption_Types;                 use Assumption_Types;
-with Assumptions;                      use Assumptions;
 with Atree;                            use Atree;
 with Errout_Wrapper;                   use Errout_Wrapper;
 with Flow.Analysis;
@@ -47,7 +45,6 @@ with Flow_Generated_Globals.Phase_2;   use Flow_Generated_Globals.Phase_2;
 with Flow_Error_Messages;              use Flow_Error_Messages;
 with Flow_Refinement;                  use Flow_Refinement;
 with Flow_Utility;                     use Flow_Utility;
-with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
 with GNATCOLL.JSON;                    use GNATCOLL.JSON;
 with Interfaces;                       use Interfaces;
@@ -63,6 +60,7 @@ with Snames;                           use Snames;
 with SPARK_Definition;                 use SPARK_Definition;
 with SPARK_Definition.Annotate;        use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
+with SPARK_Report_Types;               use SPARK_Report_Types;
 with SPARK_Util;                       use SPARK_Util;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with Sprint;                           use Sprint;
@@ -432,7 +430,7 @@ package body Flow is
       if not Is_Empty (Contract_Modes) then
          Set_Field
            (Generated_Globals_JSON_SPARK,
-            To_Key (Entity_To_Subp_Assumption (FA.Spec_Entity)),
+            To_Key (Entity_To_Report_Subp (FA.Spec_Entity)),
             Contract_Modes);
 
          declare
@@ -1357,7 +1355,6 @@ package body Flow is
       FA.CDG := Create;
       FA.TDG := Create;
       FA.PDG := Create;
-      FA.Errors_Or_Warnings := False;
       FA.Data_Dependency_Errors := False;
       FA.Flow_Dependency_Errors := False;
       FA.Calls_Via_Access := False;
@@ -1779,14 +1776,6 @@ package body Flow is
                   Analysis.Find_Illegal_Reads_Of_Proof_Ins (FA);
                   Analysis.Check_Function_For_Volatile_Effects (FA);
                   Analysis.Check_Output_Constant_After_Elaboration (FA);
-
-                  --  If no errors or warnings were found during flow
-                  --  analysis of the subprogram then emit the
-                  --  relevant claim.
-                  if not FA.Errors_Or_Warnings then
-                     Register_Claim
-                       (Claim'(E => FA.Spec_Entity, Kind => Claim_Effects));
-                  end if;
 
                when Kind_Package                =>
                   declare

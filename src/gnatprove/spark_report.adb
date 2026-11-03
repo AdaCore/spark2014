@@ -30,9 +30,6 @@ with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Assumptions;           use Assumptions;
-with Assumptions.Search;    use Assumptions.Search;
-with Assumption_Types;      use Assumption_Types;
 with Call;                  use Call;
 with Configuration;         use Configuration;
 with GNAT.Calendar.Time_IO;
@@ -47,6 +44,7 @@ with Report_Database;       use Report_Database;
 with SPARK_Report_Data;
 with SPARK2014VSN;          use SPARK2014VSN;
 with SPARK_Artifacts;
+with SPARK_Report_Types;    use SPARK_Report_Types;
 with String_Utils;          use String_Utils;
 with System;
 with System.Storage_Elements;
@@ -121,7 +119,6 @@ package body Spark_Report is
       Command_Line_Image : Unbounded_String;
 
       --  Config values from Configuration/CL_Switches
-      Assumptions        : constant Boolean := CL_Switches.Assumptions;
       Output_Header      : constant Boolean := CL_Switches.Output_Header;
       Has_Limit_Switches : constant Boolean :=
         CL_Switches.Limit_Name /= ""
@@ -175,10 +172,6 @@ package body Spark_Report is
         (Handle : Ada.Text_IO.File_Type);
       --  Print the set of most difficult checks to prove
 
-      procedure Compute_Assumptions;
-      --  Compute remaining assumptions for all subprograms and store them
-      --  in database.
-
       function To_String (Sloc : My_Sloc) return String;
       --  Pretty-printing of slocs including instantiation chains
 
@@ -208,23 +201,6 @@ package body Spark_Report is
       procedure Show_Header
         (Handle : Ada.Text_IO.File_Type; Command_Line_Image : String);
       --  Print header at start of generated file "gnatprove.out"
-
-      -------------------------
-      -- Compute_Assumptions --
-      -------------------------
-
-      procedure Compute_Assumptions is
-      begin
-         --  ??? This is slow, use a better algorithm in Assumptions.Search
-
-         for C of Get_All_Claims loop
-            declare
-               S : constant Token_Sets.Set := Claim_Depends_On (C);
-            begin
-               Add_Claim_With_Assumptions (C, S);
-            end;
-         end loop;
-      end Compute_Assumptions;
 
       ------------------------
       -- Dump_Summary_Table --
@@ -787,9 +763,6 @@ package body Spark_Report is
          Handle_Pragma_Assume_Items (Dict.Pragma_Assume, Unit, Dict);
          Handle_Proof_Items (Dict.Proof, Unit, Dict);
          Handle_Manifest_Items (Dict.Manifest_Warnings);
-         if Assumptions then
-            Import (SPARK_Report_Data.Resolve_Assumptions (Dict));
-         end if;
       end Handle_SPARK_File;
 
       ---------------
@@ -932,25 +905,6 @@ package body Spark_Report is
                               & Image (Assm.Line, 1)
                               & ":"
                               & Image (Assm.Column, 1));
-                        end loop;
-                     end if;
-
-                     if Assumptions then
-                        for Rule of Stat.Assumptions loop
-                           if Rule.Assumptions.Is_Empty then
-                              Ada.Text_IO.Put_Line
-                                (Handle,
-                                 To_String (Rule.Claim)
-                                 & " fully established");
-                           else
-                              Ada.Text_IO.Put_Line
-                                (Handle,
-                                 To_String (Rule.Claim) & " depends on");
-                              for A of Rule.Assumptions loop
-                                 Ada.Text_IO.Put_Line
-                                   (Handle, "  " & To_String (A));
-                              end loop;
-                           end if;
                         end loop;
                      end if;
                   end if;
@@ -1380,9 +1334,7 @@ package body Spark_Report is
                Parsed_Files.Append
                  (SPARK_File_Data'
                     (File => To_Unbounded_String (Filename),
-                     Data =>
-                       SPARK_Report_Data.Read_File
-                         (Filename, Read_Assumptions => Assumptions)));
+                     Data => SPARK_Report_Data.Read_File (Filename)));
             exception
                when others =>
                   Ada.Text_IO.Put_Line
@@ -1403,8 +1355,7 @@ package body Spark_Report is
             begin
                declare
                   Data : constant SPARK_Report_Data.Unit_Data :=
-                    SPARK_Report_Data.Read_File
-                      (SPARK_Error_File, Read_Assumptions => False);
+                    SPARK_Report_Data.Read_File (SPARK_Error_File);
                begin
                   --  When the corresponding .spark file exists, the
                   --  .spark_error should have no messages (they would be
@@ -1473,10 +1424,6 @@ package body Spark_Report is
         (Handle,
          Ada.Text_IO.Out_File,
          Ada.Directories.Compose (Out_Dir, "gnatprove.out"));
-
-      if Assumptions then
-         Compute_Assumptions;
-      end if;
 
       if Output_Header then
          Show_Header (Handle, To_String (Command_Line_Image));

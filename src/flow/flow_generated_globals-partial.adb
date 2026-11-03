@@ -150,8 +150,6 @@ package body Flow_Generated_Globals.Partial is
       Globals : Flow_Nodes;
 
       Direct_Calls : Node_Sets.Set;  --   ??? Callee_Set
-      --  For compatibility with old GG (e.g. assumptions)
-      --
       --  ### All the direct calls; this is what we need for the
       --  non-global contract synthesis (for example
       --  nonblocking). This is always a superset Calls in Globals

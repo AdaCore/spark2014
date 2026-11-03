@@ -35,7 +35,6 @@ with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;                    use Ada.Text_IO;
 with ALI.Util;                       use ALI.Util;
 with ALI;                            use ALI;
-with Assumption_Types;               use Assumption_Types;
 with Atree;                          use Atree;
 with Binderr;
 with Call;                           use Call;
@@ -63,7 +62,6 @@ with GNAT.Source_Info;
 with GNATCOLL.JSON;                  use GNATCOLL.JSON;
 with GNATCOLL.Utils;                 use GNATCOLL.Utils;
 with Gnat2Why_Opts;                  use Gnat2Why_Opts;
-with Gnat2Why.Assumptions;           use Gnat2Why.Assumptions;
 with Gnat2Why.Borrow_Checker;        use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Data_Decomposition;    use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Decls;                 use Gnat2Why.Decls;
@@ -88,6 +86,7 @@ with Sinput;                         use Sinput;
 with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Register;                 use SPARK_Register;
+with SPARK_Report_Types;             use SPARK_Report_Types;
 with SPARK_Rewrite;                  use SPARK_Rewrite;
 with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Hardcoded;           use SPARK_Util.Hardcoded;
@@ -224,9 +223,6 @@ package body Gnat2Why.Driver is
 
    function Get_Skip_Flow_And_Proof_JSON return JSON_Array;
    --  Return a list of entities for which flow and proof was skipped.
-
-   procedure Generate_Assumptions;
-   --  For all calls from a SPARK subprogram to another, register assumptions
 
    ----------------------
    -- Global Variables --
@@ -434,7 +430,6 @@ package body Gnat2Why.Driver is
          Set_Field (Full, "pragma_assume", Create (Get_Pragma_Assume_JSON));
          Set_Field (Full, "proof", Create (Proof_Msgs));
       end if;
-      Set_Field (Full, "assumptions", Get_Assume_JSON);
 
       Set_Field (Full, "timings", Timing_History (Timing));
       Set_Field (Full, "entities", Entity_Table);
@@ -635,9 +630,7 @@ package body Gnat2Why.Driver is
                end;
             end if;
             Timing_Phase_Completed
-              (Timing,
-               Entity_To_Subp_Assumption (E),
-               "gnat2why.vc_generation");
+              (Timing, Entity_To_Report_Subp (E), "gnat2why.vc_generation");
 
          when E_Package                             =>
             Generate_VCs_For_Package_Elaboration (E);
@@ -987,7 +980,6 @@ package body Gnat2Why.Driver is
             end if;
          end;
 
-         Generate_Assumptions;
          Timing_Phase_Completed (Timing, Null_Subp, "flow analysis");
 
          --  Check SPARK rules for pointer aliasing. This is only activated on
@@ -1173,40 +1165,6 @@ package body Gnat2Why.Driver is
 
    end GNAT_To_Why;
 
-   --------------------------
-   -- Generate_Assumptions --
-   --------------------------
-
-   procedure Generate_Assumptions is
-   begin
-      for E of Entities_To_Translate loop
-         case Ekind (E) is
-            when Entry_Kind
-               | E_Function
-               | E_Procedure
-               | E_Package
-               | E_Task_Type =>
-               --  Packages have always a "body" in the SPARK meaning, that is,
-               --  some elaboration code will always be run even for packages
-               --  without explicit elaboration code in the package body
-               --  statements. So we always register assumptions for packages.
-
-               if Analysis_Requested (E, With_Inlined => True)
-                 and then Entity_Spec_In_SPARK (E)
-                 and then
-                   (if Ekind (E) /= E_Package then Entity_Body_In_SPARK (E))
-               then
-                  for C of Generated_Calls (E) loop
-                     Register_Assumptions_For_Call (E, C);
-                  end loop;
-               end if;
-
-            when others      =>
-               null;
-         end case;
-      end loop;
-   end Generate_Assumptions;
-
    -------------------
    -- Get_Skip_JSON --
    -------------------
@@ -1216,8 +1174,7 @@ package body Gnat2Why.Driver is
    begin
       for Elt of Skipped_Flow_And_Proof loop
          Append
-           (Result,
-            Assumption_Types.To_JSON (Entity_To_Subp_Assumption (Elt)));
+           (Result, SPARK_Report_Types.To_JSON (Entity_To_Report_Subp (Elt)));
       end loop;
       return Result;
    end Get_Skip_Flow_And_Proof_JSON;
@@ -1231,8 +1188,7 @@ package body Gnat2Why.Driver is
    begin
       for Elt of Skipped_Proof loop
          Append
-           (Result,
-            Assumption_Types.To_JSON (Entity_To_Subp_Assumption (Elt)));
+           (Result, SPARK_Report_Types.To_JSON (Entity_To_Report_Subp (Elt)));
       end loop;
       return Result;
    end Get_Skip_Proof_JSON;

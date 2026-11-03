@@ -4273,8 +4273,6 @@ package body Gnat2Why.Subprograms is
              & ", created in "
              & GNAT.Source_Info.Enclosing_Entity);
 
-      Register_VC_Entity (E);
-
       Params := Body_Params;
 
       --  Reset the toplevel exceptions for exit paths
@@ -4601,8 +4599,6 @@ package body Gnat2Why.Subprograms is
              & ", created in "
              & GNAT.Source_Info.Enclosing_Entity);
 
-      Register_VC_Entity (E);
-
       --  The Ada_Node is important here, because that's how we detect
       --  occurrences of "self" in a term later.
 
@@ -4909,8 +4905,6 @@ package body Gnat2Why.Subprograms is
                 else "")
              & ", created in "
              & GNAT.Source_Info.Enclosing_Entity);
-
-      Register_VC_Entity (E);
 
       Generate_VCs_For_Subprogram (E, Th, Def_Name);
 
@@ -7157,8 +7151,6 @@ package body Gnat2Why.Subprograms is
                 else "")
              & ", created in "
              & GNAT.Source_Info.Enclosing_Entity);
-
-      Register_VC_Entity (E);
 
       --  Reset the toplevel exceptions for exit paths
 

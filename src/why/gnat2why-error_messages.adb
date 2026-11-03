@@ -28,8 +28,6 @@ with Ada.Exceptions;         use Ada.Exceptions;
 with Ada.Strings;
 with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
 with Ada.Containers.Vectors;
-with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Ada.Text_IO;
@@ -38,7 +36,6 @@ with Call;                   use Call;
 with CE_Display;             use CE_Display;
 with CE_RAC;                 use CE_RAC;
 with CE_Values;              use CE_Values;
-with Common_Containers;      use Common_Containers;
 with Comperr;                use Comperr;
 with Debug;                  use Debug;
 with Errout_Wrapper;         use Errout_Wrapper;
@@ -46,7 +43,6 @@ with Flow_Error_Messages;    use Flow_Error_Messages;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
-with Gnat2Why.Assumptions;   use Gnat2Why.Assumptions;
 with Gnat2Why.Driver;        use Gnat2Why.Driver;
 with Gnat2Why.Util;          use Gnat2Why.Util;
 with Gnat2Why_Args;          use Gnat2Why_Args;
@@ -69,39 +65,11 @@ package body Gnat2Why.Error_Messages is
       Check_Info : Check_Info_Type;
    end record;
 
-   function Hash (X : VC_Id) return Ada.Containers.Hash_Type
-   is (Ada.Containers.Hash_Type (X));
-
    package Id_Tables is new
      Ada.Containers.Vectors
        (Index_Type   => VC_Id,
         Element_Type => VC_Info,
         "="          => "=");
-
-   package Id_Sets is new
-     Ada.Containers.Hashed_Sets
-       (Element_Type        => VC_Id,
-        Hash                => Hash,
-        Equivalent_Elements => "=",
-        "="                 => "=");
-
-   package Ent_Id_Set_Maps is new
-     Ada.Containers.Hashed_Maps
-       (Key_Type        => Entity_Id,
-        Element_Type    => Id_Sets.Set,
-        Hash            => Node_Hash,
-        Equivalent_Keys => "=",
-        "="             => Id_Sets."=");
-
-   procedure Add_Id_To_Entity (Id : VC_Id; E : Entity_Id);
-   --  Enter the VC_Id into the map from entities to Id_Sets
-
-   procedure Mark_VC_As_Proved_For_Entity
-     (Id : VC_Id; Kind : VC_Kind; E : Entity_Id);
-   --  Remove the VC_Id from the map from entities to Id_Sets
-
-   procedure Mark_Subprograms_With_No_VC_As_Proved;
-   --  For all subprograms that do not contain any VC, issue related claims
 
    function Is_Gnatwhy3_OOM_Output (Output : String) return Boolean;
    --  Return True for the out-of-memory messages emitted by gnatwhy3 or by
@@ -185,20 +153,8 @@ package body Gnat2Why.Error_Messages is
 
    Registered_VCs_In_Why3 : Natural := 0;
 
-   VC_Set_Table : Ent_Id_Set_Maps.Map := Ent_Id_Set_Maps.Empty_Map;
-   --  This table maps entities to the set of unproved VCs
-
    function Parse_Extra_Info (EI : Prover_Extra_Info) return Extra_Info;
    --  Retrieve extra information for a check as encoded in the Why3 results
-
-   ----------------------
-   -- Add_Id_To_Entity --
-   ----------------------
-
-   procedure Add_Id_To_Entity (Id : VC_Id; E : Entity_Id) is
-   begin
-      VC_Set_Table (E).Include (Id);
-   end Add_Id_To_Entity;
 
    ----------------------------------
    -- Compute_Cannot_Prove_Message --
@@ -354,7 +310,6 @@ package body Gnat2Why.Error_Messages is
 
    procedure Emit_Proof_Result
      (Node          : Node_Id;
-      Id            : VC_Id;
       Kind          : VC_Kind;
       Proved        : Boolean;
       E             : Entity_Id;
@@ -380,9 +335,6 @@ package body Gnat2Why.Error_Messages is
          if not Proved then
             return;
          end if;
-
-      elsif Proved then
-         Mark_VC_As_Proved_For_Entity (Id, Kind, E);
       end if;
 
       Error_Msg_Proof
@@ -419,11 +371,11 @@ package body Gnat2Why.Error_Messages is
    is
       Check_Info : constant Check_Info_Type := New_Check_Info;
       Id         : constant VC_Id :=
-        Register_VC (Node, Kind, E, Check_Info, Present_In_Why3 => False);
+        Register_VC (Node, Kind, Check_Info, Present_In_Why3 => False);
+      pragma Unreferenced (Id);
    begin
       Emit_Proof_Result
         (Node,
-         Id,
          Kind,
          Proved,
          E,
@@ -484,48 +436,6 @@ package body Gnat2Why.Error_Messages is
 
    function Num_Registered_VCs_In_Why3 return Natural
    is (Registered_VCs_In_Why3);
-
-   -------------------------------------------
-   -- Mark_Subprograms_With_No_VC_As_Proved --
-   -------------------------------------------
-
-   procedure Mark_Subprograms_With_No_VC_As_Proved is
-      use Ent_Id_Set_Maps;
-   begin
-      for C in VC_Set_Table.Iterate loop
-         if VC_Set_Table (C).Is_Empty then
-            Register_Proof_Claims (Key (C));
-         end if;
-      end loop;
-   end Mark_Subprograms_With_No_VC_As_Proved;
-
-   ----------------------------------
-   -- Mark_VC_As_Proved_For_Entity --
-   ----------------------------------
-
-   procedure Mark_VC_As_Proved_For_Entity
-     (Id : VC_Id; Kind : VC_Kind; E : Entity_Id)
-   is
-      C : Ent_Id_Set_Maps.Cursor;
-
-   begin
-      --  ??? little trick; loop invariant assertions cannot be simply removed,
-      --  because there are two of them with the same ID. We fix this by only
-      --  counting the "preservation" one, and ignore the "init" one.
-
-      if Kind = VC_Loop_Invariant_Init then
-         return;
-      end if;
-
-      C := VC_Set_Table.Find (E);
-      pragma Assert (Ent_Id_Set_Maps.Has_Element (C));
-
-      VC_Set_Table (C).Delete (Id);
-
-      if VC_Set_Table (C).Is_Empty then
-         Register_Proof_Claims (E);
-      end if;
-   end Mark_VC_As_Proved_For_Entity;
 
    ----------------------
    -- Parse_Extra_Info --
@@ -1180,7 +1090,6 @@ package body Gnat2Why.Error_Messages is
          begin
             Emit_Proof_Result
               (Node          => Node,
-               Id            => Rec.Id,
                Kind          => Rec.Kind,
                Proved        => Rec.Result,
                E             => Subp,
@@ -1221,7 +1130,7 @@ package body Gnat2Why.Error_Messages is
          begin
             Register_Timing
               (Timing,
-               Entity_To_Subp_Assumption (Subp),
+               Entity_To_Report_Subp (Subp),
                Name,
                Duration'Max (0.0, Duration (Time)));
          end Timing_Entry;
@@ -1374,8 +1283,6 @@ package body Gnat2Why.Error_Messages is
             end;
          end if;
 
-         Mark_Subprograms_With_No_VC_As_Proved;
-
          declare
             Results : constant JSON_Array := Get (Get (File, "results"));
          begin
@@ -1462,7 +1369,6 @@ package body Gnat2Why.Error_Messages is
    function Register_VC
      (N               : Node_Id;
       Reason          : VC_Kind;
-      E               : Entity_Id;
       Check_Info      : Check_Info_Type;
       Present_In_Why3 : Boolean := True) return VC_Id
    is
@@ -1471,27 +1377,9 @@ package body Gnat2Why.Error_Messages is
       VC_Table.Append (VC_Info'(N, Reason, Check_Info));
       Registered_Id := VC_Table.Last_Index;
 
-      --  Do not consider warnings in the set of checks associated to an
-      --  entity, to decide whether the entity was fully verified or not.
-      if Reason not in VC_Warning_Kind then
-         Add_Id_To_Entity (Registered_Id, E);
-      end if;
-
       if Present_In_Why3 then
          Registered_VCs_In_Why3 := Registered_VCs_In_Why3 + 1;
       end if;
       return Registered_Id;
    end Register_VC;
-
-   ------------------------
-   -- Register_VC_Entity --
-   ------------------------
-
-   procedure Register_VC_Entity (E : Entity_Id) is
-      Position : Ent_Id_Set_Maps.Cursor;
-      Unused   : Boolean;
-   begin
-      VC_Set_Table.Insert (Key => E, Position => Position, Inserted => Unused);
-   end Register_VC_Entity;
-
 end Gnat2Why.Error_Messages;

@@ -29,7 +29,6 @@ with Atree;                          use Atree;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Aspects;                        use Aspects;
-with Assumption_Types;               use Assumption_Types;
 with Checked_Types;                  use Checked_Types;
 with Common_Iterators;               use Common_Iterators;
 with Einfo.Utils;                    use Einfo.Utils;
@@ -67,6 +66,7 @@ with SPARK_Atree.Entities;
 with SPARK_Util;                     use SPARK_Util;
 with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
 with SPARK_Definition.Violations;    use SPARK_Definition.Violations;
+with SPARK_Report_Types;             use SPARK_Report_Types;
 with SPARK_Util.Hardcoded;           use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Util.Types;               use SPARK_Util.Types;
@@ -2401,7 +2401,7 @@ package body SPARK_Definition is
            and then Analysis_Requested (E, With_Inlined => True)
          then
             declare
-               V : constant Subp_Type := Entity_To_Subp_Assumption (E);
+               V : constant Subp_Type := Entity_To_Report_Subp (E);
 
                SPARK_Status : constant SPARK_Mode_Status :=
                  (if Entity_Body_In_SPARK (E)
@@ -2437,8 +2437,7 @@ package body SPARK_Definition is
          then
 
             declare
-               V            : constant Subp_Type :=
-                 Entity_To_Subp_Assumption (E);
+               V            : constant Subp_Type := Entity_To_Report_Subp (E);
                SPARK_Status : constant SPARK_Mode_Status :=
                  (if Full_View_Not_In_SPARK (E)
                   then Spec_Only_In_SPARK

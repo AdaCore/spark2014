@@ -30,7 +30,6 @@ with Common_Containers;             use Common_Containers;
 with Flow_Types;                    use Flow_Types;
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;              use GNATCOLL.Symbols;
-with Gnat2Why.Error_Messages;       use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                 use Gnat2Why.Expr;
 with Gnat2Why.Expr.Aggregates;      use Gnat2Why.Expr.Aggregates;
 with Gnat2Why.Subprograms;          use Gnat2Why.Subprograms;
@@ -1225,8 +1224,6 @@ package body Gnat2Why.Types is
                 else "")
              & ", created in "
              & GNAT.Source_Info.Enclosing_Entity);
-
-      Register_VC_Entity (E);
 
       if Check_Default then
 

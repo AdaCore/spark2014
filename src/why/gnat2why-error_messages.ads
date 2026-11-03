@@ -39,24 +39,16 @@ package Gnat2Why.Error_Messages is
    function Register_VC
      (N               : Node_Id;
       Reason          : VC_Kind;
-      E               : Entity_Id;
       Check_Info      : Check_Info_Type;
       Present_In_Why3 : Boolean := True) return VC_Id
-   with Pre => Present (N) and then Present (E);
+   with Pre => Present (N);
    --  @param N node at which the VC is located
    --  @param Reason VC kind
-   --  @param E entity of the subprogram/package elaboration to which the VC
-   --    belongs
-   --  @param Info additional information on the check
+   --  @param Check_Info additional information on the check
    --  @param Present_In_Why3 if the VC actually appears in the Why3. This
    --    Boolean explains the difference between the functions
    --    Num_Registered_VCs and Num_Registered_VCs_In_Why3 below.
    --  @return a fresh ID for this VC
-
-   procedure Register_VC_Entity (E : Entity_Id);
-   --  @param E entity of a subprogram/package which will be considered by
-   --    proof. This is required to know the list of subprograms which don't
-   --    have any VC associated with them. This is useful for assumptions.
 
    function Num_Registered_VCs return Ada.Containers.Count_Type;
    --  Returns the number of registered VCs
@@ -71,7 +63,6 @@ package Gnat2Why.Error_Messages is
 
    procedure Emit_Proof_Result
      (Node          : Node_Id;
-      Id            : VC_Id;
       Kind          : VC_Kind;
       Proved        : Boolean;
       E             : Entity_Id;
