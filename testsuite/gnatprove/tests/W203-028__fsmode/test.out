@@ -2,3 +2,11 @@ bronze.adb:6:07: high: "Z" must be listed in the Global aspect of "Incr" (SPARK 
 bronze_2.ads:4:12: info: data dependencies proved
 silver.adb:5:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at silver.ads:3 should mention X in a precondition]
 silver.ads:4:12: info: data dependencies proved
+Note: switch "--mode=bronze" is deprecated.
+Note: switch "--mode=bronze" is deprecated.
+Note: switch "--mode=silver" is deprecated.
+Note: switch "--mode=stone" is deprecated.
+Note: use "--mode=all" instead.
+Note: use "--mode=check_all" instead.
+Note: use "--mode=flow" instead.
+Note: use "--mode=flow" instead.

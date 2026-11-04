@@ -254,14 +254,12 @@ to denote the formal verification tool in SPARK product.
 GNATprove can be run at the different levels mentioned in this document, either
 through the Integrated Development Environments (IDE) Eclipse (GNATbench
 plugin) or GNAT Studio, or on the command line. In the following, we
-describe the use of GNAT Studio, but the use of Eclipse is based on similar menus. Use
-of the command-line interface at a given level is facilitated by convenient
-synonyms:
+describe the use of GNAT Studio, but the use of Eclipse is based on similar menus.
+On the command line, select the analysis mode for the desired level:
 
-* use switch ``--mode=stone`` for Stone level (synonym of ``--mode=check_all``)
-* use switch ``--mode=bronze`` for Bronze level (synonym of ``--mode=flow``)
-* use switch ``--mode=silver`` for Silver level (synonym of ``--mode=all``)
-* use switch ``--mode=gold`` for Gold level (synonym of ``--mode=all``)
+* use switch ``--mode=check_all`` for Stone level
+* use switch ``--mode=flow`` for Bronze level
+* use switch ``--mode=all`` for Silver and Gold levels
 
 Note that levels Silver and Gold are activated with the same switches. Indeed,
 the difference between these levels is not on how GNATprove is run, but on the

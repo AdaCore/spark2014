@@ -6,6 +6,7 @@ project Test is
   end Compiler;
 
    package Prove is
+      --  Exercise deprecated mode aliases in project and file-specific switches
       for Proof_Switches ("Ada") use ("--mode=silver");
 
       for Proof_Switches ("stone.adb")  use ("--mode=stone");

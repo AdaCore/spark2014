@@ -2,7 +2,7 @@
 name: validate-explain-codes
 description: >
   Validates the bad and good Ada/SPARK code examples in one or more explain
-  code markdown files (E00NN.md) by running gnatprove --mode=stone against
+  code markdown files (E00NN.md) by running gnatprove --mode=check_all against
   each snippet in the ec-test project. Can be invoked standalone or called
   as a step from the explain-code skill.
 license: Apache-2.0
@@ -19,8 +19,8 @@ markdown files (`share/spark/explain_codes/E00NN.md`). It checks that:
   a line marked `-- error`.
 - **Good examples** (fixes/workarounds) produce zero `gnatprove` messages.
 
-Validation uses `gnatprove --mode=stone`, which covers SPARK legality and flow
-analysis but not proof. This is appropriate because all explain code violations
+Validation uses `gnatprove --mode=check_all`, which performs full SPARK legality
+checking without proof. This is appropriate because all explain code violations
 are legality errors that appear before proof starts.
 
 ## Invocation
@@ -121,7 +121,7 @@ Write the snippet(s) to `ec-test/src/` using the derived filenames.
 ### Step 3 — Run gnatprove
 
 ```bash
-cd /it/repos/spark2014 && gnatprove -P ec-test/default.gpr --mode=stone -j0 --output=oneline 2>&1
+cd /it/repos/spark2014 && gnatprove -P ec-test/default.gpr --mode=check_all -j0 --output=oneline 2>&1
 ```
 
 Set the Bash timeout to at least 120000ms.
