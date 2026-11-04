@@ -67,7 +67,7 @@ test_relaxed_reborrow.adb:95:10: info: absence of resource or memory leak proved
 test_relaxed_reborrow.adb:99:38: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:99:38: medium: in reconstructed value at the end of the borrow at test_relaxed_reborrow.adb:99
 test_relaxed_reborrow.adb:99:38: medium: initialization check might fail
-test_relaxed_reborrow.adb:101:25: medium: assertion might fail
+test_relaxed_reborrow.adb:101:25: info: assertion proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:103:36: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_reborrow.adb:103:36: info: loop invariant initialization proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:103:36: info: loop invariant preservation proved (CVC5: 1 VC)
