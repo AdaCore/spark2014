@@ -1,5 +1,5 @@
-.. index:: Silver level; investigate unproved checks
-           Gold level; investigate unproved checks
+.. index:: SPARK silver; investigate unproved checks
+           SPARK gold; investigate unproved checks
 
 How to Investigate Unproved Checks
 ==================================

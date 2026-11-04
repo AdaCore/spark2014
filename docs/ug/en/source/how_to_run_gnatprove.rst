@@ -863,7 +863,7 @@ When editing an Ada file, |GNATprove| can also be run from a
    "Globals",            "This generates Global contracts for the current file."
 
 .. index:: manual proof
-           Platinum level; manual proof
+           SPARK platinum; manual proof
 
 Running GNATprove Without a Project File
 ----------------------------------------

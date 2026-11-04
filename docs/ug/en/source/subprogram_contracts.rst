@@ -54,7 +54,7 @@ non-returning subprogram, or loop forever on any input.
 
 .. index:: precondition
            see: Pre; precondition
-           seealso: Gold level; precondition
+           seealso: SPARK gold; precondition
            Assertion_Policy; for precondition
            exceptions; in precondition
 
@@ -176,7 +176,7 @@ the previous example.
 
 .. index:: postcondition
            see: Post; postcondition
-           seealso: Gold level; postcondition
+           seealso: SPARK gold; postcondition
 
 Postconditions
 --------------
@@ -259,7 +259,7 @@ Both |GNAT Pro| compiler and |GNATprove| issue a warning on the semantically
 correct but likely functionally wrong postcondition.
 
 .. index:: Contract_Cases
-           seealso: Gold level; Contract_Cases
+           seealso: SPARK gold; Contract_Cases
 
 Contract Cases
 --------------
@@ -345,7 +345,7 @@ possible inputs. Only disjointness of contract cases is checked in that case.
 
 .. index:: Global; in subprogram contract
            global variables; in Global contract
-           seealso: Bronze level; Global
+           seealso: SPARK bronze; Global
 
 Data Dependencies
 -----------------
@@ -446,7 +446,7 @@ Initialization Policy`.
 
 .. index:: Depends; in subprogram contract
            global variables; in Depends contract
-           seealso: Bronze level; Depends
+           seealso: SPARK bronze; Depends
 
 Flow Dependencies
 -----------------

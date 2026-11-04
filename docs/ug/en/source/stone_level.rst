@@ -1,7 +1,7 @@
 .. index:: SPARK_Mode
 .. index:: GNATmetric
 
-The goal of reaching this level is to identify as much code as possible as
+The goal of SPARK stone is to identify as much code as possible as
 belonging to the SPARK subset. The user is responsible for identifying
 candidate SPARK code by applying the marker ``SPARK_Mode`` to flag SPARK code
 to GNATprove, which is responsible for checking that the code marked with

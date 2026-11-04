@@ -2,9 +2,9 @@
 Applying SPARK in Practice
 **************************
 
-|SPARK| tools offer different levels of analysis, which are relevant in
+|SPARK| tools offer different forms of analysis, which are relevant in
 different contexts. This section starts with a description of the five
-:ref:`Levels of Software Assurance` that can be achieved with SPARK. It
+assurance targets presented in :ref:`Software Assurance with SPARK`. It
 continues with a description of the main :ref:`Objectives of Using SPARK`. This
 list gathers the most commonly found reasons for adopting |SPARK| in industrial
 projects, but it is not intended to be an exhaustive list.
@@ -23,8 +23,10 @@ and describes how |SPARK| can be applied in each case.
 The section :ref:`Best Practices` lists common cases that can be difficult to
 handle in |SPARK|, and explains the different possibilities.
 
-Levels of Software Assurance
-============================
+.. _Levels of Software Assurance:
+
+Software Assurance with SPARK
+=============================
 
 .. The text of this section is largely borrowed from the Guidance document for
    the adoption of SPARK. Changes there should be reflected here when possible.
@@ -82,44 +84,46 @@ latest versions of international certification standards for avionics (DO-178C
 benefits by increasing the role that formal methods can play in the development
 and verification of critical software.
 
-Levels of SPARK Use
--------------------
+.. _Levels of SPARK Use:
 
-The scope and level of SPARK analysis depend on the objectives being
+Choosing an Assurance Target
+----------------------------
+
+The scope of SPARK analysis and the guarantees sought depend on the objectives
 pursued by the adoption of SPARK. The scope of analysis may be the totality
-of a project, only some units, or only parts of units. The level of
-analysis may range from simple guarantees provided by flow analysis to
-complex properties being proved.  These can be divided into five easily
-remembered levels:
+of a project, only some units, or only parts of units. The guarantees may range
+from simple properties established by flow analysis to complex properties
+being proved. These can be divided into five easily remembered assurance
+targets:
 
-#. `Stone level` - valid SPARK
-#. `Bronze level` - initialization and correct data flow
-#. `Silver level` - absence of run-time errors (AoRTE)
-#. `Gold level` - proof of key integrity properties
-#. `Platinum level` - full functional proof of requirements
+#. `SPARK stone` - valid SPARK
+#. `SPARK bronze` - initialization and correct data flow
+#. `SPARK silver` - absence of run-time errors (AoRTE)
+#. `SPARK gold` - proof of key integrity properties
+#. `SPARK platinum` - full functional proof of requirements
 
-Platinum level is defined here for completeness, but it is seldom applicable
-due to the high cost of achieving it. Each level builds on the previous one, so
-that the code subject to the Gold level should be a subset of the code subject
-to Silver level, which itself is a subset of the code subject to Bronze level,
-which is in general the same as the code subject to Stone level. We advise
+SPARK platinum is defined here for completeness, but it is seldom applicable
+due to the high cost of achieving it. Each target builds on the previous one,
+so that the code subject to SPARK gold should be a subset of the code subject
+to SPARK silver, which itself is a subset of the code subject to SPARK bronze,
+which is in general the same as the code subject to SPARK stone. We advise
 using:
 
-* Stone level only as an intermediate level during adoption,
-* Bronze level for as large a part of the code as possible,
-* Silver level as the default target for critical software (subject to costs
+* SPARK stone only as an intermediate target during adoption,
+* SPARK bronze for as large a part of the code as possible,
+* SPARK silver as the default target for critical software (subject to costs
   and limitations),
-* Gold level only for a subset of the code subject to specific key integrity
+* SPARK gold only for a subset of the code subject to specific key integrity
   (safety/security) properties,
-* Platinum level only for those parts of the code with the highest integrity
+* SPARK platinum only for those parts of the code with the highest integrity
   (safety/security) constraints.
 
 Our starting point is a program in Ada, which could be thought of as the
-Brick level: thanks to the use of Ada programming language, this level
-already provides some confidence: it is the highest level in The Three
-Little Pigs fable! And indeed languages with weaker semantics could be
-thought of as Straw and Sticks levels. However, the adoption of SPARK
-allows us to get stronger guarantees, should the wolf in the fable adopt
+brick house in The Three Little Pigs fable: thanks to the use of the Ada
+programming language, it already provides some confidence! And indeed
+languages with weaker semantics could be thought of as straw and stick
+houses. However, the adoption of SPARK allows us to get stronger guarantees,
+should the wolf in the fable adopt
 more aggressive means of attack than simply blowing.
 
 A pitfall when using tools for automating human tasks is to end up "pleasing
@@ -130,26 +134,26 @@ messages from the tools. When relevant, users should justify tool messages
 through appropriate pragmas. See the sections on :ref:`Suppressing Warnings`
 and :ref:`Justifying Check Messages` for more details.
 
-GNATprove can be run at the different levels mentioned in this document, either
+GNATprove can be run for the different assurance targets mentioned here, either
 through the Integrated Development Environments (IDE) :ref:`GNAT Studio<Running
 GNATprove from GNAT Studio>`, :ref:`Visual Studio Code<Running GNATprove from
 Visual Studio Code>` or :ref:`Eclipse<Running GNATprove from GNATbench>`, or
 :ref:`on the command line<Running GNATprove from the Command Line>`. On the
-command line, select the analysis mode for the desired level:
+command line, select the analysis mode for the desired target:
 
-* use switch ``--mode=check_all`` for Stone level
-* use switch ``--mode=flow`` for Bronze level
-* use switch ``--mode=all`` for Silver, Gold and Platinum levels
+* use switch ``--mode=check_all`` for SPARK stone
+* use switch ``--mode=flow`` for SPARK bronze
+* use switch ``--mode=all`` for SPARK silver, SPARK gold and SPARK platinum
 
-Note that levels Silver and Gold are activated with the same switches. Indeed,
-the difference between these levels is not on how GNATprove is run, but on the
-objectives of verification. This is explained in the section on :ref:`Gold
-Level <Gold Level>`.
+Note that SPARK silver and SPARK gold use the same switches. Indeed,
+the difference between these targets is not in how GNATprove is run, but in the
+objectives of verification. This is explained in the section on
+:ref:`SPARK gold <Gold Level>`.
 
-Sections :ref:`Stone Level <Stone Level>` to :ref:`Platinum Level <Platinum
-Level>` present the details of the five levels of software assurance. Each
-section consists of a short description of three key aspects of adopting SPARK
-at that level:
+Sections :ref:`SPARK stone <Stone Level>` to
+:ref:`SPARK platinum <Platinum Level>` present the details of the five assurance
+targets. Each section consists of a short description of three key aspects of adopting SPARK
+for that target:
 
 * `Benefits` - What is gained from adopting SPARK?
 * `Impact on Process` - How should the process (i.e., the software life cycle
@@ -157,76 +161,86 @@ at that level:
 * `Costs and Limitations` - What are the main costs and limitations for
   adopting SPARK?
 
-Additionally, the index of this document contains entries for all levels (from
-`Stone level` to `Platinum level`) which point to parts of the User's Guide
-relevant for reaching a specific level.
+Additionally, the index of this document contains entries for all targets (from
+`SPARK stone` to `SPARK platinum`) which point to parts of the User's Guide
+relevant for reaching a specific target.
 
-.. index:: Stone level
+.. index:: SPARK stone
 
 .. _Stone Level:
 
-Stone Level - Valid SPARK
+.. _Stone Level - Valid SPARK:
+
+SPARK stone - Valid SPARK
 -------------------------
 
 .. include:: source/stone_level.rst
 
-.. index:: Bronze level
+.. index:: SPARK bronze
 
 .. _Bronze Level:
 
-Bronze Level - Initialization and Correct Data Flow
+.. _Bronze Level - Initialization and Correct Data Flow:
+
+SPARK bronze - Initialization and Correct Data Flow
 ---------------------------------------------------
 
 .. include:: source/bronze_level.rst
 
-.. index:: Silver level
+.. index:: SPARK silver
 
 .. _Silver Level:
 
-Silver Level - Absence of Run-time Errors (AoRTE)
+.. _Silver Level - Absence of Run-time Errors (AoRTE):
+
+SPARK silver - Absence of Run-time Errors (AoRTE)
 -------------------------------------------------
 
 .. include:: source/silver_level.rst
 
-.. index:: Gold level
+.. index:: SPARK gold
 
 .. _Gold Level:
 
-Gold Level - Proof of Key Integrity Properties
+.. _Gold Level - Proof of Key Integrity Properties:
+
+SPARK gold - Proof of Key Integrity Properties
 ----------------------------------------------
 
 .. include:: source/gold_level.rst
 
-.. index:: Platinum level
+.. index:: SPARK platinum
 
 .. _Platinum Level:
 
-Platinum Level - Full Functional Correctness
+.. _Platinum Level - Full Functional Correctness:
+
+SPARK platinum - Full Functional Correctness
 --------------------------------------------
 
-Platinum level is achieved when contracts fully cover the functional
-requirements. Achieving the Platinum level is rare in itself, and usually done
+SPARK platinum is achieved when contracts fully cover the functional
+requirements. Achieving SPARK platinum is rare in itself, and usually done
 for small parts of an application.
 
 .. rubric:: Benefits
 
 The SPARK code is guaranteed to correctly implement its specification,
-including being free from all the defects already detected at the Bronze,
-Silver and Gold levels. These strong guarantees can be used as arguments in a
-safety/security case for the overall software system, providing steps are taken
+including being free from all the defects already detected with SPARK bronze,
+SPARK silver and SPARK gold. These strong guarantees can be used as arguments
+in a safety/security case for the overall software system, providing steps are taken
 for :ref:`Managing Assumptions`.
 
 .. rubric:: Impact on Process
 
-The impact on process is mostly the same as for Gold level. When manual proof
-is used, which is very likely at this level, there is an associated activity to
-maintain these proofs as the code evolves. Typically a dedicated verification
+The impact on process is mostly the same as for SPARK gold. When manual proof
+is used, which is very likely for this target, there is an associated activity
+to maintain these proofs as the code evolves. Typically a dedicated verification
 engineer with enough experience of formal program verification in SPARK should
 be tasked with this activity.
 
 .. rubric:: Costs and Limitations
 
-These are the same as for Gold level, plus the cost of applying manual proof
+These are the same as for SPARK gold, plus the cost of applying manual proof
 more systematically. Depending on the manual proof technique used and the
 complexity of the proof, this might be more or less costly initially and during
 maintenance:
@@ -249,7 +263,7 @@ justification.
 Objectives of Using SPARK
 =========================
 
-.. index:: Stone level; safe coding standard
+.. index:: SPARK stone; safe coding standard
 
 Safe Coding Standard for Critical Software
 ------------------------------------------
@@ -293,7 +307,7 @@ the complete list).
   insertions of implicit calls by the compiler. Finally, backward goto
   statements are not permitted as they obfuscate the control flow.
 
-.. index:: Bronze level; early detection of errors
+.. index:: SPARK bronze; early detection of errors
 
 Early Detection of Errors
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -316,7 +330,7 @@ It will also warn systematically about the following suspicious behaviors:
 * unused variables or statements (again, can hurt readability and
   maintainability or even be the sign of a bug)
 
-.. index:: Silver level; absence of run-time errors
+.. index:: SPARK silver; absence of run-time errors
 
 Prove Absence of Run-Time Errors (AoRTE)
 ----------------------------------------
@@ -468,7 +482,7 @@ This strategy is particularly well suited in the context of the DO-178C
 certification standard in avionics, which explicitly allows proof or test to be
 used as verification means on each module.
 
-.. index:: Gold level; correct component integration
+.. index:: SPARK gold; correct component integration
 
 Prove Correct Integration Between Components
 --------------------------------------------
@@ -544,7 +558,7 @@ Defensive code can be advantageously replaced by preconditions:
 * |GNATprove| can use the preconditions to prove correct integration between
   components, as in new developments.
 
-.. index:: Gold level; functional correctness
+.. index:: SPARK gold; functional correctness
 
 Prove Functional Correctness
 ----------------------------
@@ -655,7 +669,7 @@ that clients of the package only see the visible constant declaration without
 value. In such a case, the analysis of client units with |GNATprove| is valid
 for all possible values of the constant.
 
-.. index:: Silver level; optimize run-time checks
+.. index:: SPARK silver; optimize run-time checks
 
 Safe Optimization of Run-Time Checks
 ------------------------------------
@@ -685,7 +699,7 @@ to Keep`. By replacing many checks with a few checks, we can decrease the
 running time of the application by doing safe and controlled optimization of
 run-time checks.
 
-.. index:: Bronze level; data and control coupling
+.. index:: SPARK bronze; data and control coupling
 
 Address Data and Control Coupling
 ---------------------------------

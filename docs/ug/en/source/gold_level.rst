@@ -1,8 +1,8 @@
-The goal of the Gold level is to ensure key integrity properties such as
+The goal of SPARK gold is to ensure key integrity properties such as
 maintaining critical data invariants throughout execution and guaranteeing that
 transitions between states follow a specified safety automaton. Typically
 these properties derive from software requirements. Together with the
-Silver level, these goals ensure program integrity, that is, the program
+guarantees of SPARK silver, these goals ensure program integrity, that is, the program
 executes within safe boundaries: the control flow of the program is
 correctly programmed and cannot be circumvented through run-time errors
 and data cannot be corrupted.
@@ -25,7 +25,7 @@ invariants and control flow constraints:
 .. index:: Unit testing
 
 These features can be verified statically by running GNATprove in proof
-mode, similarly to what was done at the Silver level. At every point where
+mode, similarly to what was done with SPARK silver. At every point where
 a violation of the property may occur, GNATprove issues either an 'info'
 message, verifying that the property always holds, or a 'check' message
 about a possible violation. Of course, a benefit of proving properties is
@@ -48,8 +48,8 @@ code that follows in the current unit) or in a pragma configuration file
 .. rubric:: Benefits
 
 The SPARK code is guaranteed to respect key integrity properties as well as
-being free from all the defects already detected at the Bronze and Silver
-levels: no reads of uninitialized variables, no possible interference between
+being free from all the defects already detected with SPARK bronze and SPARK
+silver: no reads of uninitialized variables, no possible interference between
 parameters and global variables, no unintended access to global variables, no
 infinite loop or recursion in functions, and no run-time errors. This is a
 unique feature of SPARK that is not found in other programming languages. In
@@ -62,9 +62,9 @@ claims.
 .. index:: IEC 61508
 .. index:: Proof (as alternative to unit testing)
 
-The effort in achieving this level of confidence based on proof is
-relatively low compared to the effort required to achieve the same level
-based on testing. Indeed, confidence based on testing has to rely on an
+The effort in achieving this confidence based on proof is relatively low
+compared to the effort required to achieve the same confidence based on
+testing. Indeed, confidence based on testing has to rely on an
 extensive testing strategy. Certification standards
 define criteria for approaching comprehensive testing, such as Modified
 Condition / Decision Coverage (MC/DC), which are expensive to
@@ -94,9 +94,9 @@ training and practice. Thus not all developers should be
 tasked with developing such contracts and proofs, but instead a few
 developers should be designated for this task.
 
-.. index:: Loop_Invariant; for Gold level
+.. index:: Loop_Invariant; for SPARK gold
 
-As with the proof of AoRTE at Silver level, special treatment is required
+As when proving AoRTE with SPARK silver, special treatment is required
 for loops, such as the addition of loop invariants to prove
 properties inside and after the loop. Details are
 presented in the SPARK User's Guide, together with examples of loops and their
