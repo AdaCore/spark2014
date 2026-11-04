@@ -74,7 +74,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
 
       --  Compilation switches of the Builder package
 
-      for Arg of Configuration.Global_Compilation_Switches loop
+      for Arg of Configuration.Global_Compilation_Switches.all loop
          Cmd_Line.Add_Argument (Arg);
       end loop;
 
@@ -86,7 +86,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
          Cmd_Line.Add_Argument (Configuration.GnateT_Switch);
       end if;
 
-      for Arg of Configuration.CL_Switches.Cargs_List loop
+      for Arg of Configuration.CL_Switches.Cargs_List.all loop
          Cmd_Line.Add_Argument (Arg);
       end loop;
    end Compute_Command;

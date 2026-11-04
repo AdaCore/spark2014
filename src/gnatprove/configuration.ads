@@ -89,7 +89,7 @@ package Configuration is
       function Assumptions return Boolean;
       function Benchmark return Boolean;
       function Memcached_Server return String;
-      function Cargs_List return String_Lists.List;
+      function Cargs_List return not null access constant String_Lists.List;
       function CWE return Boolean;
       function Debug_Disable_Prover_Feedback return Boolean;
       function Debug_No_Cache_Output return Boolean;
@@ -121,7 +121,8 @@ package Configuration is
    --  Mode - is the maximum analysis mode, taking into account the global
    --         and file-specific modes
 
-   function Global_Compilation_Switches return String_Lists.List;
+   function Global_Compilation_Switches
+      return not null access constant String_Lists.List;
    --  Switches of the Global_Compilation_Switches attribute of the Builder
    --  package for Ada. They are passed to all Ada compilations that GNATprove
    --  performs. Contrary to the other attributes of the Builder package, which
@@ -162,7 +163,7 @@ package Configuration is
    function IDE_Mode return Boolean;
    --  Whether --ide-progress-bar was specified
 
-   function Limit_Lines return String_Lists.List;
+   function Limit_Lines return not null access constant String_Lists.List;
    --  Validated line specifications from --limit-line and --limit-lines
 
    function Only_Given return Boolean;

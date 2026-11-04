@@ -133,7 +133,7 @@ package body Configuration is
 
    type File_Selection is record
       Files       : String_Lists.List;
-      Limit_Lines : String_Lists.List;
+      Limit_Lines : aliased String_Lists.List;
    end record;
    --  Requested files, including those derived from limit switches, and the
    --  validated line specifications. Project-based resolution happens later.
@@ -150,7 +150,7 @@ package body Configuration is
       All_Projects                  : Boolean := False;
       Assumptions                   : Boolean := False;
       Benchmark                     : Boolean := False;
-      Cargs_List                    : String_Lists.List;
+      Cargs_List                    : aliased String_Lists.List;
       Checks_As_Errors              : Boolean := False;
       Continue_On_Error             : Boolean := False;
       CWE                           : Boolean := False;
@@ -166,7 +166,7 @@ package body Configuration is
       Force                         : Boolean := False;
       Function_Sandboxing           : Unbounded_String;
       Generate_Manifest             : Unbounded_String;
-      Global_Compilation_Switches   : String_Lists.List;
+      Global_Compilation_Switches   : aliased String_Lists.List;
       GnateT_Switch                 : Unbounded_String;
       Gnattest_Values               : Unbounded_String;
       IDE_Mode                      : Boolean := False;
@@ -208,8 +208,8 @@ package body Configuration is
       is (Invocation_State.Assumptions);
       function Benchmark return Boolean
       is (Invocation_State.Benchmark);
-      function Cargs_List return String_Lists.List
-      is (Invocation_State.Cargs_List);
+      function Cargs_List return not null access constant String_Lists.List
+      is (Invocation_State.Cargs_List'Access);
       function CWE return Boolean
       is (Invocation_State.CWE);
       function Debug_Disable_Prover_Feedback return Boolean
@@ -262,14 +262,15 @@ package body Configuration is
    is (Invocation_State.Flow_Extra_Debug);
    function Force return Boolean
    is (Invocation_State.Force);
-   function Global_Compilation_Switches return String_Lists.List
-   is (Invocation_State.Global_Compilation_Switches);
+   function Global_Compilation_Switches
+      return not null access constant String_Lists.List
+   is (Invocation_State.Global_Compilation_Switches'Access);
    function GnateT_Switch return String
    is (To_String (Invocation_State.GnateT_Switch));
    function IDE_Mode return Boolean
    is (Invocation_State.IDE_Mode);
-   function Limit_Lines return String_Lists.List
-   is (Invocation_State.Selection.Limit_Lines);
+   function Limit_Lines return not null access constant String_Lists.List
+   is (Invocation_State.Selection.Limit_Lines'Access);
    function Only_Given return Boolean
    is (Invocation_State.Only_Given);
    function Output return Output_Mode_Type
@@ -1937,7 +1938,7 @@ package body Configuration is
    function Has_gnateT_Switch return Boolean is
    begin
       return
-        (for some Switch of Global_Compilation_Switches =>
+        (for some Switch of Global_Compilation_Switches.all =>
            GNATCOLL.Utils.Starts_With (Switch, "-gnateT="));
    end Has_gnateT_Switch;
 
@@ -4009,12 +4010,12 @@ package body Configuration is
       --  no compiler configuration, so the analysis cannot proceed.
 
       procedure Set_Mode (Parsed : Parsed_Switches; FS : in out File_Specific);
-      procedure Set_Output_Mode
-        (Parsed : Parsed_Switches; Output : out Output_Mode_Type);
-      procedure Set_Warning_Mode
-        (Parsed : Parsed_Switches; Warning_Mode : out SPARK_Warning_Mode_Type);
-      procedure Set_Report_Mode
-        (Parsed : Parsed_Switches; Report : out Report_Mode_Type);
+      function Parse_Output_Mode
+        (Parsed : Parsed_Switches) return Output_Mode_Type;
+      function Parse_Warning_Mode
+        (Parsed : Parsed_Switches) return SPARK_Warning_Mode_Type;
+      function Parse_Report_Mode
+        (Parsed : Parsed_Switches) return Report_Mode_Type;
 
       procedure Set_Level_Timeout_Steps_Provers
         (Parsed             : Parsed_Switches;
@@ -4708,9 +4709,9 @@ package body Configuration is
 
          Result.Selection := Process_Limit_Switches (Parsed);
 
-         Set_Output_Mode (Parsed, Result.Output);
-         Set_Warning_Mode (Parsed, Result.Warning_Mode);
-         Set_Report_Mode (Parsed, Result.Report);
+         Result.Output := Parse_Output_Mode (Parsed);
+         Result.Warning_Mode := Parse_Warning_Mode (Parsed);
+         Result.Report := Parse_Report_Mode (Parsed);
 
          Result.Use_Semaphores :=
            not Result.Debug
@@ -5116,12 +5117,14 @@ package body Configuration is
          end if;
       end Set_Mode;
 
-      ---------------------
-      -- Set_Output_Mode --
-      ---------------------
+      -----------------------
+      -- Parse_Output_Mode --
+      -----------------------
 
-      procedure Set_Output_Mode
-        (Parsed : Parsed_Switches; Output : out Output_Mode_Type) is
+      function Parse_Output_Mode
+        (Parsed : Parsed_Switches) return Output_Mode_Type
+      is
+         Output : Output_Mode_Type;
       begin
          if Switch_String (Parsed, Sw_Output) = "" then
             Output := GPO_Pretty_Simple;
@@ -5150,7 +5153,8 @@ package body Configuration is
                end if;
             end;
          end if;
-      end Set_Output_Mode;
+         return Output;
+      end Parse_Output_Mode;
 
       -------------------
       -- Set_Proof_Dir --
@@ -5306,12 +5310,14 @@ package body Configuration is
          end if;
       end Set_Provers;
 
-      ---------------------
-      -- Set_Report_Mode --
-      ---------------------
+      -----------------------
+      -- Parse_Report_Mode --
+      -----------------------
 
-      procedure Set_Report_Mode
-        (Parsed : Parsed_Switches; Report : out Report_Mode_Type) is
+      function Parse_Report_Mode
+        (Parsed : Parsed_Switches) return Report_Mode_Type
+      is
+         Report : Report_Mode_Type;
       begin
          if Switch_String (Parsed, Sw_Report) = "" then
             Report := GPR_Fail;
@@ -5327,16 +5333,18 @@ package body Configuration is
             Abort_Msg
               ("error: wrong argument for --report", With_Help => False);
          end if;
-      end Set_Report_Mode;
+         return Report;
+      end Parse_Report_Mode;
 
-      ----------------------
-      -- Set_Warning_Mode --
-      ----------------------
+      ------------------------
+      -- Parse_Warning_Mode --
+      ------------------------
 
-      procedure Set_Warning_Mode
-        (Parsed : Parsed_Switches; Warning_Mode : out SPARK_Warning_Mode_Type)
+      function Parse_Warning_Mode
+        (Parsed : Parsed_Switches) return SPARK_Warning_Mode_Type
       is
-         Warn_Switch : constant String := Switch_String (Parsed, Sw_Warnings);
+         Warning_Mode : SPARK_Warning_Mode_Type;
+         Warn_Switch  : constant String := Switch_String (Parsed, Sw_Warnings);
       begin
          --  Note that "on" here is retained for backwards compatibility
          --  with release 14.0.1
@@ -5353,7 +5361,8 @@ package body Configuration is
             Abort_Msg
               ("error: wrong argument for --warnings", With_Help => False);
          end if;
-      end Set_Warning_Mode;
+         return Warning_Mode;
+      end Parse_Warning_Mode;
 
       --  Local variables
 
