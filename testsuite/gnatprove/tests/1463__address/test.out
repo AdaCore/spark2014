@@ -1,0 +1,1 @@
+repro.adb:8:13: info: implicit aspect Always_Terminates on "Probe" has been proved, subprogram will terminate
