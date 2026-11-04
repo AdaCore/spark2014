@@ -16,6 +16,8 @@
 --
 ------------------------------------------------------------------
 
+with CommonTypes;
+
 package body Cert.Attr is
 
    ------------------------------------------------------------------
@@ -33,9 +35,11 @@ package body Cert.Attr is
    function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT is
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
       FullString : String := "Issuer: "
-        & CryptoTypes.IssuerIdT'Image (Contents.BaseCertID.Issuer.ID)
+        & CommonTypes.Unsigned32T'Image
+            (CommonTypes.Unsigned32T (Contents.BaseCertID.Issuer.ID))
         & " SerialNo:  "
-        & CertTypes.SerialNumberT'Image (Contents.BaseCertID.SerialNumber);
+        & CommonTypes.Unsigned32T'Image
+            (CommonTypes.Unsigned32T (Contents.BaseCertID.SerialNumber));
 
    begin
       -- the Full string is short enough to use it all
