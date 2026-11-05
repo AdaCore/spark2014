@@ -13973,12 +13973,12 @@ package body SPARK_Definition is
          Anc : Entity_Id := Rep_Ty;
       begin
          loop
-            Anc := Retysp (Etype (Anc));
             if Has_Invariants_In_SPARK (Anc) then
                Mark_Violation (Vio_Potentially_Invalid_Invariant, N);
                exit;
             end if;
             exit when Retysp (Etype (Anc)) = Anc;
+            Anc := Retysp (Etype (Anc));
          end loop;
       end;
 
