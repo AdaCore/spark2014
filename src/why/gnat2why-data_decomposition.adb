@@ -75,12 +75,11 @@ package body Gnat2Why.Data_Decomposition is
       Data_Decomposition_Table.Insert
         (Location, Data_Entry, Position, Inserted);
 
-      --  Subunits ("separates") may lead to duplicate entries for the same
-      --  type or object, in files for the subunit and the main unit.
-      if not Inserted
-        and then Data_Entry /= Data_Decomposition_Table (Position)
-      then
-         raise Program_Error with "inconsistent data representation duplicate";
+      --  Guard against frontend bugs causing duplicated data representation
+      --  items.
+
+      if not Inserted then
+         raise Program_Error with "data representation duplicate";
       end if;
    end Add_Entry;
 
