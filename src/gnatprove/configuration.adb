@@ -148,7 +148,6 @@ package body Configuration is
       File_Options                  : File_Specific_Invocation_Options;
       Selection                     : File_Selection;
       All_Projects                  : Boolean := False;
-      Assumptions                   : Boolean := False;
       Benchmark                     : Boolean := False;
       Cargs_List                    : aliased String_Lists.List;
       Checks_As_Errors              : Boolean := False;
@@ -204,8 +203,6 @@ package body Configuration is
    --  Replaced once with the completed invocation; consumers cannot modify it
 
    package body CL_Switches is
-      function Assumptions return Boolean
-      is (Invocation_State.Assumptions);
       function Benchmark return Boolean
       is (Invocation_State.Benchmark);
       function Cargs_List return not null access constant String_Lists.List
@@ -3139,6 +3136,12 @@ package body Configuration is
 
       procedure Warn_Obsolete_Switches (Parsed : Parsed_Switches) is
       begin
+         if Parsed.Present (Sw_Assumptions) then
+            Ada.Text_IO.Put_Line
+              (Ada.Text_IO.Standard_Error,
+               "warning: switch ""--assumptions"" is deprecated and ignored");
+         end if;
+
          if Parsed.Present (Sw_No_Counterexample) then
             Ada.Text_IO.Put_Line
               ("Note: switch ""--no-counterexample"" is ignored.");
@@ -4567,7 +4570,6 @@ package body Configuration is
 
          Result.File_Options := File_Specific_Options_From_Invocation (Parsed);
          Result.All_Projects := Parsed.Values (Sw_UU).Boolean_Val;
-         Result.Assumptions := Parsed.Values (Sw_Assumptions).Boolean_Val;
          Result.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
          Result.Continue_On_Error := Parsed.Values (Sw_K).Boolean_Val;
          Result.CWE := Parsed.Values (Sw_CWE).Boolean_Val;

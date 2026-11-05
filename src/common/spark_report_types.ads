@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                                                                          --
 --                            GNATPROVE COMPONENTS                          --
---                         A S S U M P T I O N _ T Y P E S                  --
+--                   S P A R K _ R E P O R T _ T Y P E S                    --
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
@@ -27,7 +27,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with GNATCOLL.JSON;    use GNATCOLL.JSON;
 with GNATCOLL.Symbols; use GNATCOLL.Symbols;
 
-package Assumption_Types is
+package SPARK_Report_Types is
 
    type Subp_Type is private;
    type Unit_Type is private;
@@ -48,37 +48,20 @@ package Assumption_Types is
         "="          => "=");
 
    subtype My_Sloc is Sloc_Lists.List;
-   --  The type of slocs used in assumptions and more generally in the report
-   --  file.
+   --  Source locations used in analysis reports
 
    function Subp_Name (Subp : Subp_Type) return String;
    function Subp_Sloc (Subp : Subp_Type) return My_Sloc;
 
-   --  JSON conversion of Subp_Type. To save space and allow for mappings that
-   --  involve subps, subps in JSON appear as numbers. A table (which should be
-   --  stored in any JSON file that contains elements of Subp_Type) maps those
-   --  numbers to the actual entities. The functions From_JSON/To_JSON convert
-   --  Subp_Type from/to these numbers (which are internally generated) in JSON
-   --  form, so that it is mostly transparent to users.
-   --  Users can retrieve the entity table (to put it in the JSON file) via the
-   --  function Entity_Table. Note that the function should be called at
-   --  the very end of the process of JSON generation, to be sure that all
-   --  Subp_Type objects appear in the table.
-
-   --  When parsing a JSON file, the table should be read in first. If you read
-   --  in several JSON files, make sure to parse the entire file (calling
-   --  From_JSON on all Subp_Type objects) before moving on to the next one.
-
-   --  The functions To_Key/From_Key are there to allow generating strings from
-   --  Subp_Type, so that they can be used in JSON mappings.
+   --  Subprograms in JSON are represented by indices into an entity table.
+   --  Entity_Table must be called after serializing all subprogram references
+   --  so that the table includes every referenced entity. Report consumers
+   --  resolve these indices against the table of the unit being read.
 
    function Entity_Table return JSON_Value;
-   procedure Parse_Entity_Table (Table : JSON_Value);
-
-   function From_JSON (V : JSON_Value) return Subp_Type;
-   function From_Key (V : String) return Subp_Type;
    function To_JSON (S : Subp_Type) return JSON_Value;
    function To_Key (S : Subp_Type) return String;
+   --  Serialize a subprogram reference as an index or a string key
 
    function Mk_Base_Sloc
      (File : String; Line : Positive; Column : Positive) return Base_Sloc;
@@ -118,4 +101,4 @@ private
 
    function Is_Null (S : Subp_Type) return Boolean
    is (S = null);
-end Assumption_Types;
+end SPARK_Report_Types;

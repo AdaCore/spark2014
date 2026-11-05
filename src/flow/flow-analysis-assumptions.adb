@@ -21,9 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Assumption_Types; use Assumption_Types;
-with Flow_Refinement;  use Flow_Refinement;
-with Sinput;           use Sinput;
+with Flow_Refinement;    use Flow_Refinement;
+with Sinput;             use Sinput;
+with SPARK_Report_Types; use SPARK_Report_Types;
 
 package body Flow.Analysis.Assumptions is
 
@@ -53,7 +53,7 @@ package body Flow.Analysis.Assumptions is
       Set_Field
         (Result,
          "entity",
-         To_JSON (Entity_To_Subp_Assumption (Get_Flow_Scope (Prag).Ent)));
+         To_JSON (Entity_To_Report_Subp (Get_Flow_Scope (Prag).Ent)));
       Append (Pragma_Assume_Msgs, Result);
    end Register_Pragma_Assume_Statement;
 

@@ -38,9 +38,7 @@ Detailed analysis report
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
  P at p.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-absence of run-time errors of P fully established
  P.Op at p.ads:4 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (2 checks)
-absence of run-time errors of P.Op fully established
 
 =========================
 Summary of SPARK analysis
@@ -78,10 +76,7 @@ Detailed analysis report
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
  P at p.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-absence of run-time errors of P fully established
  P.Op at p.ads:4 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (2 checks)
-effects on parameters and Global variables of P.Op fully established
-absence of run-time errors of P.Op fully established
 
 =========================
 Summary of SPARK analysis
@@ -119,10 +114,7 @@ Detailed analysis report
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
  P at p.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-absence of run-time errors of P fully established
  P.Op at p.ads:4 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (2 checks)
-effects on parameters and Global variables of P.Op fully established
-absence of run-time errors of P.Op fully established
 
 p.adb:7:21: info: range check proved (CVC5: 2 VC)
 p.adb:17:21: info: range check proved (CVC5: 2 VC)
@@ -164,7 +156,4 @@ Detailed analysis report
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
  P at p.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-absence of run-time errors of P fully established
  P.Op at p.ads:4 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (2 checks)
-effects on parameters and Global variables of P.Op fully established
-absence of run-time errors of P.Op fully established

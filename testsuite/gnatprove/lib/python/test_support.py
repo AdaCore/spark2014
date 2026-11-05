@@ -1803,7 +1803,6 @@ def prove_all(
     fullopt = ["--output=oneline"]
     if warnings is not None:
         fullopt += ["--warnings=%s" % (warnings)]
-    fullopt += ["--assumptions"]
     fullopt += ["-P", project, "--quiet"]
     if codepeer:
         fullopt += ["--codepeer=on"]

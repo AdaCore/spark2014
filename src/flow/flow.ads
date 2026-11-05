@@ -287,11 +287,6 @@ package Flow is
       Dependency_Map : Dependency_Maps.Map;
       --  A map of all the dependencies
 
-      Errors_Or_Warnings : Boolean;
-      --  True if errors or warnings were found while flow analysing this
-      --  entity. This is initialized to False and set to True when an error
-      --  or a warning is found.
-
       Data_Dependency_Errors : Boolean;
       Flow_Dependency_Errors : Boolean;
       --  True if either data or flow dependency error has been reported for

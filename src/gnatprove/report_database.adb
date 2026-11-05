@@ -46,8 +46,7 @@ package body Report_Database is
         Flow_Checks     => 0,
         Proof_Warnings  => 0,
         Proof_Checks    => 0,
-        Proof_Checks_OK => 0,
-        Assumptions     => Rule_Lists.Empty_List);
+        Proof_Checks_OK => 0);
 
    package Ordered_Subp_Sets is new
      Ada.Containers.Ordered_Sets (Element_Type => Subp_Type, "<" => "<");
@@ -79,22 +78,10 @@ package body Report_Database is
         Equivalent_Keys => "=",
         "="             => "=");
 
-   package Subp_Unit_Maps is new
-     Ada.Containers.Hashed_Maps
-       (Key_Type        => Subp_Type,
-        Element_Type    => Unit_Type,
-        Hash            => Hash,
-        Equivalent_Keys => "=",
-        "="             => "=");
-
    package Ordered_Unit_Sets is new
      Ada.Containers.Ordered_Sets (Element_Type => Unit_Type, "<" => "<");
 
    Unit_Map : Unit_Maps.Map := Unit_Maps.Empty_Map;
-
-   Subp_Unit_Map : Subp_Unit_Maps.Map := Subp_Unit_Maps.Empty_Map;
-   --  This map maps subprograms to their unit. It is filled by the
-   --  Add_SPARK_Status procedure.
 
    Skipped_Proof          : Ordered_Subp_Sets.Set :=
      Ordered_Subp_Sets.Empty_Set;
@@ -133,30 +120,6 @@ package body Report_Database is
          Unit_Map (C).Stop_Reason := Stop_Reason;
       end if;
    end Add_Analysis_Progress;
-
-   --------------------------------
-   -- Add_Claim_With_Assumptions --
-   --------------------------------
-
-   procedure Add_Claim_With_Assumptions (Claim : Token; S : Token_Sets.Set) is
-
-      procedure Add_Claim_Entry (Stat : in out Stat_Rec);
-      --  Add the mapping claim -> assumption set to the stat record
-
-      ---------------------
-      -- Add_Claim_Entry --
-      ---------------------
-
-      procedure Add_Claim_Entry (Stat : in out Stat_Rec) is
-      begin
-         Stat.Assumptions.Append ((Claim => Claim, Assumptions => S));
-      end Add_Claim_Entry;
-
-      Subp : constant Subp_Type := Claim.Arg;
-
-   begin
-      Update_Subp_Entry (Subp_Unit_Map (Subp), Subp, Add_Claim_Entry'Access);
-   end Add_Claim_With_Assumptions;
 
    ---------------------
    -- Add_Flow_Result --
@@ -275,10 +238,6 @@ package body Report_Database is
       end Process;
 
    begin
-      --  ??? We need to use include instead of insert because GNATprove
-      --  currently mixes up packages and subprograms-acting-as packages
-
-      Subp_Unit_Map.Include (Subp, Unit);
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_SPARK_Status;
 

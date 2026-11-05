@@ -143,8 +143,7 @@ package Flow_Error_Messages is
    --
    --  Also:
    --
-   --  E is worked out from FA, and FA.No_Errors_Or_Warnings is
-   --  appropriately modified.
+   --  E is worked out from FA.
    --
    --  Instead of the Tracefile parameter we have the Path which contains the
    --  vertices we want to write to the tracefile.

@@ -44,33 +44,17 @@ Detailed analysis report
 Analyzed 5 units
 in unit main, 1 subprograms and packages out of 1 analyzed
   Main at main.adb:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-effects on parameters and Global variables of Main depends on
-  effects on parameters and Global variables of P.Annotate_Intentional
-  effects on parameters and Global variables of P.Assume_Natural
-  effects on parameters and Global variables of Q
-  effects on parameters and Global variables of Q2
-  effects on parameters and Global variables of Q3
 in unit p, 4 subprograms and packages out of 6 analyzed
   P at p.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-absence of run-time errors of P depends on
-  effects on parameters and Global variables of P.Inner
-  absence of run-time errors of P.Inner
   P.Add_Or_Subtract at p.ads:5 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (3 checks)
-the postcondition of P.Add_Or_Subtract fully established
-absence of run-time errors of P.Add_Or_Subtract fully established
   P.Annotate_Intentional at p.ads:12 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
    Justified check messages:
     p.adb:43:28: justified that "Z" is not initialized (marked as: intentional, reason: "")
     p.adb:42:10: justified that "X" might not be initialized (marked as: intentional, reason: "")
-absence of run-time errors of P.Annotate_Intentional depends on
-  effects on parameters and Global variables of P.Inner.Do_Nothing
-  absence of run-time errors of P.Inner.Do_Nothing
   P.Assume_Natural at p.ads:9 flow analyzed (0 errors, 0 checks, 0 warnings and 2 pragma Assume statements) and proved (2 checks)
    pragma Assume statements:
     p.adb:26:7
     p.adb:30:7
-absence of run-time errors of P.Assume_Natural depends on
-  effects on parameters and Global variables of P.Add_Or_Subtract
   P.Inner at p.adb:4 skipped; body is SPARK_Mode => Off
   P.Inner.Do_Nothing at p.adb:5 skipped; body is SPARK_Mode => Off
 in unit q, 0 subprograms and packages out of 1 analyzed

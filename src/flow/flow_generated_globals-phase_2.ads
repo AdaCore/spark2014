@@ -292,19 +292,6 @@ package Flow_Generated_Globals.Phase_2 is
    --  @param EN is the entity name that we check for being synchronized
    --  @return True iff EN is synchronized
 
-   function Generated_Calls (E : Entity_Id) return Node_Lists.List
-   with
-     Pre  =>
-       GG_Has_Been_Generated
-       and then Analysis_Requested (E, With_Inlined => True)
-       and then
-         Ekind (E)
-         in Entry_Kind | E_Function | E_Package | E_Procedure | E_Task_Type,
-     Post =>
-       (for all Callee of Generated_Calls'Result =>
-          Ekind (Callee) in Entry_Kind | E_Function | E_Package | E_Procedure);
-   --  Returns callees of entity E
-
    function Has_Potentially_Blocking_Statement (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Function | E_Procedure | E_Package;
    --  Returns True iff E has a potentially blocking statement (or if its

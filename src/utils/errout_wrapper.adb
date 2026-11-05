@@ -23,7 +23,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Handling; use Ada.Characters.Handling;
-with Assumption_Types;        use Assumption_Types;
 with Atree;                   use Atree;
 with Einfo.Utils;             use Einfo.Utils;
 with Erroutc;
@@ -33,6 +32,7 @@ with Namet;                   use Namet;
 with Sinfo.Nodes;             use Sinfo.Nodes;
 with Sinfo.Utils;             use Sinfo.Utils;
 with Sinput;                  use Sinput;
+with SPARK_Report_Types;      use SPARK_Report_Types;
 with SPARK_Util;              use SPARK_Util;
 with Stringt;                 use Stringt;
 with Warnsw;                  use Warnsw;
@@ -210,8 +210,7 @@ package body Errout_Wrapper is
       Set_Field (Value, "rule", Obj.Tag);
       Set_Field (Value, "severity", To_JSON (Obj.Severity));
       if Present (Obj.E) then
-         Set_Field
-           (Value, "entity", To_JSON (Entity_To_Subp_Assumption (Obj.E)));
+         Set_Field (Value, "entity", To_JSON (Entity_To_Report_Subp (Obj.E)));
       end if;
       Set_Field (Value, "check_tree", Obj.Check_Tree);
       Set_Field (Value, "unproved_status", To_JSON (Obj.Unproved_Stat));

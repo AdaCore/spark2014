@@ -388,7 +388,9 @@ the units recorded by the action graph to locate existing ``.spark`` files and
 also reads the ``.spark_error`` files registered by global-generation actions.
 The outputs are ``gnatprove.out`` for the textual summary and ``gnatprove.sarif``
 for tool integration. The same analysis results are used by the manifest generator
-and IDE integrations.
+and IDE integrations. ``SPARK_Report_Types`` in ``src/common/`` provides the
+shared entity identities and source locations used by analysis producers and
+report consumers. ``SPARK_Report_Data`` owns the decoded report records.
 
 ``gnat2why`` owns the diagnostic artifacts. Analysis writes flow, proof, warning,
 and manifest-resolution results into ``.spark``. During global generation,

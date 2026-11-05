@@ -25,10 +25,8 @@
 
 with Ada.Containers.Ordered_Maps;
 with Ada.Containers.Vectors;
-with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Assumption_Types;      use Assumption_Types;
-with Assumptions;
+with SPARK_Report_Types;    use SPARK_Report_Types;
 with String_Utils;          use String_Utils;
 with VC_Kinds;              use VC_Kinds;
 
@@ -123,19 +121,6 @@ package SPARK_Report_Data is
    package Global_Vectors is new
      Ada.Containers.Vectors (Positive, Generated_Global);
 
-   type Token_Reference is record
-      Predicate : Assumptions.Claim_Kind := Assumptions.Claim_AoRTE;
-      Entity    : Valid_Entity_Reference := 1;
-   end record;
-   package Token_Vectors is new
-     Ada.Containers.Vectors (Positive, Token_Reference);
-   type Rule_Reference is record
-      Claim       : Token_Reference;
-      Assumptions : Token_Vectors.Vector;
-   end record;
-   package Rule_Lists is new
-     Ada.Containers.Doubly_Linked_Lists (Rule_Reference);
-
    type Unit_Data is record
       Entities          : Entity_Maps.Map;
       Statuses          : Status_Vectors.Vector;
@@ -151,20 +136,14 @@ package SPARK_Report_Data is
       Warn_Error        : Diagnostic_Vectors.Vector;
       Manifest_Warnings : Diagnostic_Vectors.Vector;
       Pragma_Assume     : Location_Vectors.Vector;
-      Assumptions       : Rule_Lists.List;
       Globals           : Global_Vectors.Vector;
    end record;
 
-   function Read
-     (Input : String; Read_Assumptions : Boolean := True) return Unit_Data;
-   function Read_File
-     (Filename : String; Read_Assumptions : Boolean := True) return Unit_Data;
+   function Read (Input : String) return Unit_Data;
+   function Read_File (Filename : String) return Unit_Data;
    --  Decode report fields into owned application records. Unknown members
    --  and opaque proof payloads are ignored after JSON parsing.
 
    function Subprogram
      (Data : Unit_Data; Entity : Valid_Entity_Reference) return Subp_Type;
-
-   function Resolve_Assumptions
-     (Data : Unit_Data) return Assumptions.Rule_Lists.List;
 end SPARK_Report_Data;

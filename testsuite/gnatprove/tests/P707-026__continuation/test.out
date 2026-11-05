@@ -42,7 +42,4 @@ in unit pkg, 2 subprograms and packages out of 2 analyzed
   Pkg at pkg.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
    Justified check messages:
     pkg.adb:8:4: justified that "Descriptors" constituent of "State" is not initialized in "Pkg" (marked as: intentional, reason: "Suppressing main message should suppress cont line, too")
-absence of run-time errors of Pkg fully established
   Pkg.Foo at pkg.ads:7 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
-effects on parameters and Global variables of Pkg.Foo fully established
-absence of run-time errors of Pkg.Foo fully established
