@@ -2473,7 +2473,11 @@ package body SPARK_Util.Types is
             end if;
 
          when Enumeration_Kind =>
-            if Has_Enumeration_Rep_Clause (Typ)
+            if Has_Biased_Representation (Typ) then
+               return False_With_Explain
+                 ("type with biased representation");
+
+            elsif Has_Enumeration_Rep_Clause (Typ)
               and then Enumeration_Rep (First_Literal (Typ)) /= Uint_0
             then
                return False_With_Explain
@@ -2496,7 +2500,11 @@ package body SPARK_Util.Types is
                Comp : Entity_Id := First_Component (Typ);
             begin
                while Present (Comp) loop
-                  if No (Component_Bit_Offset (Comp)) then
+                  if Has_Biased_Representation (Comp) then
+                     return False_With_Explain
+                       ("component with biased representation");
+
+                  elsif No (Component_Bit_Offset (Comp)) then
                      return False_With_Explain
                        ("component offset not known");
                   end if;
