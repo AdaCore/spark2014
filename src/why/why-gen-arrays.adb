@@ -89,6 +89,10 @@ package body Why.Gen.Arrays is
    --  @param E the entity of type array
    --  @param Relaxed_Init True to create a theory for init wrappers
 
+   procedure Create_Validity_Tree_Map_If_Needed (E : Entity_Id);
+   --  Create the shared map type and its access, update, and slide operations
+   --  for the validity trees of E, unless they have already been declared.
+
    procedure Declare_Ada_Array
      (Th : Theory_UC; E : Entity_Id; Relaxed_Init : Boolean);
    --  Clone the appropriate module for E. If Relaxed_Init is True, the
@@ -1249,13 +1253,17 @@ package body Why.Gen.Arrays is
       end if;
    end Create_Rep_Array_Theory_If_Needed;
 
-   -------------------------------------------
-   -- Create_Validity_Tree_Theory_For_Array --
-   -------------------------------------------
+   ----------------------------------------
+   -- Create_Validity_Tree_Map_If_Needed --
+   ----------------------------------------
 
-   procedure Create_Validity_Tree_Theory_For_Array
-     (Th : Theory_UC; E : Entity_Id)
-   is
+   procedure Create_Validity_Tree_Map_If_Needed (E : Entity_Id) is
+      Name        : constant Symbol := Get_Array_Theory_Name (E);
+      Module      : constant W_Module_Id :=
+        New_Module
+          (File => No_Symbol,
+           Name => Img (Name) & To_String (WNE_Validity_Tree));
+      Th          : Theory_UC;
       Ty_Name     : constant W_Name_Id := To_Name (WNE_Validity_Tree);
       Tree_Ty     : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
       Comp_Ty     : constant Type_Kind_Id := Component_Type (E);
@@ -1274,6 +1282,16 @@ package body Why.Gen.Arrays is
         To_Local (E_Symb (E, WNE_Validity_Tree_Get));
 
    begin
+      if M_Array_Validity_Trees.Contains (Name) then
+         return;
+      end if;
+
+      Th :=
+        Open_Theory
+          (WF_Context,
+           Module,
+           Comment => "Shared map for array validity trees");
+
       Emit
         (Th, New_Type_Decl (Name => Ty_Name, Labels => Symbol_Sets.Empty_Set));
 
@@ -1461,6 +1479,32 @@ package body Why.Gen.Arrays is
                       (Name => Slide_Name, Kind => EW_Axdep_Func)));
          end;
       end;
+
+      Close_Theory (Th, Kind => Definition_Theory);
+      M_Array_Validity_Trees.Insert (Name, Module);
+   end Create_Validity_Tree_Map_If_Needed;
+
+   -------------------------------------------
+   -- Create_Validity_Tree_Theory_For_Array --
+   -------------------------------------------
+
+   procedure Create_Validity_Tree_Theory_For_Array
+     (Th : Theory_UC; E : Entity_Id)
+   is
+      Tree_Ty     : constant W_Type_Id :=
+        New_Named_Type (Name => To_Name (WNE_Validity_Tree));
+      Comp_Ty     : constant Type_Kind_Id := Component_Type (E);
+      Comp_Tree   : constant W_Type_Id := Get_Validity_Tree_Type (Comp_Ty);
+      Tree_Ident  : constant W_Identifier_Id :=
+        New_Identifier (Name => "tree", Typ => Tree_Ty);
+      Tree_Binder : constant Binder_Type :=
+        (B_Name => Tree_Ident, others => <>);
+      Dim         : constant Positive := Positive (Number_Dimensions (E));
+      Get_Name    : constant W_Identifier_Id :=
+        To_Local (E_Symb (E, WNE_Validity_Tree_Get));
+   begin
+      Create_Validity_Tree_Map_If_Needed (E);
+      Add_With_Clause (Th, Get_Array_Validity_Tree_Module (E), EW_Export);
 
       --  Generate a is_valid function and a valid_value constant that has all
       --  its fields to True.
@@ -3149,6 +3193,13 @@ package body Why.Gen.Arrays is
 
       return NID (To_String (Name));
    end Get_Array_Theory_Name;
+
+   ------------------------------------
+   -- Get_Array_Validity_Tree_Module --
+   ------------------------------------
+
+   function Get_Array_Validity_Tree_Module (E : Entity_Id) return W_Module_Id
+   is (M_Array_Validity_Trees (Get_Array_Theory_Name (E)));
 
    ----------------------
    -- New_Array_Access --
