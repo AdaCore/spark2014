@@ -568,5 +568,5 @@ commit-level-checks:
         # The Issue-trailer check is intentionally CI-only (it is not
         # registered as a local git hook), so it is invoked directly here
         # rather than through pre-commit.
-        python scripts/check_issue_trailer.py .gitlab_commit_msg
+        python -m support.check_issue_trailer .gitlab_commit_msg
       done

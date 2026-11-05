@@ -27,7 +27,7 @@ repos:
     -   id: mixed-line-ending
     -   id: trailing-whitespace
   - repo: git-adacore:eng/spark/support
-    rev: "v1.2.1"
+    rev: "v1.3.0"
     hooks:
     -   id: check-attribution
     -   id: check-submodules
@@ -48,7 +48,7 @@ repos:
     hooks:
       # The Issue-trailer check is deliberately not registered as a git hook
       # here so that it does not block local commits. It is enforced in CI
-      # only, where scripts/check_issue_trailer.py is invoked directly against
+      # only, where support.check_issue_trailer is invoked directly against
       # each commit message.
       - id: check-opt-syntax
         name: Check opt file syntax
