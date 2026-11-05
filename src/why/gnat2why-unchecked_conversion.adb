@@ -466,8 +466,7 @@ package body Gnat2Why.Unchecked_Conversion is
       type Target_Value is record
          Value      : W_Term_Id;
          Valid_Flag : W_Term_Id;
-      end record
-      with Predicate => (Valid_Flag /= Why_Empty) = Potentially_Invalid;
+      end record;
 
       --  Local subprograms
 
@@ -490,7 +489,10 @@ package body Gnat2Why.Unchecked_Conversion is
          Bits   : W_Expr_Id;
          Offset : Uint;
          Size   : Uint;
-         Typ    : Type_Kind_Id) return Target_Value;
+         Typ    : Type_Kind_Id) return Target_Value
+      with
+        Post =>
+          (Extract_Value'Result.Valid_Flag /= Why_Empty) = Potentially_Invalid;
       --  Return (Bits and (2**(Offset+Size)-1)) / 2**(Offset) as
       --  a value of type Typ, to extract the value of an element
       --  from its bit representation.
@@ -511,7 +513,11 @@ package body Gnat2Why.Unchecked_Conversion is
          Bits   : W_Expr_Id;
          Offset : Uint;
          Size   : Uint;
-         Typ    : Type_Kind_Id) return Target_Value;
+         Typ    : Type_Kind_Id) return Target_Value
+      with
+        Post =>
+          (Reconstruct_Value'Result.Valid_Flag /= Why_Empty)
+          = (Potentially_Invalid and then Type_Might_Be_Invalid (Typ));
       --  Given the representation Bits of modular type Base for
       --  the complete object, reconstruct the element of type Typ
       --  of a given Size at a given Offset.
@@ -851,7 +857,12 @@ package body Gnat2Why.Unchecked_Conversion is
          Bits   : W_Expr_Id;
          Offset : Uint;
          Size   : Uint;
-         Typ    : Type_Kind_Id) return Target_Value is
+         Typ    : Type_Kind_Id) return Target_Value
+      is
+         Has_Validity : constant Boolean :=
+           Potentially_Invalid and then Type_Might_Be_Invalid (Typ);
+         --  Fully valid subcomponents have no validity tree
+
       begin
          if Is_Scalar_Type (Typ) then
             return
@@ -866,13 +877,12 @@ package body Gnat2Why.Unchecked_Conversion is
            and then Count_Why_Top_Level_Fields (Typ) = 0
          then
             --  Null records have an abstract Why type, so use the dummy of
-            --  the root type as for ordinary null-record aggregates. Their
-            --  validity flag is unused since they have no invalid components.
+            --  the root type as for ordinary null-record aggregates. They
+            --  have no validity tree since they have no invalid components.
 
             return
               (Value      => +E_Symb (Root_Retysp (Typ), WNE_Dummy),
-               Valid_Flag =>
-                 (if Potentially_Invalid then True_Term else Why_Empty));
+               Valid_Flag => Why_Empty);
 
          elsif Is_Record_Type (Typ) then
             declare
@@ -937,7 +947,7 @@ package body Gnat2Why.Unchecked_Conversion is
                                    (Associations => Assocs))),
                        Typ          => EW_Abstract (Typ)),
                   Valid_Flag =>
-                    (if Potentially_Invalid
+                    (if Has_Validity
                      then
                        New_Record_Aggregate
                          (Associations => Flags (1 .. F_Index - 1),
@@ -954,7 +964,7 @@ package body Gnat2Why.Unchecked_Conversion is
                Cur   : Uint;
                Ar    : W_Expr_Id := +E_Symb (Typ, WNE_Dummy);
                Flags : W_Term_Id :=
-                 (if Potentially_Invalid
+                 (if Has_Validity
                   then New_Valid_Value_For_Type (Typ)
                   else Why_Empty);
             begin
@@ -980,7 +990,7 @@ package body Gnat2Why.Unchecked_Conversion is
                              Value    => +C_Value.Value,
                              Domain   => EW_Term);
 
-                        if Potentially_Invalid then
+                        if Has_Validity then
                            Flags :=
                              +New_Validity_Tree_Array_Update
                                 (Name   => +Flags,
