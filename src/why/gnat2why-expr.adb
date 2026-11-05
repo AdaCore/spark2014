@@ -14279,9 +14279,13 @@ package body Gnat2Why.Expr is
                   Rng_Type    : constant W_Type_Id :=
                     Nth_Index_Rep_Type_No_Bool (Pref_Ty, 1);
                   Low_Expr    : constant W_Term_Id :=
-                    Transform_Term (Low_Bound (Rng), Rng_Type, Params);
+                    (if Index_Map.Is_Empty
+                     then Transform_Term (Low_Bound (Rng), Rng_Type, Params)
+                     else +Index_Map.Element (Low_Bound (Rng)));
                   High_Expr   : constant W_Term_Id :=
-                    Transform_Term (High_Bound (Rng), Rng_Type, Params);
+                    (if Index_Map.Is_Empty
+                     then Transform_Term (High_Bound (Rng), Rng_Type, Params)
+                     else +Index_Map.Element (High_Bound (Rng)));
                   Prefix_Expr : constant W_Prog_Id :=
                     New_Temp_For_Expr (Get_Validity_Tree (Pref));
                   New_Expr    : constant W_Prog_Id := New_Temp_For_Expr (RHS);

@@ -1,0 +1,27 @@
+array_index.adb:11:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+array_index.adb:11:13: info: types in unchecked conversion have the same size (Trivial)
+array_index.adb:11:51: info: type is suitable as source for unchecked conversion (Trivial)
+array_index.adb:11:54: info: type is suitable for unchecked conversion (Trivial)
+array_index.adb:14:22: warning: unused initial value of "X"
+array_index.adb:14:36: info: initialization of "I" proved
+array_index.adb:15:06: info: data dependencies proved
+array_index.adb:15:56: info: postcondition proved (CVC5: 1 VC)
+array_index.adb:27:15: info: index check proved (CVC5: 2 VC)
+array_index.adb:28:19: info: assertion proved (CVC5: 1 VC)
+array_index.adb:28:19: info: range check proved (CVC5: 4 VC)
+array_index.adb:29:19: medium: assertion might fail [possible fix: postcondition of call at line 27 should mention X (for argument X)]
+slice_bounds.adb:8:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+slice_bounds.adb:8:13: info: types in unchecked conversion have the same size (Trivial)
+slice_bounds.adb:8:51: info: type is suitable as source for unchecked conversion (Trivial)
+slice_bounds.adb:8:54: info: type is suitable for unchecked conversion (Trivial)
+slice_bounds.adb:11:36: info: initialization of "Lo" proved
+slice_bounds.adb:11:40: info: initialization of "Hi" proved
+slice_bounds.adb:12:06: info: data dependencies proved
+slice_bounds.adb:13:35: info: postcondition proved (CVC5: 2 VC)
+slice_bounds.adb:17:11: info: index check proved (CVC5: 2 VC)
+slice_bounds.adb:26:04: info: precondition proved (CVC5: 1 VC)
+slice_bounds.adb:26:12: info: range check proved (CVC5: 4 VC)
+slice_bounds.adb:28:19: info: assertion proved (CVC5: 1 VC)
+slice_bounds.adb:28:19: info: range check proved (CVC5: 4 VC)
+slice_bounds.adb:29:19: info: range check proved (CVC5: 4 VC)
+slice_bounds.adb:29:19: medium: assertion might fail [possible fix: postcondition of call at line 26 should mention X (for argument X)]
