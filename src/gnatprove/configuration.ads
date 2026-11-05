@@ -74,11 +74,9 @@ package Configuration is
 
    package CL_Switches is
 
-      --  These are the variables that contain the values of the corresponding
-      --  switches of gnatprove. Note that these correspond exactly to the
-      --  commandline as given by the user. If some postprocessing is applied
-      --  to the switch (for example timeout, steps etc are influenced by the
-      --  level switch) another variable is introduced outside of this package.
+      --  Legacy interface for effective switch values from the command line
+      --  and root project. Switch values are exposed through queries; the
+      --  remaining lists are mutable until migrated to the invocation.
       --  Naming of the variable:
       --  * single letter variables correspond to single letter switches with
       --    one dash, like -j, -v
@@ -88,29 +86,29 @@ package Configuration is
       --    some switch)
       --  * Cargs_List is the list of arguments in the --cargs section
 
-      Assumptions                   : aliased Boolean;
-      Benchmark                     : aliased Boolean;
-      Memcached_Server              : aliased GNAT.Strings.String_Access;
-      Cargs_List                    : String_Lists.List;
-      CWE                           : aliased Boolean;
-      Debug_Disable_Prover_Feedback : aliased Boolean;
-      Debug_No_Cache_Output         : aliased Boolean;
-      Exclude_Line                  : aliased GNAT.Strings.String_Access;
-      Flow_Show_GG                  : aliased Boolean;
-      Function_Sandboxing           : aliased GNAT.Strings.String_Access;
-      Gnattest_Values               : aliased GNAT.Strings.String_Access;
-      SARIF_Base_URIs               : String_Lists.List;
+      function Assumptions return Boolean;
+      function Benchmark return Boolean;
+      function Memcached_Server return String;
+      function Cargs_List return not null access constant String_Lists.List;
+      function CWE return Boolean;
+      function Debug_Disable_Prover_Feedback return Boolean;
+      function Debug_No_Cache_Output return Boolean;
+      function Exclude_Line return String;
+      function Flow_Show_GG return Boolean;
+      function Function_Sandboxing return String;
+      function Gnattest_Values return String;
+      SARIF_Base_URIs : String_Lists.List;
       --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
-      Limit_Line                    : aliased GNAT.Strings.String_Access;
-      Limit_Lines                   : aliased GNAT.Strings.String_Access;
-      Limit_Name                    : aliased GNAT.Strings.String_Access;
-      Limit_Region                  : aliased GNAT.Strings.String_Access;
-      Limit_Subp                    : aliased GNAT.Strings.String_Access;
-      No_Global_Generation          : aliased Boolean;
-      No_Subprojects                : aliased Boolean;
-      Output_Header                 : aliased Boolean;
-      U                             : aliased Boolean;
-      Why3_Server                   : aliased GNAT.Strings.String_Access;
+      function Limit_Line return String;
+      function Limit_Lines return String;
+      function Limit_Name return String;
+      function Limit_Region return String;
+      function Limit_Subp return String;
+      function No_Global_Generation return Boolean;
+      function No_Subprojects return Boolean;
+      function Output_Header return Boolean;
+      function U return Boolean;
+      function Why3_Server return String;
    end CL_Switches;
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
@@ -123,29 +121,32 @@ package Configuration is
    --  Mode - is the maximum analysis mode, taking into account the global
    --         and file-specific modes
 
-   Global_Compilation_Switches : String_Lists.List;
+   function Global_Compilation_Switches
+      return not null access constant String_Lists.List;
    --  Switches of the Global_Compilation_Switches attribute of the Builder
    --  package for Ada. They are passed to all Ada compilations that GNATprove
    --  performs. Contrary to the other attributes of the Builder package, which
    --  hold switches of the builder itself, this attribute holds compilation
    --  switches.
-   GnateT_Switch               : GNAT.Strings.String_Access;
-   Limit_Lines                 : String_Lists.List;
-   Mode                        : GP_Mode := GPM_Check;
-   Output                      : Output_Mode_Type;
-   Max_Why3_Processes          : Positive;
+   function GnateT_Switch return String;
+   --  Automatically selected target properties switch, or the empty string
+   Mode               : GP_Mode := GPM_Check;
+   Max_Why3_Processes : Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
-   Report                      : Report_Mode_Type;
-   Warning_Mode                : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
-   Warning_Status              : Warning_Status_Array :=
-     VC_Kinds.Warning_Status;
-   Has_Manual_Prover           : Boolean;
-   Has_Coq_Prover              : Boolean;
-   CL_Units                    : GPR2.Build.Compilation_Unit.Maps.Map;
+   Warning_Status     : Warning_Status_Array := VC_Kinds.Warning_Status;
+   Has_Manual_Prover  : Boolean;
+   Has_Coq_Prover     : Boolean;
+   CL_Units           : GPR2.Build.Compilation_Unit.Maps.Map;
    --  A "copy" of Cl_Switches.File_List, but units instead of files
 
    function Checks_As_Errors return Boolean;
    --  Whether unproved checks cause a failure exit status
+
+   function All_Projects return Boolean;
+   --  Whether -U was specified
+
+   function Continue_On_Error return Boolean;
+   --  Whether -k was specified
 
    function Debug return Boolean;
    --  Whether debugging is enabled
@@ -153,21 +154,38 @@ package Configuration is
    function Debug_Exec_RAC return Boolean;
    --  Whether to debug RAC execution
 
+   function Flow_Extra_Debug return Boolean;
+   --  Whether --flow-debug was specified
+
+   function Force return Boolean;
+   --  Whether -f was specified
+
+   function IDE_Mode return Boolean;
+   --  Whether --ide-progress-bar was specified
+
+   function Limit_Lines return not null access constant String_Lists.List;
+   --  Validated line specifications from --limit-line and --limit-lines
+
    function Only_Given return Boolean;
    --  Whether -u or a file-selecting limit switch was given
+
+   function Output return Output_Mode_Type;
+   --  Output format selected for diagnostics
 
    function Parallel return Integer;
    --  Maximum number of parallel jobs
 
+   function Report return Report_Mode_Type;
+   --  Report detail selected for the invocation
+
    function Use_Semaphores return Boolean;
    --  Whether gnatwhy3 processes are limited by a semaphore
 
-   All_Projects      : Boolean := False;  --  -U
-   Continue_On_Error : Boolean := False;  --  -k
-   Flow_Extra_Debug  : Boolean := False;  --  --flow-debug
-   Force             : Boolean := False;  --  -f
-   IDE_Mode          : Boolean := False;  --  --ide-progress-bar
-   Verbosity         : Verbosity_Choice := Normal_Level;
+   function Warning_Mode return Gnat2Why_Opts.SPARK_Warning_Mode_Type;
+   --  Treatment of warnings selected for the invocation
+
+   function Verbosity return Verbosity_Choice;
+   --  Diagnostic verbosity selected for the invocation
 
    type File_Specific is record
       Proof                 : Proof_Mode;

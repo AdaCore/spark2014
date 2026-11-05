@@ -1,7 +1,6 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Configuration;
-with GNAT.Strings;          use GNAT.Strings;
 with GPR2.Build.Artifacts.Source_Files;
 with VC_Kinds;              use VC_Kinds;
 
@@ -62,7 +61,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
 
       --  Compilation switches of the Builder package
 
-      for Arg of Configuration.Global_Compilation_Switches loop
+      for Arg of Configuration.Global_Compilation_Switches.all loop
          Cmd_Line.Add_Argument (Arg);
       end loop;
 
@@ -70,13 +69,11 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
       --  configuration specified by the user cannot show up here, as this
       --  action is not applicable in that case.
 
-      if Configuration.GnateT_Switch /= null
-        and then Configuration.GnateT_Switch.all /= ""
-      then
-         Cmd_Line.Add_Argument (Configuration.GnateT_Switch.all);
+      if Configuration.GnateT_Switch /= "" then
+         Cmd_Line.Add_Argument (Configuration.GnateT_Switch);
       end if;
 
-      for Arg of Configuration.CL_Switches.Cargs_List loop
+      for Arg of Configuration.CL_Switches.Cargs_List.all loop
          Cmd_Line.Add_Argument (Arg);
       end loop;
 

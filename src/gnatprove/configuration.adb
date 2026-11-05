@@ -133,7 +133,7 @@ package body Configuration is
 
    type File_Selection is record
       Files       : String_Lists.List;
-      Limit_Lines : String_Lists.List;
+      Limit_Lines : aliased String_Lists.List;
    end record;
    --  Requested files, including those derived from limit switches, and the
    --  validated line specifications. Project-based resolution happens later.
@@ -145,14 +145,55 @@ package body Configuration is
    end record;
 
    type Invocation_Configuration is record
-      File_Options     : File_Specific_Invocation_Options;
-      Selection        : File_Selection;
-      Checks_As_Errors : Boolean := False;
-      Debug            : Boolean := False;
-      Debug_Exec_RAC   : Boolean := False;
-      Only_Given       : Boolean := False;
-      Parallel         : Natural := 0;
-      Use_Semaphores   : Boolean := False;
+      File_Options                  : File_Specific_Invocation_Options;
+      Selection                     : File_Selection;
+      All_Projects                  : Boolean := False;
+      Assumptions                   : Boolean := False;
+      Benchmark                     : Boolean := False;
+      Cargs_List                    : aliased String_Lists.List;
+      Checks_As_Errors              : Boolean := False;
+      Continue_On_Error             : Boolean := False;
+      CWE                           : Boolean := False;
+      Debug                         : Boolean := False;
+      Debug_Disable_Prover_Feedback : Boolean := False;
+      Debug_Exec_RAC                : Boolean := False;
+      Debug_No_Cache_Output         : Boolean := False;
+      Debug_Prover_Errors           : Boolean := False;
+      Debug_Save_VCs                : Boolean := False;
+      Exclude_Line                  : Unbounded_String;
+      Flow_Extra_Debug              : Boolean := False;
+      Flow_Show_GG                  : Boolean := False;
+      Force                         : Boolean := False;
+      Function_Sandboxing           : Unbounded_String;
+      Generate_Manifest             : Unbounded_String;
+      Global_Compilation_Switches   : aliased String_Lists.List;
+      GnateT_Switch                 : Unbounded_String;
+      Gnattest_Values               : Unbounded_String;
+      IDE_Mode                      : Boolean := False;
+      Limit_Line                    : Unbounded_String;
+      Limit_Lines                   : Unbounded_String;
+      Limit_Name                    : Unbounded_String;
+      Limit_Region                  : Unbounded_String;
+      Limit_Subp                    : Unbounded_String;
+      Memcached_Server              : Unbounded_String;
+      No_Subprojects                : Boolean := False;
+      Only_Given                    : Boolean := False;
+      Output                        : Output_Mode_Type := GPO_Pretty_Simple;
+      Output_Header                 : Boolean := False;
+      Parallel                      : Natural := 0;
+      Proof_Manifest_Path           : Unbounded_String;
+      Report                        : Report_Mode_Type := GPR_Fail;
+      U                             : Boolean := False;
+      Use_Semaphores                : Boolean := False;
+      Verbosity                     : Verbosity_Choice := Normal_Level;
+      Warning_Mode                  : SPARK_Warning_Mode_Type := SW_Normal;
+      Why3_Logging                  : Boolean := False;
+      Why3_Conf                     : Unbounded_String;
+      Why3_Debug                    : Unbounded_String;
+      Why3_Server                   : Unbounded_String;
+      Why3_Stagger_Ms               : Natural := 0;
+      Why3_Stagger_Window           : Natural := 0;
+      Z3_Counterexample             : Boolean := False;
    end record;
    --  Other invocation settings are still published as separate globals
 
@@ -162,33 +203,92 @@ package body Configuration is
      Default_Invocation'Access;
    --  Replaced once with the completed invocation; consumers cannot modify it
 
+   package body CL_Switches is
+      function Assumptions return Boolean
+      is (Invocation_State.Assumptions);
+      function Benchmark return Boolean
+      is (Invocation_State.Benchmark);
+      function Cargs_List return not null access constant String_Lists.List
+      is (Invocation_State.Cargs_List'Access);
+      function CWE return Boolean
+      is (Invocation_State.CWE);
+      function Debug_Disable_Prover_Feedback return Boolean
+      is (Invocation_State.Debug_Disable_Prover_Feedback);
+      function Debug_No_Cache_Output return Boolean
+      is (Invocation_State.Debug_No_Cache_Output);
+      function Exclude_Line return String
+      is (To_String (Invocation_State.Exclude_Line));
+      function Flow_Show_GG return Boolean
+      is (Invocation_State.Flow_Show_GG);
+      function Function_Sandboxing return String
+      is (To_String (Invocation_State.Function_Sandboxing));
+      function Gnattest_Values return String
+      is (To_String (Invocation_State.Gnattest_Values));
+      function Limit_Line return String
+      is (To_String (Invocation_State.Limit_Line));
+      function Limit_Lines return String
+      is (To_String (Invocation_State.Limit_Lines));
+      function Limit_Name return String
+      is (To_String (Invocation_State.Limit_Name));
+      function Limit_Region return String
+      is (To_String (Invocation_State.Limit_Region));
+      function Limit_Subp return String
+      is (To_String (Invocation_State.Limit_Subp));
+      function Memcached_Server return String
+      is (To_String (Invocation_State.Memcached_Server));
+      function No_Global_Generation return Boolean
+      is (Invocation_State.File_Options.No_Global_Generation);
+      function No_Subprojects return Boolean
+      is (Invocation_State.No_Subprojects);
+      function Output_Header return Boolean
+      is (Invocation_State.Output_Header);
+      function U return Boolean
+      is (Invocation_State.U);
+      function Why3_Server return String
+      is (To_String (Invocation_State.Why3_Server));
+   end CL_Switches;
+
+   function All_Projects return Boolean
+   is (Invocation_State.All_Projects);
    function Checks_As_Errors return Boolean
    is (Invocation_State.Checks_As_Errors);
+   function Continue_On_Error return Boolean
+   is (Invocation_State.Continue_On_Error);
    function Debug return Boolean
    is (Invocation_State.Debug);
    function Debug_Exec_RAC return Boolean
    is (Invocation_State.Debug_Exec_RAC);
+   function Flow_Extra_Debug return Boolean
+   is (Invocation_State.Flow_Extra_Debug);
+   function Force return Boolean
+   is (Invocation_State.Force);
+   function Global_Compilation_Switches
+      return not null access constant String_Lists.List
+   is (Invocation_State.Global_Compilation_Switches'Access);
+   function GnateT_Switch return String
+   is (To_String (Invocation_State.GnateT_Switch));
+   function IDE_Mode return Boolean
+   is (Invocation_State.IDE_Mode);
+   function Limit_Lines return not null access constant String_Lists.List
+   is (Invocation_State.Selection.Limit_Lines'Access);
    function Only_Given return Boolean
    is (Invocation_State.Only_Given);
+   function Output return Output_Mode_Type
+   is (Invocation_State.Output);
    function Parallel return Integer
    is (Invocation_State.Parallel);
+   function Report return Report_Mode_Type
+   is (Invocation_State.Report);
    function Use_Semaphores return Boolean
    is (Invocation_State.Use_Semaphores);
+   function Verbosity return Verbosity_Choice
+   is (Invocation_State.Verbosity);
+   function Warning_Mode return SPARK_Warning_Mode_Type
+   is (Invocation_State.Warning_Mode);
 
    --  Private global state to replace public state from CL_Switches
-   Debug_Save_VCs      : Boolean := False;
-   Debug_Prover_Errors : Boolean := False;
    File_List           : String_Lists.List;
-   Generate_Manifest   : GNAT.Strings.String_Access;
-   Replay              : Boolean := False;
-   Proof_Manifest_Path : GNAT.Strings.String_Access;
    Proof_Manifest_Maps : Manifest_Maps.Map;
-   Why3_Conf           : GNAT.Strings.String_Access;
-   Why3_Debug          : GNAT.Strings.String_Access;
-   Why3_Logging        : Boolean := False;
-   Why3_Stagger_Ms     : Natural := 0;
-   Why3_Stagger_Window : Natural := 0;
-   Z3_Counterexample   : Boolean := False;
 
    type Spark_Reporter is new GPR2.Reporter.Console.Object with null record;
 
@@ -298,7 +398,8 @@ package body Configuration is
    --  output, derived from the Explain_Code_Kind enumeration. Internal switch
    --  (exercised by the explain codes test), not advertised to users.
 
-   function Check_gnateT_Switch (View : Project.View.Object) return String;
+   function Check_gnateT_Switch
+     (View : Project.View.Object; Switches : String_Lists.List) return String;
    --  Try to compute the gnateT switch to be used for gnat2why. If there is
    --  a target and runtime set, but we can't compute the switch, a warning
    --  is issued.
@@ -1120,7 +1221,9 @@ package body Configuration is
    -- Check_gnateT_Switch --
    -------------------------
 
-   function Check_gnateT_Switch (View : Project.View.Object) return String is
+   function Check_gnateT_Switch
+     (View : Project.View.Object; Switches : String_Lists.List) return String
+   is
    begin
       --  Check first if the target is not the native one, which is available
       --  as Project.Tree.Target_Name, that we have to normalize first. There
@@ -1128,7 +1231,9 @@ package body Configuration is
 
       if View.Tree.Is_Cross_Target then
          --  User has already set the attribute, don't try anything smart
-         if Has_gnateT_Switch then
+         if (for some Switch of Switches =>
+               GNATCOLL.Utils.Starts_With (Switch, "-gnateT="))
+         then
             return "";
          end if;
 
@@ -1469,11 +1574,6 @@ package body Configuration is
         (Source : String_Lists.List; Target : in out String_Lists.List);
       --  Replace Target with Source
 
-      procedure Move_String
-        (Source : GNAT.Strings.String_Access;
-         Target : in out GNAT.Strings.String_Access);
-      --  Move Source into Target, using an empty string for absent values
-
       ---------------
       -- Copy_List --
       ---------------
@@ -1487,90 +1587,12 @@ package body Configuration is
          end loop;
       end Copy_List;
 
-      -----------------
-      -- Move_String --
-      -----------------
-
-      procedure Move_String
-        (Source : GNAT.Strings.String_Access;
-         Target : in out GNAT.Strings.String_Access) is
-      begin
-         if Target /= null then
-            Free (Target);
-         end if;
-
-         if Source = null then
-            Target := new String'("");
-         else
-            Target := new String'(Source.all);
-         end if;
-      end Move_String;
-
    begin
       --  package-internal global state
-      Debug_Save_VCs := Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
-      Debug_Prover_Errors :=
-        Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
       Copy_List (Selected_Files, File_List);
-      Move_String
-        (Parsed.Values (Sw_Generate_Manifest).String_Val, Generate_Manifest);
-      Replay := Parsed.Values (Sw_Replay).Boolean_Val;
-      Move_String (Parsed.Values (Sw_Why3_Conf).String_Val, Why3_Conf);
-      Move_String (Parsed.Values (Sw_Why3_Debug).String_Val, Why3_Debug);
-      Z3_Counterexample := Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
-
-      --  public global state
-      Flow_Extra_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
-      IDE_Mode := Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
-      All_Projects := Parsed.Values (Sw_UU).Boolean_Val;
-      Continue_On_Error := Parsed.Values (Sw_K).Boolean_Val;
-      Force := Parsed.Values (Sw_F).Boolean_Val;
-
-      --  CL_Switches state that's still used
-      CL_Switches.Assumptions := Parsed.Values (Sw_Assumptions).Boolean_Val;
-      CL_Switches.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
-      CL_Switches.CWE := Parsed.Values (Sw_CWE).Boolean_Val;
-      CL_Switches.Debug_Disable_Prover_Feedback :=
-        Parsed.Values (Sw_Debug_Disable_Prover_Feedback).Boolean_Val;
-      CL_Switches.Debug_No_Cache_Output :=
-        Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val;
-      Move_String
-        (Parsed.Values (Sw_Exclude_Line).String_Val, CL_Switches.Exclude_Line);
-      CL_Switches.Flow_Show_GG := Parsed.Values (Sw_Flow_Show_GG).Boolean_Val;
-      Move_String
-        (Parsed.Values (Sw_Limit_Line).String_Val, CL_Switches.Limit_Line);
-      Move_String
-        (Parsed.Values (Sw_Limit_Lines).String_Val, CL_Switches.Limit_Lines);
-      Move_String
-        (Parsed.Values (Sw_Limit_Name).String_Val, CL_Switches.Limit_Name);
-      Move_String
-        (Parsed.Values (Sw_Limit_Region).String_Val, CL_Switches.Limit_Region);
-      Move_String
-        (Parsed.Values (Sw_Limit_Subp).String_Val, CL_Switches.Limit_Subp);
-      Move_String
-        (Parsed.Values (Sw_Memcached_Server).String_Val,
-         CL_Switches.Memcached_Server);
-      Move_String
-        (Parsed.Values (Sw_Function_Sandboxing).String_Val,
-         CL_Switches.Function_Sandboxing);
-      CL_Switches.No_Global_Generation :=
-        Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
-      CL_Switches.No_Subprojects :=
-        Parsed.Values (Sw_No_Subprojects).Boolean_Val;
-      CL_Switches.Output_Header :=
-        Parsed.Values (Sw_Output_Header).Boolean_Val;
-      CL_Switches.U := Parsed.Values (Sw_U).Boolean_Val;
-      Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
-      Move_String
-        (Parsed.Values (Sw_Why3_Server).String_Val, CL_Switches.Why3_Server);
       Copy_List
         (Parsed.Values (Sw_SARIF_Base_URI).String_List_Val,
          CL_Switches.SARIF_Base_URIs);
-      Move_String
-        (Parsed.Values (Sw_Gnattest_Values).String_Val,
-         CL_Switches.Gnattest_Values);
-      Move_String
-        (Parsed.Values (Sw_Proof_Manifest).String_Val, Proof_Manifest_Path);
 
       for WK in Misc_Warning_Kind loop
          Configuration.Warning_Status (WK) :=
@@ -1656,7 +1678,7 @@ package body Configuration is
 
    function Generate_Manifest_Path return String is
    begin
-      return (if Generate_Manifest = null then "" else Generate_Manifest.all);
+      return To_String (Invocation_State.Generate_Manifest);
    end Generate_Manifest_Path;
 
    ------------------
@@ -1916,7 +1938,7 @@ package body Configuration is
    function Has_gnateT_Switch return Boolean is
    begin
       return
-        (for some Switch of Global_Compilation_Switches =>
+        (for some Switch of Global_Compilation_Switches.all =>
            GNATCOLL.Utils.Starts_With (Switch, "-gnateT="));
    end Has_gnateT_Switch;
 
@@ -2175,7 +2197,8 @@ package body Configuration is
       use type TOML.Any_Value_Kind;
       use type Ada.Directories.File_Kind;
 
-      Manifest_Path : constant String := Proof_Manifest_Path.all;
+      Manifest_Path : constant String :=
+        To_String (Invocation_State.Proof_Manifest_Path);
       Current_File  : Unbounded_String;
       All_Policies  : Manifest_Subprogram_Vectors.Vector;
       --  All policies loaded so far, across all manifest files. Only used to
@@ -3953,7 +3976,8 @@ package body Configuration is
       procedure Detect_Installed_Provers;
       --  Set the availability of supported provers based on PATH.
 
-      procedure Initialize_Root_Project_Settings;
+      procedure Initialize_Root_Project_Settings
+        (Switches : out String_Lists.List; GnateT : out Unbounded_String);
       --  Initialize settings derived from the root project.
 
       procedure Postprocess_Invocation
@@ -3986,9 +4010,12 @@ package body Configuration is
       --  no compiler configuration, so the analysis cannot proceed.
 
       procedure Set_Mode (Parsed : Parsed_Switches; FS : in out File_Specific);
-      procedure Set_Output_Mode (Parsed : Parsed_Switches);
-      procedure Set_Warning_Mode (Parsed : Parsed_Switches);
-      procedure Set_Report_Mode (Parsed : Parsed_Switches);
+      function Parse_Output_Mode
+        (Parsed : Parsed_Switches) return Output_Mode_Type;
+      function Parse_Warning_Mode
+        (Parsed : Parsed_Switches) return SPARK_Warning_Mode_Type;
+      function Parse_Report_Mode
+        (Parsed : Parsed_Switches) return Report_Mode_Type;
 
       procedure Set_Level_Timeout_Steps_Provers
         (Parsed             : Parsed_Switches;
@@ -4058,15 +4085,17 @@ package body Configuration is
       -- Initialize_Root_Project_Settings --
       ------------------------------------
 
-      procedure Initialize_Root_Project_Settings is
+      procedure Initialize_Root_Project_Settings
+        (Switches : out String_Lists.List; GnateT : out Unbounded_String) is
       begin
          --  Read the compilation switches of the Builder package before
          --  computing the target configuration, which depends on whether the
          --  user specified -gnateT there.
 
-         Global_Compilation_Switches :=
-           Read_Global_Compilation_Switches (Tree.Root_Project);
-         GnateT_Switch := new String'(Check_gnateT_Switch (Tree.Root_Project));
+         Switches := Read_Global_Compilation_Switches (Tree.Root_Project);
+         GnateT :=
+           To_Unbounded_String
+             (Check_gnateT_Switch (Tree.Root_Project, Switches));
          Set_Proof_Dir (Tree.Root_Project);
       end Initialize_Root_Project_Settings;
 
@@ -4537,10 +4566,62 @@ package body Configuration is
          Sanity_Checking (Parsed);
 
          Result.File_Options := File_Specific_Options_From_Invocation (Parsed);
+         Result.All_Projects := Parsed.Values (Sw_UU).Boolean_Val;
+         Result.Assumptions := Parsed.Values (Sw_Assumptions).Boolean_Val;
+         Result.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
+         Result.Continue_On_Error := Parsed.Values (Sw_K).Boolean_Val;
+         Result.CWE := Parsed.Values (Sw_CWE).Boolean_Val;
+         Result.Debug_Disable_Prover_Feedback :=
+           Parsed.Values (Sw_Debug_Disable_Prover_Feedback).Boolean_Val;
+         Result.Debug_No_Cache_Output :=
+           Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val;
+         Result.Debug_Prover_Errors :=
+           Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
+         Result.Debug_Save_VCs :=
+           Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
+         Result.Exclude_Line :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Exclude_Line));
+         Result.Flow_Extra_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
+         Result.Flow_Show_GG := Parsed.Values (Sw_Flow_Show_GG).Boolean_Val;
+         Result.Force := Parsed.Values (Sw_F).Boolean_Val;
+         Result.Function_Sandboxing :=
+           To_Unbounded_String
+             (Switch_String (Parsed, Sw_Function_Sandboxing));
+         Result.Generate_Manifest :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Generate_Manifest));
+         Result.Gnattest_Values :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Gnattest_Values));
+         Result.IDE_Mode := Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
+         Result.Limit_Line :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Line));
+         Result.Limit_Lines :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Lines));
+         Result.Limit_Name :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Name));
+         Result.Limit_Region :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Region));
+         Result.Limit_Subp :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Limit_Subp));
+         Result.Memcached_Server :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Memcached_Server));
+         Result.No_Subprojects :=
+           Parsed.Values (Sw_No_Subprojects).Boolean_Val;
+         Result.Output_Header := Parsed.Values (Sw_Output_Header).Boolean_Val;
+         Result.Proof_Manifest_Path :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Proof_Manifest));
+         Result.U := Parsed.Values (Sw_U).Boolean_Val;
+         Result.Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
+         Result.Why3_Conf :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Why3_Conf));
+         Result.Why3_Debug :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Why3_Debug));
+         Result.Why3_Server :=
+           To_Unbounded_String (Switch_String (Parsed, Sw_Why3_Server));
+         Result.Z3_Counterexample :=
+           Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
 
          Result.Debug :=
-           Parsed.Values (Sw_D).Boolean_Val
-           or Parsed.Values (Sw_Flow_Debug).Boolean_Val;
+           Parsed.Values (Sw_D).Boolean_Val or Result.Flow_Extra_Debug;
          Result.Debug_Exec_RAC :=
            Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
 
@@ -4565,7 +4646,7 @@ package body Configuration is
               ("error: wrong argument for --why3-stagger-ms",
                With_Help => False);
          else
-            Why3_Stagger_Ms :=
+            Result.Why3_Stagger_Ms :=
               (if Parsed.Present (Sw_Why3_Stagger_Ms)
                then Parsed.Values (Sw_Why3_Stagger_Ms).Integer_Val
                else Default_Stagger_Ms);
@@ -4582,7 +4663,7 @@ package body Configuration is
               ("error: wrong argument for --why3-stagger-window",
                With_Help => False);
          else
-            Why3_Stagger_Window :=
+            Result.Why3_Stagger_Window :=
               Parsed.Values (Sw_Why3_Stagger_Window).Integer_Val;
          end if;
 
@@ -4628,9 +4709,9 @@ package body Configuration is
 
          Result.Selection := Process_Limit_Switches (Parsed);
 
-         Set_Output_Mode (Parsed);
-         Set_Warning_Mode (Parsed);
-         Set_Report_Mode (Parsed);
+         Result.Output := Parse_Output_Mode (Parsed);
+         Result.Warning_Mode := Parse_Warning_Mode (Parsed);
+         Result.Report := Parse_Report_Mode (Parsed);
 
          Result.Use_Semaphores :=
            not Result.Debug
@@ -5036,11 +5117,14 @@ package body Configuration is
          end if;
       end Set_Mode;
 
-      ---------------------
-      -- Set_Output_Mode --
-      ---------------------
+      -----------------------
+      -- Parse_Output_Mode --
+      -----------------------
 
-      procedure Set_Output_Mode (Parsed : Parsed_Switches) is
+      function Parse_Output_Mode
+        (Parsed : Parsed_Switches) return Output_Mode_Type
+      is
+         Output : Output_Mode_Type;
       begin
          if Switch_String (Parsed, Sw_Output) = "" then
             Output := GPO_Pretty_Simple;
@@ -5069,7 +5153,8 @@ package body Configuration is
                end if;
             end;
          end if;
-      end Set_Output_Mode;
+         return Output;
+      end Parse_Output_Mode;
 
       -------------------
       -- Set_Proof_Dir --
@@ -5225,11 +5310,14 @@ package body Configuration is
          end if;
       end Set_Provers;
 
-      ---------------------
-      -- Set_Report_Mode --
-      ---------------------
+      -----------------------
+      -- Parse_Report_Mode --
+      -----------------------
 
-      procedure Set_Report_Mode (Parsed : Parsed_Switches) is
+      function Parse_Report_Mode
+        (Parsed : Parsed_Switches) return Report_Mode_Type
+      is
+         Report : Report_Mode_Type;
       begin
          if Switch_String (Parsed, Sw_Report) = "" then
             Report := GPR_Fail;
@@ -5245,14 +5333,18 @@ package body Configuration is
             Abort_Msg
               ("error: wrong argument for --report", With_Help => False);
          end if;
-      end Set_Report_Mode;
+         return Report;
+      end Parse_Report_Mode;
 
-      ----------------------
-      -- Set_Warning_Mode --
-      ----------------------
+      ------------------------
+      -- Parse_Warning_Mode --
+      ------------------------
 
-      procedure Set_Warning_Mode (Parsed : Parsed_Switches) is
-         Warn_Switch : constant String := Switch_String (Parsed, Sw_Warnings);
+      function Parse_Warning_Mode
+        (Parsed : Parsed_Switches) return SPARK_Warning_Mode_Type
+      is
+         Warning_Mode : SPARK_Warning_Mode_Type;
+         Warn_Switch  : constant String := Switch_String (Parsed, Sw_Warnings);
       begin
          --  Note that "on" here is retained for backwards compatibility
          --  with release 14.0.1
@@ -5269,7 +5361,8 @@ package body Configuration is
             Abort_Msg
               ("error: wrong argument for --warnings", With_Help => False);
          end if;
-      end Set_Warning_Mode;
+         return Warning_Mode;
+      end Parse_Warning_Mode;
 
       --  Local variables
 
@@ -5277,10 +5370,13 @@ package body Configuration is
         [1 .. Ada.Command_Line.Argument_Count => <>];
       Com_Lin      : String_List_Access;
 
-      Parse_Result            : Project_Parsing_Result;
-      Command_Line_Switches   : Parsed_Switches;
-      Invocation_Switches     : Parsed_Switches;
-      Root_Attribute_Switches : Parsed_Switches;
+      Parse_Result              : Project_Parsing_Result;
+      Cargs                     : String_Lists.List;
+      Root_Compilation_Switches : String_Lists.List;
+      Root_GnateT_Switch        : Unbounded_String;
+      Command_Line_Switches     : Parsed_Switches;
+      Invocation_Switches       : Parsed_Switches;
+      Root_Attribute_Switches   : Parsed_Switches;
 
    begin
 
@@ -5304,10 +5400,9 @@ package body Configuration is
       Set_Project_Attributes;
       Parse_Result := Parse_Switches_Before_Project_Parsing (Full_Com_Lin);
       Free (Full_Com_Lin);
-      CL_Switches.Cargs_List.Clear;
       if Parse_Result.Cargs /= null then
          for Arg of Parse_Result.Cargs.all loop
-            CL_Switches.Cargs_List.Append (Arg.all);
+            Cargs.Append (Arg.all);
          end loop;
          Free (Parse_Result.Cargs);
       end if;
@@ -5402,7 +5497,8 @@ package body Configuration is
         Parse_Switches_Internal (All_Switches, Com_Lin.all);
 
       Detect_Installed_Provers;
-      Initialize_Root_Project_Settings;
+      Initialize_Root_Project_Settings
+        (Root_Compilation_Switches, Root_GnateT_Switch);
 
       Merge_Parsed_Switches (Invocation_Switches, Root_Attribute_Switches);
       Merge_Parsed_Switches (Invocation_Switches, Command_Line_Switches);
@@ -5411,6 +5507,10 @@ package body Configuration is
          Result : Invocation_Configuration;
       begin
          Postprocess_Invocation (Invocation_Switches, Result);
+         Result.Cargs_List := Cargs;
+         Result.Global_Compilation_Switches := Root_Compilation_Switches;
+         Result.GnateT_Switch := Root_GnateT_Switch;
+         Result.Verbosity := Parse_Result.Verbosity;
          declare
             Invocation   : constant Invocation_Configuration := Result;
             Maximum_Mode : GP_Mode;
@@ -5424,12 +5524,9 @@ package body Configuration is
                Maximum_Mode);
             Mode := Maximum_Mode;
 
-            Verbosity := Parse_Result.Verbosity;
-
             --  Publish the final invocation settings for legacy consumers
             Copy_To_CL_Switches
               (Invocation_Switches, Invocation.Selection.Files);
-            Limit_Lines := Invocation.Selection.Limit_Lines;
          end;
       end;
 
@@ -5797,18 +5894,19 @@ package body Configuration is
    is
 
       Args          : String_Lists.List;
+      Why3_Conf     : constant String :=
+        To_String (Invocation_State.Why3_Conf);
       Why3_VF       : constant Virtual_File :=
-        (if Why3_Conf.all /= ""
-         then Create (Filesystem_String (Why3_Conf.all))
+        (if Why3_Conf /= ""
+         then Create (Filesystem_String (Why3_Conf))
          else No_File);
       Gnatwhy3_Conf : constant String :=
         (if Why3_VF /= No_File
          then
            (if Is_Absolute_Path (Why3_VF)
-            then Why3_Conf.all
+            then Why3_Conf
             else
-              Ada.Directories.Compose
-                (+Get_Current_Dir.Full_Name, Why3_Conf.all))
+              Ada.Directories.Compose (+Get_Current_Dir.Full_Name, Why3_Conf))
          else "");
 
       -------------------------
@@ -5886,14 +5984,12 @@ package body Configuration is
          Args.Append ("spark_semaphore_wrapper");
       end if;
 
-      if CL_Switches.Memcached_Server /= null
-        and then CL_Switches.Memcached_Server.all /= ""
-      then
+      if CL_Switches.Memcached_Server /= "" then
          Args.Append ("spark_memcached_wrapper");
          --  The first argument of spark_memcached_wrapper is the salt. We
          --  don't use the salt for gnatwhy3, so use any dummy string.
          Args.Append ("salt");
-         Args.Append (CL_Switches.Memcached_Server.all);
+         Args.Append (CL_Switches.Memcached_Server);
       end if;
 
       Args.Append ("gnatwhy3");
@@ -5922,7 +6018,7 @@ package body Configuration is
          Args.Append ("--debug");
       end if;
 
-      if Debug_Save_VCs then
+      if Invocation_State.Debug_Save_VCs then
          Args.Append ("--debug-save-vcs");
       end if;
 
@@ -5934,25 +6030,25 @@ package body Configuration is
          Args.Append ("--prove-all");
       end if;
 
-      if Replay then
+      if Invocation_State.File_Options.Replay then
          Args.Append ("--replay");
       end if;
 
       Args.Append ("-j");
       Args.Append (Image (Parallel, 1));
 
-      if CL_Switches.Limit_Line.all /= "" then
+      if CL_Switches.Limit_Line /= "" then
          Args.Append ("--limit-line");
-         Args.Append (CL_Switches.Limit_Line.all);
+         Args.Append (CL_Switches.Limit_Line);
       end if;
 
-      if CL_Switches.Limit_Lines.all /= "" then
+      if CL_Switches.Limit_Lines /= "" then
          Args.Append ("--limit-lines");
-         Args.Append (Ada.Directories.Full_Name (CL_Switches.Limit_Lines.all));
+         Args.Append (Ada.Directories.Full_Name (CL_Switches.Limit_Lines));
       end if;
-      if CL_Switches.Limit_Region.all /= "" then
+      if CL_Switches.Limit_Region /= "" then
          Args.Append ("--limit-region");
-         Args.Append (CL_Switches.Limit_Region.all);
+         Args.Append (CL_Switches.Limit_Region);
       end if;
 
       if Proof_Dir /= null then
@@ -5974,19 +6070,19 @@ package body Configuration is
          Args.Append (Gnatwhy3_Conf);
       end if;
 
-      if Why3_Debug.all /= "" then
+      if Length (Invocation_State.Why3_Debug) /= 0 then
          Args.Append ("--debug-why3");
-         Args.Append (Why3_Debug.all);
+         Args.Append (To_String (Invocation_State.Why3_Debug));
       end if;
 
-      if Why3_Stagger_Ms > 0 then
+      if Invocation_State.Why3_Stagger_Ms > 0 then
          Args.Append ("--stagger-ms");
-         Args.Append (Image (Why3_Stagger_Ms, 1));
+         Args.Append (Image (Invocation_State.Why3_Stagger_Ms, 1));
       end if;
 
-      if Why3_Stagger_Window > 0 then
+      if Invocation_State.Why3_Stagger_Window > 0 then
          Args.Append ("--stagger-window");
-         Args.Append (Image (Why3_Stagger_Window, 1));
+         Args.Append (Image (Invocation_State.Why3_Stagger_Window, 1));
       end if;
 
       Args.Append ("--counterexample");
@@ -6004,7 +6100,7 @@ package body Configuration is
          end if;
       end if;
 
-      if Z3_Counterexample then
+      if Invocation_State.Z3_Counterexample then
          Args.Append ("--ce-prover");
          Args.Append ("z3_ce");
       end if;
@@ -6021,11 +6117,11 @@ package body Configuration is
          Args.Append (Image (FS.Proof_Warn_Timeout, 1));
       end if;
 
-      if Debug_Prover_Errors then
+      if Invocation_State.Debug_Prover_Errors then
          Args.Append ("--debug-prover-errors");
       end if;
 
-      if Why3_Logging then
+      if Invocation_State.Why3_Logging then
          Args.Append ("--logging");
       end if;
 

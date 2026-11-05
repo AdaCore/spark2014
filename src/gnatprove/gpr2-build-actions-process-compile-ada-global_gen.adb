@@ -1,7 +1,6 @@
 with Configuration;
 with Gnat2Why_Opts.Writing;
 with GNAT.OS_Lib;
-with GNAT.Strings; use GNAT.Strings;
 
 with GPR2.Build.Actions.Process.Compile.Ada.Analysis;
 with GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
@@ -56,7 +55,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
 
       --  Compilation switches of the Builder package
 
-      for Arg of Configuration.Global_Compilation_Switches loop
+      for Arg of Configuration.Global_Compilation_Switches.all loop
          Cmd_Line.Add_Argument (Arg);
       end loop;
 
@@ -64,13 +63,11 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
       --  is only set when the user did not specify one in the switches above,
       --  so the target configuration is never passed twice.
 
-      if Configuration.GnateT_Switch /= null
-        and then Configuration.GnateT_Switch.all /= ""
-      then
-         Cmd_Line.Add_Argument (Configuration.GnateT_Switch.all);
+      if Configuration.GnateT_Switch /= "" then
+         Cmd_Line.Add_Argument (Configuration.GnateT_Switch);
       end if;
 
-      for Arg of Configuration.CL_Switches.Cargs_List loop
+      for Arg of Configuration.CL_Switches.Cargs_List.all loop
          Cmd_Line.Add_Argument (Arg);
       end loop;
 

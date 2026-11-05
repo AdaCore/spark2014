@@ -736,9 +736,7 @@ package body Gnatprove_Build is
       Cur  : constant String := Ada.Directories.Current_Directory;
       Id   : GNAT.OS_Lib.Process_Id := GNAT.OS_Lib.Invalid_Pid;
    begin
-      if CL_Switches.Why3_Server = null
-        or else CL_Switches.Why3_Server.all = ""
-      then
+      if CL_Switches.Why3_Server = "" then
          Ada.Directories.Set_Directory (Artifact_Dir (Tree).String_Value);
          Args.Append ("-j");
          Args.Append (Image (Parallel, 1));
@@ -752,7 +750,7 @@ package body Gnatprove_Build is
          Ada.Environment_Variables.Set ("GNATPROVE_SOCKET", Socket_Name.all);
       else
          Ada.Environment_Variables.Set
-           ("GNATPROVE_SOCKET", CL_Switches.Why3_Server.all);
+           ("GNATPROVE_SOCKET", CL_Switches.Why3_Server);
       end if;
       if Use_Semaphores then
          Delete (Semaphore_Name);
@@ -900,9 +898,7 @@ package body Gnatprove_Build is
 
          function Add_Memcached_Wrapper (Cmd : String) return String is
          begin
-            if CL_Switches.Memcached_Server /= null
-              and then CL_Switches.Memcached_Server.all /= ""
-            then
+            if CL_Switches.Memcached_Server /= "" then
                --  For file caching the spec holds a directory, so it needs the
                --  same quoting as any other path in the command.
 
@@ -919,7 +915,7 @@ package body Gnatprove_Build is
 
                return
                  "spark_memcached_wrapper %t-%m "
-                 & Quote_For_Command (CL_Switches.Memcached_Server.all)
+                 & Quote_For_Command (CL_Switches.Memcached_Server)
                  & " "
                  & Cmd;
             else
