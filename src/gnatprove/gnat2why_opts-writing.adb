@@ -100,39 +100,39 @@ package body Gnat2Why_Opts.Writing is
       FS : constant Configuration.File_Specific_Maps.Constant_Reference_Type :=
         Configuration.File_Settings (Source_Path_Key);
    begin
-      pragma Assert (CL_Switches.Function_Sandboxing in "" | "on" | "off");
+      pragma Assert (Function_Sandboxing in "" | "on" | "off");
 
       return
         (Phase                         => Phase,
          Output                        => Output,
          Exclude_Line                  =>
-           To_Unbounded_String (CL_Switches.Exclude_Line),
+           To_Unbounded_String (Exclude_Line),
          Target_Name                   =>
            To_Unbounded_String (Configuration.Target_Name),
          Gnattest_Values               =>
-           To_Unbounded_String (CL_Switches.Gnattest_Values),
+           To_Unbounded_String (Gnattest_Values),
          Debug_Exec_RAC                => Debug_Exec_RAC,
          Debug_Disable_Prover_Feedback =>
-           CL_Switches.Debug_Disable_Prover_Feedback,
-         Debug_No_Cache_Output         => CL_Switches.Debug_No_Cache_Output,
+           Debug_Disable_Prover_Feedback,
+         Debug_No_Cache_Output         => Debug_No_Cache_Output,
          Debug                         => Debug,
          Flow_Extra_Debug              => Flow_Extra_Debug,
-         Flow_Generate_Contracts       => not CL_Switches.No_Global_Generation,
-         Limit_Units                   => CL_Switches.U,
+         Flow_Generate_Contracts       => not No_Global_Generation,
+         Limit_Units                   => Limit_Units,
          Limit_Subp                    =>
-           To_Unbounded_String (CL_Switches.Limit_Subp),
+           To_Unbounded_String (Limit_Subp),
          Limit_Region                  =>
-           To_Unbounded_String (CL_Switches.Limit_Region),
+           To_Unbounded_String (Limit_Region),
          Limit_Name                    =>
-           To_Unbounded_String (CL_Switches.Limit_Name),
+           To_Unbounded_String (Limit_Name),
          Limit_Lines                   => Limit_Lines.all,
          Report                        => Report,
          Warning_Mode                  => Warning_Mode,
-         Flow_Show_GG                  => CL_Switches.Flow_Show_GG,
+         Flow_Show_GG                  => Flow_Show_GG,
          Proof_Generate_Guards         =>
-           CL_Switches.Function_Sandboxing /= "off",
+           Function_Sandboxing /= "off",
          IDE_Mode                      => Configuration.IDE_Mode,
-         CWE                           => CL_Switches.CWE,
+         CWE                           => CWE,
          Max_Why3_Processes            => Max_Why3_Processes,
          Proof_Manifest                => Proof_Manifest,
          Data_Rep_Files                => Data_Rep_Files,

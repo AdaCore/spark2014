@@ -73,7 +73,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
          Cmd_Line.Add_Argument (Configuration.GnateT_Switch);
       end if;
 
-      for Arg of Configuration.CL_Switches.Cargs_List.all loop
+      for Arg of Configuration.Cargs_List.all loop
          Cmd_Line.Add_Argument (Arg);
       end loop;
 

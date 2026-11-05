@@ -72,43 +72,29 @@ package Configuration is
 
    end Constants;
 
-   package CL_Switches is
+   --  Effective settings from the command line and root project
 
-      --  Legacy interface for effective switch values from the command line
-      --  and root project. Values are exposed through read-only queries.
-      --  Naming of the variable:
-      --  * single letter variables correspond to single letter switches with
-      --    one dash, like -j, -v
-      --  * variable UU corresponds to -U
-      --  * other variables are with two dashes, e.g. --level
-      --  * File_List stands for the file arguments (that are not arguments of
-      --    some switch)
-      --  * Cargs_List is the list of arguments in the --cargs section
-
-      function Benchmark return Boolean;
-      function Memcached_Server return String;
-      function Cargs_List return not null access constant String_Lists.List;
-      function CWE return Boolean;
-      function Debug_Disable_Prover_Feedback return Boolean;
-      function Debug_No_Cache_Output return Boolean;
-      function Exclude_Line return String;
-      function Flow_Show_GG return Boolean;
-      function Function_Sandboxing return String;
-      function Gnattest_Values return String;
-      function SARIF_Base_URIs
-         return not null access constant String_Lists.List;
-      --  Validated "IDENTIFIER:PATH" entries, including the %SRCROOT% default
-      function Limit_Line return String;
-      function Limit_Lines return String;
-      function Limit_Name return String;
-      function Limit_Region return String;
-      function Limit_Subp return String;
-      function No_Global_Generation return Boolean;
-      function No_Subprojects return Boolean;
-      function Output_Header return Boolean;
-      function U return Boolean;
-      function Why3_Server return String;
-   end CL_Switches;
+   function Benchmark return Boolean;
+   function Memcached_Server return String;
+   function Cargs_List return not null access constant String_Lists.List;
+   function CWE return Boolean;
+   function Debug_Disable_Prover_Feedback return Boolean;
+   function Debug_No_Cache_Output return Boolean;
+   function Exclude_Line return String;
+   function Flow_Show_GG return Boolean;
+   function Function_Sandboxing return String;
+   function Gnattest_Values return String;
+   function SARIF_Base_URIs return not null access constant String_Lists.List;
+   --  Validated "IDENTIFIER:PATH" entries, including the %SRCROOT% default
+   function Limit_Name return String;
+   function Limit_Region return String;
+   function Limit_Subp return String;
+   function No_Global_Generation return Boolean;
+   function No_Subprojects return Boolean;
+   function Output_Header return Boolean;
+   function Limit_Units return Boolean;
+   --  Whether -u was explicitly specified
+   function Why3_Server return String;
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
    type Verbosity_Choice is (Quiet_Level, Normal_Level, Verbose_Level);

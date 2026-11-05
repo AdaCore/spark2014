@@ -118,13 +118,13 @@ package body Spark_Report is
       Handle             : Ada.Text_IO.File_Type;
       Command_Line_Image : Unbounded_String;
 
-      --  Config values from Configuration/CL_Switches
-      Output_Header      : constant Boolean := CL_Switches.Output_Header;
+      --  Config values from Configuration
+      Output_Header      : constant Boolean := Configuration.Output_Header;
       Has_Limit_Switches : constant Boolean :=
-        CL_Switches.Limit_Name /= ""
-        or else CL_Switches.Limit_Subp /= ""
+        Limit_Name /= ""
+        or else Limit_Subp /= ""
         or else not Configuration.Limit_Lines.Is_Empty
-        or else CL_Switches.Limit_Region /= "";
+        or else Limit_Region /= "";
       Colors             : constant Boolean :=
         Configuration.Output = GPO_Pretty_Color;
 

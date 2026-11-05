@@ -229,51 +229,44 @@ package body Configuration is
    CL_Units_Value : aliased GPR2.Build.Compilation_Unit.Maps.Map;
    --  Requested files resolved against the project tree
 
-   package body CL_Switches is
-      function Benchmark return Boolean
-      is (Invocation_State.Benchmark);
-      function Cargs_List return not null access constant String_Lists.List
-      is (Invocation_State.Cargs_List'Access);
-      function CWE return Boolean
-      is (Invocation_State.CWE);
-      function Debug_Disable_Prover_Feedback return Boolean
-      is (Invocation_State.Debug_Disable_Prover_Feedback);
-      function Debug_No_Cache_Output return Boolean
-      is (Invocation_State.Debug_No_Cache_Output);
-      function Exclude_Line return String
-      is (To_String (Invocation_State.Exclude_Line));
-      function Flow_Show_GG return Boolean
-      is (Invocation_State.Flow_Show_GG);
-      function Function_Sandboxing return String
-      is (To_String (Invocation_State.Function_Sandboxing));
-      function Gnattest_Values return String
-      is (To_String (Invocation_State.Gnattest_Values));
-      function Limit_Line return String
-      is (To_String (Invocation_State.Limit_Line));
-      function Limit_Lines return String
-      is (To_String (Invocation_State.Limit_Lines));
-      function Limit_Name return String
-      is (To_String (Invocation_State.Limit_Name));
-      function Limit_Region return String
-      is (To_String (Invocation_State.Limit_Region));
-      function Limit_Subp return String
-      is (To_String (Invocation_State.Limit_Subp));
-      function Memcached_Server return String
-      is (To_String (Invocation_State.Memcached_Server));
-      function No_Global_Generation return Boolean
-      is (Invocation_State.File_Options.No_Global_Generation);
-      function No_Subprojects return Boolean
-      is (Invocation_State.No_Subprojects);
-      function Output_Header return Boolean
-      is (Invocation_State.Output_Header);
-      function SARIF_Base_URIs
-         return not null access constant String_Lists.List
-      is (Resolved_SARIF_Base_URIs'Access);
-      function U return Boolean
-      is (Invocation_State.U);
-      function Why3_Server return String
-      is (To_String (Invocation_State.Why3_Server));
-   end CL_Switches;
+   function Benchmark return Boolean
+   is (Invocation_State.Benchmark);
+   function Cargs_List return not null access constant String_Lists.List
+   is (Invocation_State.Cargs_List'Access);
+   function CWE return Boolean
+   is (Invocation_State.CWE);
+   function Debug_Disable_Prover_Feedback return Boolean
+   is (Invocation_State.Debug_Disable_Prover_Feedback);
+   function Debug_No_Cache_Output return Boolean
+   is (Invocation_State.Debug_No_Cache_Output);
+   function Exclude_Line return String
+   is (To_String (Invocation_State.Exclude_Line));
+   function Flow_Show_GG return Boolean
+   is (Invocation_State.Flow_Show_GG);
+   function Function_Sandboxing return String
+   is (To_String (Invocation_State.Function_Sandboxing));
+   function Gnattest_Values return String
+   is (To_String (Invocation_State.Gnattest_Values));
+   function Limit_Name return String
+   is (To_String (Invocation_State.Limit_Name));
+   function Limit_Region return String
+   is (To_String (Invocation_State.Limit_Region));
+   function Limit_Subp return String
+   is (To_String (Invocation_State.Limit_Subp));
+   function Memcached_Server return String
+   is (To_String (Invocation_State.Memcached_Server));
+   function No_Global_Generation return Boolean
+   is (Invocation_State.File_Options.No_Global_Generation);
+   function No_Subprojects return Boolean
+   is (Invocation_State.No_Subprojects);
+   function Output_Header return Boolean
+   is (Invocation_State.Output_Header);
+   function SARIF_Base_URIs return not null access constant String_Lists.List
+   is (Resolved_SARIF_Base_URIs'Access);
+   function Limit_Units return Boolean
+   is (Invocation_State.U);
+   function Why3_Server return String
+   is (To_String (Invocation_State.Why3_Server));
 
    function All_Projects return Boolean
    is (Invocation_State.All_Projects);
@@ -320,7 +313,6 @@ package body Configuration is
    function Warning_Mode return SPARK_Warning_Mode_Type
    is (Invocation_State.Warning_Mode);
 
-   --  Private global state to replace public state from CL_Switches
    File_List           : String_Lists.List;
    Proof_Manifest_Maps : Manifest_Maps.Map;
 
@@ -6031,12 +6023,12 @@ package body Configuration is
          Args.Append ("spark_semaphore_wrapper");
       end if;
 
-      if CL_Switches.Memcached_Server /= "" then
+      if Memcached_Server /= "" then
          Args.Append ("spark_memcached_wrapper");
          --  The first argument of spark_memcached_wrapper is the salt. We
          --  don't use the salt for gnatwhy3, so use any dummy string.
          Args.Append ("salt");
-         Args.Append (CL_Switches.Memcached_Server);
+         Args.Append (Memcached_Server);
       end if;
 
       Args.Append ("gnatwhy3");
@@ -6084,18 +6076,20 @@ package body Configuration is
       Args.Append ("-j");
       Args.Append (Image (Parallel, 1));
 
-      if CL_Switches.Limit_Line /= "" then
+      if To_String (Invocation_State.Limit_Line) /= "" then
          Args.Append ("--limit-line");
-         Args.Append (CL_Switches.Limit_Line);
+         Args.Append (To_String (Invocation_State.Limit_Line));
       end if;
 
-      if CL_Switches.Limit_Lines /= "" then
+      if To_String (Invocation_State.Limit_Lines) /= "" then
          Args.Append ("--limit-lines");
-         Args.Append (Ada.Directories.Full_Name (CL_Switches.Limit_Lines));
+         Args.Append
+           (Ada.Directories.Full_Name
+              (To_String (Invocation_State.Limit_Lines)));
       end if;
-      if CL_Switches.Limit_Region /= "" then
+      if Limit_Region /= "" then
          Args.Append ("--limit-region");
-         Args.Append (CL_Switches.Limit_Region);
+         Args.Append (Limit_Region);
       end if;
 
       if Proof_Dir /= null then
