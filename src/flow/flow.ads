@@ -78,14 +78,6 @@ package Flow is
         Equivalent_Elements => Flow_Graphs."=",
         "="                 => Flow_Graphs."=");
 
-   package Vertex_To_Vertex_Set_Maps is new
-     Ada.Containers.Hashed_Maps
-       (Key_Type        => Flow_Graphs.Vertex_Id,
-        Element_Type    => Vertex_Sets.Set,
-        Hash            => Flow_Graphs.Vertex_Hash,
-        Equivalent_Keys => Flow_Graphs."=",
-        "="             => Vertex_Sets."=");
-
    ----------------------------------------------------------------------
    --  Flow_Analysis_Graphs
    ----------------------------------------------------------------------
