@@ -3033,7 +3033,6 @@ package body Configuration is
       end if;
    end No_Project_File_Mode;
 
-   --------------------
    -----------------------------
    -- Parse_Switches_Internal --
    -----------------------------

@@ -105,32 +105,26 @@ package body Gnat2Why_Opts.Writing is
       return
         (Phase                         => Phase,
          Output                        => Output,
-         Exclude_Line                  =>
-           To_Unbounded_String (Exclude_Line),
+         Exclude_Line                  => To_Unbounded_String (Exclude_Line),
          Target_Name                   =>
            To_Unbounded_String (Configuration.Target_Name),
          Gnattest_Values               =>
            To_Unbounded_String (Gnattest_Values),
          Debug_Exec_RAC                => Debug_Exec_RAC,
-         Debug_Disable_Prover_Feedback =>
-           Debug_Disable_Prover_Feedback,
+         Debug_Disable_Prover_Feedback => Debug_Disable_Prover_Feedback,
          Debug_No_Cache_Output         => Debug_No_Cache_Output,
          Debug                         => Debug,
          Flow_Extra_Debug              => Flow_Extra_Debug,
          Flow_Generate_Contracts       => not No_Global_Generation,
          Limit_Units                   => Limit_Units,
-         Limit_Subp                    =>
-           To_Unbounded_String (Limit_Subp),
-         Limit_Region                  =>
-           To_Unbounded_String (Limit_Region),
-         Limit_Name                    =>
-           To_Unbounded_String (Limit_Name),
+         Limit_Subp                    => To_Unbounded_String (Limit_Subp),
+         Limit_Region                  => To_Unbounded_String (Limit_Region),
+         Limit_Name                    => To_Unbounded_String (Limit_Name),
          Limit_Lines                   => Limit_Lines.all,
          Report                        => Report,
          Warning_Mode                  => Warning_Mode,
          Flow_Show_GG                  => Flow_Show_GG,
-         Proof_Generate_Guards         =>
-           Function_Sandboxing /= "off",
+         Proof_Generate_Guards         => Function_Sandboxing /= "off",
          IDE_Mode                      => Configuration.IDE_Mode,
          CWE                           => CWE,
          Max_Why3_Processes            => Max_Why3_Processes,
