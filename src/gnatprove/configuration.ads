@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Hashed_Sets;
+with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Hash;
@@ -94,7 +95,8 @@ package Configuration is
       function Flow_Show_GG return Boolean;
       function Function_Sandboxing return String;
       function Gnattest_Values return String;
-      function SARIF_Base_URIs return String_Lists.List;
+      function SARIF_Base_URIs
+         return not null access constant String_Lists.List;
       --  Validated "IDENTIFIER:PATH" entries, including the %SRCROOT% default
       function Limit_Line return String;
       function Limit_Lines return String;
@@ -132,7 +134,8 @@ package Configuration is
 
    function Max_Why3_Processes return Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
-   function CL_Units return GPR2.Build.Compilation_Unit.Maps.Map;
+   function CL_Units
+      return not null access constant GPR2.Build.Compilation_Unit.Maps.Map;
    --  Requested files resolved to compilation units
 
    function Checks_As_Errors return Boolean;
@@ -202,7 +205,16 @@ package Configuration is
       Warning_Status        : Warning_Status_Array;
    end record;
 
-   function File_Settings (Key : String) return File_Specific;
+   package File_Specific_Maps is new
+     Ada.Containers.Indefinite_Hashed_Maps
+       (Key_Type        => String,
+        Element_Type    => File_Specific,
+        Hash            => Ada.Strings.Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
+
+   function File_Settings
+     (Key : String) return File_Specific_Maps.Constant_Reference_Type;
    --  Return the effective settings associated with a source-file key
 
    Max_Non_Blank_Lines : constant := 6;

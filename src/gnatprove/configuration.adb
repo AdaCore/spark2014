@@ -26,7 +26,6 @@
 with Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Containers;        use Ada.Containers;
-with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.IO_Exceptions;
 with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -132,18 +131,11 @@ package body Configuration is
         Equivalent_Keys => "=",
         "="             => Manifest_Subprogram_Vectors."=");
 
-   package File_Specific_Maps is new
-     Ada.Containers.Indefinite_Hashed_Maps
-       (Key_Type        => String,
-        Element_Type    => File_Specific,
-        Hash            => Ada.Strings.Hash,
-        Equivalent_Keys => "=",
-        "="             => "=");
+   File_Specific_Map : aliased File_Specific_Maps.Map;
 
-   File_Specific_Map : File_Specific_Maps.Map;
-
-   function File_Settings (Key : String) return File_Specific
-   is (File_Specific_Map (Key));
+   function File_Settings
+     (Key : String) return File_Specific_Maps.Constant_Reference_Type
+   is (File_Specific_Map.Constant_Reference (Key));
 
    type File_Selection is record
       Files       : String_Lists.List;
@@ -219,7 +211,7 @@ package body Configuration is
 
    Invocation_Published : Boolean := False;
 
-   Resolved_SARIF_Base_URIs : String_Lists.List;
+   Resolved_SARIF_Base_URIs : aliased String_Lists.List;
    --  Validated invocation entries with the project-derived default added
 
    Mode_Value               : GP_Mode := GPM_Check;
@@ -234,7 +226,7 @@ package body Configuration is
    Proof_Dir       : GNAT.Strings.String_Access;
    --  Prover availability and the root project's proof directory
 
-   CL_Units_Value : GPR2.Build.Compilation_Unit.Maps.Map;
+   CL_Units_Value : aliased GPR2.Build.Compilation_Unit.Maps.Map;
    --  Requested files resolved against the project tree
 
    package body CL_Switches is
@@ -274,8 +266,9 @@ package body Configuration is
       is (Invocation_State.No_Subprojects);
       function Output_Header return Boolean
       is (Invocation_State.Output_Header);
-      function SARIF_Base_URIs return String_Lists.List
-      is (Resolved_SARIF_Base_URIs);
+      function SARIF_Base_URIs
+         return not null access constant String_Lists.List
+      is (Resolved_SARIF_Base_URIs'Access);
       function U return Boolean
       is (Invocation_State.U);
       function Why3_Server return String
@@ -286,8 +279,9 @@ package body Configuration is
    is (Invocation_State.All_Projects);
    function Checks_As_Errors return Boolean
    is (Invocation_State.Checks_As_Errors);
-   function CL_Units return GPR2.Build.Compilation_Unit.Maps.Map
-   is (CL_Units_Value);
+   function CL_Units
+      return not null access constant GPR2.Build.Compilation_Unit.Maps.Map
+   is (CL_Units_Value'Access);
    function Continue_On_Error return Boolean
    is (Invocation_State.Continue_On_Error);
    function Debug return Boolean

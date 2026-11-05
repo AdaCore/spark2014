@@ -495,8 +495,8 @@ package body Gnatprove_Build is
       declare
          Main_Units      : Unit_Set;
          Selected_Units  : Unit_Set;
-         Requested_Units : constant GPR2.Build.Compilation_Unit.Maps.Map :=
-           Configuration.CL_Units;
+         Requested_Units : GPR2.Build.Compilation_Unit.Maps.Map renames
+           Configuration.CL_Units.all;
       begin
          if not Requested_Units.Is_Empty then
             if Configuration.Only_Given or else Configuration.All_Projects then

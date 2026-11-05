@@ -920,7 +920,7 @@ is
    end Tool_Invocation;
 
 begin
-   for Raw of Configuration.CL_Switches.SARIF_Base_URIs loop
+   for Raw of Configuration.CL_Switches.SARIF_Base_URIs.all loop
       declare
          Colon : constant Natural := Ada.Strings.Fixed.Index (Raw, ":");
          Id    : constant String := Raw (Raw'First .. Colon - 1);
