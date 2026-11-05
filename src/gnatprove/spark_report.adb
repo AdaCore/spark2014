@@ -123,8 +123,7 @@ package body Spark_Report is
       Has_Limit_Switches : constant Boolean :=
         CL_Switches.Limit_Name /= ""
         or else CL_Switches.Limit_Subp /= ""
-        or else CL_Switches.Limit_Line /= ""
-        or else CL_Switches.Limit_Lines /= ""
+        or else not Configuration.Limit_Lines.Is_Empty
         or else CL_Switches.Limit_Region /= "";
       Colors             : constant Boolean :=
         Configuration.Output = GPO_Pretty_Color;
