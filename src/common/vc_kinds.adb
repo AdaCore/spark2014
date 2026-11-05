@@ -1252,6 +1252,9 @@ package body VC_Kinds is
          when Lim_Potentially_Invalid_Eq                                  =>
            "the primitive equality of a record type with the "
            & "Potentially_Invalid aspect",
+         when Lim_Potentially_Invalid_Inherited_Rep                       =>
+           "a call to an inherited subprogram with a representation change for"
+           & " a potentially invalid parameter or result",
          when Lim_Potentially_Invalid_Iterable                            =>
            "a Potentially_Invalid aspect on a function associated to the"
            & " aspect Iterable",
@@ -3659,6 +3662,8 @@ package body VC_Kinds is
            "package-before-inv",
          when Lim_Potentially_Invalid_Eq                                  =>
            "potentially-invalid-eq",
+         when Lim_Potentially_Invalid_Inherited_Rep                       =>
+           "potentially-invalid-inherited-rep",
          when Lim_Potentially_Invalid_Iterable                            =>
            "potentially-invalid-iterable",
          when Lim_Potentially_Invalid_Mutable_Discr                       =>
