@@ -7279,10 +7279,12 @@ package body SPARK_Util is
               and then Is_Potentially_Invalid (Defining_Identifier (N));
 
          when N_Assignment_Statement =>
+            --  Inlining can introduce conversions in assignment targets
+
             return
               (Nkind (Expression (N)) = N_Function_Call
                or else not Has_Scalar_Type (Etype (Name (N))))
-              and then Is_Potentially_Invalid (Get_Root_Object (Name (N)));
+              and then Is_Potentially_Invalid_Expr (Name (N));
 
          --  N should be an actual parameter of a call
 
@@ -7294,12 +7296,15 @@ package body SPARK_Util is
             begin
                Find_Actual (N, Formal, Call);
 
+               --  The actual itself must carry a validity flag. Conversions
+               --  require a validity check on copy-back.
+
                return
                  Present (Call)
                  and then
                    Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
                  and then Is_Potentially_Invalid (Formal)
-                 and then Is_Potentially_Invalid (Get_Root_Object (N));
+                 and then Is_Potentially_Invalid_Expr (N);
             end;
       end case;
    end Propagates_Validity_Flag;
