@@ -1140,14 +1140,13 @@ package body Why.Gen.Expr is
 
       On_Wrapper : constant Boolean :=
         Is_Init_Wrapper_Type (From) and Is_Init_Wrapper_Type (To);
+      --  Intermediate maps use On_Wrapper even for statically constrained
+      --  arrays. Wrapping and unwrapping are handled separately below.
+
       From_Split : constant W_Type_Id :=
-        (if Is_Static_Array_Type (From_Ent)
-         then From
-         else EW_Split (From_Ent, Relaxed_Init => On_Wrapper));
+        EW_Split (From_Ent, Relaxed_Init => On_Wrapper);
       To_Split   : constant W_Type_Id :=
-        (if Is_Static_Array_Type (To_Ent)
-         then To
-         else EW_Split (To_Ent, Relaxed_Init => On_Wrapper));
+        EW_Split (To_Ent, Relaxed_Init => On_Wrapper);
 
       --  Beginning of processing for Insert_Array_Conversion
 
