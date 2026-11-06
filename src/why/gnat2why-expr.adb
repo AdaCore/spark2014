@@ -13061,6 +13061,7 @@ package body Gnat2Why.Expr is
                             else Has_Relaxed_Init (Typ)))
                        elsif Expr_Has_Relaxed_Init
                          (Value.Value, No_Eval => False)
+                         and then (Relaxed_Init or else Has_Relaxed_Init (Typ))
                        then EW_Abstract (Typ, Relaxed_Init => True)
                        else Type_Of_Node (Typ)));
                B     : constant Binder_Type :=
@@ -14381,11 +14382,12 @@ package body Gnat2Why.Expr is
               Transform_Expr
                 (Value,
                  (if Expr_Has_Relaxed_Init (Value, No_Eval => False)
+                    and then (Relaxed_Init or else Has_Relaxed_Init (Typ))
                   then EW_Abstract (Typ, Relaxed_Init => True)
                   else Type_Of_Node (Typ)),
-                 --  If a value which is not a scalar type has relaxed
-                 --  initialization, so will the aggregate. Go to the wrapper
-                 --  type to avoid spurious initialization checks.
+                 --  Preserve flags when the component representation allows
+                 --  partial initialization. Otherwise, conversion to the
+                 --  ordinary representation checks initialization.
 
                  Domain,
                  Params);
