@@ -28,6 +28,7 @@ with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Unchecked_Deallocation;
 with Elists;                  use Elists;
+with Flow_Utility.Initialization;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;         use Gnat2Why.Tables;
@@ -3697,10 +3698,20 @@ package body Gnat2Why.Expr.Aggregates is
          then
             pragma Assert (Box_Present (Value));
             declare
-               Comp_Relaxed : constant Boolean :=
+               use Flow_Utility.Initialization;
+
+               Comp_Relaxed    : constant Boolean :=
                  (if Relaxed_Init
                   then Has_Init_Wrapper (Comp_Type)
                   else Has_Relaxed_Init (Comp_Type));
+               Default_Relaxed : constant Boolean :=
+                 Comp_Relaxed
+                 or else
+                   (Has_Init_Wrapper (Comp_Type)
+                    and then
+                      Default_Initialization (Expr_Typ)
+                      not in Full_Default_Initialization
+                           | No_Possible_Initialization);
 
             begin
                --  If Expr_Typ has a Default_Component_Value aspect, use its
@@ -3718,9 +3729,27 @@ package body Gnat2Why.Expr.Aggregates is
                --  Otherwise, use the default value of the type
 
                else
+                  --  Retain a partial default's flags until checking the
+                  --  initialization required by the component representation.
+
                   Result :=
                     Compute_Default_Value
-                      (Value, Comp_Type, Comp_Relaxed, Domain, Params);
+                      (Value, Comp_Type, Default_Relaxed, Domain, Params);
+
+                  if Default_Relaxed and then not Comp_Relaxed then
+                     Result :=
+                       Insert_Initialization_Check
+                         (Ada_Node           => Value,
+                          E                  => Comp_Type,
+                          Name               => Result,
+                          Domain             => Domain,
+                          Exclude_Components => Relaxed);
+                     Result :=
+                       Insert_Simple_Conversion
+                         (Domain => Domain,
+                          Expr   => Result,
+                          To     => EW_Abstract (Comp_Type));
+                  end if;
                end if;
             end;
          else
@@ -3922,13 +3951,13 @@ package body Gnat2Why.Expr.Aggregates is
                begin
                   Value := New_Temp_For_Expr (Arg_Val);
 
-                  --  If the value has a type which does not have
-                  --  relaxed initialization, it must be initialized.
+                  --  Evaluated scalar expressions use the ordinary
+                  --  representation and are initialized. Boxed defaults can
+                  --  instead carry scalar wrappers whose flags must be
+                  --  preserved, like those of composite values.
 
                   if (Has_Relaxed_Init (Comp_Type) or else Relaxed_Init)
-                    and then
-                      (Has_Scalar_Type (Comp_Type)
-                       or else not Is_Init_Wrapper_Type (Get_Type (+Value)))
+                    and then not Is_Init_Wrapper_Type (Get_Type (+Value))
                   then
                      Is_Init :=
                        +Compute_Is_Initialized

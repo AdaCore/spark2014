@@ -26547,14 +26547,23 @@ package body Gnat2Why.Expr is
                pragma Assert (Present (Component));
 
                declare
-                  Comp_Ty      : constant Entity_Id := Etype (Component);
-                  Comp_Relaxed : constant Boolean :=
+                  Comp_Ty         : constant Entity_Id := Etype (Component);
+                  Comp_Relaxed    : constant Boolean :=
                     (if Relaxed_Init
                      then Has_Init_Wrapper (Comp_Ty)
                      else Has_Relaxed_Init (Comp_Ty))
                     and then Ekind (Component) = E_Component;
-                  W_Comp_Ty    : constant W_Type_Id :=
+                  W_Comp_Ty       : constant W_Type_Id :=
                     EW_Abstract (Comp_Ty, Comp_Relaxed);
+                  Default_Relaxed : constant Boolean :=
+                    Comp_Relaxed
+                    or else
+                      (Box_Present (Association)
+                       and then Has_Init_Wrapper (Comp_Ty)
+                       and then
+                         Default_Initialization (Comp_Ty)
+                         not in Full_Default_Initialization
+                              | No_Possible_Initialization);
 
                begin
                   --  For a regular association, use the provided value
@@ -26578,9 +26587,30 @@ package body Gnat2Why.Expr is
                   --  Otherwise, compute the default value of the type
 
                   else
+                     --  Retain a partial default's flags until checking the
+                     --  initialization required by the component
+                     --  representation.
+
                      Expr :=
                        Compute_Default_Value
-                         (Association, Comp_Ty, Comp_Relaxed, Domain, Params);
+                         (Association,
+                          Comp_Ty,
+                          Default_Relaxed,
+                          Domain,
+                          Params);
+
+                     if Default_Relaxed and then not Comp_Relaxed then
+                        Expr :=
+                          Insert_Initialization_Check
+                            (Ada_Node           => Association,
+                             E                  => Comp_Ty,
+                             Name               => Expr,
+                             Domain             => Domain,
+                             Exclude_Components => Relaxed);
+                        Expr :=
+                          Insert_Simple_Conversion
+                            (Domain => Domain, Expr => Expr, To => W_Comp_Ty);
+                     end if;
                   end if;
                end;
 
