@@ -5090,13 +5090,9 @@ package body Gnat2Why.Expr is
          end;
 
          --  Check predicates on enclosing objects after all copy-back stores
-         --  Skip empty sequences so calls without stores still have a single
-         --  void statement.
 
-         if not Is_Void_Sequence (Pred_Checks) then
-            Append (Store, Pred_Checks);
-         end if;
-         if Exc_Exit and then not Is_Void_Sequence (Exc_Pred_Checks) then
+         Append (Store, Pred_Checks);
+         if Exc_Exit then
             Append (Exc_Store, Exc_Pred_Checks);
          end if;
 

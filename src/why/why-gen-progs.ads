@@ -46,11 +46,17 @@ package Why.Gen.Progs is
    --  depending on the types of nodes involved:
    --
    --  * functions Sequence return a new sequence node based on their
-   --    arguments, optimizing out the Void statements
+   --    arguments
    --  * procedures Append update their first argument by creating a new
    --    sequence node chaining all arguments (obtained by calling Sequence)
    --  * procedures Prepend update their last argument by creating a new
    --    sequence node chaining all arguments (obtained by calling Sequence)
+   --
+   --  All these subprograms optimize out void statements. As a result
+   --  statement sequences constructed solely through subprograms in this unit
+   --  should never contain superfluous void statements. This only concern
+   --  plain, un-decorated void statements. Labeled void statements are
+   --  untouched, as they contain potentially meaningful information.
    --
    --  Procedures Append/Prepend that operate on types W_Prog_Id and W_Expr_Id
    --  (which should also be program nodes, only with more general type
@@ -60,7 +66,7 @@ package Why.Gen.Progs is
    --  Procedures Append/Prepend that operate on type W_Statement_Sequence_Id
    --  on the contrary directly mutate the underlying Why3 node. This is an
    --  optimization for cases where there is a risk of creating too deep Why3
-   --  programs, which causes scalabilty issues. The mutated parameter is of
+   --  programs, which causes scalability issues. The mutated parameter is of
    --  mode IN OUT to clearly signal to callers that the argument is mutated.
    --  Note that this should only be applied when the node is not already
    --  shared in the AST, otherwise the changes apply to all subtrees that
@@ -99,7 +105,8 @@ package Why.Gen.Progs is
    --  visible calls to New_Statement_Sequence for non sequential statements).
 
    function Is_Void_Sequence (S : W_Statement_Sequence_Id) return Boolean;
-   --  Returns True if S contains only one void statement
+   --  Returns True if S contains only void statements (recursively,
+   --  like Is_Void).
 
    procedure Emit_Always_True_Range_Check
      (Ada_Node : Node_Id; Check_Kind : Scalar_Check_Kind);
