@@ -1,0 +1,6 @@
+array_assignment.adb:1:11: warning: subprogram "Array_Assignment" has no effect
+array_assignment.adb:6:04: info: range check proved (CVC5: 2 VC)
+array_assignment.adb:8:06: info: length check proved (CVC5: 3 VC)
+array_assignment.adb:8:09: info: length check proved (CVC5: 3 VC)
+array_assignment.adb:8:09: info: predicate check proved (CVC5: 1 VC)
+array_assignment.adb:9:19: info: assertion proved (CVC5: 2 VC)
