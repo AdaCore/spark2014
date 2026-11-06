@@ -1,0 +1,17 @@
+test.ads:25:04: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK (SPARK RM 13.9.1(7))
+test.ads:25:04: error: violation of aspect SPARK_Mode at line 1
+test.ads:26:04: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK (SPARK RM 13.9.1(7))
+test.ads:26:04: error: violation of aspect SPARK_Mode at line 1
+test.ads:29:04: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK (SPARK RM 13.9.1(7))
+test.ads:29:04: error: violation of aspect SPARK_Mode at line 1
+test.ads:34:04: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK (SPARK RM 13.9.1(7))
+test.ads:34:04: error: violation of aspect SPARK_Mode at line 1
+test.ads:39:04: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK (SPARK RM 13.9.1(7))
+test.ads:39:04: error: violation of aspect SPARK_Mode at line 1
+test.ads:42:04: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK (SPARK RM 13.9.1(7))
+test.ads:42:04: error: violation of aspect SPARK_Mode at line 1
+test.ads:46:20: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK (SPARK RM 13.9.1(7))
+test.ads:46:20: error: violation of aspect SPARK_Mode at line 1
+test.ads:49:13: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK (SPARK RM 13.9.1(7))
+test.ads:49:13: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof
