@@ -1,0 +1,18 @@
+explicit_array_elements.adb:9:06: info: data dependencies proved
+explicit_array_elements.adb:11:16: info: predicate check proved (Trivial: 1 VC)
+explicit_array_elements.adb:11:27: medium: initialization check might fail (e.g. when Value = (F => ?) and Value.F'Initialized = False) [possible fix: subprogram at line 8 should mention Value'Initialized in a precondition]
+inherited_predicates.adb:14:06: info: data dependencies proved
+inherited_predicates.adb:16:16: info: predicate check proved (Trivial: 1 VC)
+inherited_predicates.adb:16:22: medium: initialization check might fail (e.g. when Value = (F => ?) and Value.F'Initialized = False) [possible fix: subprogram at line 13 should mention Value'Initialized in a precondition]
+inherited_predicates.adb:24:06: info: data dependencies proved
+inherited_predicates.adb:26:38: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
+inherited_predicates.adb:26:38: info: predicate check proved (Trivial: 1 VC)
+inherited_predicates.adb:26:39: info: predicate check proved (Trivial: 1 VC)
+inherited_predicates.adb:26:50: medium: initialization check might fail (e.g. when Value = (F => ?) and Value.F'Initialized = False) [possible fix: subprogram at line 23 should mention Value'Initialized in a precondition]
+inherited_predicates.adb:32:06: info: data dependencies proved
+inherited_predicates.adb:35:38: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
+inherited_predicates.adb:35:38: info: predicate check proved (Trivial: 1 VC)
+inherited_predicates.adb:35:39: info: predicate check proved (Trivial: 1 VC)
+inherited_predicates.adb:35:50: info: initialization check proved (CVC5: 1 VC)
+inherited_predicates.adb:37:22: info: assertion proved (CVC5: 1 VC)
+inherited_predicates.adb:37:37: info: initialization check proved (CVC5: 1 VC)
