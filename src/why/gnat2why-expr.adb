@@ -19785,7 +19785,7 @@ package body Gnat2Why.Expr is
                     Domain   => Domain,
                     Name     => Get_Array_To_Wrapper_Name (Right_Type),
                     Args     => (1 => Args (Arg_Ind - 3)),
-                    Typ      => EW_Split (Left_Type, Relaxed_Init => True));
+                    Typ      => EW_Split (Right_Type, Relaxed_Init => True));
             end if;
          end if;
 
