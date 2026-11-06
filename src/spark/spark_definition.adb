@@ -922,6 +922,10 @@ package body SPARK_Definition is
       CC   : Node_Id := Empty;
       Subp : Entity_Id := Empty;
 
+      Is_Prefix : Boolean := True;
+      --  Whether Read is a prefix of N through component selections and
+      --  'Old references of composite type, without evaluating a scalar value.
+
    begin
       --  Warnings are not emitted in Global_Gen_Mode
 
@@ -934,6 +938,30 @@ package body SPARK_Definition is
       --  found. Ignore preconditions that always need to be self guarded.
 
       loop
+         --  A validity query does not read its prefix. Index expressions and
+         --  'Old references of scalar type still require validity checks.
+
+         if Is_Prefix then
+            if Nkind (Par) = N_Attribute_Reference
+              and then Attribute_Name (Par) in Name_Valid | Name_Valid_Scalars
+            then
+               return;
+
+            elsif Nkind (Par)
+                  in N_Selected_Component | N_Indexed_Component | N_Slice
+            then
+               Is_Prefix := Prefix (Par) = N;
+
+            elsif Nkind (Par) = N_Attribute_Reference
+              and then Attribute_Name (Par) = Name_Old
+            then
+               Is_Prefix := not Has_Scalar_Type (Etype (Par));
+
+            else
+               Is_Prefix := False;
+            end if;
+         end if;
+
          if Nkind (Par) = N_Pragma_Argument_Association then
             declare
                Prag_Id : constant Pragma_Id :=
@@ -1042,12 +1070,7 @@ package body SPARK_Definition is
 
       if (Nkind (Par) = N_Attribute_Reference
           and then
-            Attribute_Name (Par)
-            in Name_Valid
-             | Name_Valid_Scalars
-             | Name_Length
-             | Name_First
-             | Name_Last)
+            Attribute_Name (Par) in Name_Length | Name_First | Name_Last)
         or else
           (Nkind (Par) = N_Selected_Component
            and then Ekind (Entity (Selector_Name (Par))) = E_Discriminant)

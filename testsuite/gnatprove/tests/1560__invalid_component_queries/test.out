@@ -1,0 +1,13 @@
+queries.ads:32:26: warning: conjunct in postcondition does not check the outcome of calling "Old_Query" [-gnatw.t]
+queries.ads:32:49: warning: conjunct in postcondition does not check the outcome of calling "Old_Query" [-gnatw.t]
+queries.ads:38:33: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+queries.ads:44:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+queries.ads:48:06: warning: postcondition does not check the outcome of calling "Scalar_Old_Query" [-gnatw.t]
+queries.ads:48:14: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+queries.ads:48:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+queries.ads:48:15: medium: validity check might fail
+queries.ads:53:17: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+queries.ads:58:22: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+test.adb:4:04: info: initialization of "X" proved
+test.adb:7:19: info: assertion proved (CVC5: 1 VC)
+test.adb:9:19: info: assertion proved (CVC5: 1 VC)
