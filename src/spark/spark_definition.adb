@@ -5322,7 +5322,9 @@ package body SPARK_Definition is
                      begin
                         while Present (Other) loop
                            if Nkind (Other)
-                              in N_Package_Declaration | N_Package_Body
+                              in N_Package_Declaration
+                               | N_Package_Body
+                               | N_Package_Body_Stub
                              and then
                                not Is_Generic_Unit
                                      (Unique_Defining_Entity (Other))
