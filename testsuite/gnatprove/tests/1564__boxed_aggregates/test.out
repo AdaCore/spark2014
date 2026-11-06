@@ -1,0 +1,113 @@
+arrays.adb:5:32: info: for parameter "Result" at the end of the subprogram at arrays.adb:5
+arrays.adb:5:32: info: initialization check proved (CVC5: 1 VC)
+arrays.adb:5:53: info: data dependencies proved
+arrays.adb:8:17: medium: initialization check might fail
+arrays.adb:11:33: info: for parameter "Result" at the end of the subprogram at arrays.adb:11
+arrays.adb:11:33: info: initialization check proved (CVC5: 1 VC)
+arrays.adb:11:54: info: data dependencies proved
+arrays.adb:13:22: medium: initialization check might fail (e.g. when Value'Initialized = False)
+arrays.adb:15:17: info: initialization check proved (CVC5: 1 VC)
+arrays.adb:16:22: medium: assertion might fail
+arrays.adb:22:36: info: initialization of "Result" proved
+arrays.adb:22:63: info: data dependencies proved
+arrays.adb:25:17: medium: initialization check might fail
+arrays.adb:31:32: info: initialization of "Result" proved
+arrays.adb:31:59: info: data dependencies proved
+arrays.adb:34:17: medium: initialization check might fail
+arrays.adb:44:34: info: initialization of "Result" proved
+arrays.adb:44:61: info: data dependencies proved
+arrays.adb:47:22: info: assertion proved (CVC5: 1 VC)
+arrays.adb:47:27: info: initialization check proved (CVC5: 1 VC)
+arrays.adb:48:22: medium: initialization check might fail
+arrays.adb:54:33: info: initialization of "Result" proved
+arrays.adb:54:60: info: data dependencies proved
+arrays.adb:57:17: info: initialization check proved (CVC5: 1 VC)
+arrays.adb:58:22: info: assertion proved (CVC5: 1 VC)
+arrays.adb:62:23: info: in default value of box association at arrays.adb:66
+arrays.adb:62:23: info: range check proved (CVC5: 2 VC)
+arrays.adb:65:29: info: for parameter "Result" at the end of the subprogram at arrays.adb:65
+arrays.adb:65:29: info: initialization check proved (CVC5: 1 VC)
+arrays.adb:65:60: info: data dependencies proved
+arrays.adb:68:17: info: initialization check proved (CVC5: 1 VC)
+arrays.adb:69:22: info: assertion proved (CVC5: 1 VC)
+arrays.adb:69:22: info: initialization check proved (CVC5: 1 VC)
+arrays.adb:72:64: info: in default value of box association at arrays.adb:79
+arrays.adb:72:64: info: in default value of box association at arrays.adb:90
+arrays.adb:72:64: info: range check proved (CVC5: 2 VC)
+arrays.adb:72:64: info: range check proved (CVC5: 2 VC)
+arrays.adb:76:36: info: initialization of "Result" proved
+arrays.adb:77:06: info: data dependencies proved
+arrays.adb:81:17: info: initialization check proved (CVC5: 1 VC)
+arrays.adb:82:22: info: assertion proved (CVC5: 1 VC)
+arrays.adb:87:32: info: initialization of "Result" proved
+arrays.adb:88:06: info: data dependencies proved
+arrays.adb:93:22: info: assertion proved (CVC5: 1 VC)
+logical.adb:1:37: info: initialization of "Result" proved
+logical.adb:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+logical.adb:7:04: warning: initialization of "X" has no effect
+logical.adb:10:19: high: assertion might fail (e.g. when Result = 0)
+predicates.adb:7:32: info: data dependencies proved
+predicates.adb:8:16: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:8:16: medium: initialization check might fail
+predicates.adb:13:38: info: data dependencies proved
+predicates.adb:14:16: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:16:22: info: assertion proved (CVC5: 1 VC)
+predicates.adb:16:22: info: initialization check proved (CVC5: 1 VC)
+predicates.adb:16:22: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:16:23: info: initialization check proved (CVC5: 1 VC)
+predicates.adb:25:31: info: data dependencies proved
+predicates.adb:26:38: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
+predicates.adb:26:38: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:26:39: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:26:47: medium: initialization check might fail
+predicates.adb:39:33: info: data dependencies proved
+predicates.adb:40:21: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:40:21: medium: initialization check might fail
+predicates.adb:49:39: info: data dependencies proved
+predicates.adb:50:72: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
+predicates.adb:50:72: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:50:73: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:50:81: medium: initialization check might fail
+predicates.adb:64:41: info: initialization of "Result" proved
+predicates.adb:65:06: info: data dependencies proved
+predicates.adb:67:31: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:69:17: info: initialization check proved (CVC5: 1 VC)
+predicates.adb:69:17: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:69:20: info: initialization check proved (CVC5: 1 VC)
+predicates.adb:70:22: info: assertion proved (CVC5: 1 VC)
+predicates.adb:77:31: info: data dependencies proved
+predicates.adb:78:29: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:80:22: medium: assertion might fail (e.g. when X = (F => ?) and X.F'Initialized = False)
+predicates.adb:90:36: info: data dependencies proved
+predicates.adb:91:35: info: predicate check proved (Trivial: 1 VC)
+predicates.adb:91:35: medium: initialization check might fail
+records.adb:7:27: info: initialization of "Result" proved
+records.adb:7:54: info: data dependencies proved
+records.adb:10:18: medium: initialization check might fail (e.g. when X = (F => ?, G => 1) and X.F'Initialized = False and X.G'Initialized = True)
+records.adb:13:31: info: initialization of "Result" proved
+records.adb:13:58: info: data dependencies proved
+records.adb:16:18: info: initialization check proved (CVC5: 1 VC)
+records.adb:17:22: info: assertion proved (CVC5: 1 VC)
+records.adb:27:32: info: initialization of "Result" proved
+records.adb:27:59: info: data dependencies proved
+records.adb:30:20: medium: initialization check might fail (e.g. when X = (C => (F => ?)) and X.C.F'Initialized = False)
+records.adb:33:33: info: initialization of "Result" proved
+records.adb:33:60: info: data dependencies proved
+records.adb:36:20: medium: initialization check might fail (e.g. when X = (C => (F => ?)) and X.C.F'Initialized = False)
+records.adb:46:28: info: initialization of "Result" proved
+records.adb:46:55: info: data dependencies proved
+records.adb:49:20: info: initialization check proved (CVC5: 1 VC)
+records.adb:50:22: info: assertion proved (CVC5: 1 VC)
+records.adb:59:31: info: initialization of "Result" proved
+records.adb:59:58: info: data dependencies proved
+records.adb:62:18: info: initialization check proved (CVC5: 1 VC)
+records.adb:63:22: info: assertion proved (CVC5: 1 VC)
+records.adb:66:13: info: implicit aspect Always_Terminates on "Boxed_Result" has been proved, subprogram will terminate
+records.adb:67:06: info: data dependencies proved
+records.adb:68:14: medium: postcondition might fail
+records.adb:74:13: info: implicit aspect Always_Terminates on "Initialized_Result" has been proved, subprogram will terminate
+records.adb:75:06: info: data dependencies proved
+records.adb:76:14: info: postcondition proved (CVC5: 1 VC)
+records.adb:86:32: info: initialization of "Result" proved
+records.adb:86:59: info: data dependencies proved
+records.adb:90:22: info: assertion proved (CVC5: 1 VC)
