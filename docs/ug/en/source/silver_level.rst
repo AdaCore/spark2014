@@ -1,4 +1,4 @@
-The goal of this level is to ensure that the program does not raise an
+The goal of SPARK silver is to ensure that the program does not raise an
 unexpected
 exception at run time. Among other things, this guarantees that the control
 flow of the program cannot be circumvented by exploiting a buffer overflow,
@@ -18,8 +18,8 @@ of assertions (which raises the exception ``Assertion_Error`` at run time).
 .. index:: Precondition
 .. index:: Defensive code
 
-A special kind of run-time error that can be proved at this level is the
-absence of exceptions from defensive code. This requires users to add
+With SPARK silver, users can also prove the absence of exceptions from
+defensive code. This requires users to add
 subprogram preconditions (see section :ref:`Preconditions` for details) that
 correspond to the conditions checked in defensive code. For example, defensive
 code that checks the range of inputs is modeled by a precondition of the
@@ -29,13 +29,13 @@ GNATprove at each call.
 .. rubric:: Benefits
 
 The SPARK code is guaranteed to be free from run-time errors (Absence of Run
-Time Errors - AoRTE) plus all the defects already detected at Bronze level: no
+Time Errors - AoRTE) plus all the defects already detected with SPARK bronze: no
 reads of uninitialized variables, no possible interference between parameters
 and global variables, no unintended access to global variables, and no
 infinite loop or recursion in functions. These guarantees extend to code using
 features that require proof for ensuring correct initialization and
-termination, as described in the limitations for :ref:`Bronze Level <Bronze
-Level>`.  Thus, the quality of the program can be guaranteed to achieve higher
+termination, as described in the limitations for :ref:`SPARK bronze <Bronze
+Level>`. Thus, the quality of the program can be guaranteed to achieve higher
 levels of integrity than would be possible in other programming languages.
 
 All the messages about possible run-time errors can be carefully reviewed
@@ -77,13 +77,13 @@ part of a contract.
 
 An initial pass is required where proof of AoRTE is applied to the program,
 and the resulting messages are resolved by either rewriting code or
-justifying any false alarms. Once this is complete, as for the Bronze
-level, ongoing maintenance can retain the same guarantees at reasonable
+justifying any false alarms. Once this is complete, as for SPARK bronze,
+ongoing maintenance can retain the same guarantees at reasonable
 cost. Using precise types and simple subprogram contracts (preconditions
 and postconditions) is sufficient to avoid most false alarms, and any
 remaining false alarms can be easily justified.
 
-.. index:: Loop_Invariant; for Silver level
+.. index:: Loop_Invariant; for SPARK silver
 
 Special treatment is required for loops, which may need the addition of loop
 invariants to prove AoRTE inside and after the loop. See the relevant sections
@@ -93,9 +93,9 @@ corresponding loop invariants.
 
 .. rubric:: Costs and Limitations
 
-The guarantees offered at Silver level and above do not extend to subprograms
-with the annotations ``Skip_Flow_And_Proof`` or ``Skip_Proof``, which are only
-analyzed at Stone or Bronze level respectively.
+The guarantees offered by SPARK silver and stronger targets do not extend to
+subprograms with the annotations ``Skip_Flow_And_Proof`` or ``Skip_Proof``, which
+are only analyzed with SPARK stone or SPARK bronze respectively.
 
 The initial pass may require a substantial effort to resolve all false
 alarms, depending on the coding style adopted previously. The analysis may

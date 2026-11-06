@@ -1,4 +1,4 @@
-The goal of reaching this level is to make sure that no uninitialized data can
+The goal of SPARK bronze is to make sure that no uninitialized data can
 ever be read and, optionally, to prevent unintended access to global
 variables. This also ensures no possible interference between parameters and
 global variables; i.e., the same variable isn't passed multiple times to a
@@ -12,7 +12,7 @@ uninitialized variables, no possible interference between parameters and global
 variables, no unintended access to global variables, no infinite loop or
 recursion in functions.
 
-.. index:: Global; for Bronze level
+.. index:: Global; for SPARK bronze
 
 When ``Global`` contracts are used to specify which global variables are read
 and/or written by subprograms, maintenance is facilitated by a clear
@@ -29,9 +29,9 @@ alarms, and the remaining false alarms can be easily justified.
 
 .. rubric:: Costs and Limitations
 
-The guarantees offered at Bronze level do not extend to subprograms with the
-annotation ``Skip_Flow_And_Proof``, which are only analyzed at Stone
-level. These guarantees also do not extend to code in the following constructs:
+The guarantees offered by SPARK bronze do not extend to subprograms with the
+annotation ``Skip_Flow_And_Proof``, which are only analyzed with SPARK stone.
+These guarantees also do not extend to code in the following constructs:
 
 * branches ending in an error-signaling statement such as ``pragma Assert
   (False)``, which flow analysis treats as dead code.
@@ -39,13 +39,13 @@ level. These guarantees also do not extend to code in the following constructs:
   exception, which flow analysis could treat as dead code if no callee has a
   corresponding exceptional contract.
 
-Analysis by proof at :ref:`Silver Level <Silver Level>` and above is required
-in these two cases.
+Analysis by proof with :ref:`SPARK silver <Silver Level>` or a stronger target
+is required in these two cases.
 
 The property that no uninitialized data can be read can only be guaranteed when
 the following SPARK feature is not used, as its purpose is precisely to allow
-more complex initialization patterns that can only be analyzed by proof at
-:ref:`Silver Level <Silver Level>` and above:
+more complex initialization patterns that can only be analyzed by proof with
+:ref:`SPARK silver <Silver Level>` or a stronger target:
 
 * relaxed initialization of types and variables using aspect
   ``Relaxed_Initialization``.
@@ -53,7 +53,7 @@ more complex initialization patterns that can only be analyzed by proof at
 The property that functions must return in the absence of run-time errors can
 only be guaranteed when the following SPARK features are not used, as their
 purpose is precisely to allow more complex termination conditions that can only
-be analyzed by proof at :ref:`Silver Level <Silver Level>` and above:
+be analyzed by proof with :ref:`SPARK silver <Silver Level>` or a stronger target:
 
 * specification of termination with aspect ``Always_Terminates`` with a
   non-static expression;

@@ -1738,7 +1738,7 @@ the second bound:
           A = (A'Old with delta Fst_Zero .. Snd_Zero => 0));
 
 .. index:: expression function
-           Gold level; expression function
+           SPARK gold; expression function
 
 Expression Functions
 --------------------
@@ -1847,8 +1847,8 @@ expression function is declared in the unit spec and defined in the unit body.
 
 .. index:: ghost code
            see: Ghost; ghost code
-           Gold level; ghost code
-           Platinum level; ghost code
+           SPARK gold; ghost code
+           SPARK platinum; ghost code
 
 Ghost Code
 ----------

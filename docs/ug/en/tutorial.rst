@@ -51,7 +51,7 @@ index.
    :language: ada
    :linenos:
 
-.. index:: Stone level; tutorial
+.. index:: SPARK stone; tutorial
 
 Checking SPARK Legality Rules
 -----------------------------
@@ -94,7 +94,7 @@ this type:
    :language: ada
    :linenos:
 
-.. index:: Bronze level; tutorial
+.. index:: SPARK bronze; tutorial
 
 Checking SPARK Initialization Policy
 ------------------------------------
@@ -324,8 +324,8 @@ that achieves 100% coverage for all the common coverage criteria, once
 impossible paths have been ruled out: statement coverage, condition coverage,
 the MC/DC coverage used in avionics, and even the full static path coverage.
 
-.. index:: Silver level; tutorial
-           Gold level; tutorial
+.. index:: SPARK silver; tutorial
+           SPARK gold; tutorial
 
 Proving SPARK Programs
 ======================

@@ -552,8 +552,8 @@ guards using the ``--function-sandboxing=off`` option.
    An incorrect assumption might cause branches and code snippets to be wrongly
    flagged as dead by this mechanism.
 
-.. index:: Silver level; writing contracts for integrity
-           Gold level; writing contracts for integrity
+.. index:: SPARK silver; writing contracts for integrity
+           SPARK gold; writing contracts for integrity
 
 Writing Contracts for Program Integrity
 ---------------------------------------
@@ -642,7 +642,7 @@ Here is the result of running |GNATprove|:
 .. literalinclude:: /examples/ug__integrity_proved/test.out
    :language: none
 
-.. index:: Gold level; writing contracts for functional correctness
+.. index:: SPARK gold; writing contracts for functional correctness
 
 Writing Contracts for Functional Correctness
 --------------------------------------------

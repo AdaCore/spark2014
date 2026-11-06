@@ -3,26 +3,27 @@ Objectives and Contents
 
 This document was written to facilitate the adoption of SPARK. It targets
 team leaders and technology experts, who will find a description of the
-various levels of software assurance at which the technology can be used
+various software assurance targets for which the technology can be used
 along with the associated costs and benefits. It also targets software
 developers (these are assumed to have some knowledge of the Ada language and
 AdaCore technology), who will find detailed guidance on how to adopt SPARK
-at the various assurance levels.
+for the various assurance targets.
 
-Section :ref:`Levels of Software Assurance` presents the four assurance levels
+Section :ref:`Software Assurance with SPARK` presents the four assurance targets
 described in this document. It starts with a brief introduction of the Ada
-programming language and its SPARK subset and then presents the levels (Stone,
-Bronze, Silver and Gold) that can be achieved with the use of SPARK language
-and toolset, using techniques varying from merely applying the language subset
-up to using the most powerful analyses. The lowest levels are the simplest to
-adopt and can bring significant benefits. The highest levels require more
-effort to adopt and bring the strongest guarantees. This section is particularly
+programming language and its SPARK subset and then presents SPARK stone,
+SPARK bronze, SPARK silver and SPARK gold, which can be achieved with the SPARK
+language and toolset, using techniques varying from merely applying the
+language subset up to using the most powerful analyses. The simpler targets
+are the easiest to adopt and can bring significant benefits. The more
+demanding targets require more effort to adopt and bring the strongest
+guarantees. This section is particularly
 relevant to team leaders and technology experts who want to understand how
 SPARK can be useful in their projects.
 
-Sections :ref:`Stone Level` to :ref:`Gold Level` present the details of the
-four levels of software assurance. Each section starts with a short
-description of three key aspects of adopting SPARK at that level:
+Sections :ref:`SPARK stone <Stone Level>` to :ref:`SPARK gold <Gold Level>`
+present the details of the four assurance targets. Each section starts with a
+short description of three key aspects of adopting SPARK for that target:
 
 * `Benefits` - What is gained from adopting SPARK?
 * `Impact on Process` - How should the process (i.e., the software life cycle
@@ -31,23 +32,25 @@ description of three key aspects of adopting SPARK at that level:
   adopting SPARK?
 
 Each section then goes on to describe how to progressively adopt SPARK
-at that level in an Ada project. Finally, the :ref:`Example` section
+for that target in an Ada project. Finally, the :ref:`Example` section
 shows the concrete application of this adoption approach to an existing,
 production-ready bounded stack abstraction. These sections are
-particularly relevant to software developers who need to use SPARK at a
-given level.
+particularly relevant to software developers who need to use SPARK for a
+given assurance target.
 
 Although this document focuses on adopting SPARK for use on existing Ada
 code, the same guidelines can be used for adopting SPARK at the beginning
 of a project. The main difference in that case is that one would not want
-to start at the lowest level but already take into account the final
-targeted level starting with the initial design phase.
+to start with the simplest target but already take into account the final
+assurance target starting with the initial design phase.
 
 This version of the document is based on the SPARK Pro 19 and GNAT Studio 19
 versions. Further references are given at the end of this document.
 
-Levels of Software Assurance
-============================
+.. _Levels of Software Assurance:
+
+Software Assurance with SPARK
+=============================
 
 Ada
 ---
@@ -193,49 +196,51 @@ versions of international certification standards for avionics (DO-178C / ED-12C
 railway systems (CENELEC EN 50128:2011) have recognized these benefits by increasing the
 role that formal methods can play in the development and verification of critical software.
 
-.. index:: Levels of SPARK use
-.. index:: Stone level (of SPARK use)
-.. index:: Bronze level (of SPARK use)
-.. index:: Silver level (of SPARK use)
-.. index:: Gold level (of SPARK use)
-.. index:: Platinum level (of SPARK use)
+.. index:: Assurance targets
+.. index:: SPARK stone
+.. index:: SPARK bronze
+.. index:: SPARK silver
+.. index:: SPARK gold
+.. index:: SPARK platinum
 
-Levels of SPARK Use
--------------------
+.. _Levels of SPARK Use:
 
-The scope and level of SPARK analysis depend on the objectives being
+Choosing an Assurance Target
+----------------------------
+
+The scope of SPARK analysis and the guarantees sought depend on the objectives
 pursued by the adoption of SPARK. The scope of analysis may be the totality
-of a project, only some units, or only parts of units. The level of
-analysis may range from simple guarantees provided by flow analysis to
-complex properties being proved.  These can be divided into five easily
-remembered levels:
+of a project, only some units, or only parts of units. The guarantees may range
+from simple properties established by flow analysis to complex properties
+being proved. These can be divided into five easily remembered assurance
+targets:
 
-#. `Stone level` - valid SPARK
-#. `Bronze level` - initialization and correct data flow
-#. `Silver level` - absence of run-time errors (AoRTE)
-#. `Gold level` - proof of key integrity properties
-#. `Platinum level` - full functional proof of requirements
+#. `SPARK stone` - valid SPARK
+#. `SPARK bronze` - initialization and correct data flow
+#. `SPARK silver` - absence of run-time errors (AoRTE)
+#. `SPARK gold` - proof of key integrity properties
+#. `SPARK platinum` - full functional proof of requirements
 
-Platinum level is defined here for completeness, but is not further
+SPARK platinum is defined here for completeness, but is not further
 discussed in this document since it is not recommended during initial
-adoption of SPARK. Each level builds on the previous one, so that the code
-subject to the Gold level should be a subset of the code subject to Silver
-level, which itself is a subset of the code subject to Bronze level, which
-is in general the same as the code subject to Stone level. We advise using:
+adoption of SPARK. Each target builds on the previous one, so that the code
+subject to SPARK gold should be a subset of the code subject to SPARK silver,
+which itself is a subset of the code subject to SPARK bronze, which is in
+general the same as the code subject to SPARK stone. We advise using:
 
-* Stone level only as an intermediate level during adoption,
-* Bronze level for as large a part of the code as possible,
-* Silver level as the default target for critical software (subject to costs
+* SPARK stone only as an intermediate target during adoption,
+* SPARK bronze for as large a part of the code as possible,
+* SPARK silver as the default target for critical software (subject to costs
   and limitations),
-* Gold level only for a subset of the code subject to specific key integrity
+* SPARK gold only for a subset of the code subject to specific key integrity
   (safety/security) properties.
 
 Our starting point is a program in Ada, which could be thought of as the
-Brick level: thanks to the use of Ada programming language, this level
-already provides some confidence: it is the highest level in The Three
-Little Pigs fable! And indeed languages with weaker semantics could be
-thought of as Straw and Sticks levels. However, the adoption of SPARK
-allows us to get stronger guarantees, should the wolf in the fable adopt
+brick house in The Three Little Pigs fable: thanks to the use of the Ada
+programming language, it already provides some confidence! And indeed
+languages with weaker semantics could be thought of as straw and stick
+houses. However, the adoption of SPARK allows us to get stronger guarantees,
+should the wolf in the fable adopt
 more aggressive means of attack than simply blowing.
 
 A pitfall when using tools for automating human tasks is to end up "pleasing
@@ -251,26 +256,28 @@ and :ref:`Flow Analysis Warnings` for more details.
 In the following, we use "SPARK" to denote the SPARK language, and "GNATprove"
 to denote the formal verification tool in SPARK product.
 
-GNATprove can be run at the different levels mentioned in this document, either
+GNATprove can be run for the different assurance targets mentioned here, either
 through the Integrated Development Environments (IDE) Eclipse (GNATbench
 plugin) or GNAT Studio, or on the command line. In the following, we
 describe the use of GNAT Studio, but the use of Eclipse is based on similar menus.
-On the command line, select the analysis mode for the desired level:
+On the command line, select the analysis mode for the desired target:
 
-* use switch ``--mode=check_all`` for Stone level
-* use switch ``--mode=flow`` for Bronze level
-* use switch ``--mode=all`` for Silver and Gold levels
+* use switch ``--mode=check_all`` for SPARK stone
+* use switch ``--mode=flow`` for SPARK bronze
+* use switch ``--mode=all`` for SPARK silver and SPARK gold
 
-Note that levels Silver and Gold are activated with the same switches. Indeed,
-the difference between these levels is not on how GNATprove is run, but on the
-objectives of verification. This is explained in the section on :ref:`Gold
-Level`.
+Note that SPARK silver and SPARK gold use the same switches. Indeed,
+the difference between these targets is not in how GNATprove is run, but in the
+objectives of verification. This is explained in the section on
+:ref:`SPARK gold <Gold Level>`.
 
-.. index:: Stone level (of SPARK use)
+.. index:: SPARK stone
 
 .. _Stone Level:
 
-Stone Level - Valid SPARK
+.. _Stone Level - Valid SPARK:
+
+SPARK stone - Valid SPARK
 =========================
 
 .. include:: ../ug/en/source/stone_level.rst
@@ -962,11 +969,13 @@ its spec with a ``Global`` aspect with value ``null``.
 
 .. _Bronze Level:
 
-.. index:: Bronze level (of SPARK use)
+.. index:: SPARK bronze
 .. index:: Initialization, Uninitialized data
 .. index:: Flow analysis
 
-Bronze Level - Initialization and Correct Data Flow
+.. _Bronze Level - Initialization and Correct Data Flow:
+
+SPARK bronze - Initialization and Correct Data Flow
 ===================================================
 
 .. include:: ../ug/en/source/bronze_level.rst
@@ -980,8 +989,8 @@ Two distinct static analyses are performed by GNATprove. Flow analysis is
 the faster and requires no user-supplied annotations. It tracks the flow
 of information between variables on a per subprogram basis. In particular,
 it allows finding every potential use of uninitialized data. The second
-analysis technique, proof, will be described in the sections on Silver and Gold
-levels.
+analysis technique, proof, will be described in the sections on SPARK silver
+and SPARK gold.
 
 To run GNATprove in flow analysis mode on your project, select the
 :menuselection:`SPARK --> Examine All` menu. In the GNAT Studio panel, select the
@@ -1040,11 +1049,11 @@ messages, highlighted in green in GNAT Studio, like the following:
 .. index:: Unused variables (detected by Flow analysis)
 
 Flow analysis can also generate warnings about dead code, unused
-variables or incorrect parameter modes. To achieve this level, it may be
+variables or incorrect parameter modes. To achieve SPARK bronze, it may be
 useful to look at these warnings. We explain how this can be done in
 section :ref:`Flow Analysis Warnings`.
 
-As further optional steps at this level, critical parts of the program can
+As further optional steps for SPARK bronze, critical parts of the program can
 be annotated to make sure they don't make unintended accesses to global
 data. This activity is explained in section :ref:`Global Annotations`.
 
@@ -2155,10 +2164,12 @@ Note that such implicit inputs can also be referred to in :ref:`Preconditions`.
 
 .. _Silver Level:
 
-Silver Level - Absence of Run-time Errors (AoRTE)
+.. _Silver Level - Absence of Run-time Errors (AoRTE):
+
+SPARK silver - Absence of Run-time Errors (AoRTE)
 =================================================
 
-.. index:: ! Silver level (of SPARK use)
+.. index:: ! SPARK silver
 .. index:: ! Absence of Run-Time Errors, AORTE
 .. index:: Buffer overflow
 .. index:: Integer overflow
@@ -2172,7 +2183,7 @@ Running GNATprove in Proof Mode
 .. index:: Proof mode (for GNATprove)
 
 Proof is the second static analysis performed by GNATprove, after the flow
-analysis seen at Bronze level. Unlike flow analysis, proof may take more or
+analysis seen with SPARK bronze. Unlike flow analysis, proof may take more or
 less time to run, depending on the selected proof level. The higher the
 proof level, the more precise the results and the longer the analysis.
 
@@ -2576,8 +2587,8 @@ units) with some unproved checks. Open GNAT Studio on your project, display this
 unit inside GNAT Studio, and place the focus on this unit. Inside this unit, select a
 subprogram (preferably one with few calls to other unproved subprograms,
 ideally a leaf subprogram not calling other unproved subprograms) with some
-unproved checks. This is the first subprogram you will analyze at Silver
-level.
+unproved checks. This is the first subprogram you will analyze with SPARK
+silver.
 
 For each unproved run-time check in this subprogram, you should follow the
 following steps:
@@ -2768,10 +2779,12 @@ messages.
 
 .. _Gold Level:
 
-Gold Level - Proof of Key Integrity Properties
+.. _Gold Level - Proof of Key Integrity Properties:
+
+SPARK gold - Proof of Key Integrity Properties
 ==============================================
 
-.. index:: ! Gold level (of SPARK use)
+.. index:: ! SPARK gold
 
 .. include:: ../ug/en/source/gold_level.rst
 
@@ -3129,7 +3142,7 @@ Investigating Unproved Properties
 
 .. index:: Unproved properties
 
-Similar to the situation at Silver level as described in
+Similar to the situation with SPARK silver as described in
 :ref:`Investigating Unproved Run-time Checks`,
 we can expect many messages about possible violations of
 properties (assertions, contracts) to be issued the first time a program is
@@ -3142,7 +3155,7 @@ analyzed:
    the desired properties.
 
 #. The initial analysis performed at proof level 0 is the fastest but the least
-   precise. At the Gold level, we advise starting at level 2, so all provers
+   precise. For SPARK gold, we advise starting at proof level 2, so all provers
    are requested to use reasonable effort (steps). During the interaction with
    GNATprove, while contracts and assertions are added in the program, it is in
    general a good idea to perform analysis with only CVC5 enabled
@@ -3169,8 +3182,8 @@ with some unproved checks. Open GNAT Studio on your project, display this unit
 inside GNAT Studio, and place the focus on this unit. Inside this unit, select a
 subprogram (preferably one with few calls to other unproved subprograms,
 ideally a leaf subprogram not calling other unproved subprograms) with some
-unproved checks. This is the first subprogram you will analyze at Gold
-level.
+unproved checks. This is the first subprogram you will analyze with SPARK
+gold.
 
 For each unproved property in this subprogram, you should follow the following steps:
 
@@ -3242,8 +3255,8 @@ Example
 =======
 
 This section describes the transformation of a bounded stack abstract
-data type (ADT), implemented in Ada, into a SPARK implementation at the
-highest adoption level. The result will be a production-ready stack ADT
+data type (ADT), implemented in Ada, into a SPARK implementation achieving
+SPARK platinum. The result will be a production-ready stack ADT
 for which we can prove that there are no reads of unassigned variables,
 no array indexing errors, no range errors, no numeric overflow errors,
 no attempts to push onto a full stack, no attempts to pop from an empty
@@ -3251,8 +3264,8 @@ stack, that subprogram bodies implement their functional requirements,
 and so on.
 
 Familiarity with the previous sections is required, especially those
-describing the different adoption levels and specific tool invocations
-at those levels. In this section we focus on the messages generated by
+describing the different assurance targets and specific tool invocations
+for those targets. In this section we focus on the messages generated by
 those invocations, as well as the resulting changes required.
 
 Initial Ada Version
@@ -3369,13 +3382,13 @@ Given that instantiation, client code can now use the package
 procedure.
 
 There are in fact two main procedures used for the transformations to
-the various adoption levels. One main procedure is for the lower levels,
-and one for the upper levels. They exist only to act as clients so that
-we can prove certain properties about the ``Stack`` type. Therefore,
+the various assurance targets. One main procedure is for the simpler targets,
+and one for the more demanding targets. They exist only to act as clients so
+that we can prove certain properties about the ``Stack`` type. Therefore,
 they declare objects of type ``Character_Stacks.Stack`` and make a
 series of assertions and calls to ``Stack`` operations. They have no
 functional purpose whatsoever. Here is the first main, used for all
-adoption levels up to and including Silver:
+assurance targets up to and including SPARK silver:
 
 .. code-block:: ada
    :linenos:
@@ -3408,7 +3421,7 @@ adoption levels up to and including Silver:
       Put_Line ("Done");
    end Demo_AoRTE;
 
-We when arrive at the higher levels we will add more assertions to
+When we pursue the more demanding targets we will add more assertions to
 highlight more issues, as will be seen in the other main procedure.
 
 The full generic package declaration for the initial Ada version is as
@@ -3547,13 +3560,15 @@ replaced.
 
 The changes to the body made for the sake of SPARK will amount to moving
 certain bodies to the package declaration so we will not show the
-package body again. The full Platinum implementation is provided at the
+package body again. The full SPARK platinum implementation is provided at the
 end of this section.
 
-Example - Stone Level
+.. _Example - Stone Level:
+
+Example - SPARK stone
 ---------------------
 
-.. index:: Stone level (of SPARK use)
+.. index:: SPARK stone
 
 The Ada version of the package has "raise expressions" in the
 defensive preconditions for some routines. They have the benefit of
@@ -3563,10 +3578,10 @@ associated precondition does not hold at run-time.
 Those expressions are legal in SPARK as well. If they cannot be proven
 never to raise their exception, that is not an illegality. Rather, it is
 a failure to successfully prove the associated precondition. (Note that
-not all adoption levels involve proof.) As such, the Ada version is also
-a valid Stone version.
+not all assurance targets involve proof.) As such, the Ada version is also
+a valid SPARK stone version.
 
-However, our goal is to get to the highest adoption levels, requiring
+However, our goal is to reach the most demanding assurance targets, requiring
 GNATprove to verify statically that the preconditions will hold at each
 client call site. Either that verification will succeed or we will know
 that we must change the client calling code accordingly. Therefore, the
@@ -3589,16 +3604,18 @@ The exception declarations themselves, although also within the subset,
 are also removed because they are no longer referenced.
 
 The remaining code is also within the SPARK subset. We have reached
-the Stone level.
+SPARK stone.
 
 
-Example - Bronze Level
+.. _Example - Bronze Level:
+
+Example - SPARK bronze
 ----------------------
 
-.. index:: Bronze level (of SPARK use)
+.. index:: SPARK bronze
 
-The Bronze level is about initialization and data flow. When we apply
-GNATprove to the Stone version in flow analysis mode, GNATprove issues
+SPARK bronze is about initialization and data flow. When we apply
+GNATprove to the SPARK stone version in flow analysis mode, GNATprove issues
 messages on the declarations of procedures ``Copy`` and ``Reset`` in the generic
 package declaration:
 
@@ -3686,7 +3703,7 @@ such values. Therefore, we add the ``Default_Value`` generic formal object
 parameter and use it to initialize the array components.
 
 This new generic formal parameter, shown below on line 5, is added from
-the Bronze version onward:
+the SPARK bronze version onward:
 
 .. code-block:: ada
    :linenos:
@@ -3713,7 +3730,7 @@ initialize ``Values`` (line 2):
    end record;
 
 With those changes in place flow analysis completes without further
-complaint. The implementation has reached the Bronze level.
+complaint. The implementation has reached SPARK bronze.
 
 The need for that additional generic formal parameter is unfortunate
 because it becomes part of the user’s interface without any functional
@@ -3773,14 +3790,16 @@ properties, for example data flowing only between units at appropriate
 security levels. We are not doing so in this case.
 
 
-Example - Silver Level
+.. _Example - Silver Level:
+
+Example - SPARK silver
 ----------------------
 
-.. index:: Silver level (of SPARK use)
+.. index:: SPARK silver
 
-If we try to prove the Bronze level version of the generic package,
+If we try to prove the SPARK bronze version of the generic package,
 GNATprove will complain about various run-time checks that cannot be
-proved in the generic package body. The Silver level requires these
+proved in the generic package body. SPARK silver requires these
 checks to be proven not to fail, i.e., not to raise exceptions.
 
 The check messages are as follows, preceded by the code fragments they
@@ -4098,18 +4117,20 @@ range checks for GNATprove to verify.
    function Extent (This : Stack) return Element_Count with
      Global => null;
 
-With these changes in place we have achieved the Silver level. There are
+With these changes in place we have achieved SPARK silver. There are
 no run-time check verification failures and the defensive preconditions
 are proven at their call sites.
 
 
-Example - Gold Level
+.. _Example - Gold Level:
+
+Example - SPARK gold
 --------------------
 
-.. index:: Gold level (of SPARK use)
+.. index:: SPARK gold
 
-We will now address the remaining changes needed to reach the Gold
-level. The process involves iteratively attempting to prove the main
+We will now address the remaining changes needed to reach SPARK gold.
+The process involves iteratively attempting to prove the main
 program that calls the stack routines and makes assertions about the
 conditions that follow. This process will result in changes to the
 generic package, especially postconditions, so it will require
@@ -4524,8 +4545,7 @@ compared.
 
 With those additions to the postconditions we get no further messages
 from GNATprove from the main procedure, including assertions about the
-states resulting from a series of calls. We have achieved the Gold
-level.
+states resulting from a series of calls. We have achieved SPARK gold.
 
 Some additional postconditions are possible, however, for completeness.
 We can also use function ``Unchanged`` in a new postcondition for the ``"="``
@@ -4561,15 +4581,17 @@ Whenever ``Empty`` returns True, ``Top`` (i.e., ``Extent``) will be zero, otherw
 ``Top`` will not be zero.
 
 
-Example - Platinum Level
+.. _Example - Platinum Level:
+
+Example - SPARK platinum
 ------------------------
 
-.. index:: Platinum level (of SPARK use)
+.. index:: SPARK platinum
 
-Our Gold level implementation also achieved the Platinum level because
+Our SPARK gold implementation also achieved SPARK platinum because
 our postconditions fully covered the functional requirements and there
-were no abstract properties to be proven. Achieving the Platinum level
-is rare in itself, all the more so using the Gold level implementation.
+were no abstract properties to be proven. Achieving SPARK platinum
+is rare in itself, all the more so using the SPARK gold implementation.
 Doing so is possible in no small part because stacks are simple
 abstractions.
 
