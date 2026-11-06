@@ -22767,15 +22767,32 @@ package body Gnat2Why.Expr is
             Result :=
               Transform_Simple_Membership_Expression (Var, Alt);
          else
+            declare
+               Right_Expr : W_Expr_Id :=
+                 Transform_Expr
+                   (Expr          => Alt,
+                    Expected_Type => Base_Type,
+                    Domain        => Subdomain,
+                    Params        => Params);
+            begin
+               if Use_Predefined_Equality_For_Type (Etype (Left_Opnd (Expr)))
+               then
+                  Right_Expr :=
+                    Insert_Initialization_Check
+                      (Ada_Node           => Alt,
+                       E                  => Etype (Alt),
+                       Name               => Right_Expr,
+                       Domain             => Subdomain,
+                       For_Eq             => True);
+               end if;
 
-            Result := New_Ada_Equality
-              (Typ    => Etype (Left_Opnd (Expr)),
-               Left   => Var,
-               Right  => Transform_Expr (Expr          => Alt,
-                                         Expected_Type => Base_Type,
-                                         Domain        => Subdomain,
-                                         Params        => Params),
-               Domain => Domain);
+               Result :=
+                 New_Ada_Equality
+                   (Typ    => Etype (Left_Opnd (Expr)),
+                    Left   => Var,
+                    Right  => Right_Expr,
+                    Domain => Domain);
+            end;
          end if;
 
          return Result;
