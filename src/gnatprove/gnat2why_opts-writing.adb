@@ -77,7 +77,6 @@ package body Gnat2Why_Opts.Writing is
 
    function Collect_Options
      (Phase           : Gnat2Why_Phase;
-      Obj_Dir         : String;
       Why3_Dir        : String;
       Source_Path_Key : String;
       Proof_Manifest  : Manifest_Subprogram_Vectors.Vector;
@@ -93,7 +92,6 @@ package body Gnat2Why_Opts.Writing is
 
    function Collect_Options
      (Phase           : Gnat2Why_Phase;
-      Obj_Dir         : String;
       Why3_Dir        : String;
       Source_Path_Key : String;
       Proof_Manifest  : Manifest_Subprogram_Vectors.Vector;
@@ -150,7 +148,7 @@ package body Gnat2Why_Opts.Writing is
          Proof_Warnings                => FS.Proof_Warnings,
          Why3_Args                     =>
            (if Phase = Translation
-            then Compute_Why3_Args (Obj_Dir, FS)
+            then Compute_Why3_Args (FS)
             else String_Lists.Empty_List));
    end Collect_Options;
 
@@ -302,12 +300,7 @@ package body Gnat2Why_Opts.Writing is
    is
       Opts : constant Options :=
         Collect_Options
-          (Phase,
-           Obj_Dir,
-           Why3_Dir,
-           Source_Path_Key,
-           Proof_Manifest,
-           Data_Rep_Files);
+          (Phase, Why3_Dir, Source_Path_Key, Proof_Manifest, Data_Rep_Files);
    begin
       return Opt_File_Name (Obj_Dir, Opts);
    end Opt_File_Name;
@@ -397,12 +390,7 @@ package body Gnat2Why_Opts.Writing is
 
       Opts   : constant Options :=
         Collect_Options
-          (Phase,
-           Obj_Dir,
-           Why3_Dir,
-           Source_Path_Key,
-           Proof_Manifest,
-           Data_Rep_Files);
+          (Phase, Why3_Dir, Source_Path_Key, Proof_Manifest, Data_Rep_Files);
       Result : constant String := Opt_File_Name (Obj_Dir, Opts);
 
    begin

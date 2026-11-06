@@ -358,10 +358,13 @@ package Configuration is
      (Unit : GPR2.Build.Compilation_Unit.Object) return String;
    --  Return the key used to retrieve file-specific switches for Unit.
 
-   function Compute_Why3_Args
-     (Obj_Dir : String; FS : File_Specific) return String_Lists.List;
-   --  Compute the list of arguments of gnatwhy3. This list is passed first to
-   --  gnat2why, which then passes it to gnatwhy3.
+   procedure Prepare_Proof_Inputs (Obj_Dir : String);
+   --  Create the proof sessions directory and prepare manual prover libraries
+   --  when required. Obj_Dir is the working directory for gnatwhy3.
+
+   function Compute_Why3_Args (FS : File_Specific) return String_Lists.List;
+   --  Compute gnatwhy3 arguments without preparing proof inputs. The list is
+   --  passed first to gnat2why, which then passes it to gnatwhy3.
 
    function Target_Name return String;
    --  Name of the target that the analyzed code would be compiled for, as
