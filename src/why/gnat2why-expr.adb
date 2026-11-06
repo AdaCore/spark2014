@@ -14333,6 +14333,14 @@ package body Gnat2Why.Expr is
                Comp_Relaxed : constant Boolean :=
                 (if Relaxed_Init then Has_Init_Wrapper (Comp_Ty)
                  else Has_Relaxed_Init (Comp_Ty));
+               Default_Relaxed : constant Boolean :=
+                 Comp_Relaxed
+                 or else
+                   (Has_Init_Wrapper (Comp_Ty)
+                    and then
+                      Default_Initialization (Expr_Typ)
+                      not in Full_Default_Initialization
+                           | No_Possible_Initialization);
 
             begin
                --  If Expr_Typ has a Default_Component_Value aspect, use its
@@ -14350,7 +14358,22 @@ package body Gnat2Why.Expr is
 
                else
                   Result := Compute_Default_Value
-                    (Value, Comp_Ty, Comp_Relaxed, Domain, Params);
+                    (Value, Comp_Ty, Default_Relaxed, Domain, Params);
+
+                  if Default_Relaxed and then not Comp_Relaxed then
+                     Result :=
+                       Insert_Initialization_Check
+                         (Ada_Node => Value,
+                          E => Comp_Ty,
+                          Name => Result,
+                          Domain => Domain,
+                          Exclude_Relaxed => True);
+                     Result :=
+                       Insert_Simple_Conversion
+                         (Domain => Domain,
+                          Expr => Result,
+                          To => EW_Abstract (Comp_Ty));
+                  end if;
                end if;
             end;
          else
@@ -14569,14 +14592,11 @@ package body Gnat2Why.Expr is
                      Ty     => C_Typ,
                      Params => Params);
 
-                  --  If the value has a type which does not have
-                  --  relaxed initialization, it must be initialized.
+                  --  Evaluated scalars are initialized. Boxed defaults can
+                  --  carry wrappers whose flags must be preserved.
 
                   if (Has_Relaxed_Init (C_Typ) or else Relaxed_Init)
-                    and then
-                      (Has_Scalar_Type (C_Typ)
-                       or else
-                         not Is_Init_Wrapper_Type (Get_Type (+Value)))
+                    and then not Is_Init_Wrapper_Type (Get_Type (+Value))
                   then
                      Is_Init := +Compute_Is_Initialized
                        (C_Typ, +Read, Params, EW_Pred);
@@ -23956,13 +23976,23 @@ package body Gnat2Why.Expr is
                pragma Assert (Present (Component));
 
                declare
-                  Comp_Ty      : constant Entity_Id := Etype (Component);
-                  Comp_Relaxed : constant Boolean :=
-                    (if Relaxed_Init then Has_Init_Wrapper (Comp_Ty)
+                  Comp_Ty         : constant Entity_Id := Etype (Component);
+                  Comp_Relaxed    : constant Boolean :=
+                    (if Relaxed_Init
+                     then Has_Init_Wrapper (Comp_Ty)
                      else Has_Relaxed_Init (Comp_Ty))
                     and then Ekind (Component) = E_Component;
-                  W_Comp_Ty    : constant W_Type_Id := EW_Abstract
-                    (Comp_Ty, Comp_Relaxed);
+                  W_Comp_Ty       : constant W_Type_Id :=
+                    EW_Abstract (Comp_Ty, Comp_Relaxed);
+                  Default_Relaxed : constant Boolean :=
+                    Comp_Relaxed
+                    or else
+                      (Box_Present (Association)
+                       and then Has_Init_Wrapper (Comp_Ty)
+                       and then
+                         Default_Initialization (Comp_Ty)
+                         not in Full_Default_Initialization
+                              | No_Possible_Initialization);
 
                begin
                   --  For a regular association, use the provided value
@@ -23985,8 +24015,30 @@ package body Gnat2Why.Expr is
                   --  Otherwise, compute the default value of the type
 
                   else
-                     Expr := Compute_Default_Value
-                       (Association, Comp_Ty, Comp_Relaxed, Domain, Params);
+                     --  Retain a partial default's flags until checking the
+                     --  initialization required by the component
+                     --  representation.
+
+                     Expr :=
+                       Compute_Default_Value
+                         (Association,
+                          Comp_Ty,
+                          Default_Relaxed,
+                          Domain,
+                          Params);
+
+                     if Default_Relaxed and then not Comp_Relaxed then
+                        Expr :=
+                          Insert_Initialization_Check
+                            (Ada_Node           => Association,
+                             E                  => Comp_Ty,
+                             Name               => Expr,
+                             Domain             => Domain,
+                             Exclude_Relaxed    => True);
+                        Expr :=
+                          Insert_Simple_Conversion
+                            (Domain => Domain, Expr => Expr, To => W_Comp_Ty);
+                     end if;
                   end if;
                end;
 

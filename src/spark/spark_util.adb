@@ -1695,6 +1695,12 @@ package body SPARK_Util is
       ---------------------------
 
       function Aggr_Has_Relaxed_Init (Aggr : Node_Id) return Boolean is
+         function Comp_Type_For_Assoc (Assoc : Node_Id) return Entity_Id is
+           (if Is_Array_Type (Etype (Aggr))
+            then Component_Type (Etype (Aggr))
+            else Etype (Entity (First (Choice_List (Assoc)))));
+         --  Return the expected component type for an association
+
          Exprs  : constant List_Id :=
            (if Nkind (Aggr) = N_Delta_Aggregate then No_List
             else Expressions (Aggr));
@@ -1713,20 +1719,25 @@ package body SPARK_Util is
          end loop;
 
          while Present (Assoc) loop
+            --  A boxed default can remain partially initialized when this
+            --  aggregate, or an enclosing one, has Relaxed_Initialization.
+            --  Retain its flags unless the default is fully initialized.
+            --  Components whose own types are relaxed already retain flags
+            --  in the ordinary representation.
 
-            --  If there is a box in the aggregate, the default value of the
-            --  type is used. It can only have relaxed initialization if the
-            --  component type has relaxed initialization, in which case it
-            --  does not impact the status of the aggregate.
-
-            if not Box_Present (Assoc)
-              and then not Has_Relaxed_Init
-                (if Is_Array_Type (Etype (Aggr))
-                 then Component_Type (Etype (Aggr))
-                 else Etype
-                   (Entity (First (Choice_List (Assoc)))))
-              and then Expr_Has_Relaxed_Init
-                (Expression (Assoc), No_Eval => False)
+            if not Has_Relaxed_Init (Comp_Type_For_Assoc (Assoc))
+              and then
+                (if Box_Present (Assoc)
+                 then
+                   Default_Initialization
+                     (if Has_Array_Type (Etype (Aggr))
+                      then Etype (Aggr)
+                      else Comp_Type_For_Assoc (Assoc))
+                   not in Full_Default_Initialization
+                        | No_Possible_Initialization
+                 else
+                   Expr_Has_Relaxed_Init
+                     (Expression (Assoc), No_Eval => False))
             then
                return True;
             end if;
