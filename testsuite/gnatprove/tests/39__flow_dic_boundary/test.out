@@ -1,0 +1,7 @@
+Client only
+client.adb:4:04: info: default initial condition proved (Trivial: 1 VC)
+client.adb:4:04: info: in default value at client.adb:4
+Declaring unit and client
+bad_dic.ads:7:04: medium: type "T" is not fully initialized
+client.adb:4:04: info: default initial condition proved (Trivial: 1 VC)
+client.adb:4:04: info: in default value at client.adb:4

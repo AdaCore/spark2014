@@ -3,3 +3,4 @@ p.ads:3:41: warning: consider extracting conjunct from quantified expression [-g
 p.ads:3:41: warning: unused variable "J" in conjunct [-gnatw.t]
 p.ads:8:13: info: implicit aspect Always_Terminates on "Trivial" has been proved, subprogram will terminate
 p.ads:8:22: warning: unused variable "Arg"
+p.ads:10:04: medium: type "T" is not fully initialized

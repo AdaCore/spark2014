@@ -1716,6 +1716,7 @@ package body Flow is
 
       Check_Handler_Accesses;
       Check_Specification_Contracts;
+      Flow_Sanity.Check_Default_Initial_Conditions;
 
       --  Process entities and construct graphs if necessary
       Build_Graphs_For_Analysis (FA_Graphs => FA_Graphs);

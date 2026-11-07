@@ -26,6 +26,10 @@
 
 package Flow_Sanity is
 
+   procedure Check_Default_Initial_Conditions;
+   --  Check that types whose DIC promises full default initialization really
+   --  initialize every part without Relaxed_Initialization.
+
    procedure Check_Incomplete_Globals;
    --  A sanity check for all translated routines, as the flow analysis only
    --  flags mismatches between Pre/Post and Global/Depends contracts for

@@ -1,6 +1,8 @@
+ext.ads:13:10: medium: type "P" is not fully initialized
 ext.ads:17:10: medium: default initial condition might fail
 ext.ads:17:10: medium: in default initialization of component "F" at ext.ads:17
 ext.ads:17:10: medium: in default value at main.adb:6
+ext.ads:28:10: medium: type "Root" is not fully initialized
 ext.ads:33:10: medium: default initial condition might fail
 ext.ads:33:10: medium: in default initialization of component "F" at ext.ads:33
 ext.ads:33:10: medium: in default value at main.adb:7

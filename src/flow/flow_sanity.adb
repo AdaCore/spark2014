@@ -21,25 +21,65 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                  use Atree;
-with Einfo.Entities;         use Einfo.Entities;
-with Einfo.Utils;            use Einfo.Utils;
-with Errout_Wrapper;         use Errout_Wrapper;
-with Flow_Error_Messages;    use Flow_Error_Messages;
-with Flow_Refinement;        use Flow_Refinement;
+with Atree;                       use Atree;
+with Einfo.Entities;              use Einfo.Entities;
+with Einfo.Utils;                 use Einfo.Utils;
+with Errout_Wrapper;              use Errout_Wrapper;
+with Flow_Error_Messages;         use Flow_Error_Messages;
+with Flow_Refinement;             use Flow_Refinement;
 with Flow_Generated_Globals.Phase_2;
-with Flow_Types;             use Flow_Types;
-with Flow_Utility;           use Flow_Utility;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Util;               use Sem_Util;
-with Sinfo.Nodes;            use Sinfo.Nodes;
-with Snames;                 use Snames;
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Util;             use SPARK_Util;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
-with Types;                  use Types;
+with Flow_Types;                  use Flow_Types;
+with Flow_Utility;                use Flow_Utility;
+with Flow_Utility.Initialization; use Flow_Utility.Initialization;
+with Sem_Aux;                     use Sem_Aux;
+with Sem_Util;                    use Sem_Util;
+with Sinfo.Nodes;                 use Sinfo.Nodes;
+with Snames;                      use Snames;
+with SPARK_Definition;            use SPARK_Definition;
+with SPARK_Util;                  use SPARK_Util;
+with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
+with Types;                       use Types;
+with VC_Kinds;                    use VC_Kinds;
 
 package body Flow_Sanity is
+
+   --------------------------------------
+   -- Check_Default_Initial_Conditions --
+   --------------------------------------
+
+   procedure Check_Default_Initial_Conditions is
+      Suppressed : Boolean;
+   begin
+      --  Check a type when analyzing its declaring unit. The marked entity
+      --  collection also contains types from dependencies.
+
+      for Typ of Entities_To_Translate loop
+         if Is_Type (Typ)
+           and then Comes_From_Source (Typ)
+           and then Is_In_Analyzed_Files (Typ)
+           and then No (Full_View (Typ))
+           and then
+             ((Has_Own_DIC (Typ)
+               and then Has_Fully_Default_Initializing_DIC_Pragma (Typ))
+              or else (Is_Tagged_Type (Typ) and then Has_Inherited_DIC (Typ)))
+           and then
+             Default_Initialization (Typ, Ignore_DIC => True)
+             /= Full_Default_Initialization
+         then
+            --  ??? For composite types, add a continuation identifying the
+            --  component that is not initialized by default.
+
+            Error_Msg_Flow
+              (E          => Typ,
+               Msg        => "type & is not fully initialized",
+               N          => Parent (Typ),
+               F1         => Direct_Mapping_Id (Typ),
+               Tag        => Default_Initialization_Mismatch,
+               Severity   => Medium_Check_Kind,
+               Suppressed => Suppressed);
+         end if;
+      end loop;
+   end Check_Default_Initial_Conditions;
 
    ------------------------------
    -- Check_Incomplete_Globals --

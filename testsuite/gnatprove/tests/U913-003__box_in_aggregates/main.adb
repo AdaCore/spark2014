@@ -62,7 +62,7 @@ procedure Main with SPARK_Mode is
          type T is private with Default_Initial_Condition;
       private
          type Cont is new Integer with Relaxed_Initialization;
-         type T is record --  Here flow analysis complains, I don't think it should
+         type T is record --  The relaxed component need not be initialized
             X : Integer := 0;
             Y : Cont;
          end record;
