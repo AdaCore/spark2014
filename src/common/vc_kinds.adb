@@ -1217,8 +1217,6 @@ package body VC_Kinds is
            & " and from an interface in a tagged derivation",
          when Lim_Multidim_Iterator                                       =>
            "an iterator specification on a multidimensional array",
-         when Lim_Multidim_Update                                         =>
-           "a delta aggregate on a multidimensional array",
          when Lim_Null_Aggregate_In_Branching_Array_Aggregate             =>
            "a null aggregate which is a subaggregate of a multidimensional "
            & "array aggregate with multiple associations",
@@ -3640,8 +3638,6 @@ package body VC_Kinds is
            "multiple-inheritance-root",
          when Lim_Multidim_Iterator                                       =>
            "multidim-iterator",
-         when Lim_Multidim_Update                                         =>
-           "multidim-update",
          when Lim_Mutably_Tagged_Type                                     =>
            "mutably-tagged-type",
          when Lim_Null_Aggregate_In_Branching_Array_Aggregate             =>
