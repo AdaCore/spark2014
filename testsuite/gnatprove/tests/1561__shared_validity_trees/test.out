@@ -1,0 +1,61 @@
+array_limitation.adb:5:16: warning: the result of "Read" cannot have invalid values [useless-potentially-invalid-func-result]
+array_limitation.adb:7:23: warning: "X" cannot have invalid values [useless-potentially-invalid-object]
+array_limitation.adb:15:18: error: call to an inherited subprogram with a representation change for a potentially invalid parameter or result is not yet supported
+array_limitation.adb:18:10: error: call to an inherited subprogram with a representation change for a potentially invalid parameter or result is not yet supported
+arrays.adb:22:22: info: length check proved (CVC5: 3 VC)
+arrays.adb:24:19: info: assertion proved (CVC5: 1 VC)
+arrays.adb:25:19: info: assertion proved (CVC5: 1 VC)
+arrays.adb:25:33: info: range check proved (CVC5: 1 VC)
+arrays.adb:27:19: info: assertion proved (CVC5: 1 VC)
+arrays.adb:28:12: info: range check proved (CVC5: 1 VC)
+arrays.adb:29:19: info: assertion proved (CVC5: 1 VC)
+arrays.adb:31:19: info: assertion proved (CVC5: 1 VC)
+arrays.adb:33:19: medium: assertion might fail
+constrained.adb:5:10: info: range check proved (CVC5: 2 VC)
+constrained.adb:17:24: info: range check proved (CVC5: 2 VC)
+constrained.adb:22:13: info: discriminant check proved (CVC5: 1 VC)
+constrained.adb:24:19: info: assertion proved (CVC5: 1 VC)
+constrained.adb:25:19: info: assertion proved (CVC5: 1 VC)
+constrained.adb:27:19: info: assertion proved (CVC5: 1 VC)
+constrained.adb:29:19: info: assertion proved (CVC5: 1 VC)
+layout.adb:16:04: info: initialization of "X" proved
+layout.adb:17:04: info: initialization of "Y" proved
+layout.adb:18:04: info: initialization of "Z" proved
+layout.adb:21:19: info: assertion proved (CVC5: 1 VC)
+layout.adb:23:19: info: assertion proved (CVC5: 1 VC)
+layout.adb:24:19: medium: assertion might fail (e.g. when X = (B => 0, F => ?) and X.F'Valid = False)
+layout.adb:25:19: medium: assertion might fail (e.g. when Z = (B => ?, F => 1) and Z.B'Valid = False and Z.F'Valid = True)
+matrix.adb:21:19: info: assertion proved (CVC5: 1 VC)
+matrix.adb:22:19: info: assertion proved (CVC5: 1 VC)
+matrix.adb:24:19: info: assertion proved (CVC5: 1 VC)
+matrix.adb:25:19: medium: assertion might fail
+record_limitation.adb:23:18: error: call to an inherited subprogram with a representation change for a potentially invalid parameter or result is not yet supported
+record_limitation.adb:27:10: error: call to an inherited subprogram with a representation change for a potentially invalid parameter or result is not yet supported
+record_limitation.adb:28:12: error: call to an inherited subprogram with a representation change for a potentially invalid parameter or result is not yet supported
+record_limitation.adb:29:19: error: call to an inherited subprogram with a representation change for a potentially invalid parameter or result is not yet supported
+records.adb:26:19: info: assertion proved (CVC5: 1 VC)
+records.adb:27:19: info: assertion proved (CVC5: 1 VC)
+records.adb:29:19: info: assertion proved (CVC5: 1 VC)
+records.adb:31:19: info: assertion proved (CVC5: 1 VC)
+records.adb:33:19: info: assertion proved (CVC5: 1 VC)
+records.adb:35:19: medium: assertion might fail (e.g. when X = (F => ?) and X.F'Valid = False)
+restored.adb:26:19: info: assertion proved (CVC5: 1 VC)
+shared_arrays.adb:8:06: info: data dependencies proved
+shared_arrays.adb:12:10: info: index check proved (CVC5: 2 VC)
+shared_arrays.adb:13:22: info: assertion proved (CVC5: 1 VC)
+shared_arrays.adb:13:25: info: index check proved (CVC5: 2 VC)
+shared_arrays.adb:14:22: medium: assertion might fail [possible fix: precondition of subprogram at line 7 should mention X]
+shared_arrays.adb:14:25: info: index check proved (CVC5: 2 VC)
+shared_arrays.adb:18:06: info: data dependencies proved
+shared_arrays.adb:23:22: info: assertion proved (CVC5: 1 VC)
+shared_arrays.adb:27:06: info: data dependencies proved
+shared_arrays.adb:32:22: medium: assertion might fail [possible fix: subprogram at line 26 should mention X in a precondition]
+shared_arrays.adb:34:22: info: assertion proved (CVC5: 1 VC)
+standalone.adb:9:06: info: data dependencies proved
+standalone.adb:13:22: info: assertion proved (CVC5: 1 VC)
+standalone.adb:14:22: medium: assertion might fail [possible fix: subprogram at line 8 should mention X in a precondition]
+standalone.adb:17:20: info: initialization of "X" proved
+standalone.adb:18:06: info: data dependencies proved
+standalone.adb:19:14: info: postcondition proved (CVC5: 1 VC)
+standalone.adb:24:22: info: assertion proved (CVC5: 1 VC)
+gnatprove: error during flow analysis and proof

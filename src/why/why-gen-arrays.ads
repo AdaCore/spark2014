@@ -93,6 +93,12 @@ package Why.Gen.Arrays is
    --  concatenation and singleton. Comparison and logical-operator symbols
    --  are stored separately in M_Arrays_1_Comp and M_Arrays_1_Bool_Op.
    --
+   --  Validity-tree maps use the same sharing key as representative maps.
+   --  Their type, get, set, and slide operations are declared once and
+   --  re-exported by each base array's validity module. Validity predicates
+   --  remain specific to each base array type and check the components within
+   --  the supplied array bounds.
+   --
    --  -------------------------
    --  Modeling Array Operations
    --  -------------------------
@@ -612,6 +618,12 @@ package Why.Gen.Arrays is
      (E : Entity_Id) return M_Array_1_Bool_Op_Type;
    --  Return the m_array_1_bool_op_type containing the theory of the type of E
    --  @param E the entity of type array
+
+   function Get_Array_Validity_Tree_Module (E : Entity_Id) return W_Module_Id
+   with Pre => Is_Array_Type (E);
+   --  Return the shared map module for the validity tree of array type E.
+   --  Use the same sharing key as Get_Array_Theory. The generated module name
+   --  has a validity-tree suffix.
 
    function Get_Array_Conversion_Name
      (From, To : Entity_Id; Relaxed_Init : Boolean := False)

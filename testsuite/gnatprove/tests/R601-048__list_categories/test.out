@@ -288,6 +288,7 @@ unsupported-overriding-with-precondition-discrepancy-tagged-privacy - unsupporte
 unsupported-deep-object-declaration-outside-block - unsupported-deep-object-declaration-outside-block - a declaration of an object of an ownership type outside a block for declarations - HIGH
 unsupported-package-before-inv - unsupported-package-before-inv - a package declaration occurring in a loop before the loop invariant - HIGH
 unsupported-potentially-invalid-eq - unsupported-potentially-invalid-eq - the primitive equality of a record type with the Potentially_Invalid aspect - HIGH
+unsupported-potentially-invalid-inherited-rep - unsupported-potentially-invalid-inherited-rep - a call to an inherited subprogram with a representation change for a potentially invalid parameter or result - HIGH
 unsupported-potentially-invalid-iterable - unsupported-potentially-invalid-iterable - a Potentially_Invalid aspect on a function associated to the aspect Iterable - HIGH
 unsupported-potentially-invalid-mutable-discr - unsupported-potentially-invalid-mutable-discr - a part of potentially invalid object with mutable discriminants - HIGH
 unsupported-potentially-invalid-part-of - unsupported-potentially-invalid-part-of - a potentially invalid object marked Part_Of a protected object - HIGH
