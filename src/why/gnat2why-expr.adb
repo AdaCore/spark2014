@@ -783,16 +783,24 @@ package body Gnat2Why.Expr is
       return W_Prog_Id;
    --  ???
 
+   type Validity_Check_Kind is (Do_Check, No_Check, Keep_Wrapper);
+
    function Transform_Call_With_Side_Effects
-     (Params : Transformation_Params; Call : Node_Id) return W_Prog_Id
+     (Params         : Transformation_Params;
+      Call           : Node_Id;
+      Validity_Check : Validity_Check_Kind := Do_Check) return W_Prog_Id
    with
      Pre =>
        Nkind (Call)
        in N_Entry_Call_Statement | N_Function_Call | N_Procedure_Call_Statement
        and then
          (if Nkind (Call) = N_Function_Call
-          then Is_Function_With_Side_Effects (Get_Called_Entity (Call)));
-   --  Transform a call to a subprogram with side effects
+          then
+            Is_Function_With_Side_Effects (Get_Called_Entity (Call))
+            and then Validity_Check /= No_Check
+          else Validity_Check = Do_Check);
+   --  Transform a call to a subprogram with side effects.
+   --  Validity_Check handles function results as in Transform_Function_Call.
 
    function Transform_Comparison
      (Expr : Node_Id; Domain : EW_Domain; Params : Transformation_Params)
@@ -997,8 +1005,6 @@ package body Gnat2Why.Expr is
    --  expected values.
    --  After the call, Missing_Fields contains components from Typ's component
    --  set which do not have an association.
-
-   type Validity_Check_Kind is (Do_Check, No_Check, Keep_Wrapper);
 
    function Transform_Function_Call
      (Expr           : Node_Id;
@@ -18628,7 +18634,9 @@ package body Gnat2Why.Expr is
    --------------------------------------
 
    function Transform_Call_With_Side_Effects
-     (Params : Transformation_Params; Call : Node_Id) return W_Prog_Id
+     (Params         : Transformation_Params;
+      Call           : Node_Id;
+      Validity_Check : Validity_Check_Kind := Do_Check) return W_Prog_Id
    is
       Context     : Ref_Context;
       Store       : W_Statement_Sequence_Id := Void_Sequence;
@@ -18743,6 +18751,19 @@ package body Gnat2Why.Expr is
                Result := New_Call (Call, Why_Name, Args, Get_Typ (Why_Name));
             end if;
          end;
+      end if;
+
+      --  For functions with potentially invalid result, handle the validity
+      --  flag.
+
+      if Is_Potentially_Invalid (Subp) and then Validity_Check /= Keep_Wrapper
+      then
+         Result :=
+           +New_Function_Valid_Value_Access
+              (Ada_Node => Call,
+               Ty       => Etype (Subp),
+               Name     => +Result,
+               Do_Check => True);
       end if;
 
       --  Insert a try block around the call to catch potential Ada exceptions
@@ -22720,7 +22741,9 @@ package body Gnat2Why.Expr is
                      end;
 
                   elsif Is_Function_With_Side_Effects (Subp) then
-                     pragma Assert (Domain = EW_Prog);
+                     pragma
+                       Assert
+                         (Domain = EW_Prog and then not No_Validity_Check);
                      T :=
                        +Transform_Call_With_Side_Effects (Local_Params, Expr);
 
@@ -25559,13 +25582,22 @@ package body Gnat2Why.Expr is
                  New_Temp_Identifier
                    (Base_Name => "valid",
                     Typ       => Validity_Wrapper_Type (Etype (Fun)));
-               Def : W_Expr_Id :=
-                 Transform_Function_Call
-                   (Expr           => Expr,
-                    Domain         => Domain,
-                    Params         => Params,
-                    Validity_Check => Keep_Wrapper);
+               Def : W_Expr_Id;
+
             begin
+               if Is_Function_With_Side_Effects (Fun) then
+                  pragma Assert (Domain = EW_Prog);
+                  Def :=
+                    +Transform_Call_With_Side_Effects
+                       (Params, Expr, Validity_Check => Keep_Wrapper);
+               else
+                  Def :=
+                    Transform_Function_Call
+                      (Expr           => Expr,
+                       Domain         => Domain,
+                       Params         => Params,
+                       Validity_Check => Keep_Wrapper);
+               end if;
 
                if As_Old and then Params.Old_Policy /= Ignore then
                   pragma Assert (Params.Old_Policy = Gnat2Why.Util.As_Old);
