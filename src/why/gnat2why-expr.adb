@@ -16648,11 +16648,18 @@ package body Gnat2Why.Expr is
       --  types right.
 
       if Lgth_Check then
+         --  Only bounds are needed here. The old contents need not be
+         --  initialized or satisfy their predicate before replacement.
+
          declare
             Lval  : constant W_Term_Id :=
               New_Temp_For_Expr
                 (Transform_Expr
-                   (Lvalue, EW_Prog, Params, No_Validity_Check => True));
+                   (Lvalue,
+                    EW_Prog,
+                    Params,
+                    No_Init_Check     => True,
+                    No_Validity_Check => True));
             Dim   : constant Positive :=
               Positive (Number_Dimensions (Get_Ada_Node (+L_Type)));
             Check : constant W_Pred_Id :=
