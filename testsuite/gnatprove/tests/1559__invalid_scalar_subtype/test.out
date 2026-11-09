@@ -15,14 +15,14 @@ test.adb:26:19: info: range check proved (CVC5: 2 VC)
 test.adb:26:19: info: validity check proved (CVC5: 1 VC)
 test.adb:28:22: info: assertion proved (CVC5: 2 VC)
 test.adb:28:39: info: validity check proved (CVC5: 1 VC)
-test.adb:29:12: info: validity check proved (CVC5: 2 VC)
+test.adb:29:12: info: validity check proved (CVC5: 1 VC)
 test.adb:30:22: info: assertion proved (CVC5: 2 VC)
 test.adb:30:39: info: validity check proved (CVC5: 1 VC)
 test.adb:33:04: warning: analyzing unreferenced procedure "Test_Narrowing" [unreferenced-procedure]
 test.adb:33:14: warning: subprogram "Test_Narrowing" has no effect
 test.adb:34:21: info: range check proved (CVC5: 2 VC)
 test.adb:34:21: info: validity check proved (CVC5: 1 VC)
-test.adb:36:12: info: validity check proved (CVC5: 2 VC)
+test.adb:36:12: info: validity check proved (CVC5: 1 VC)
 test.adb:36:12: medium: range check might fail, cannot prove upper bound for To_P (32) [reason for check: value must fit in the target type of the assignment]
 test.adb:39:04: warning: analyzing unreferenced procedure "Test_Matching_Subtypes" [unreferenced-procedure]
 test.adb:39:14: warning: subprogram "Test_Matching_Subtypes" has no effect
