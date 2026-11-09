@@ -1,0 +1,19 @@
+between_parts.adb:5:04: error: consider annotating "Y" with Import
+between_parts.adb:5:04: error: overlay without Import in a declarative part containing a package is not yet supported
+body_stub.adb:5:04: error: consider annotating "Y" with Import
+body_stub.adb:5:04: error: overlay without Import in a declarative part containing a package is not yet supported
+declare_block.adb:7:07: error: consider annotating "Y" with Import
+declare_block.adb:7:07: error: overlay without Import in a declarative part containing a package is not yet supported
+default_init.adb:8:07: error: consider annotating "Y" with Import
+default_init.adb:8:07: error: overlay without Import in a declarative part containing a package is not yet supported
+example.adb:5:07: error: consider annotating "Y" with Import
+example.adb:5:07: error: overlay without Import in a declarative part containing a package is not yet supported
+instantiation.adb:5:04: error: consider annotating "Y" with Import
+instantiation.adb:5:04: error: overlay without Import in a declarative part containing a package is not yet supported
+instantiation_before.adb:6:04: error: consider annotating "Y" with Import
+instantiation_before.adb:6:04: error: overlay without Import in a declarative part containing a package is not yet supported
+nested_packages.adb:4:07: error: consider annotating "Y" with Import
+nested_packages.adb:4:07: error: overlay without Import in a declarative part containing a package is not yet supported
+package_before.adb:8:04: error: consider annotating "Y" with Import
+package_before.adb:8:04: error: overlay without Import in a declarative part containing a package is not yet supported
+gnatprove: error during flow analysis and proof
