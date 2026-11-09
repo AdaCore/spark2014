@@ -24959,18 +24959,6 @@ package body Gnat2Why.Expr is
          then
             Result :=
               Transform_Simple_Membership_Expression (Var, Alt, Base_Type);
-         elsif Use_Dispatch_Eq then
-            Result :=
-              New_Ada_Dispatching_Equality
-                (Typ    => Etype (Left_Opnd (Expr)),
-                 Left   => Var,
-                 Right  =>
-                   Transform_Expr
-                     (Expr          => Alt,
-                      Expected_Type => Base_Type,
-                      Domain        => Subdomain,
-                      Params        => Params),
-                 Domain => Domain);
          else
             declare
                Right_Expr : W_Expr_Id :=
@@ -24980,19 +24968,39 @@ package body Gnat2Why.Expr is
                     Domain        => Subdomain,
                     Params        => Params);
             begin
-               Right_Expr :=
-                 Insert_Invariant_Check_For_Eq
-                   (Ada_Node         => Alt,
-                    Typ              => Etype (Alt),
-                    W_Expr           => Right_Expr,
-                    Domain           => Subdomain,
-                    Force_Predefined => False);
-               Result :=
-                 New_Ada_Equality
-                   (Typ    => Etype (Left_Opnd (Expr)),
-                    Left   => Var,
-                    Right  => Right_Expr,
-                    Domain => Domain);
+               if Use_Predefined_Equality_For_Type (Etype (Left_Opnd (Expr)))
+               then
+                  Right_Expr :=
+                    Insert_Initialization_Check
+                      (Ada_Node           => Alt,
+                       E                  => Etype (Alt),
+                       Name               => Right_Expr,
+                       Domain             => Subdomain,
+                       Exclude_Components => For_Eq);
+               end if;
+
+               if Use_Dispatch_Eq then
+                  Result :=
+                    New_Ada_Dispatching_Equality
+                      (Typ    => Etype (Left_Opnd (Expr)),
+                       Left   => Var,
+                       Right  => Right_Expr,
+                       Domain => Domain);
+               else
+                  Right_Expr :=
+                    Insert_Invariant_Check_For_Eq
+                      (Ada_Node         => Alt,
+                       Typ              => Etype (Alt),
+                       W_Expr           => Right_Expr,
+                       Domain           => Subdomain,
+                       Force_Predefined => False);
+                  Result :=
+                    New_Ada_Equality
+                      (Typ    => Etype (Left_Opnd (Expr)),
+                       Left   => Var,
+                       Right  => Right_Expr,
+                       Domain => Domain);
+               end if;
             end;
          end if;
 

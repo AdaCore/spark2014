@@ -1,0 +1,53 @@
+dispatch_check.ads:11:17: info: initialization check proved (CVC5: 1 VC)
+dispatch_check.ads:11:22: info: initialization check proved (CVC5: 1 VC)
+dispatch_check.ads:12:12: medium: initialization check might fail
+test.adb:1:36: info: initialization of "Result" proved
+test.adb:18:20: info: initialization check proved (CVC5: 1 VC)
+test.adb:18:25: info: initialization check proved (CVC5: 1 VC)
+test.adb:18:29: info: initialization check proved (CVC5: 1 VC)
+test.adb:18:29: medium: initialization check might fail
+test.adb:20:20: info: initialization check proved (CVC5: 1 VC)
+test.adb:20:20: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:20:26: info: initialization check proved (CVC5: 1 VC)
+test.adb:20:26: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:20:31: info: initialization check proved (CVC5: 1 VC)
+test.adb:20:31: medium: initialization check might fail
+test.adb:22:20: info: initialization check proved (CVC5: 1 VC)
+test.adb:22:20: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:22:30: info: initialization check proved (CVC5: 1 VC)
+test.adb:22:30: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:22:35: info: initialization check proved (CVC5: 1 VC)
+test.adb:22:35: medium: initialization check might fail
+test.adb:24:20: info: initialization check proved (CVC5: 1 VC)
+test.adb:24:20: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:24:26: info: initialization check proved (CVC5: 1 VC)
+test.adb:24:26: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:24:31: info: initialization check proved (CVC5: 1 VC)
+test.adb:24:31: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:25:25: info: assertion proved (CVC5: 1 VC)
+test.adb:28:20: info: initialization check proved (CVC5: 1 VC)
+test.adb:28:20: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:28:26: info: initialization check proved (CVC5: 1 VC)
+test.adb:28:26: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:28:31: info: initialization check proved (CVC5: 1 VC)
+test.adb:28:31: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:29:25: info: assertion proved (CVC5: 1 VC)
+test.adb:31:20: info: initialization check proved (CVC5: 1 VC)
+test.adb:31:25: info: initialization check proved (CVC5: 1 VC)
+test.adb:31:29: info: initialization check proved (CVC5: 1 VC)
+test.adb:32:25: info: assertion proved (CVC5: 1 VC)
+user_equality.adb:1:26: info: initialization of "Result" proved
+user_equality.adb:6:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+user_equality.adb:6:18: warning: unused variable "Left"
+user_equality.adb:6:24: warning: unused variable "Right"
+user_equality.adb:15:14: info: initialization check proved (CVC5: 1 VC)
+user_equality.adb:15:19: info: initialization check proved (CVC5: 1 VC)
+user_equality.adb:15:23: info: initialization check proved (CVC5: 1 VC)
+user_equality.adb:16:19: info: assertion proved (CVC5: 1 VC)
+user_equality.adb:17:14: info: initialization check proved (CVC5: 1 VC)
+user_equality.adb:17:14: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+user_equality.adb:17:20: info: initialization check proved (CVC5: 1 VC)
+user_equality.adb:17:20: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+user_equality.adb:17:25: info: initialization check proved (CVC5: 1 VC)
+user_equality.adb:17:25: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+user_equality.adb:18:19: info: assertion proved (Z3: 1 VC)
