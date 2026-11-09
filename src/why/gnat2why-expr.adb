@@ -16641,6 +16641,8 @@ package body Gnat2Why.Expr is
         New_Temp_For_Expr
           (+T,
            Lgth_Check or else Disc_Check or else Tag_Check or else Do_Valid);
+      T := +Tmp;
+
       --  The Exp_Entity type is in fact the type that is expected in Why.
       --  The L_Type is a more precise type entity in Ada. We have to
       --  respect both constraints here, so we first convert to the Ada type
@@ -16670,7 +16672,7 @@ package body Gnat2Why.Expr is
             T :=
               Sequence
                 (New_Located_Assert (Stmt, Check, VC_Length_Check, EW_Assert),
-                 +Tmp);
+                 T);
             T :=
               +Binding_For_Temp
                  (Ada_Node => Empty,
@@ -16732,7 +16734,7 @@ package body Gnat2Why.Expr is
               Sequence
                 (New_Located_Assert
                    (Stmt, +Check, VC_Discriminant_Check, EW_Assert),
-                 +Tmp);
+                 T);
             T :=
               +Binding_For_Temp
                  (Ada_Node => Empty,
@@ -16771,8 +16773,7 @@ package body Gnat2Why.Expr is
          begin
             T :=
               Sequence
-                (New_Located_Assert (Stmt, +Pred, VC_Tag_Check, EW_Assert),
-                 +Tmp);
+                (New_Located_Assert (Stmt, +Pred, VC_Tag_Check, EW_Assert), T);
             T :=
               +Binding_For_Temp
                  (Ada_Node => Empty,
@@ -16807,12 +16808,15 @@ package body Gnat2Why.Expr is
       end if;
 
       T :=
-        +Binding_For_Temp
-           (Empty,
-            EW_Prog,
-            Tmp,
-            Insert_Simple_Conversion
-              (Domain => EW_Pterm, Expr => +T, To => Type_Of_Node (Lvalue)));
+        +Insert_Simple_Conversion
+           (Domain => EW_Pterm, Expr => +T, To => Type_Of_Node (Lvalue));
+
+      --  For potentially invalid targets, the RHS temporary can also be used
+      --  by validity-tree sliding. Bind it around both assignments below.
+
+      if not Do_Valid then
+         T := +Binding_For_Temp (Empty, EW_Prog, Tmp, +T);
+      end if;
 
       declare
          Do_Move : Boolean;
@@ -16829,13 +16833,13 @@ package body Gnat2Why.Expr is
          --  target of the assignment.
 
          declare
-            Tmp : constant W_Expr_Id := New_Temp_For_Expr (+T, Do_Move);
+            Move_Tmp : constant W_Expr_Id := New_Temp_For_Expr (+T, Do_Move);
          begin
             T :=
               Gnat2Why.Expr.New_Assignment
                 (Ada_Node => Stmt,
                  Lvalue   => Lvalue,
-                 Expr     => +Tmp,
+                 Expr     => +Move_Tmp,
                  Do_Check =>
                    (if Has_Target_Names (Stmt)
                     then Only_Vars
@@ -16852,7 +16856,7 @@ package body Gnat2Why.Expr is
                T := +Sequence (Check_No_Memory_Leaks (Stmt, Lvalue), T);
             end if;
 
-            T := +Binding_For_Temp (Empty, EW_Prog, Tmp, +T);
+            T := +Binding_For_Temp (Empty, EW_Prog, Move_Tmp, +T);
          end;
       end;
 
@@ -16878,6 +16882,7 @@ package body Gnat2Why.Expr is
                     Params    => Params,
                     Index_Map => Index_Map));
 
+            T := +Binding_For_Temp (Empty, EW_Prog, Tmp, +T);
             T := +Bindings_For_Ref_Context (+T, Context, EW_Prog);
          end;
       end if;
