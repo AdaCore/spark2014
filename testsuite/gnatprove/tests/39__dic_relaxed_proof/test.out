@@ -1,0 +1,14 @@
+dic_guarded.ads:2:56: info: default initial condition proved
+dic_guarded.ads:3:13: info: implicit aspect Always_Terminates on "Ready" has been proved, subprogram will terminate
+dic_guarded.ads:6:04: medium: type "T" is not fully initialized
+dic_guarded.ads:11:56: info: initialization check proved
+dic_initialized.ads:2:56: info: default initial condition proved
+dic_initialized.ads:3:13: info: implicit aspect Always_Terminates on "Ready" has been proved, subprogram will terminate
+dic_initialized.ads:11:37: info: initialization check proved
+dic_reads_value.ads:2:56: medium: default initial condition might fail
+dic_reads_value.ads:3:13: info: implicit aspect Always_Terminates on "Ready" has been proved, subprogram will terminate
+dic_reads_value.ads:6:04: medium: type "T" is not fully initialized
+dic_reads_value.ads:11:08: medium: initialization check might fail [possible fix: subprogram at line 3 should mention X in a precondition]
+dic_requires_init.ads:2:56: medium: default initial condition might fail
+dic_requires_init.ads:3:13: info: implicit aspect Always_Terminates on "Ready" has been proved, subprogram will terminate
+dic_requires_init.ads:6:04: medium: type "T" is not fully initialized

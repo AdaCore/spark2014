@@ -15,14 +15,15 @@ access_to_relaxed.adb:37:37: info: pointer dereference check proved (CVC5: 2 VC)
 access_to_relaxed.adb:37:47: info: index check proved (CVC5: 4 VC)
 access_to_relaxed.adb:39:07: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
 access_to_relaxed.adb:48:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+access_to_relaxed.adb:48:13: info: initialization of parts of "Content" without Relaxed_Initialization proved
 access_to_relaxed.adb:50:15: info: absence of resource or memory leak proved (CVC5: 1 VC)
 access_to_relaxed.adb:50:15: info: discriminant check proved (Trivial: 1 VC)
 access_to_relaxed.adb:50:28: info: predicate check proved (CVC5: 4 VC)
-access_to_relaxed.adb:50:52: high: "Content" is not initialized
 access_to_relaxed.adb:52:14: info: pointer dereference check proved (CVC5: 1 VC)
 access_to_relaxed.adb:52:22: info: pointer dereference check proved (CVC5: 1 VC)
 access_to_relaxed.adb:52:38: info: pointer dereference check proved (CVC5: 1 VC)
 access_to_relaxed.adb:54:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+access_to_relaxed.adb:54:13: info: initialization of parts of "Content" without Relaxed_Initialization proved
 access_to_relaxed.adb:54:13: info: range check proved (CVC5: 2 VC)
 access_to_relaxed.adb:55:44: info: pointer dereference check proved (CVC5: 1 VC)
 access_to_relaxed.adb:57:13: info: range check proved (CVC5: 4 VC)
@@ -38,7 +39,6 @@ access_to_relaxed.adb:59:15: info: absence of resource or memory leak proved (CV
 access_to_relaxed.adb:59:15: info: discriminant check proved (Trivial: 1 VC)
 access_to_relaxed.adb:59:28: info: predicate check proved (CVC5: 4 VC)
 access_to_relaxed.adb:59:52: info: length check proved (CVC5: 3 VC)
-access_to_relaxed.adb:59:52: medium: "Content" might not be initialized
 access_to_relaxed.adb:63:08: info: pointer dereference check proved (CVC5: 1 VC)
 access_to_relaxed.adb:63:08: info: predicate check proved (CVC5: 2 VC; Z3: 2 VC)
 access_to_relaxed.adb:63:19: info: pointer dereference check proved (CVC5: 1 VC)

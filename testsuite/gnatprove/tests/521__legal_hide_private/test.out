@@ -13,6 +13,8 @@ hidden_private_part.ads:24:09: info: in default value of private type at hidden_
 hidden_private_part.ads:24:09: info: predicate check proved on default value (CVC5: 1 VC)
 hidden_private_part.ads:35:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 hidden_private_part.ads:45:13: info: implicit aspect Always_Terminates on "F_Hidden" has been proved, subprogram will terminate
+hidden_private_part.ads:47:04: medium: type "T_P1" is not fully initialized
+hidden_private_part.ads:49:04: medium: type "T_P2" is not fully initialized
 test_hidden_private.adb:2:11: warning: subprogram "Test_Hidden_Private" has no effect
 test_hidden_private.adb:5:19: medium: assertion might fail [possible fix: subprogram at line 2 should mention X in a precondition]
 test_hidden_private.adb:8:19: medium: assertion might fail

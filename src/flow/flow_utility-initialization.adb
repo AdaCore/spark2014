@@ -21,13 +21,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Aspects;     use Aspects;
-with Nlists;      use Nlists;
-with Opt;         use Opt;
-with Sem_Prag;    use Sem_Prag;
-with Sem_Type;    use Sem_Type;
-with Sinfo.Utils; use Sinfo.Utils;
-with Sinput;      use Sinput;
+with Aspects;          use Aspects;
+with Nlists;           use Nlists;
+with Opt;              use Opt;
+with Sem_Prag;         use Sem_Prag;
+with Sem_Type;         use Sem_Type;
+with Sinfo.Utils;      use Sinfo.Utils;
+with Sinput;           use Sinput;
+with SPARK_Definition; use SPARK_Definition;
 
 package body Flow_Utility.Initialization is
 
@@ -41,15 +42,45 @@ package body Flow_Utility.Initialization is
    is
       FDI : Boolean := False;
       NDI : Boolean := False;
-      --  Two flags used to designate whether a record type has at least one
-      --  fully default initialized component and/or one not fully default
-      --  initialized component.
+      RDI : Boolean := False;
+      --  Track components with full default initialization, missing ordinary
+      --  initialization, and missing initialization covered by relaxed
+      --  initialization.
+
+      function Apply_Relaxed_Initialization
+        (Typ : Entity_Id; Init : Default_Initialization_Kind)
+         return Default_Initialization_Kind;
+      --  Missing initialization of a relaxed type is checked by proof rather
+      --  than flow. Distinguish this case from full default initialization,
+      --  which callers also use for proof, legality, and predicate checks.
+      --  Preserve full initialization when defaults already provide it, and
+      --  preserve No_Possible_Initialization for types without content.
+      --  For unmarked types, keep the existing classification: their relaxed
+      --  initialization information is unavailable.
 
       procedure Process_Component (Comp : Entity_Id)
       with
         Pre  => Ekind (Comp) = E_Component,
         Post => (if FDI'Old then FDI) and then (if NDI'Old then NDI);
       --  Process component of a record or of a record extension
+
+      ----------------------------------
+      -- Apply_Relaxed_Initialization --
+      ----------------------------------
+
+      function Apply_Relaxed_Initialization
+        (Typ : Entity_Id; Init : Default_Initialization_Kind)
+         return Default_Initialization_Kind is
+      begin
+         if Init in Mixed_Initialization | No_Default_Initialization
+           and then Entity_Marked (Typ)
+           and then Has_Relaxed_Init (Typ)
+         then
+            return Only_Relaxed_Uninitialized;
+         else
+            return Init;
+         end if;
+      end Apply_Relaxed_Initialization;
 
       -----------------------
       -- Process_Component --
@@ -80,7 +111,9 @@ package body Flow_Utility.Initialization is
             return;
          end if;
 
-         Init := Default_Initialization (Etype (ORC));
+         Init :=
+           Apply_Relaxed_Initialization
+             (Etype (ORC), Default_Initialization (Etype (ORC)));
 
          --  Default initialization of the record depends then on the default
          --  initialization of the component type.
@@ -107,6 +140,9 @@ package body Flow_Utility.Initialization is
 
             when No_Default_Initialization   =>
                NDI := True;
+
+            when Only_Relaxed_Uninitialized  =>
+               RDI := True;
          end case;
       end Process_Component;
 
@@ -200,17 +236,19 @@ package body Flow_Utility.Initialization is
                when N_Access_To_Object_Definition
                   | N_Access_Function_Definition
                   | N_Access_Procedure_Definition    =>
-                  return Full_Default_Initialization;
+                  Result := Full_Default_Initialization;
 
                --  Array types might have aspect Default_Component_Value or
                --  their components might be initialized by default.
 
                when N_Array_Type_Definition          =>
                   if Has_Default_Aspect (Typ) then
-                     return Full_Default_Initialization;
+                     Result := Full_Default_Initialization;
                   else
-                     return
-                       Default_Initialization (Component_Type (Typ), False);
+                     Result :=
+                       Apply_Relaxed_Initialization
+                         (Component_Type (Typ),
+                          Default_Initialization (Component_Type (Typ)));
                   end if;
 
                --  Derived types might inherit the Default_Value and
@@ -261,10 +299,6 @@ package body Flow_Utility.Initialization is
                            CItem := First_Non_Pragma (Component_Items (CList));
                            while Present (CItem) loop
                               Process_Component (Defining_Identifier (CItem));
-                              --  Optimization: exit when already decided
-                              if FDI and NDI then
-                                 return Mixed_Initialization;
-                              end if;
                               Next_Non_Pragma (CItem);
                            end loop;
 
@@ -272,31 +306,25 @@ package body Flow_Utility.Initialization is
                         end if;
                      end if;
 
-                     if FDI and NDI then
-                        Result := Mixed_Initialization;
-
-                     elsif FDI then
-                        Result := Parent_Initialization;
-
-                     elsif NDI then
-                        if Parent_Initialization
-                           in No_Default_Initialization
-                            | No_Possible_Initialization
-                        then
-                           Result := No_Default_Initialization;
-                        else
-                           --  ??? Previosly a fully initialized parent
-                           --  extended with a non-initialized component
-                           --  resulted in No_Default_Initialization, though
-                           --  intuitively it should have Mixed_Initialization.
-
-                           Result := No_Default_Initialization;
-                        end if;
+                     if NDI then
+                        --  Preserve the existing classification of an
+                        --  extension with only uninitialized components.
+                        Result :=
+                          (if FDI or RDI
+                           then Mixed_Initialization
+                           else No_Default_Initialization);
+                     elsif RDI then
+                        Result :=
+                          (if Parent_Initialization
+                              in Full_Default_Initialization
+                               | Only_Relaxed_Uninitialized
+                               | No_Possible_Initialization
+                           then Only_Relaxed_Uninitialized
+                           else Mixed_Initialization);
                      else
                         Result := Parent_Initialization;
                      end if;
 
-                     return Result;
                   end;
 
                --  Scalar types either have Default_Value aspect or are
@@ -309,9 +337,9 @@ package body Flow_Utility.Initialization is
                   | N_Ordinary_Fixed_Point_Definition
                   | N_Signed_Integer_Type_Definition =>
                   if Has_Default_Aspect (Typ) then
-                     return Full_Default_Initialization;
+                     Result := Full_Default_Initialization;
                   else
-                     return No_Default_Initialization;
+                     Result := No_Default_Initialization;
                   end if;
 
                --  For record types we traverse their component declarations
@@ -329,10 +357,6 @@ package body Flow_Utility.Initialization is
                         CItem := First_Non_Pragma (Component_Items (CList));
                         while Present (CItem) loop
                            Process_Component (Defining_Identifier (CItem));
-                           --  Optimization: exit when already decided
-                           if FDI and NDI then
-                              return Mixed_Initialization;
-                           end if;
                            Next_Non_Pragma (CItem);
                         end loop;
 
@@ -346,10 +370,6 @@ package body Flow_Utility.Initialization is
                               while Present (CItem) loop
                                  Process_Component
                                    (Defining_Identifier (CItem));
-                                 --  Optimization: exit when already decided
-                                 if FDI and NDI then
-                                    return Mixed_Initialization;
-                                 end if;
                                  Next_Non_Pragma (CItem);
                               end loop;
                               Next_Non_Pragma (Variant);
@@ -359,29 +379,25 @@ package body Flow_Utility.Initialization is
 
                      --  Detect a mixed case of initialization
 
-                     if FDI and NDI then
-                        Result := Mixed_Initialization;
+                     if NDI then
+                        Result :=
+                          (if FDI or RDI
+                           then Mixed_Initialization
+                           else No_Default_Initialization);
+
+                     elsif RDI then
+                        Result := Only_Relaxed_Uninitialized;
 
                      elsif FDI then
                         Result := Full_Default_Initialization;
-
-                     elsif NDI then
-                        Result := No_Default_Initialization;
 
                      --  The type either has no components or they are all
                      --  internally generated.
 
                      else
-                        if Ignore_DIC then
-                           --  The record is considered to be trivially fully
-                           --  default initialized.
-                           Result := Full_Default_Initialization;
-                        else
-                           Result := No_Possible_Initialization;
-                        end if;
+                        Result := No_Possible_Initialization;
                      end if;
 
-                     return Result;
                   end;
 
                when others                           =>
@@ -401,7 +417,7 @@ package body Flow_Utility.Initialization is
 
             --  Otherwise, look at the full view
 
-            Result := Default_Initialization (Full_View (Typ));
+            Result := Default_Initialization (Full_View (Typ), Ignore_DIC);
 
             --  In specific cases, we'd rather consider the type as
             --  having no default initialization (which is allowed in
@@ -409,9 +425,7 @@ package body Flow_Utility.Initialization is
             --  allowed).
 
             if Result = Mixed_Initialization then
-               return No_Default_Initialization;
-            else
-               return Result;
+               Result := No_Default_Initialization;
             end if;
 
          --  For private extension respect their SPARK_Mode barrier, if present
@@ -445,18 +459,20 @@ package body Flow_Utility.Initialization is
 
                   case Parent_Initialization is
                      when No_Possible_Initialization
-                        | No_Default_Initialization                          =>
-                        return No_Default_Initialization;
+                        | No_Default_Initialization  =>
+                        Result := No_Default_Initialization;
 
-                     when Full_Default_Initialization | Mixed_Initialization =>
-                        return Mixed_Initialization;
+                     when Full_Default_Initialization
+                        | Mixed_Initialization
+                        | Only_Relaxed_Uninitialized =>
+                        Result := Mixed_Initialization;
                   end case;
                end;
 
             --  Otherwise recurse into full type declaration
 
             else
-               return Default_Initialization (Full_View (Typ));
+               Result := Default_Initialization (Full_View (Typ), Ignore_DIC);
             end if;
 
          --  Subtype declarations, just like private types, might be
@@ -475,11 +491,12 @@ package body Flow_Utility.Initialization is
                S_Indication : constant Node_Id := Subtype_Indication (Decl);
             begin
                if Is_Entity_Name (S_Indication) then
-                  return Default_Initialization (Entity (S_Indication));
+                  Result :=
+                    Default_Initialization (Entity (S_Indication), Ignore_DIC);
                elsif Nkind (S_Indication) = N_Subtype_Indication then
-                  return
+                  Result :=
                     Default_Initialization
-                      (Entity (Subtype_Mark (S_Indication)));
+                      (Entity (Subtype_Mark (S_Indication)), Ignore_DIC);
                else
                   raise Program_Error;
                end if;
@@ -489,7 +506,7 @@ package body Flow_Utility.Initialization is
          --  default.
 
          when N_Protected_Type_Declaration | N_Task_Type_Declaration =>
-            return Full_Default_Initialization;
+            Result := Full_Default_Initialization;
 
          --  Recurse into itypes created by component declarations
 
@@ -512,16 +529,16 @@ package body Flow_Utility.Initialization is
 
                   pragma Assert (Nkind (S_Indication) = N_Subtype_Indication);
 
-                  return
+                  Result :=
                     Default_Initialization
-                      (Entity (Subtype_Mark (S_Indication)));
+                      (Entity (Subtype_Mark (S_Indication)), Ignore_DIC);
                else
                   pragma
                     Annotate
                       (Xcov,
                        Exempt_On,
                        "Anonymous access types are rejected in marking");
-                  return Full_Default_Initialization;
+                  Result := Full_Default_Initialization;
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
             end;
@@ -537,28 +554,42 @@ package body Flow_Utility.Initialization is
             --  same analysis as for fully declared types.
 
             if Is_Access_Type (Typ) then
-               return Full_Default_Initialization;
+               Result := Full_Default_Initialization;
 
             elsif Is_Array_Type (Typ) then
                if Has_Default_Aspect (Typ) then
-                  return Full_Default_Initialization;
+                  Result := Full_Default_Initialization;
                else
-                  return Default_Initialization (Component_Type (Typ));
+                  Result :=
+                    Apply_Relaxed_Initialization
+                      (Component_Type (Typ),
+                       Default_Initialization (Component_Type (Typ)));
                end if;
 
             elsif Is_Scalar_Type (Typ) then
                if Has_Default_Aspect (Typ) then
-                  return Full_Default_Initialization;
+                  Result := Full_Default_Initialization;
                else
-                  return No_Default_Initialization;
+                  Result := No_Default_Initialization;
                end if;
 
             else
                pragma Assert (Etype (Typ) /= Typ);
-               return Default_Initialization (Etype (Typ));
+               Result := Default_Initialization (Etype (Typ), Ignore_DIC);
             end if;
 
       end case;
+
+      --  Apply relaxed initialization here only to composite roots. Scalar
+      --  types retain their ordinary classification when queried on their own;
+      --  relaxed scalar components are handled by their enclosing record or
+      --  array.
+
+      if Is_Record_Type (Typ) or else Is_Array_Type (Typ) then
+         Result := Apply_Relaxed_Initialization (Typ, Result);
+      end if;
+
+      return Result;
    end Default_Initialization;
 
    --------------------------------
@@ -692,9 +723,7 @@ package body Flow_Utility.Initialization is
    -- Is_Default_Initialized --
    ----------------------------
 
-   function Is_Default_Initialized
-     (F : Flow_Id; Ignore_DIC : Boolean := False) return Boolean
-   is
+   function Is_Default_Initialized (F : Flow_Id) return Boolean is
 
       function Has_Full_Default_Initialization (E : Entity_Id) return Boolean;
       --  Returns True iff F has full default initialization
@@ -719,8 +748,8 @@ package body Flow_Utility.Initialization is
          end case;
 
          return
-           Default_Initialization (Typ, Ignore_DIC)
-           = Full_Default_Initialization;
+           Default_Initialization (Typ)
+           in Full_Default_Initialization | Only_Relaxed_Uninitialized;
       end Has_Full_Default_Initialization;
 
    begin

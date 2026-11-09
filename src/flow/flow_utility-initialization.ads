@@ -38,13 +38,12 @@ package Flow_Utility.Initialization is
    --  @param F is the Flow_Id whose initialization we look for
    --  @return the default initialization expression of F
 
-   function Is_Default_Initialized
-     (F : Flow_Id; Ignore_DIC : Boolean := False) return Boolean
+   function Is_Default_Initialized (F : Flow_Id) return Boolean
    with Pre => F.Kind in Direct_Mapping | Record_Field;
    --  Returns True if F is default initialized.
    --  @param F is the Flow_Id whose initialization we look for
-   --  @param Ignore_DIC If True then ignore attribute Has_DIC for this type
-   --  @return True iff F is fully default initialized
+   --  @return True iff F is default initialized for flow; relaxed parts need
+   --     not be initialized.
 
    --  The following type lists all possible kinds of default initialization
    --  that may apply to a type.
@@ -67,6 +66,13 @@ package Flow_Utility.Initialization is
       --    * Type extension of a type with full default initialization where
       --      the extension components are also fully default initialized.
 
+      Only_Relaxed_Uninitialized,
+      --  Default initialization satisfies flow's requirements only because
+      --  missing initialization is covered by Relaxed_Initialization. This
+      --  does not establish initialization of the relaxed parts for proof.
+      --  Types already classified as fully default initialized keep that
+      --  classification even when they have relaxed parts.
+
       Mixed_Initialization,
       --  A type where some of its internals are fully default initialized and
       --  some are not.
@@ -81,7 +87,8 @@ package Flow_Utility.Initialization is
    with Pre => Is_Type (Typ);
    --  Determine default initialization kind that applies to a particular type.
    --  Private types are treated specially, so that they are either considered
-   --  as having full default initialization, or no default initialization.
+   --  as having full default initialization, no default initialization, or
+   --  Only_Relaxed_Uninitialized when only relaxed parts lack initialization.
    --  @param Typ any type
    --  @param Ignore_DIC If True then do not consider attribute Has_DIC for
    --     this type.
