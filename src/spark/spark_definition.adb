@@ -4536,6 +4536,38 @@ package body SPARK_Definition is
                     Nkind (Decl) = N_Object_Declaration
                     and then Present (Expression (Decl));
                begin
+                  --  Nested packages are verified independently, using the
+                  --  enclosing precondition and values established by their
+                  --  specifications. Initializing an overlay can invalidate
+                  --  these facts before the package spec or body elaborates.
+
+                  if Is_List_Member (Decl) then
+                     declare
+                        Other : Node_Id := First (List_Containing (Decl));
+                     begin
+                        while Present (Other) loop
+                           if Nkind (Other)
+                              in N_Package_Declaration
+                               | N_Package_Body
+                               | N_Package_Body_Stub
+                             and then
+                               not Is_Generic_Unit
+                                     (Unique_Defining_Entity (Other))
+                           then
+                              Mark_Unsupported
+                                (Lim_Overlay_With_Package,
+                                 E,
+                                 Cont_Msg =>
+                                   Create
+                                     ("consider annotating & with Import",
+                                      Names => [E]));
+                              exit;
+                           end if;
+                           Next (Other);
+                        end loop;
+                     end;
+                  end if;
+
                   if not Is_Init
                     and then Default_Initialization (Etype (E)) /=
                       Full_Default_Initialization
