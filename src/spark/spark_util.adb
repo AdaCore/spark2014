@@ -55,6 +55,7 @@ with Sem_Eval;                    use Sem_Eval;
 with Sem_Prag;                    use Sem_Prag;
 with Sem_Type;                    use Sem_Type;
 with Sinfo.Utils;                 use Sinfo.Utils;
+with Sloc_Utils;
 with Stand;                       use Stand;
 with Stringt;                     use Stringt;
 with VC_Kinds;                    use VC_Kinds;
@@ -7409,13 +7410,13 @@ package body SPARK_Util is
 
    function Safe_First_Sloc (N : Node_Id) return Source_Ptr
    is (if Instantiation_Location (Sloc (N)) = No_Location
-       then Errout.First_Sloc (N)
-       else Sloc (Errout.First_Node (N)));
+       then Sloc_Utils.First_Sloc (N)
+       else Sloc (Sloc_Utils.First_Node (N)));
 
    function Safe_Last_Sloc (N : Node_Id) return Source_Ptr
    is (if Instantiation_Location (Sloc (N)) = No_Location
-       then Errout.Last_Sloc (N)
-       else Sloc (Errout.Last_Node (N)));
+       then Sloc_Utils.Last_Sloc (N)
+       else Sloc (Sloc_Utils.Last_Node (N)));
 
    ------------------------------
    -- Search_Component_By_Name --

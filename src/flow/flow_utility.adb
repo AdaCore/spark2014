@@ -130,7 +130,7 @@ package body Flow_Utility is
    --
    --  This is a helper routine for putting error messages within the Depends,
    --  Refined_Depends and Initializes contract. Note: it is similar to the
-   --  Errout.First_Node, but doesn't rely on slocs thus avoids possible
+   --  Sloc_Utils.First_Node, but doesn't rely on slocs thus avoids possible
    --  problems with generic instances (as described in Safe_First_Sloc).
 
    procedure Pick_Generated_Info_Internal

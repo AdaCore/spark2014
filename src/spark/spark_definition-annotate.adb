@@ -31,7 +31,6 @@ with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Aspects;                     use Aspects;
 with Checked_Types;               use Checked_Types;
 with Common_Containers;
-with Errout;
 with Erroutc;
 with Errout_Wrapper;              use Errout_Wrapper;
 with Flow_Refinement;             use Flow_Refinement;
@@ -46,6 +45,7 @@ with Sem_Ch12;
 with Sem_Ch13;                    use Sem_Ch13;
 with Sinfo.Utils;                 use Sinfo.Utils;
 with Sinput;                      use Sinput;
+with Sloc_Utils;
 with Snames;                      use Snames;
 with SPARK_Definition.Violations; use SPARK_Definition.Violations;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
@@ -6983,8 +6983,8 @@ package body SPARK_Definition.Annotate is
             end;
          end if;
       else
-         Left_Sloc := Errout.First_Sloc (Range_Node);
-         Right_Sloc := Errout.First_Sloc (Prgma);
+         Left_Sloc := Sloc_Utils.First_Sloc (Range_Node);
+         Right_Sloc := Sloc_Utils.First_Sloc (Prgma);
       end if;
       Insert_Annotate_Range
         (Prgma, Kind, Pattern, Reason, Left_Sloc, Right_Sloc);

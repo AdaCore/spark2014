@@ -54,6 +54,7 @@ with Sem_Util;                    use Sem_Util;
 with Sinfo.Nodes;                 use Sinfo.Nodes;
 with Sinfo.Utils;                 use Sinfo.Utils;
 with Sinput;                      use Sinput;
+with Sloc_Utils;
 with Snames;                      use Snames;
 with SPARK_Atree;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
@@ -217,7 +218,7 @@ package body Flow_Error_Messages is
          --  mention where the generic is instantiated.
 
          declare
-            Loc     : Source_Ptr := Sloc (Errout.First_Node (N));
+            Loc     : Source_Ptr := Sloc (Sloc_Utils.First_Node (N));
             File    : Unbounded_String;
             Line    : Physical_Line_Number;
             Context : Unbounded_String;
@@ -939,7 +940,7 @@ package body Flow_Error_Messages is
          else
             declare
                Loc  : constant Source_Ptr :=
-                 Sloc (Errout.First_Node (Cont.Ada_Node));
+                 Sloc (Sloc_Utils.First_Node (Cont.Ada_Node));
                File : constant String := File_Name (Loc);
                Line : constant Physical_Line_Number :=
                  Get_Physical_Line_Number (Loc);
