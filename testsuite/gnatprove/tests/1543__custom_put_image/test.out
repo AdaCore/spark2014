@@ -1,6 +1,16 @@
+custom_image.adb:4:36: error: "Root_Buffer_Type'Class" is not allowed in SPARK (due to primitive calls in default initial condition)
+custom_image.adb:4:36: error: violation of aspect SPARK_Mode at line 3
 custom_image.adb:22:37: error: attribute "Image" with user-defined Put_Image is not yet supported
 custom_image.adb:24:19: error: "Image" is not allowed in SPARK (due to attribute "Image" with user-defined Put_Image)
 custom_image.adb:24:19: error: violation of aspect SPARK_Mode at line 3
+reject_images.adb:5:39: error: "Root_Buffer_Type'Class" is not allowed in SPARK (due to primitive calls in default initial condition)
+reject_images.adb:5:39: error: violation of aspect SPARK_Mode at line 3
+reject_images.adb:10:58: error: "Root_Buffer_Type'Class" is not allowed in SPARK (due to primitive calls in default initial condition)
+reject_images.adb:10:58: error: violation of aspect SPARK_Mode at line 3
+reject_images.adb:14:39: error: "Root_Buffer_Type'Class" is not allowed in SPARK (due to primitive calls in default initial condition)
+reject_images.adb:14:39: error: violation of aspect SPARK_Mode at line 3
+reject_images.adb:27:39: error: "Root_Buffer_Type'Class" is not allowed in SPARK (due to primitive calls in default initial condition)
+reject_images.adb:27:39: error: violation of aspect SPARK_Mode at line 3
 reject_images.adb:29:72: error: attribute "Image" with user-defined Put_Image is not yet supported
 reject_images.adb:50:71: error: attribute "Image" with user-defined Put_Image is not yet supported
 reject_images.adb:51:65: error: attribute "Image" with user-defined Put_Image is not yet supported
