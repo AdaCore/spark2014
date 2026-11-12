@@ -73,14 +73,14 @@ test_components.adb:126:14: warning: subprogram "Test_Write_OK" has no effect
 test_components.adb:129:17: info: postcondition proved (CVC5: 1 VC)
 test_components.adb:131:07: info: no contextual analysis of "Test_Write_OK" (nested subprogram)
 test_components.adb:143:17: info: postcondition proved (CVC5: 1 VC)
-test_components.adb:148:22: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:148:22: info: discriminant check proved (CVC5: 1 VC)
 test_components.adb:158:17: info: postcondition proved (CVC5: 1 VC)
 test_components.adb:161:10: warning: unused variable "I"
 test_components.adb:163:17: info: range check proved (CVC5: 4 VC)
-test_components.adb:164:38: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:164:38: info: discriminant check proved (CVC5: 1 VC)
 test_components.adb:166:17: info: range check proved (CVC5: 4 VC)
-test_components.adb:167:38: info: discriminant check proved (CVC5: 2 VC)
-test_components.adb:169:28: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:167:38: info: discriminant check proved (CVC5: 1 VC)
+test_components.adb:169:28: info: discriminant check proved (CVC5: 1 VC)
 test_components.adb:174:17: info: postcondition proved (CVC5: 1 VC)
 test_components.adb:179:14: info: range check proved (CVC5: 2 VC)
 test_components.adb:180:14: info: range check proved (CVC5: 2 VC)
@@ -93,13 +93,13 @@ test_components.adb:194:14: warning: subprogram "Test_Write_Bad" has no effect
 test_components.adb:197:17: medium: postcondition might fail (e.g. when X = (D => 0, F1 => 0, F2 => ?) and X.F1'Valid = True and X.F2'Valid = False)
 test_components.adb:199:07: info: no contextual analysis of "Test_Write_Bad" (nested subprogram)
 test_components.adb:208:17: medium: postcondition might fail
-test_components.adb:213:22: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:213:22: info: discriminant check proved (CVC5: 1 VC)
 test_components.adb:222:17: medium: postcondition might fail
 test_components.adb:225:10: warning: unused variable "I"
 test_components.adb:227:17: info: range check proved (CVC5: 4 VC)
-test_components.adb:228:38: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:228:38: info: discriminant check proved (CVC5: 1 VC)
 test_components.adb:230:17: info: range check proved (CVC5: 4 VC)
-test_components.adb:231:38: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:231:38: info: discriminant check proved (CVC5: 1 VC)
 test_components.adb:237:17: medium: postcondition might fail
 test_components.adb:242:14: info: range check proved (CVC5: 2 VC)
 test_components.adb:243:14: info: range check proved (CVC5: 2 VC)
@@ -115,7 +115,7 @@ test_slide.adb:22:07: info: no contextual analysis of "Test_OK" (nested subprogr
 test_slide.adb:24:12: info: length check proved (CVC5: 3 VC)
 test_slide.adb:27:40: info: initialization of "Y" proved
 test_slide.adb:30:17: info: postcondition proved (CVC5: 2 VC)
-test_slide.adb:34:15: info: length check proved (CVC5: 6 VC)
+test_slide.adb:34:15: info: length check proved (CVC5: 3 VC)
 test_slide.adb:43:13: info: length check proved (CVC5: 3 VC)
 test_slide.adb:44:25: info: assertion proved (CVC5: 2 VC)
 test_slide.adb:49:17: info: postcondition proved (Trivial: 1 VC)
@@ -124,7 +124,6 @@ test_slide.adb:57:17: warning: subprogram "Decl" has no effect
 test_slide.adb:62:20: info: length check proved (CVC5: 3 VC)
 test_slide.adb:64:25: info: assertion proved (CVC5: 2 VC)
 test_slide.adb:70:14: warning: subprogram "Test_Bad" has no effect
-test_slide.adb:78:17: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 test_slide.adb:80:40: info: initialization of "Y" proved
 test_slide.adb:83:17: medium: postcondition might fail
 test_slide.adb:83:20: info: index check proved (CVC5: 2 VC)
@@ -135,7 +134,7 @@ test_slide.adb:90:40: info: initialization of "Y" proved
 test_slide.adb:93:17: medium: postcondition might fail
 test_slide.adb:93:20: info: index check proved (CVC5: 2 VC)
 test_slide.adb:93:34: info: index check proved (CVC5: 2 VC)
-test_slide.adb:97:15: info: length check proved (CVC5: 6 VC)
+test_slide.adb:97:15: info: length check proved (CVC5: 3 VC)
 test_slide.adb:106:10: info: precondition proved (CVC5: 2 VC)
 test_slide.adb:106:14: info: length check proved (CVC5: 3 VC)
 test_slide.adb:107:25: medium: assertion might fail [possible fix: precondition of subprogram at line 100 should mention B]
