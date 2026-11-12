@@ -51,8 +51,9 @@ package Gnat2Why.Util is
 
    package Ada_Ent_To_Why is
 
-      --  This package is a map from Ada names to a Why node, possibly with a
-      --  type. Ada names can have the form of Entity_Ids or Entity_Names.
+      --  This package maps Ada names to Why.Gen.Binders.Item_Type values.
+      --  Keys are Entity_Ids or Entity_Names, the latter also allowing opaque
+      --  globals without an Ada entity. Scopes allow temporary mappings.
 
       type Map is private;
       type Cursor is private;
@@ -186,7 +187,11 @@ package Gnat2Why.Util is
         Hash            => Node_Hash,
         Element_Type    => W_Identifier_Id);
 
-   Symbol_Table       : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
+   Symbol_Table : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
+   --  Current entity-to-item mappings, including local replacements such as
+   --  formal parameters in a generated function. Enclose temporary mappings
+   --  in Push_Scope/Pop_Scope to restore the surrounding mappings afterwards.
+
    Continuation_Stack : Continuation_Vectors.Vector;
    --  Stack of all the continuation messages relevant for the translation of
    --  the current expression.

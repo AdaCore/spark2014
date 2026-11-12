@@ -3408,45 +3408,58 @@ described in ``src/why/why-gen-binders.ads``.
 
 Objects
 -------
+
 Mutable and Constant Objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Objects are translated differently depending on their type, but also depending
-on whether they are mutable or not. Let's first consider constants. Are
-translated as constants in Why3 all Ada objects which are constants in Ada
-except:
+Most Ada objects have declarations at module level in Why3, including objects
+local to an Ada subprogram. Their symbols can then be used in separate
+verification modules, for example when verifying a nested subprogram.
 
- * Loop parameters, as they need to be updated during the generated Why3 loop;
- * Scalar constants with variable inputs declared in unrolled loop, or before
-   the loop invariant in normal loops, because they can appear twice with
-   different values due to loop handling (see
-   ``SPARK_Definition.Check_Loop_Invariant_Placement`` and
-   ``SPARK_Definition.Check_Unrolled_Loop``);
- * Volatile in parameters with asynchronous writers;
- * Constants of an access-to-variable type which is not a private type.
+Other values use local ``let`` bindings within the generated code. These
+include constants declared within expressions, such as declare expressions,
+and saved values used by ``@``, ``'At``, ``'Old``, and ``'Loop_Entry``.
+For ``@``, the binding captures the assignment target's value before the
+assignment. For ``'At``, it captures the value at the referenced label.
+Each execution has its own bound value, so loop translation can duplicate these
+bindings without requiring mutable storage. These bindings are built in
+:file:`src/why/gnat2why-expr.adb`.
 
-See ``Is_Mutable_In_Why`` for more details.
+Mutability in Why3 describes the state needed by the encoding. It does not
+always match the presence of ``constant`` in Ada. In particular:
 
-Ada objects which are constant in Why3 are translated as functions without
-parameters. Here are is an example:
+* A loop parameter is constant within an Ada iteration, but the generated
+  Why3 loop updates its reference between iterations. A quantified-expression
+  parameter instead uses a local binding.
+* Loop translation can duplicate a constant's declaration with different
+  values. Constants with variable inputs need mutable storage in unrolled
+  loops, as do scalar constants before the invariant in other loops.
+  Constants translated as local ``let`` bindings do not need this treatment.
+* Volatile constants and ``in`` parameters with asynchronous writers need
+  mutable storage because external updates can change their value.
+* A constant of an access-to-variable type fixes the access value, but still
+  allows updates to the designated object. The value-based pointer model must
+  retain this mutable state. See :ref:`Access Objects` for the split between
+  the fixed null flag and the designated value.
+
+``Is_Mutable_In_Why`` in :file:`src/why/gnat2why-util.adb` determines mutability,
+including the treatment of formal parameters and concurrent objects. A hidden
+full view does not expose mutable designated state merely because its
+implementation uses pointers.
+
+An immutable object represented by a module-level symbol is declared as a
+function without parameters. For example:
 
 .. code-block:: ada
 
    B : constant Boolean := True;
 
-This declaration is translated into a single uninterpreted logic function
-without parameters:
+Omitting labels and imports, its declaration and defining axiom are:
 
 .. code-block:: whyml
 
  module P__b
-   function b2 : bool
+   val function b : bool
  end
-
-If the definition of the constant does not depend on variables, it is supplied
-as an axiom in a completion module for the object:
-
-.. code-block:: whyml
-
  module P__b___axiom
    use        P__b
 
@@ -3454,9 +3467,19 @@ as an axiom in a completion module for the object:
     P__b.b = True
  end
 
-Variables on the other hand, are translated using an uninterpreted program
-declaration returning an object of a reference type. If we remove the
-``constant`` keyword form the declaration of ``B``, the translation will become:
+The value axiom is excluded from verification of the subprogram or package
+directly containing the declaration. This exclusion is required for soundness:
+checking the constant's expression must not rely on the axiom whose validity
+those checks establish. In nested scopes, the axiom can be imported unless mutual
+dependencies exclude it.
+
+A value axiom is generated only when the constant's expression has a suitable
+logical translation independent of mutable state. This excludes, for example,
+volatile calls, calls with side effects, and allocators. Non-static expressions
+inside protected objects are also excluded because they may need the current
+protected object, which is not available when generating this axiom.
+
+Removing ``constant`` gives a reference instead:
 
 .. code-block:: whyml
 
@@ -3464,49 +3487,61 @@ declaration returning an object of a reference type. If we remove the
   val b : bool__ref
  end
 
-No axiom is generated for the value of a variable. The value will be provided
-as an assignment at the location of the object declaration:
+Its initial value is established by an assignment at the point where the Ada
+declaration is elaborated:
 
 .. code-block:: whyml
 
  P__b.b.bool__content <- True;
 
-In fact, even for constants code might be generated at the location of the
-object declaration to specify the value of the constant. This can have several
-reasons:
+For an immutable constant, elaboration translates its expression as a program
+expression, generates its checks, and assumes equality with the computed value.
+The value axiom is unavailable in this context.
 
- * No axiom can be generated for the constant, or the axiom might be
-   incomplete. For example, we can't currently generate axioms for non-static
-   constants in protected objects, and axioms for constants that are defined
-   using a recursive call might be incomplete.
- * Repeating the value of the constant in a different form might help provers.
+When verifying a nested scope, GNATprove can also translate the constant's
+expression as a program expression and assume equality with its value. Checks
+on the expression belong to the enclosing scope and are omitted here.
+These assumptions can supply a value when no axiom is available, give more
+information than the axiom, for example for a recursive call, or help provers
+by expressing the same value in another form.
 
-The relevant subprograms for the handling of constant values are:
+The declaration and value-axiom APIs are described in
+:file:`src/why/gnat2why-decls.ads`. The elaboration translation is in
+``Assignment_Of_Obj_Decl`` in :file:`src/why/gnat2why-expr.adb`.
+``Assume_Declaration_Of_Entity`` supplies the unchecked value assumptions in
+nested scopes. Axiom imports are filtered by ``Add_Axiom_Imports`` in
+:file:`src/why/why-inter.adb`.
 
- * Gnat2why.Decls.Translate_Constant_Value for the generation of the axiom for
-   the constant, if possible.
- * Gnat2why.Expr.Assignment_Of_Obj_Decl for the insertion of assumptions in
-   some cases
- * Gnat2why.Expr.Assume_Value_Of_Constants for the insertion of assumptions for
-   constants
+Mutable composite objects are split into parts that can change and parts that
+must be preserved. Mutable parts use references; fixed parts use immutable
+symbols. A call or loop can then forget the mutable content without losing
+fixed bounds, tags, or discriminants. The cost is that translation must
+reconstruct a complete value when an expression needs one.
+
+Array bounds and fixed record discriminants can differ between loop iterations,
+even though their Why3 constants are reused. Assumptions about these constants
+from different iterations could therefore contradict each other if combined on
+a single verification path. To keep these potentially contradictory assumptions
+on independent verification paths, composite objects cannot be declared before
+a loop invariant, and loop unrolling must not duplicate their declarations.
+
+Splitting an object can produce several separate values. This differs from the
+split form of a scalar or array expression, which still has a single Why3 type.
+``Item_Type`` in :file:`src/why/why-gen-binders.ads` describes object layouts;
+``Reconstruct_Item`` builds a complete value from their parts. Why3 type
+selection is described in :file:`src/why/why-inter.ads`.
+
+The object model also tracks information that is not part of the translated
+value, such as the ``'Constrained`` attribute, validity flags, and move trees.
 
 Scalar Objects
 ^^^^^^^^^^^^^^
-For some Ada types, expressions, and in particular objects, can be either in a
-open, or split, form or in a closed, or abstract, form. This is the case for
-most scalar types, arrays, records, and pointers. ``Why.Inter.EW_Abstract`` and
-``Why.Inter.EW_Split`` are used to create the split and abstract form of
-a type. Note that, whereas all types have an abstract form (it is always OK to
-call ``EW_Abstract`` on an Ada type), only scalar types and array types have
-a split form (even if record and access objects do have a split form, see
-corresponding section).
 
-Scalar types which are not standard boolean use their representative type as a
-split form: When an expression of a scalar type which is not standard boolean is
-in split form, if it is translated as a value of the underlying representative
-type (mathematical integer, bitvector, floating point type...). Objects of
-scalar types are always in split form (see ``Use_Split_Form_For_Type``). For
-example, let's consider the following objects:
+For scalar objects, split form means using the underlying representative type:
+a mathematical integer, bitvector, floating-point type, or fixed-point
+representation. Scalar objects use this form, except those represented directly
+as Why3 Booleans. The closed form is described in :ref:`Scalar Types`. For
+example:
 
 .. code-block:: ada
 
@@ -3517,115 +3552,79 @@ As ``Integer`` is a signed integer type, its representative type is ``int``:
 
 .. code-block:: whyml
 
- function x : int
+ val function x : int
 
  axiom x__def_axiom :
    P__x.x = 15
 
  val y : int__ref
 
-Using this split form for scalar types avoids having to introduce conversions
-between the closed form and the
-representative type for computations. Missing information about the
-bounds of the objects are supplied as assumptions
-through dynamic invariant (see the corresponding section in Type Completion).
+Using the representative type avoids repeated conversions for computations.
+The type itself does not enforce Ada bounds; these are supplied by dynamic
+invariants and checked on updates (see :ref:`Type Completion`).
 
 Array Objects
 ^^^^^^^^^^^^^
-For arrays that are mutable in Why, separating the content of the array from its
-bounds makes proof easier. Indeed, it allows to translate the bounds as
-constants, so that their preservation comes for free, while keeping a
-reference for the content. To achieve this,
-unconstrained and dynamically constrained array types use the underlying map
-type as a split form. Since the separation is only used for preservation of
-information, only mutable arrays are in split form. Let us look at some
-examples.
 
-As array constants are in closed form, constants of constrained array types with
-static bounds will be translated as functions returning the underlying Why3 map
-and constants of unconstrained array types, or of dynamically constrained array
-types, as functions returning the corresponding abstract type:
+An array object's bounds cannot change, even when its elements can. For a
+mutable array whose bounds are not static, translation separates a reference
+to the content map from immutable bounds. This preserves the bounds through
+loops and calls without additional frame conditions. When the bounds are
+static, they already belong to the type's module and only the content map is
+needed. In this example, ``N`` is a variable of type ``Positive``:
 
 .. code-block:: ada
 
    type Nat_Array is array (Positive range <>) of Natural;
 
-   A1 : constant Nat_Array (1 .. 10) := (1 .. 10 => 15);
-   A2 : constant Nat_Array := (1 .. 10 => 15);
-
-The type of ``A1`` is statically constrained. It will be translated as a Why3
-map, the bounds being declared directly inside the module for the Ada type of
-``A1``:
-
-.. code-block:: whyml
-
- function a1 : Array__Int__Standard__natural.map
-
-The type of ``A2`` is unconstrained. It will be translated using the abstract
-type introduced for ``Nat_Array`` from which both the bounds and the
-underlying map can be queried:
-
-.. code-block:: whyml
-
- function a2 : P__nat_array.nat_array
-
-Let us now consider mutable arrays:
-
-.. code-block:: ada
-
+   Bound : constant Positive := N;
    A1 : Nat_Array (1 .. 10) := (1 .. 10 => 15);
-   A2 : Nat_Array := (1 .. 10 => 15);
+   A2 : Nat_Array (1 .. Bound) := (1 .. Bound => 15);
 
-Since the bounds of statically constrained array types are translated
-separately, we simply need a global reference for the content of ``A1``:
+The declarations have the following shape:
 
 .. code-block:: whyml
 
  val a1 : Array__Int__Standard__natural.map__ref
 
-For unconstrained or dynamically constrained array types, mutable objects are
-split into different parts, the bounds, which are constant, and the mutable
-content. For one-dimensional arrays, this results in the declaration of three
-Why3 objects:
-
-.. code-block:: whyml
-
  val a2 : Array__Int__Standard__natural.map__ref
 
- function a2__first : Standard__integer.integer
+ val function a2__first : Standard__integer.integer
 
- function a2__last : Standard__integer.integer
+ val function a2__last : Standard__integer.integer
 
-A draw back of this approach is that array variables need to be
-reconstructed using the ``of_array`` conversion function when they are involved
-in computations. Indeed, as the bounds are associated to Ada objects, they
-cannot easily be retrieved from more complex expressions, therefore requiring
-the switch to closed form.
+Elaboration establishes the values of ``a2__first`` and ``a2__last`` from the
+bounds evaluated at that point. Later changes to ``N`` cannot change them.
+Each additional dimension contributes another pair of bounds.
+
+Immutable array objects need no split layout. Their module-level declarations
+are functions returning the map for a statically constrained type, or the closed
+array type otherwise. The closed type carries both content and bounds. This
+includes a constant such as ``C : constant Nat_Array := (1 .. 10 => 15)``, whose
+declared type is unconstrained.
+
+The split representation is useful for objects with known names, but bounds
+cannot in general be recovered from an arbitrary map expression. Operations
+needing a whole array therefore reconstruct its closed value from the map
+and bounds, using ``of_array``. See :ref:`Array Types` for the closed model.
 
 Record Objects
 ^^^^^^^^^^^^^^
-Like arrays, records can have both constant and variable parts. The regular
-components of a mutable record object are always mutable, whereas discriminants
-are constant most of the time, and tag of tagged record objects can never
-change. As a result, it is interesting to split record objects so that
-preservation of constant parts can come for free. However, unlike array objects,
-record objects do not have a single main mutable part. As a result, there is not
-a single type for the split form of a record and record expressions which are
-not objects are never in split form (see assertions in ``New_Kind_Base_Type``
-enforcing that it is never called with kind ``EW_Split`` on record types).
 
-Record constants are in closed form. They are translated as a single
-uninterpreted logic function of the corresponding abstract record type with
-no parameters.
+A mutable record object separates its regular components, discriminants,
+tag, and a flag for its ``'Constrained`` attribute, when present. The regular
+components are mutable. Discriminants use a reference when the selected subtype
+permits mutable discriminants, and an immutable symbol otherwise. The tag and
+the ``'Constrained`` attribute are fixed throughout the object's lifetime.
 
-On the other hand, a mutable record object may produce up to four declarations:
+Since tags, ``'Constrained`` flags, and immutable discriminants are modeled as
+constants, assignments check the conditions they impose rather than writing
+these parts. The item layout and conditions for including each part are
+described in :file:`src/why/why-gen-binders.ads`.
 
- * A mutable Why3 record for the regular components of the Ada record type,
- * A Why3 record for the discriminants of the Ada record type (mutable only
-   if the Ada type has defaulted discriminants),
- * A mathematical integer constant for the tag attribute of tagged types, and
- * A boolean constant for the constrained attribute of records with defaulted
-   discriminants.
+Immutable record objects use closed values, with a single function for a
+module-level declaration. Arbitrary record expressions also use closed values:
+there is no single split record type combining the independently mutable parts.
 
 As an example, let us consider the following tagged Ada record:
 
@@ -3642,9 +3641,9 @@ the regular components and a constant for the tag attribute:
 
 .. code-block:: whyml
 
- val t2__split_fields : P__tagged_rec.__split_fields__ref
+ val t__split_fields : P__tagged_rec.__split_fields__ref
 
- function t2__attr__tag : int
+ val function t__attr__tag : int
 
 Let us now consider a record type with mutable discriminants:
 
@@ -3661,8 +3660,9 @@ Let us now consider a record type with mutable discriminants:
 
    O1 : Option := (Present => True, Content => 15);
 
-As ``Option`` has defaulted discriminants, both its regular and its discriminant
-parts are mutable. However, its constrained attribute is not:
+The subtype of ``O1`` is unconstrained and has defaulted discriminants, so both
+its regular and discriminant parts are mutable. Its ``'Constrained`` attribute
+is fixed:
 
 .. code-block:: whyml
 
@@ -3670,89 +3670,59 @@ parts are mutable. However, its constrained attribute is not:
 
  val o1__split_discrs : P__option.__split_discrs__ref
 
- function o1__attr__constrained : bool
+ val function o1__attr__constrained : bool
 
-If the discriminant of ``Option`` is fixed in its Ada type, the discriminant
-part will be declared as a constant:
+Constraining the subtype instead fixes the discriminant part:
 
 .. code-block:: ada
 
    O2 : Option (True) := (Present => True, Content => 15);
 
-.. code-block:: whyml
-
- val o2__split_field : P__To2S.__split_fields__ref
-
- function o2__split_discrs : P__option.__split_discrs
-
- function o2__attr__constrained : bool
+Only the regular components of ``O2`` need a reference. Its discriminants and
+``'Constrained`` attribute use immutable symbols. Elaboration establishes that
+``O1`` is unconstrained and ``O2`` is constrained.
 
 Access Objects
 ^^^^^^^^^^^^^^
-Access objects are made of two parts: a boolean flag to encode whether the
-access is null and the value designated by the
-access. Whereas the designated value is mutable as soon as the access object
-is not entirely constant, the ``is_null`` flag can be constant.
-It happens when we are declaring a constant of an access-to-variable type
-which is not a private type (those objects are not constant in Why as the
-value they designate can be modified). Thus, it may be interesting to split
-access objects so that preservation of constant parts can come for free.
-Like for records, we have not introduced a type of kind ``EW_Split`` for access
-types, and access expressions which are not objects are never in split form.
 
-Constants of an access-to-constant type are in closed form. They are translated
-as a single uninterpreted logic function of the corresponding abstract access
-type with no parameters.
-
-For other access objects, two declarations are produced: one for the boolean
-``is_null`` flag and one for the designated value. The
-latter is always a reference, whereas the former can be a constant or a
-variable depending on whether the Ada access object is mutable or not.
-
-As an example, let us consider the following Ada access constant:
+The value-based access-to-object model contains a null flag and a designated
+value (see :ref:`Access-To-Object Types`). An access object mutable in Why3
+separates these two parts. The designated value uses a reference. The null
+flag uses an immutable symbol when the Ada access object is constant, and a
+reference otherwise. For example:
 
 .. code-block:: ada
 
    type Int_Acc is access Integer;
 
    X : constant Int_Acc := new Integer'(15);
+   Y : Int_Acc;
 
-As it is a constant, its boolean ``is_null`` flag is constant.
-However, the designated value can be modified, since ``Int_Acc`` is an
-access-to-variable type:
+``X.all`` can change, but ``X`` cannot be reassigned. Splitting therefore
+preserves its nullness even when proof forgets the designated value. Both
+parts of ``Y`` can change:
 
 .. code-block:: whyml
 
  val x__pointer_value : Standard__integer.integer__ref
 
- val constant x__is_null_pointer : bool
-
-Let us now consider a variable:
-
-.. code-block:: ada
-
-   Y : Int_Acc;
-
-Here, both the designated value and the ``is_null`` flag
-are mutable, so we declare two references:
-
-.. code-block:: whyml
+ val function x__is_null_pointer : bool
 
  val y__pointer_value  : Standard__integer.integer__ref
 
  val y__is_null_pointer : bool__ref
 
-In addition, if the access object is a local borrower (a constant or a
-variable of an anonymous access-to-variable type, see ``Is_Local_Borrower``),
-its module also contains the declarations for two additional objects. One
-is a constant which stands for the value of the borrowed expression at the
-end of the borrow, the other is a variable, holding the value at the end of
-the borrow of the structure designated by the borrower at all time. This is
-the reason why it is a variable, as the part of the borrowed structure
-designated by the borrower might change during the borrow.
-We call these objects predicted values as they are used and linked together
-during the borrow prior to assuming their actual value when the end of the
-borrow is actually reached.
+Immutable access objects, such as ordinary constants of access-to-constant
+types, use the closed access value. As for records, arbitrary access
+expressions use closed values rather than a split type. Move trees are
+separate from these value parts; see :ref:`Move Trees`.
+
+A local borrower also needs predicted end-of-borrow values. One immutable
+symbol represents the borrowed expression at the end of the borrow. A
+reference represents the borrower's predicted final value; it can change
+when the borrower is reassigned to designate another part of the borrowed
+structure. These values connect updates during the borrow to the state
+restored at its end (see :ref:`Local Borrows`).
 
 Consider, as an example, the following borrow:
 
@@ -3761,27 +3731,26 @@ Consider, as an example, the following borrow:
    B : access Integer := Y;
 
 In the module generated for ``B``, in addition to the declarations of the
-components described previously, we generate:
+components described previously, we generate the following declarations.
+Here ``Borrower.t`` stands for the generated anonymous access type:
 
 .. code-block:: whyml
 
-   val b__brower_at_end : Test__T2b.t2b__ref
+   val b__brower_at_end : Borrower.t__ref
 
-   val function b__borrowed_at_end : Test__T2b.t2b
+   val function b__borrowed_at_end : Borrower.t
 
-Here ``t2b`` is the type introduced by the compiler for the anonymous type of
-``B``. We can see that, even though ``Y`` has type ``Int_Acc``, the borrowed
-expression has the type of the borrower. This is important as it is possible
-that constraints on the actual type for the borrowed expression might be broken
-during the borrow.
+The predicted borrowed value uses the borrower's type, even though ``Y`` has
+type ``Int_Acc``. Constraints on the original borrowed expression's type can be
+temporarily broken during the borrow.
 
 Effect-Only Objects
 ^^^^^^^^^^^^^^^^^^^
-Global annotations may refer to state whose exact definition is hidden from the
-analysis. The most common occurrence of this case is for state abstraction. When
-analyzing a unit, abstract states defined in other units are opaque for SPARK.
-To encode this unknown state, abstract states are translated in Why as a global
-variable of the predefined ``__private`` type. Here is an example:
+
+A call's effects must include hidden state even when proof cannot describe its
+value. Otherwise a call changing that state would appear to have no effect.
+For example, a client can refer to an abstract state without seeing its
+constituents:
 
 .. code-block:: ada
 
@@ -3794,8 +3763,8 @@ variable of the predefined ``__private`` type. Here is an example:
    with Withed_Unit;
    procedure P with Global => (In_Out => Withed_Unit.State);
 
-A global reference is introduced in Why for the abstract state of
-``Withed_Unit``, so that it can be used in the translation of ``P``:
+A reference of the predefined ``__private`` type records the state's identity.
+The call contract can use it in reads and writes:
 
 .. code-block:: whyml
 
@@ -3809,41 +3778,13 @@ A global reference is introduced in Why for the abstract state of
   reads  {Withed_unit__state.state}
   writes {Withed_unit__state.state}
 
-Global annotations can also refer to entities which are not in SPARK.
-In the following example, ``P`` can state that it modifies ``V``
-even if ``V`` is declared in a package with ``SPARK_Mode => Off``.
-
-.. code-block:: ada
-
-   package Nested with
-     SPARK_Mode => Off
-   is
-      V : access Integer;
-   end Nested;
-
-   procedure P with Global => (In_Out => Nested.V);
-
-``V`` should be translated to express the data dependency, but we should
-not try to translate its type, which may not be in SPARK (here for example it is
-an access type, but the translation mechanism would be the same if it was an
-integer). To this aim, we emit a dummy variable declaration for ``V`` using the
-predefined ``__private`` type:
-
-.. code-block:: whyml
-
- module P__nested__v
-   use import "_gnatprove_standard".Main
-
-   val v  : __private__ref
- end
-
- val p (__void_param : unit) : unit
-  reads  {P__nested__v.v}
-  writes {P__nested__v.v}
-
-Remark that dummy variables for effects of subprograms will also be defined for
-generated Global contracts (when no user provided global contract is supplied
-for a subprogram).
+This is an effect model, not a translation of the hidden representation. It
+provides no fields or operations for reasoning about the state's contents.
+The same treatment applies to variables outside SPARK mentioned in Global
+contracts: their types need not be translated merely to describe a call's
+effects. Both explicit and generated Global contracts can require these
+objects. ``Translate_External_Object`` in :file:`src/why/gnat2why-decls.ads`
+describes the declaration boundary.
 
 Subprograms
 -----------

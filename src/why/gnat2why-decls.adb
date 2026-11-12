@@ -640,8 +640,7 @@ package body Gnat2Why.Decls is
              & ", created in "
              & GNAT.Source_Info.Enclosing_Entity);
 
-      --  If E is not in SPARK, only declare an object of type __private for
-      --  use in effects of program functions in Why3.
+      --  Emit the item's value parts, retaining their individual mutability
 
       case Var.Kind is
          when DRecord                =>
