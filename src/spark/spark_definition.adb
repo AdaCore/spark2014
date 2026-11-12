@@ -2704,16 +2704,6 @@ package body SPARK_Definition is
       --  declared in the loop so that their translation into Why3 does not
       --  introduce constants.
 
-      function Is_Update_Aggregate (Aggr : Node_Id) return Boolean;
-      --  Detect whether Aggr is an aggregate node modelling 'Update. Returns
-      --  false for a normal aggregate.
-
-      function Is_Update_Unconstr_Multidim_Aggr
-        (Aggr : N_Aggregate_Id) return Boolean
-      with Pre => Is_Update_Aggregate (N);
-      --  Detect whether a 'Update aggregate is an update of an
-      --  unconstrained multidimensional array.
-
       ------------------------------------
       -- Check_Loop_Invariant_Placement --
       ------------------------------------
@@ -3037,32 +3027,6 @@ package body SPARK_Definition is
          end if;
       end Check_Unrolled_Loop;
 
-      -------------------------
-      -- Is_Update_Aggregate --
-      -------------------------
-
-      function Is_Update_Aggregate (Aggr : Node_Id) return Boolean is
-      begin
-         return
-           Nkind (Aggr) = N_Aggregate
-           and then Is_Attribute_Update (Parent (Aggr));
-      end Is_Update_Aggregate;
-
-      --------------------------------------
-      -- Is_Update_Unconstr_Multidim_Aggr --
-      --------------------------------------
-
-      function Is_Update_Unconstr_Multidim_Aggr
-        (Aggr : N_Aggregate_Id) return Boolean
-      is
-         Pref_Type : constant Type_Kind_Id := Etype (Prefix (Parent (Aggr)));
-      begin
-         return
-           Is_Array_Type (Pref_Type)
-           and then Number_Dimensions (Pref_Type) > 1
-           and then not Is_Static_Array_Type (Pref_Type);
-      end Is_Update_Unconstr_Multidim_Aggr;
-
    begin
       Current_Error_Node := N;
 
@@ -3179,13 +3143,6 @@ package body SPARK_Definition is
                      end if;
                   end;
                end if;
-
-            --  Reject 'Update on unconstrained multidimensional array
-
-            elsif Is_Update_Aggregate (N)
-              and then Is_Update_Unconstr_Multidim_Aggr (N)
-            then
-               Mark_Unsupported (Lim_Multidim_Update, N);
 
             elsif not Most_Underlying_Type_In_SPARK (Etype (N)) then
                Mark_Violation (N, From => Etype (N));

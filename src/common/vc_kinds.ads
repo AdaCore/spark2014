@@ -786,7 +786,6 @@ package VC_Kinds is
       Lim_Multiple_Inheritance_Mixed_SPARK_Mode,
       Lim_Multiple_Inheritance_Root,
       Lim_Multidim_Iterator,
-      Lim_Multidim_Update,
       Lim_Mutably_Tagged_Type,
       Lim_Null_Aggregate_In_Branching_Array_Aggregate,
       Lim_Object_Before_Inv,
@@ -1184,8 +1183,6 @@ package VC_Kinds is
            & " containing a loop invariant",
          when Lim_At_Unsupported_Context                                  =>
            "this use of attribute ""At""",
-         when Lim_Multidim_Update                                         =>
-           "attribute ""Update"" of unconstrained multidimensional array",
          when Lim_Mutably_Tagged_Type                                     =>
            "tagged type where ""'Size'Class"" has been specified",
          when Lim_Null_Aggregate_In_Branching_Array_Aggregate             =>
