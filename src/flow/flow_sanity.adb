@@ -64,7 +64,7 @@ package body Flow_Sanity is
               or else (Is_Tagged_Type (Typ) and then Has_Inherited_DIC (Typ)))
            and then
              Default_Initialization (Typ, Ignore_DIC => True)
-             /= Full_Default_Initialization
+             not in Full_Default_Initialization | Only_Relaxed_Uninitialized
          then
             --  ??? For composite types, add a continuation identifying the
             --  component that is not initialized by default.
