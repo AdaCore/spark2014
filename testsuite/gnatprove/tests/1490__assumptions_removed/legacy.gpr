@@ -1,5 +1,0 @@
-project Legacy extends "test.gpr" is
-   package Prove is
-      for Proof_Switches ("Ada") use ("--assumptions");
-   end Prove;
-end Legacy;
