@@ -174,7 +174,8 @@ stages:
           coverage_format: cobertura
           path: coverage/cobertura.xml
   cache:
-    - key: alwaysthesame
+    # Use a different key in each release branch.
+    - key: proof-master
       paths:
         - gnatprove_cache
 
