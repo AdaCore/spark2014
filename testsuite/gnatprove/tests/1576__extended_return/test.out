@@ -1,0 +1,5 @@
+repro.adb:4:04: info: no contextual analysis of "F" (unconstrained return type)
+repro.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+repro.adb:6:23: info: unrolling loop [info-unrolling-inlining]
+repro.adb:6:23: warning: statement has no effect
+repro.adb:10:21: info: range check proved (CVC5: 1 VC)

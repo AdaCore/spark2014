@@ -5892,8 +5892,12 @@ package body SPARK_Util is
                   Exit_Temp := Vertex'(Kind => Completion, Node => Stmt);
                   Insert_Neighborhood (Exit_Temp, Depth + 1);
                   Connect_Transfer_Of_Control (Exit_Temp);
-                  Cache_For_Statement
-                    (Handled_Statement_Sequence (Stmt), Depth + 1, Exit_Temp);
+                  if Present (Handled_Statement_Sequence (Stmt)) then
+                     Cache_For_Statement
+                       (Handled_Statement_Sequence (Stmt),
+                        Depth + 1,
+                        Exit_Temp);
+                  end if;
                   Cache_For_Statement_List
                     (Return_Object_Declarations (Stmt), Depth + 1, Exit_Temp);
                   Add_Edge (Start, Exit_Temp);
