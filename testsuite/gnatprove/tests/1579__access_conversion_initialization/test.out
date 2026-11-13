@@ -35,7 +35,7 @@ spark-conversions-access_conversions.ads:44:48: info: type is suitable for unche
 spark-conversions-access_conversions.ads:48:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:16
 spark-conversions-access_conversions.ads:48:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at checked_conversion.adb:16
 spark-conversions-access_conversions.ads:49:30: info: initialization check proved (CVC5: 1 VC), in instantiation at checked_conversion.adb:16
-spark-conversions-access_conversions.ads:49:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:16 (e.g. when X = (Value => ?) and X.Value'Initialized = False)
+spark-conversions-access_conversions.ads:49:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:16
 spark-conversions-access_conversions.ads:50:29: info: data dependencies proved, in instantiation at bad_conversion.ads:16
 spark-conversions-access_conversions.ads:50:29: info: data dependencies proved, in instantiation at checked_conversion.adb:16
 spark-conversions-access_conversions.ads:75:18: info: implicit aspect Always_Terminates on "Is_Initialized" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:19
@@ -58,7 +58,7 @@ spark-conversions-access_conversions.ads:90:48: info: type is suitable for unche
 spark-conversions-access_conversions.ads:90:48: info: type is suitable for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:31
 spark-conversions-access_conversions.ads:95:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:19
 spark-conversions-access_conversions.ads:95:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:31
-spark-conversions-access_conversions.ads:96:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:19 (e.g. when X = (Value => ?) and X.Value'Initialized = False)
+spark-conversions-access_conversions.ads:96:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:19
 spark-conversions-access_conversions.ads:97:29: info: data dependencies proved, in instantiation at bad_conversion.ads:19
 spark-conversions-access_conversions.ads:97:29: info: data dependencies proved, in instantiation at bad_conversion.ads:31
 spark-conversions-access_conversions.ads:100:16: info: implicit aspect Always_Terminates on "Check_Reverse_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:19
@@ -80,7 +80,7 @@ spark-conversions-access_conversions.ads:162:16: info: types in unchecked conver
 spark-conversions-access_conversions.ads:164:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:22
 spark-conversions-access_conversions.ads:167:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:22
 spark-conversions-access_conversions.ads:172:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:22
-spark-conversions-access_conversions.ads:173:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:22 (e.g. when X = (Value => ?) and X.Value'Initialized = False)
+spark-conversions-access_conversions.ads:173:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:22
 spark-conversions-access_conversions.ads:174:29: info: data dependencies proved, in instantiation at bad_conversion.ads:22
 spark-conversions-access_conversions.ads:184:60: medium: initialization check might fail, in instantiation at bad_conversion.ads:22
 spark-conversions-access_conversions.ads:203:18: info: implicit aspect Always_Terminates on "Is_Initialized" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:25
@@ -93,7 +93,7 @@ spark-conversions-access_conversions.ads:222:16: info: types in unchecked conver
 spark-conversions-access_conversions.ads:223:35: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:25
 spark-conversions-access_conversions.ads:223:48: info: type is suitable for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:25
 spark-conversions-access_conversions.ads:229:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:25
-spark-conversions-access_conversions.ads:230:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:25 (e.g. when X = (Value => ?) and X.Value'Initialized = False)
+spark-conversions-access_conversions.ads:230:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:25
 spark-conversions-access_conversions.ads:231:29: info: data dependencies proved, in instantiation at bad_conversion.ads:25
 spark-conversions-access_conversions.ads:234:16: info: implicit aspect Always_Terminates on "Check_Reverse_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:25
 spark-conversions-access_conversions.ads:237:29: info: data dependencies proved, in instantiation at bad_conversion.ads:25
