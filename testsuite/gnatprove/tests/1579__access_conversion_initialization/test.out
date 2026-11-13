@@ -1,0 +1,106 @@
+bad_reverse_invalid.ads:15:04: error: "Object_Conversion" is not allowed in SPARK (due to potentially invalid object with a part with relaxed initialization)
+bad_reverse_invalid.ads:15:04: error: "Object_Conversion" is not allowed in SPARK (due to potentially invalid object with a part with relaxed initialization)
+bad_reverse_invalid.ads:15:04: error: "Object_Conversion" is not allowed in SPARK (due to potentially invalid object with a part with relaxed initialization)
+bad_reverse_invalid.ads:15:04: error: "Object_Conversion" is not allowed in SPARK (due to potentially invalid object with a part with relaxed initialization)
+bad_reverse_invalid.ads:15:04: error: "Object_Conversion" is not allowed in SPARK (due to potentially invalid object with a part with relaxed initialization)
+bad_reverse_invalid.ads:15:04: error: instantiation error at spark-conversions-access_conversions.ads:212
+bad_reverse_invalid.ads:15:04: error: instantiation error at spark-conversions-access_conversions.ads:230
+bad_reverse_invalid.ads:15:04: error: instantiation error at spark-conversions-access_conversions.ads:247
+bad_reverse_invalid.ads:15:04: error: instantiation error at spark-conversions-access_conversions.ads:251
+bad_reverse_invalid.ads:15:04: error: instantiation error at spark-conversions-access_conversions.ads:251
+bad_reverse_invalid.ads:15:04: error: instantiation error at spark-conversions-access_conversions.ads:276
+bad_reverse_invalid.ads:15:04: error: instantiation error at spark-conversions-access_conversions.ads:280
+bad_reverse_invalid.ads:15:04: error: instantiation error at spark-conversions-access_conversions.ads:281
+bad_reverse_invalid.ads:15:04: error: potentially invalid object with a part with relaxed initialization is not yet supported
+bad_reverse_invalid.ads:15:04: error: potentially invalid object with a part with relaxed initialization is not yet supported
+bad_reverse_invalid.ads:15:04: error: potentially invalid object with a part with relaxed initialization is not yet supported
+bad_reverse_invalid.ads:15:04: error: violation of aspect SPARK_Mode at line 4
+bad_reverse_invalid.ads:15:04: error: violation of aspect SPARK_Mode at line 4
+bad_reverse_invalid.ads:15:04: error: violation of aspect SPARK_Mode at line 4
+bad_reverse_invalid.ads:15:04: error: violation of aspect SPARK_Mode at line 4
+bad_reverse_invalid.ads:15:04: error: violation of aspect SPARK_Mode at line 4
+checked_conversion.adb:12:13: info: implicit aspect Always_Terminates on "Is_Initialized" has been proved, subprogram will terminate
+checked_conversion.adb:26:19: info: precondition proved (CVC5: 1 VC)
+checked_conversion.adb:28:22: info: assertion proved (CVC5: 1 VC)
+checked_conversion.adb:33:19: medium: precondition might fail (e.g. when P.all = (Value => ?) and P.all.Value'Initialized = False)
+spark-conversions-access_conversions.ads:34:18: info: implicit aspect Always_Terminates on "Is_Initialized" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:16
+spark-conversions-access_conversions.ads:43:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at bad_conversion.ads:16
+spark-conversions-access_conversions.ads:43:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at checked_conversion.adb:16
+spark-conversions-access_conversions.ads:43:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at bad_conversion.ads:16
+spark-conversions-access_conversions.ads:43:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at checked_conversion.adb:16
+spark-conversions-access_conversions.ads:44:35: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:16
+spark-conversions-access_conversions.ads:44:35: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at checked_conversion.adb:16
+spark-conversions-access_conversions.ads:44:48: info: type is suitable for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:16
+spark-conversions-access_conversions.ads:44:48: info: type is suitable for unchecked conversion (Trivial), in instantiation at checked_conversion.adb:16
+spark-conversions-access_conversions.ads:48:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:16
+spark-conversions-access_conversions.ads:48:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at checked_conversion.adb:16
+spark-conversions-access_conversions.ads:49:30: info: initialization check proved (CVC5: 1 VC), in instantiation at checked_conversion.adb:16
+spark-conversions-access_conversions.ads:49:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:16 (e.g. when X = (Value => ?) and X.Value'Initialized = False)
+spark-conversions-access_conversions.ads:50:29: info: data dependencies proved, in instantiation at bad_conversion.ads:16
+spark-conversions-access_conversions.ads:50:29: info: data dependencies proved, in instantiation at checked_conversion.adb:16
+spark-conversions-access_conversions.ads:75:18: info: implicit aspect Always_Terminates on "Is_Initialized" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:75:18: info: implicit aspect Always_Terminates on "Is_Initialized" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:84:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:84:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:84:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:84:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:85:35: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:85:35: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:85:48: info: type is suitable for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:85:48: info: type is suitable for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:89:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:89:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:89:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:89:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:90:35: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:90:35: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:90:48: info: type is suitable for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:90:48: info: type is suitable for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:95:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:95:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:96:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:19 (e.g. when X = (Value => ?) and X.Value'Initialized = False)
+spark-conversions-access_conversions.ads:97:29: info: data dependencies proved, in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:97:29: info: data dependencies proved, in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:100:16: info: implicit aspect Always_Terminates on "Check_Reverse_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:100:16: info: implicit aspect Always_Terminates on "Check_Reverse_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:102:38: medium: initialization check might fail, in instantiation at bad_conversion.ads:31 (e.g. when X = (Value => ?) and X.Value'Initialized = False) [possible fix: subprogram at line 100 should mention X'Initialized in a precondition]
+spark-conversions-access_conversions.ads:103:29: info: data dependencies proved, in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:103:29: info: data dependencies proved, in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:121:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:121:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:123:11: info: dynamic accessibility check proved (Trivial), in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:123:11: info: dynamic accessibility check proved (Trivial), in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:126:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:126:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:128:11: info: dynamic accessibility check proved (Trivial), in instantiation at bad_conversion.ads:19
+spark-conversions-access_conversions.ads:128:11: info: dynamic accessibility check proved (Trivial), in instantiation at bad_conversion.ads:31
+spark-conversions-access_conversions.ads:153:18: info: implicit aspect Always_Terminates on "Is_Initialized" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:22
+spark-conversions-access_conversions.ads:162:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at bad_conversion.ads:22
+spark-conversions-access_conversions.ads:162:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at bad_conversion.ads:22
+spark-conversions-access_conversions.ads:164:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:22
+spark-conversions-access_conversions.ads:167:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:22
+spark-conversions-access_conversions.ads:172:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:22
+spark-conversions-access_conversions.ads:173:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:22 (e.g. when X = (Value => ?) and X.Value'Initialized = False)
+spark-conversions-access_conversions.ads:174:29: info: data dependencies proved, in instantiation at bad_conversion.ads:22
+spark-conversions-access_conversions.ads:184:60: medium: initialization check might fail, in instantiation at bad_conversion.ads:22
+spark-conversions-access_conversions.ads:203:18: info: implicit aspect Always_Terminates on "Is_Initialized" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:212:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:212:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:214:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:217:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:222:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:222:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:223:35: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:223:48: info: type is suitable for unchecked conversion (Trivial), in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:229:16: info: implicit aspect Always_Terminates on "Check_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:230:30: medium: initialization check might fail, in instantiation at bad_conversion.ads:25 (e.g. when X = (Value => ?) and X.Value'Initialized = False)
+spark-conversions-access_conversions.ads:231:29: info: data dependencies proved, in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:234:16: info: implicit aspect Always_Terminates on "Check_Reverse_Initialization" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:237:29: info: data dependencies proved, in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:247:60: medium: initialization check might fail, in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:259:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:261:11: info: dynamic accessibility check proved (Trivial), in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:264:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:266:11: info: dynamic accessibility check proved (Trivial), in instantiation at bad_conversion.ads:25
+spark-conversions-access_conversions.ads:276:60: medium: initialization check might fail, in instantiation at bad_conversion.ads:25
+gnatprove: error during flow analysis and proof

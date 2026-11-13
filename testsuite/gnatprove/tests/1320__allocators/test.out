@@ -1492,21 +1492,21 @@ allocator-pools-sized_8.ads:193:16: info: predicate check proved (Trivial: 1 VC)
 allocator-pools-sized_8.ads:213:72: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.ads:215:72: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.ads:217:72: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
-allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.adb:41:14: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.adb:41:14: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.adb:41:14: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.adb:41:14: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.adb:41:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
 allocator-pools.adb:41:46: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
 allocator-pools.adb:41:46: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
 allocator-pools.adb:41:46: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
@@ -1522,21 +1522,21 @@ allocator-pools.adb:41:46: info: dynamic accessibility check proved (Trivial), i
 allocator-pools.adb:41:46: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
 allocator-pools.adb:41:46: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
 allocator-pools.adb:41:46: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.adb:45:14: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.adb:45:14: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.adb:45:14: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.adb:45:14: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.adb:45:14: info: precondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
 allocator-pools.adb:45:37: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
 allocator-pools.adb:45:37: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
 allocator-pools.adb:45:37: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
