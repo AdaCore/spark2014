@@ -1,0 +1,22 @@
+test.adb:1:11: warning: subprogram "Test" has no effect
+test.adb:13:22: info: length check proved (CVC5: 3 VC)
+test.adb:13:22: info: range check proved (CVC5: 2 VC)
+test.adb:14:25: info: assertion proved (CVC5: 1 VC)
+test.adb:14:35: info: initialization check proved (CVC5: 1 VC)
+test.adb:15:25: info: assertion proved (CVC5: 1 VC)
+test.adb:15:35: info: initialization check proved (CVC5: 1 VC)
+test.adb:16:25: medium: assertion might fail
+test.adb:18:25: info: length check proved (CVC5: 3 VC)
+test.adb:18:25: info: range check proved (CVC5: 2 VC)
+test.adb:19:25: info: assertion proved (CVC5: 1 VC)
+test.adb:19:35: info: initialization check proved (CVC5: 1 VC)
+test.adb:20:25: info: assertion proved (CVC5: 1 VC)
+test.adb:20:35: info: initialization check proved (CVC5: 1 VC)
+test.adb:21:25: medium: assertion might fail
+test.adb:23:22: info: length check proved (CVC5: 3 VC)
+test.adb:23:22: info: range check proved (CVC5: 2 VC)
+test.adb:24:25: info: assertion proved (CVC5: 1 VC)
+test.adb:24:35: info: initialization check proved (CVC5: 1 VC)
+test.adb:25:25: info: assertion proved (CVC5: 1 VC)
+test.adb:25:35: info: initialization check proved (CVC5: 1 VC)
+test.adb:26:25: medium: assertion might fail
