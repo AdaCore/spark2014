@@ -3,23 +3,31 @@ test.adb:18:12: info: initialization check proved (CVC5: 1 VC)
 test.adb:21:36: info: initialization of "B" proved
 test.adb:28:12: info: initialization check proved (CVC5: 1 VC)
 test.adb:28:12: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
+test.adb:28:17: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
+test.adb:28:21: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
 test.adb:31:33: info: initialization of "B" proved
 test.adb:37:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True)
 test.adb:40:37: info: initialization of "B" proved
 test.adb:47:12: info: initialization check proved (CVC5: 1 VC)
 test.adb:47:12: medium: initialization check might fail (e.g. when X = (F => 0, G => 0, H => ?) and X.F'Initialized = True and X.G'Initialized = True and X.H'Initialized = False)
+test.adb:47:17: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
+test.adb:47:21: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
 test.adb:57:33: info: initialization of "B" proved
 test.adb:60:04: warning: analyzing unreferenced procedure "Pred_OK_2"
 test.adb:65:37: info: initialization of "B" proved
 test.adb:72:12: info: initialization check proved (CVC5: 1 VC)
 test.adb:72:12: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
 test.adb:72:17: info: initialization check proved (CVC5: 1 VC)
+test.adb:72:17: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
 test.adb:72:21: info: initialization check proved (CVC5: 1 VC)
+test.adb:72:21: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
 test.adb:75:38: info: initialization of "B" proved
 test.adb:82:12: info: initialization check proved (CVC5: 1 VC)
 test.adb:82:12: medium: initialization check might fail
 test.adb:82:17: info: initialization check proved (CVC5: 1 VC)
+test.adb:82:17: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
 test.adb:82:21: info: initialization check proved (CVC5: 1 VC)
+test.adb:82:21: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
 test.adb:87:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 test.adb:92:33: info: initialization of "B" proved
 test.adb:98:12: info: initialization check proved (CVC5: 1 VC)
