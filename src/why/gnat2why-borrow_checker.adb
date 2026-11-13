@@ -57,6 +57,11 @@ use all type Ada.Containers.Count_Type;
 
 package body Gnat2Why.Borrow_Checker is
 
+   Borrow_Checker_Locked : Boolean := False
+   with Ghost;
+   --  Set to True upon making queries requiring borrow-checking to be
+   --  over (e.g, Is_Moved_Delta_Aggregate).
+
    function Is_Read_Only (E : Entity_Id) return Boolean
    with Pre => Is_Object (E);
    --  Return True if E is declared as Read_Only (ie. a constant which is not
@@ -1993,6 +1998,7 @@ package body Gnat2Why.Borrow_Checker is
    procedure Check_Entity (E : Entity_Id) is
 
    begin
+      pragma Assert (not Borrow_Checker_Locked);
       Reset (Default_Perm_Env);
       Reset (Current_Perm_Env);
       pragma Assert (Object_Scope.Is_Initial_Value);
@@ -5431,8 +5437,11 @@ package body Gnat2Why.Borrow_Checker is
    -- Is_Moved_Delta_Aggregate --
    ------------------------------
 
-   function Is_Moved_Delta_Aggregate (N : Node_Id) return Boolean
-   is (Moved_Delta_Aggregates.Contains (N));
+   function Is_Moved_Delta_Aggregate (N : Node_Id) return Boolean is
+   begin
+      Borrow_Checker_Locked := True;
+      return Moved_Delta_Aggregates.Contains (N);
+   end Is_Moved_Delta_Aggregate;
 
    -------------------------
    -- Is_Prefix_Or_Almost --
