@@ -3165,6 +3165,11 @@ to ensure that components whose type is annotated with
 ``Relaxed_Initialization`` are also initialized. These checks are not
 duplicates, one or the other might fail while the other passes.
 
+Unchecked conversion requires full source initialization, including relaxed
+components, and establishes full result initialization even when modeled
+imprecisely. This does not establish initialization of an access result's
+designated object.
+
 Composite wrappers normally have a named ``is_initialized`` predicate for
 conversion checks. It checks the parts required by the ordinary representation,
 excluding components whose types have relaxed initialization. Its definition

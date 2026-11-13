@@ -48,6 +48,7 @@ with Why.Gen.Arrays;              use Why.Gen.Arrays;
 with Why.Gen.Binders;             use Why.Gen.Binders;
 with Why.Gen.Decl;                use Why.Gen.Decl;
 with Why.Gen.Expr;                use Why.Gen.Expr;
+with Why.Gen.Init;                use Why.Gen.Init;
 with Why.Gen.Names;               use Why.Gen.Names;
 with Why.Gen.Records;             use Why.Gen.Records;
 with Why.Gen.Terms;               use Why.Gen.Terms;
@@ -131,6 +132,17 @@ package body Gnat2Why.Unchecked_Conversion is
    --  If Potentially_Invalid is True, wrap it in a validity wrapper. The
    --  validity flag is set to True iff all scalar subcomponents of the return
    --  value are in the bounds of their subtype.
+
+   -------------------------
+   -- UC_Has_Relaxed_Init --
+   -------------------------
+
+   function UC_Has_Relaxed_Init (Typ : Type_Kind_Id) return Boolean
+   is (Has_Relaxed_Init (Typ) and then not Copy_Requires_Init (Typ));
+   --  Make the same decision as Obj_Has_Relaxed_Init for a UC parameter or
+   --  Fun_Has_Relaxed_Init for its result, as UC instances cannot have a
+   --  Relaxed_Initialization aspect. We cannot use the function or parameter
+   --  entities directly here, as we don't have them for overlays.
 
    ---------------------
    -- Get_UC_Function --
@@ -509,11 +521,12 @@ package body Gnat2Why.Unchecked_Conversion is
       --  Offsets are relative to the start of the complete source object.
 
       function Reconstruct_Value
-        (Base   : W_Type_Id;
-         Bits   : W_Expr_Id;
-         Offset : Uint;
-         Size   : Uint;
-         Typ    : Type_Kind_Id) return Target_Value
+        (Base         : W_Type_Id;
+         Bits         : W_Expr_Id;
+         Offset       : Uint;
+         Size         : Uint;
+         Typ          : Type_Kind_Id;
+         Relaxed_Init : Boolean) return Target_Value
       with
         Post =>
           (Reconstruct_Value'Result.Valid_Flag /= Why_Empty)
@@ -791,9 +804,29 @@ package body Gnat2Why.Unchecked_Conversion is
          Elements : in out List) is
       begin
          if Is_Scalar_Type (Typ) then
+
+            --  Scalar components use the abstract representation and can
+            --  carry initialization wrappers. Extract their values in the
+            --  representation expected by the bit-level conversion;
+            --  initialization of the complete source is checked at the call.
+
+            pragma
+              Assert
+                (Eq_Base
+                   (Get_Type (+Expr),
+                    EW_Abstract
+                      (Typ,
+                       Relaxed_Init =>
+                         Is_Init_Wrapper_Type (Get_Type (+Expr)))));
+
             Elements.Append
               (Source_Element'
-                 (Typ => Typ, Offset => Offset, Size => Size, Expr => Expr));
+                 (Typ    => Typ,
+                  Offset => Offset,
+                  Size   => Size,
+                  Expr   =>
+                    Insert_Simple_Conversion
+                      (Expr => Expr, To => Type_Of_Node (Typ))));
 
          elsif Is_Record_Type (Typ) then
             for Comp of Get_Component_Set (Typ) loop
@@ -850,11 +883,12 @@ package body Gnat2Why.Unchecked_Conversion is
       -----------------------
 
       function Reconstruct_Value
-        (Base   : W_Type_Id;
-         Bits   : W_Expr_Id;
-         Offset : Uint;
-         Size   : Uint;
-         Typ    : Type_Kind_Id) return Target_Value
+        (Base         : W_Type_Id;
+         Bits         : W_Expr_Id;
+         Offset       : Uint;
+         Size         : Uint;
+         Typ          : Type_Kind_Id;
+         Relaxed_Init : Boolean) return Target_Value
       is
          Has_Validity : constant Boolean :=
            Potentially_Invalid and then Type_Might_Be_Invalid (Typ);
@@ -862,13 +896,18 @@ package body Gnat2Why.Unchecked_Conversion is
 
       begin
          if Is_Scalar_Type (Typ) then
-            return
-              Extract_Value
-                (Base   => Base,
-                 Bits   => Bits,
-                 Offset => Offset,
-                 Size   => Size,
-                 Typ    => Typ);
+            declare
+               Result : Target_Value :=
+                 Extract_Value (Base, Bits, Offset, Size, Typ);
+            begin
+               --  Newly reconstructed scalar components are initialized.
+
+               Result.Value :=
+                 Insert_Simple_Conversion
+                   (Expr => Result.Value,
+                    To   => EW_Abstract (Typ, Relaxed_Init => Relaxed_Init));
+               return Result;
+            end;
 
          elsif Is_Record_Type (Typ)
            and then Count_Why_Top_Level_Fields (Typ) = 0
@@ -878,7 +917,10 @@ package body Gnat2Why.Unchecked_Conversion is
             --  have no validity tree since they have no invalid components.
 
             return
-              (Value      => +E_Symb (Root_Retysp (Typ), WNE_Dummy),
+              (Value      =>
+                 Insert_Simple_Conversion
+                   (Expr => +E_Symb (Root_Retysp (Typ), WNE_Dummy),
+                    To   => EW_Abstract (Typ, Relaxed_Init)),
                Valid_Flag => Why_Empty);
 
          elsif Is_Record_Type (Typ) then
@@ -896,17 +938,25 @@ package body Gnat2Why.Unchecked_Conversion is
                   declare
                      F_Value : constant Target_Value :=
                        Reconstruct_Value
-                         (Base   => Base,
-                          Bits   => Bits,
-                          Offset => Offset + Component_Bit_Offset (Comp),
-                          Size   => Esize (Comp),
-                          Typ    => Retysp (Etype (Comp)));
+                         (Base         => Base,
+                          Bits         => Bits,
+                          Offset       => Offset + Component_Bit_Offset (Comp),
+                          Size         => Esize (Comp),
+                          Typ          => Retysp (Etype (Comp)),
+                          Relaxed_Init =>
+                            (if Relaxed_Init
+                             then Has_Init_Wrapper (Etype (Comp))
+                             else Has_Relaxed_Init (Etype (Comp))));
                   begin
                      Assocs (Index) :=
                        New_Field_Association
                          (Domain => EW_Term,
                           Field  =>
-                            To_Why_Id (Comp, Local => False, Rec => Typ),
+                            To_Why_Id
+                              (Comp,
+                               Local        => False,
+                               Rec          => Typ,
+                               Relaxed_Init => Relaxed_Init),
                           Value  => +F_Value.Value);
                      Index := Index + 1;
 
@@ -938,11 +988,13 @@ package body Gnat2Why.Unchecked_Conversion is
                          (1 =>
                             New_Field_Association
                               (Domain => EW_Term,
-                               Field  => E_Symb (Typ, WNE_Rec_Split_Fields),
+                               Field  =>
+                                 E_Symb
+                                   (Typ, WNE_Rec_Split_Fields, Relaxed_Init),
                                Value  =>
                                  New_Record_Aggregate
                                    (Associations => Assocs))),
-                       Typ          => EW_Abstract (Typ)),
+                       Typ          => EW_Abstract (Typ, Relaxed_Init)),
                   Valid_Flag =>
                     (if Has_Validity
                      then
@@ -959,7 +1011,11 @@ package body Gnat2Why.Unchecked_Conversion is
                Low   : constant Uint := Expr_Value (Low_Bound (Rng));
                High  : constant Uint := Expr_Value (High_Bound (Rng));
                Cur   : Uint;
-               Ar    : W_Expr_Id := +E_Symb (Typ, WNE_Dummy);
+               Ar    : W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => +E_Symb (Typ, WNE_Dummy),
+                    To     => EW_Abstract (Typ, Relaxed_Init));
                Flags : W_Term_Id :=
                  (if Has_Validity
                   then New_Valid_Value_For_Type (Typ)
@@ -973,11 +1029,15 @@ package body Gnat2Why.Unchecked_Conversion is
                           Get_Attribute_Value (Typ, Attribute_Component_Size);
                         C_Value   : constant Target_Value :=
                           Reconstruct_Value
-                            (Base   => Base,
-                             Bits   => Bits,
-                             Offset => Offset + (Cur - Low) * Comp_Size,
-                             Size   => Comp_Size,
-                             Typ    => Retysp (Component_Type (Typ)));
+                            (Base         => Base,
+                             Bits         => Bits,
+                             Offset       => Offset + (Cur - Low) * Comp_Size,
+                             Size         => Comp_Size,
+                             Typ          => Retysp (Component_Type (Typ)),
+                             Relaxed_Init =>
+                               (if Relaxed_Init
+                                then Has_Init_Wrapper (Component_Type (Typ))
+                                else Has_Relaxed_Init (Component_Type (Typ))));
                      begin
                         Ar :=
                           New_Array_Update
@@ -1094,11 +1154,13 @@ package body Gnat2Why.Unchecked_Conversion is
          declare
             Val : constant Target_Value :=
               Reconstruct_Value
-                (Base   => Base,
-                 Bits   => +Conv,
-                 Offset => Uint_0,
-                 Size   => Get_Attribute_Value (Target_Type, Attribute_Size),
-                 Typ    => Target_Type);
+                (Base         => Base,
+                 Bits         => +Conv,
+                 Offset       => Uint_0,
+                 Size         =>
+                   Get_Attribute_Value (Target_Type, Attribute_Size),
+                 Typ          => Target_Type,
+                 Relaxed_Init => UC_Has_Relaxed_Init (Target_Type));
          begin
             Def := Val.Value;
 
@@ -1577,7 +1639,11 @@ package body Gnat2Why.Unchecked_Conversion is
                 & GNAT.Source_Info.Enclosing_Entity);
          Source_Id    : constant W_Identifier_Id :=
            New_Temp_Identifier
-             (Base_Name => "source", Typ => Type_Of_Node (Source_Type));
+             (Base_Name => "source",
+              Typ       =>
+                (if UC_Has_Relaxed_Init (Source_Type)
+                 then EW_Init_Wrapper (Type_Of_Node (Source_Type))
+                 else Type_Of_Node (Source_Type)));
          UC_Call      : constant W_Term_Id :=
            New_Call
              (Name => Module.UC_Id,
@@ -1590,10 +1656,21 @@ package body Gnat2Why.Unchecked_Conversion is
          Inv_Expr     : W_Term_Id := UC_Call;
 
       begin
+         Guard :=
+           New_And_Pred
+             (Left  => Guard,
+              Right =>
+                +Compute_Is_Initialized
+                   (E                  => Source_Type,
+                    Name               => +Source_Id,
+                    Params             => Logic_Params,
+                    Domain             => EW_Pred,
+                    Exclude_Components => None));
+
          --  Generate:
          --
          --    forall source : source_type [uc_id source].
-         --      dynamic_invariant source ->
+         --      dynamic_invariant source /\ initialized source ->
          --      <(uc_id source).is_valid -> >
          --        {(inv_fun (uc_id source)<.value>).is_valid /\}
          --        (inv_fun (uc_id source)<.value>){.value} = source
@@ -1616,6 +1693,13 @@ package body Gnat2Why.Unchecked_Conversion is
             Inv_Expr :=
               +New_Function_Valid_Value_Access
                  (Ty => Target_Type, Name => +Inv_Expr);
+         end if;
+
+         if UC_Has_Relaxed_Init (Target_Type) then
+            Inv_Expr :=
+              Insert_Simple_Conversion
+                (Expr => Inv_Expr,
+                 To   => EW_Init_Wrapper (Get_Type (+Inv_Expr)));
          end if;
 
          Inv_Expr :=
@@ -1658,7 +1742,10 @@ package body Gnat2Why.Unchecked_Conversion is
                       New_Comparison
                         (Symbol => Why_Eq,
                          Left   => Inv_Expr,
-                         Right  => +Source_Id)),
+                         Right  =>
+                           Insert_Simple_Conversion
+                             (Expr => +Source_Id,
+                              To   => Get_Type (+Inv_Expr)))),
                Dep      =>
                  New_Axiom_Dep (Name => Module.UC_Id, Kind => EW_Axdep_Func)));
 
@@ -1707,11 +1794,21 @@ package body Gnat2Why.Unchecked_Conversion is
          return Valid;
       end Inversion_Axiom_OK;
 
-      Precise_UC  : constant True_Or_Explain :=
+      Precise_UC      : constant True_Or_Explain :=
         Is_UC_With_Precise_Definition
           (Source_Type, Target_Type, Potentially_Invalid);
-      Module_Name : constant Symbol :=
+      Module_Name     : constant Symbol :=
         Get_UC_Theory_Name (Source_Type, Target_Type, Potentially_Invalid);
+      Source_Why_Type : constant W_Type_Id :=
+        (if UC_Has_Relaxed_Init (Source_Type)
+         then EW_Init_Wrapper (Type_Of_Node (Source_Type))
+         else Type_Of_Node (Source_Type));
+      Target_Why_Type : constant W_Type_Id :=
+        (if UC_Has_Relaxed_Init (Target_Type)
+         then EW_Init_Wrapper (Type_Of_Node (Target_Type))
+         else Type_Of_Node (Target_Type));
+      --  Why types of the UC parameter and result, with initialization
+      --  wrappers when their values can be passed with relaxed initialization.
 
    begin
       if M_UCs.Contains (Module_Name) then
@@ -1724,13 +1821,13 @@ package body Gnat2Why.Unchecked_Conversion is
          Why_Ty    : constant W_Type_Id :=
            (if Potentially_Invalid
             then Validity_Wrapper_Type (Target_Type)
-            else Type_Of_Node (Target_Type));
+            else Target_Why_Type);
          UC_Id     : constant W_Identifier_Id :=
            New_Identifier
              (Symb   => NID (To_String (WNE_UC_Function)),
               Module => UC_Module,
               Domain => EW_Term,
-              Typ    => Type_Of_Node (Target_Type));
+              Typ    => Target_Why_Type);
          Guard_Id  : constant W_Identifier_Id :=
            New_Identifier
              (Symb   =>
@@ -1738,8 +1835,7 @@ package body Gnat2Why.Unchecked_Conversion is
               Module => UC_Module,
               Domain => EW_Pred);
          Source_Id : constant W_Identifier_Id :=
-           New_Temp_Identifier
-             (Base_Name => "source", Typ => Type_Of_Node (Source_Type));
+           New_Temp_Identifier (Base_Name => "source", Typ => Source_Why_Type);
          Th        : Theory_UC;
          Def       : W_Term_Id;
 
@@ -1861,13 +1957,13 @@ package body Gnat2Why.Unchecked_Conversion is
             --  Indeed, in this case the dynamic invariant is necessarily
             --  correct.
 
-            Dynamic_Prop_Param  : constant W_Pred_Id :=
+            Dynamic_Prop_Param  : W_Pred_Id :=
               +Compute_Dynamic_Inv_And_Initialization
                  (Expr     => +Source_Id,
                   Ty       => Source_Type,
                   Only_Var => False_Term,
                   Params   => Logic_Params);
-            Dynamic_Prop_Result : constant W_Pred_Id :=
+            Dynamic_Prop_Result : W_Pred_Id :=
               +Compute_Dynamic_Inv_And_Initialization
                  (Expr     => Result_Value,
                   Ty       => Target_Type,
@@ -1878,7 +1974,46 @@ package body Gnat2Why.Unchecked_Conversion is
               New_Call (Name => To_Local (UC_Id), Args => (1 => +Source_Id));
             Dep                 : constant W_Axiom_Dep_Id :=
               New_Axiom_Dep (Name => To_Local (UC_Id), Kind => EW_Axdep_Func);
+
          begin
+            --  UC reads the entire source and initializes the entire result,
+            --  including relaxed components. This also holds when no precise
+            --  definition is available.
+
+            if Contains_Relaxed_Init_Parts (Source_Type) then
+               Dynamic_Prop_Param :=
+                 New_And_Pred
+                   (Dynamic_Prop_Param,
+                    +Compute_Is_Initialized
+                       (E                  => Source_Type,
+                        Name               => +Source_Id,
+                        Params             => Logic_Params,
+                        Domain             => EW_Pred,
+                        Exclude_Components => None));
+            end if;
+
+            --  UC instances only allow access targets for conversions from
+            --  integer types or System.Address to access-to-constant or
+            --  general access-to-variable types. Composite targets containing
+            --  accesses are rejected. The designated type may have relaxed
+            --  initialization, but initialization of the source address does
+            --  not establish initialization of the designated object. Keep
+            --  the existing dynamic invariant assumptions for access targets.
+
+            if Contains_Relaxed_Init_Parts (Target_Type)
+              and then not Is_Access_Type (Target_Type)
+            then
+               Dynamic_Prop_Result :=
+                 New_And_Pred
+                   (Dynamic_Prop_Result,
+                    +Compute_Is_Initialized
+                       (E                  => Target_Type,
+                        Name               => +Result_Value,
+                        Params             => Logic_Params,
+                        Domain             => EW_Pred,
+                        Exclude_Components => None));
+            end if;
+
             Emit
               (Th,
                New_Function_Decl
