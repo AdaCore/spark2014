@@ -33,7 +33,6 @@ with Checked_Types;                  use Checked_Types;
 with Common_Iterators;               use Common_Iterators;
 with Einfo.Utils;                    use Einfo.Utils;
 with Elists;                         use Elists;
-with Errout;
 with Errout_Wrapper;                 use Errout_Wrapper;
 with Exp_SPARK;
 with Exp_Tss;                        use Exp_Tss;
@@ -61,6 +60,7 @@ with Sem_Eval;                       use Sem_Eval;
 with Sem_Prag;                       use Sem_Prag;
 with Sinfo.Utils;                    use Sinfo.Utils;
 with Sinput;                         use Sinput;
+with Sloc_Utils;
 with Snames;                         use Snames;
 with SPARK_Atree.Entities;
 with SPARK_Util;                     use SPARK_Util;
@@ -10225,7 +10225,7 @@ package body SPARK_Definition is
                     Get_Physical_Line_Number (Slc);
                   Last_Line  : constant Physical_Line_Number :=
                     Get_Physical_Line_Number
-                      (Sloc (Errout.Last_Node (This_Decl)));
+                      (Sloc (Sloc_Utils.Last_Node (This_Decl)));
                   Limit_Str  : constant String :=
                     File
                     & ':'
