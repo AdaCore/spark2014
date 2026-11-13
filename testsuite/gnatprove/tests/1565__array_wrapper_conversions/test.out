@@ -1,0 +1,5 @@
+array_conversion.adb:6:13: info: predicate check proved (Trivial: 1 VC)
+array_conversion.adb:8:19: info: assertion proved (CVC5: 1 VC)
+array_conversion.adb:8:19: info: initialization check proved (CVC5: 1 VC)
+array_conversion.adb:8:19: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+array_conversion.adb:8:19: info: predicate check proved (Trivial: 1 VC)
