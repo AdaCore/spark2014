@@ -1,0 +1,54 @@
+test_relaxed_traversal.adb:9:43: info: for pointer allocation at test_relaxed_traversal.adb:3
+test_relaxed_traversal.adb:9:43: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_traversal.adb:12:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate
+test_relaxed_traversal.adb:13:12: info: dynamic accessibility check proved (Trivial)
+test_relaxed_traversal.adb:13:12: info: for pointer allocation at test_relaxed_traversal.adb:3
+test_relaxed_traversal.adb:13:12: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_traversal.adb:13:12: info: initialization check proved (CVC5: 2 VC; Trivial: 1 VC)
+test_relaxed_traversal.adb:13:12: info: null exclusion check proved (CVC5: 1 VC)
+test_relaxed_traversal.adb:14:49: info: for pointer allocation at test_relaxed_traversal.adb:3
+test_relaxed_traversal.adb:14:49: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_traversal.adb:17:50: info: precondition proved (CVC5: 2 VC)
+test_relaxed_traversal.adb:21:22: info: assertion proved (CVC5: 1 VC)
+test_relaxed_traversal.adb:22:22: info: assertion proved (CVC5: 1 VC)
+test_relaxed_traversal.adb:22:23: info: for pointer allocation at test_relaxed_traversal.adb:3
+test_relaxed_traversal.adb:22:23: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_traversal.adb:22:30: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_traversal.adb:22:30: info: pointer dereference check proved (CVC5: 1 VC)
+test_relaxed_traversal.adb:30:14: info: add a contract to analyze it separately from calling contexts
+test_relaxed_traversal.adb:30:14: info: local subprogram "Test_Array" only analyzed in the context of calls [info-unrolling-inlining]
+test_relaxed_traversal.adb:30:14: warning: subprogram "Test_Array" has no effect
+test_relaxed_traversal.adb:31:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate
+test_relaxed_traversal.adb:31:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:34:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_relaxed_traversal.adb:34:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:35:15: info: index check proved (CVC5: 2 VC)
+test_relaxed_traversal.adb:35:15: info: index check proved (CVC5: 2 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:43:13: info: index check proved (CVC5: 2 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:45:22: info: assertion proved (CVC5: 1 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:45:25: info: index check proved (CVC5: 2 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:46:22: info: assertion proved (CVC5: 1 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:46:25: info: index check proved (CVC5: 2 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:46:27: info: initialization check proved (CVC5: 1 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:48:50: info: precondition proved (CVC5: 1 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:52:22: info: assertion proved (CVC5: 1 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:52:25: info: index check proved (CVC5: 2 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:53:22: info: assertion proved (CVC5: 1 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:53:25: info: index check proved (CVC5: 2 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:53:27: info: initialization check proved (CVC5: 1 VC), in call inlined at test_relaxed_traversal.adb:76
+test_relaxed_traversal.adb:58:14: info: add a contract to analyze it separately from calling contexts
+test_relaxed_traversal.adb:58:14: info: local subprogram "Test_Parameter" only analyzed in the context of calls [info-unrolling-inlining]
+test_relaxed_traversal.adb:58:14: warning: subprogram "Test_Parameter" has no effect
+test_relaxed_traversal.adb:59:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_relaxed_traversal.adb:59:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in call inlined at test_relaxed_traversal.adb:77
+test_relaxed_traversal.adb:61:15: info: index check proved (CVC5: 2 VC)
+test_relaxed_traversal.adb:61:15: info: index check proved (CVC5: 2 VC), in call inlined at test_relaxed_traversal.adb:77
+test_relaxed_traversal.adb:61:22: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
+test_relaxed_traversal.adb:61:22: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC), in call inlined at test_relaxed_traversal.adb:77
+test_relaxed_traversal.adb:63:42: info: index check proved (CVC5: 2 VC)
+test_relaxed_traversal.adb:63:42: info: index check proved (CVC5: 2 VC), in call inlined at test_relaxed_traversal.adb:77
+test_relaxed_traversal.adb:68:50: info: precondition proved (CVC5: 2 VC), in call inlined at test_relaxed_traversal.adb:77
+test_relaxed_traversal.adb:72:22: info: assertion proved (Z3: 1 VC), in call inlined at test_relaxed_traversal.adb:77
+test_relaxed_traversal.adb:72:25: info: index check proved (CVC5: 2 VC), in call inlined at test_relaxed_traversal.adb:77
+test_relaxed_traversal.adb:76:04: info: analyzing call to "Test_Array" in context
+test_relaxed_traversal.adb:77:04: info: analyzing call to "Test_Parameter" in context

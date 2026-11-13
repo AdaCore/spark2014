@@ -1157,7 +1157,7 @@ package body Why.Gen.Pointers is
       Borrowed_Id     : constant W_Identifier_Id :=
         New_Identifier
           (Symb   => NID (Short_Name (E) & "__borrowed_at_end"),
-           Typ    => Type_Of_Node (Ty),
+           Typ    => Type_Of_Node (Borrowed_Entity),
            Module => Current_Module,
            Domain => EW_Prog);
       Brower_Id       : constant W_Identifier_Id :=
