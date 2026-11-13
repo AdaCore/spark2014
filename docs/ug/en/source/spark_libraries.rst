@@ -1150,10 +1150,12 @@ of its parameter. Both leave the source poisoned:
    procedure Move (Source : in out View; Target : in out View);
 
 Values which are not poisoned can be accessed in place using the traversal
-functions ``Constant_Reference`` and ``Reference``. The generic package
-``Array_Operations`` provides moves of elements and slices of arrays. As the
-source and the target of ``Move`` are both ``in out`` parameters, it cannot be
-used to move an element inside a single array. The procedure ``Relocate`` can be
+functions ``Constant_Reference`` and ``Reference``. Each unit has a generic child
+package ``Array_Operations`` providing moves of elements and slices of arrays.
+The array type must admit the same component states and bounds as an ordinary
+array of its index and component types. As the source and the target of ``Move``
+are both ``in out`` parameters, it cannot be used to move an element inside a
+single array. The procedure ``Relocate`` can be
 used instead:
 
 .. code-block:: ada
@@ -1207,7 +1209,7 @@ of ``A`` is designated by ``I``, so assigning ``A (I)`` does not restore the
 component which has been moved out of ``A``. It can be written using
 ``Poisoned.Views`` instead. The following package instantiates
 ``Poisoned.Views`` for the access type, as well as its ``Array_Operations``
-package and its ``Create`` function:
+child package and its ``Create`` function:
 
 .. literalinclude:: /examples/ug__pointers_poisoned/acc_views.ads
    :language: ada

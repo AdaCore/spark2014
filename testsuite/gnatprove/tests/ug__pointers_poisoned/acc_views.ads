@@ -1,4 +1,5 @@
 with SPARK.Pointers.Poisoned.Views;
+with SPARK.Pointers.Poisoned.Views.Array_Operations;
 
 package Acc_Views with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);

@@ -1,6 +1,8 @@
 with Ada.Unchecked_Deallocation;
 with SPARK.Pointers.Poisoned.Pointers;
+with SPARK.Pointers.Poisoned.Pointers.Array_Operations;
 with SPARK.Pointers.Poisoned.Views;
+with SPARK.Pointers.Poisoned.Views.Array_Operations;
 
 --  Poisoned holders and views. A poisoned value is one that has been moved
 --  out of; it relaxes the ownership policy, which is what makes it possible
