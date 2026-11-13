@@ -534,6 +534,27 @@ package body Gnatprove_Build is
            (Main_Units, Selected_Units, SPARK_Error_Files, Analyzed_Units);
       end;
 
+      --  Prepare proof inputs once per object directory, including when all
+      --  of its analysis actions are up to date. Signature construction does
+      --  not perform this setup, so it can be used for read-only queries.
+      declare
+         Prepared : Dir_Name_Sets.Set;
+      begin
+         for Unit of Analyzed_Units loop
+            declare
+               Dir      : constant String :=
+                 Unit.Owning_View.Object_Directory.String_Value;
+               Position : Dir_Name_Sets.Cursor;
+               Inserted : Boolean;
+            begin
+               Prepared.Insert (Dir, Position, Inserted);
+               if Inserted then
+                  Configuration.Prepare_Proof_Inputs (Dir);
+               end if;
+            end;
+         end loop;
+      end;
+
       Success :=
         Tree.Artifacts_Database.Execute (Act_Sched, Exec_Opts, Make_JS)
         = GPR2.Build.Actions_Scheduler.Success;

@@ -233,6 +233,12 @@ action's command line, so changed settings invalidate the action even though the
 JSON contents are not command-line switches. ``Opt_File_Name`` in
 ``src/gnatprove/gnat2why_opts-writing.ads`` documents this contract.
 
+Constructing the arguments for ``gnatwhy3`` does not prepare proof sessions or
+manual-prover libraries. GNATprove performs that setup separately before
+executing the analysis action graph, including for actions that are already
+up to date. This keeps option and signature construction free of those side
+effects.
+
 ``gnatprove`` also passes the target name, obtained by running the compiler with
 ``-dumpmachine``, so that ``Standard.Target_Name`` is properly defined.
 

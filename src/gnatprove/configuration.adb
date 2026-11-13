@@ -5887,43 +5887,35 @@ package body Configuration is
       return Target_Name_Value.all;
    end Target_Name;
 
-   -----------------------
-   -- Compute_Why3_Args --
-   -----------------------
+   --------------------------
+   -- Prepare_Proof_Inputs --
+   --------------------------
 
-   function Compute_Why3_Args
-     (Obj_Dir : String; FS : File_Specific) return String_Lists.List
-   is
-
-      Args          : String_Lists.List;
-      Why3_Conf     : constant String :=
-        To_String (Invocation_State.Why3_Conf);
-      Why3_VF       : constant Virtual_File :=
-        (if Why3_Conf /= ""
-         then Create (Filesystem_String (Why3_Conf))
-         else No_File);
-      Gnatwhy3_Conf : constant String :=
-        (if Why3_VF /= No_File
-         then
-           (if Is_Absolute_Path (Why3_VF)
-            then Why3_Conf
-            else
-              Ada.Directories.Compose (+Get_Current_Dir.Full_Name, Why3_Conf))
-         else "");
-
-      -------------------------
-      --  Local subprograms  --
-      -------------------------
-
+   procedure Prepare_Proof_Inputs (Obj_Dir : String) is
       procedure Prepare_Why3_Manual;
       --  Build user libraries (if any) for manual provers
 
-      ---------------------------
-      --  Prepare_Why3_Manual  --
-      ---------------------------
+      -------------------------
+      -- Prepare_Why3_Manual --
+      -------------------------
 
       procedure Prepare_Why3_Manual is
-         Args     : GNAT.OS_Lib.Argument_List :=
+         Why3_Conf     : constant String :=
+           To_String (Invocation_State.Why3_Conf);
+         Why3_VF       : constant Virtual_File :=
+           (if Why3_Conf /= ""
+            then Create (Filesystem_String (Why3_Conf))
+            else No_File);
+         Gnatwhy3_Conf : constant String :=
+           (if Why3_VF /= No_File
+            then
+              (if Is_Absolute_Path (Why3_VF)
+               then Why3_Conf
+               else
+                 Ada.Directories.Compose
+                   (+Get_Current_Dir.Full_Name, Why3_Conf))
+            else "");
+         Args          : GNAT.OS_Lib.Argument_List :=
            (if Gnatwhy3_Conf /= ""
             then
               [1 => new String'("--prepare-shared"),
@@ -5939,13 +5931,13 @@ package body Configuration is
                3 => new String'(Prover_List),
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all)]);
-         Res      : Boolean;
-         Old_Dir  : constant String := Ada.Directories.Current_Directory;
-         Gnatwhy3 : constant String :=
+         Res           : Boolean;
+         Old_Dir       : constant String := Ada.Directories.Current_Directory;
+         Gnatwhy3      : constant String :=
            Ada.Directories.Compose
              (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
       begin
-         --  Use the Obj_Dir of gnat2why which already is "/.../gnatprove"
+         --  Use the object directory of the analyzed unit
          Ada.Directories.Set_Directory (Obj_Dir);
          if Verbosity = Verbose_Level then
             Ada.Text_IO.Put
@@ -5972,6 +5964,38 @@ package body Configuration is
                With_Help => False);
          end if;
       end Prepare_Why3_Manual;
+   begin
+      if Proof_Dir /= null then
+         pragma Assert (Proof_Dir.all /= "");
+         Create_Path_Or_Exit
+           (Ada.Directories.Compose (Proof_Dir.all, "sessions"));
+         if Has_Manual_Prover then
+            Prepare_Why3_Manual;
+         end if;
+      end if;
+   end Prepare_Proof_Inputs;
+
+   -----------------------
+   -- Compute_Why3_Args --
+   -----------------------
+
+   function Compute_Why3_Args (FS : File_Specific) return String_Lists.List is
+
+      Args          : String_Lists.List;
+      Why3_Conf     : constant String :=
+        To_String (Invocation_State.Why3_Conf);
+      Why3_VF       : constant Virtual_File :=
+        (if Why3_Conf /= ""
+         then Create (Filesystem_String (Why3_Conf))
+         else No_File);
+      Gnatwhy3_Conf : constant String :=
+        (if Why3_VF /= No_File
+         then
+           (if Is_Absolute_Path (Why3_VF)
+            then Why3_Conf
+            else
+              Ada.Directories.Compose (+Get_Current_Dir.Full_Name, Why3_Conf))
+         else "");
 
    begin
       --  The first "argument" is in fact the command name itself, because in
@@ -6055,16 +6079,11 @@ package body Configuration is
 
       if Proof_Dir /= null then
          pragma Assert (Proof_Dir.all /= "");
-         Create_Path_Or_Exit
-           (Ada.Directories.Compose (Proof_Dir.all, "sessions"));
          Args.Append ("--proof-dir");
          --  Why3 is executed in the gnatprove directory and does not know
          --  the project directory so we give it an absolute path to the
          --  proof_dir.
          Args.Append (Proof_Dir.all);
-         if Has_Manual_Prover then
-            Prepare_Why3_Manual;
-         end if;
       end if;
 
       if Gnatwhy3_Conf /= "" then

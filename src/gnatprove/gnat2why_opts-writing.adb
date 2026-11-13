@@ -35,18 +35,128 @@ with VC_Kinds;              use VC_Kinds;
 
 package body Gnat2Why_Opts.Writing is
 
+   --  Complete effective options for one unit and phase. Keeping this value
+   --  independent of Configuration lets both the filename and file contents
+   --  be derived from the same snapshot.
+
+   type Options is record
+      Phase                         : Gnat2Why_Phase;
+      Output                        : Output_Mode_Type;
+      Exclude_Line                  : Unbounded_String;
+      Target_Name                   : Unbounded_String;
+      Gnattest_Values               : Unbounded_String;
+      Debug_Exec_RAC                : Boolean;
+      Debug_Disable_Prover_Feedback : Boolean;
+      Debug_No_Cache_Output         : Boolean;
+      Debug                         : Boolean;
+      Flow_Extra_Debug              : Boolean;
+      Flow_Generate_Contracts       : Boolean;
+      Limit_Units                   : Boolean;
+      Limit_Subp                    : Unbounded_String;
+      Limit_Region                  : Unbounded_String;
+      Limit_Name                    : Unbounded_String;
+      Limit_Lines                   : String_Lists.List;
+      Report                        : Report_Mode_Type;
+      Warning_Mode                  : SPARK_Warning_Mode_Type;
+      Flow_Show_GG                  : Boolean;
+      Proof_Generate_Guards         : Boolean;
+      IDE_Mode                      : Boolean;
+      CWE                           : Boolean;
+      Max_Why3_Processes            : Positive;
+      Proof_Manifest                : Manifest_Subprogram_Vectors.Vector;
+      Data_Rep_Files                : String_Lists.List;
+      Why3_Dir                      : Unbounded_String;
+      Check_Counterexamples         : Boolean;
+      No_Loop_Unrolling             : Boolean;
+      No_Inlining                   : Boolean;
+      Mode                          : GP_Mode;
+      Warning_Status                : Warning_Status_Array;
+      Proof_Warnings                : Boolean;
+      Why3_Args                     : String_Lists.List;
+   end record;
+
+   function Collect_Options
+     (Phase           : Gnat2Why_Phase;
+      Why3_Dir        : String;
+      Source_Path_Key : String;
+      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector;
+      Data_Rep_Files  : String_Lists.List) return Options;
+   --  Capture the effective settings for this unit and phase
+
+   function Opt_File_Name (Obj_Dir : String; Opts : Options) return String;
+   --  Derive the options filename from the captured settings
+
+   ---------------------
+   -- Collect_Options --
+   ---------------------
+
+   function Collect_Options
+     (Phase           : Gnat2Why_Phase;
+      Why3_Dir        : String;
+      Source_Path_Key : String;
+      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector;
+      Data_Rep_Files  : String_Lists.List) return Options
+   is
+      FS : Configuration.File_Specific renames
+        Configuration.File_Specific_Map (Source_Path_Key);
+   begin
+      pragma Assert (CL_Switches.Function_Sandboxing in "" | "on" | "off");
+
+      return
+        (Phase                         => Phase,
+         Output                        => Output,
+         Exclude_Line                  =>
+           To_Unbounded_String (CL_Switches.Exclude_Line),
+         Target_Name                   =>
+           To_Unbounded_String (Configuration.Target_Name),
+         Gnattest_Values               =>
+           To_Unbounded_String (CL_Switches.Gnattest_Values),
+         Debug_Exec_RAC                => Debug_Exec_RAC,
+         Debug_Disable_Prover_Feedback =>
+           CL_Switches.Debug_Disable_Prover_Feedback,
+         Debug_No_Cache_Output         => CL_Switches.Debug_No_Cache_Output,
+         Debug                         => Debug,
+         Flow_Extra_Debug              => Flow_Extra_Debug,
+         Flow_Generate_Contracts       => not CL_Switches.No_Global_Generation,
+         Limit_Units                   => CL_Switches.U,
+         Limit_Subp                    =>
+           To_Unbounded_String (CL_Switches.Limit_Subp),
+         Limit_Region                  =>
+           To_Unbounded_String (CL_Switches.Limit_Region),
+         Limit_Name                    =>
+           To_Unbounded_String (CL_Switches.Limit_Name),
+         Limit_Lines                   => Limit_Lines.all,
+         Report                        => Report,
+         Warning_Mode                  => Warning_Mode,
+         Flow_Show_GG                  => CL_Switches.Flow_Show_GG,
+         Proof_Generate_Guards         =>
+           CL_Switches.Function_Sandboxing /= "off",
+         IDE_Mode                      => Configuration.IDE_Mode,
+         CWE                           => CL_Switches.CWE,
+         Max_Why3_Processes            => Max_Why3_Processes,
+         Proof_Manifest                => Proof_Manifest,
+         Data_Rep_Files                => Data_Rep_Files,
+         Why3_Dir                      =>
+           (if Phase = Translation
+            then To_Unbounded_String (Full_Name (Why3_Dir))
+            else Null_Unbounded_String),
+         Check_Counterexamples         => FS.Check_Counterexamples,
+         No_Loop_Unrolling             => FS.No_Loop_Unrolling,
+         No_Inlining                   => FS.No_Inlining,
+         Mode                          => FS.Mode,
+         Warning_Status                => FS.Warning_Status,
+         Proof_Warnings                => FS.Proof_Warnings,
+         Why3_Args                     =>
+           (if Phase = Translation
+            then Compute_Why3_Args (FS)
+            else String_Lists.Empty_List));
+   end Collect_Options;
+
    -------------------
    -- Opt_File_Name --
    -------------------
 
-   function Opt_File_Name
-     (Phase           : Gnat2Why_Phase;
-      Obj_Dir         : String;
-      Why3_Dir        : String;
-      Source_Path_Key : String;
-      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector;
-      Data_Rep_Files  : String_Utils.String_Lists.List) return String
-   is
+   function Opt_File_Name (Obj_Dir : String; Opts : Options) return String is
       Hash_Context : Blake3_Context;
       File_Name    : String (1 .. 12);
 
@@ -103,93 +213,96 @@ package body Gnat2Why_Opts.Writing is
    begin
       Init_Hash_Context (Hash_Context);
 
-      --  Hash fields in the same order and with the same conditionals as
-      --  Pass_Extra_Options_To_Gnat2why calls Set_Field. Keep these two in
-      --  sync when adding or removing options.
+      --  Preserve the hash order and representation used for existing files.
+      --  Every option written below must be included here under the same phase
+      --  condition, so different file contents cannot share a filename.
 
-      Hash (Global_Gen_Mode_Name, Boolean'Image (Phase = Global_Generation));
-      Hash (Output_Mode_Name, Gnat2Why_Opts.Output_Mode_Type'Image (Output));
-      Hash (Exclude_Line_Name, CL_Switches.Exclude_Line);
-      Hash (Target_Name_Name, Configuration.Target_Name);
-      Hash (Gnattest_Values_Name, CL_Switches.Gnattest_Values);
-      Hash (Debug_Exec_RAC_Name, Boolean'Image (Debug_Exec_RAC));
+      Hash
+        (Global_Gen_Mode_Name, Boolean'Image (Opts.Phase = Global_Generation));
+      Hash (Output_Mode_Name, Output_Mode_Type'Image (Opts.Output));
+      Hash (Exclude_Line_Name, To_String (Opts.Exclude_Line));
+      Hash (Target_Name_Name, To_String (Opts.Target_Name));
+      Hash (Gnattest_Values_Name, To_String (Opts.Gnattest_Values));
+      Hash (Debug_Exec_RAC_Name, Boolean'Image (Opts.Debug_Exec_RAC));
       Hash
         (Debug_Disable_Prover_Feedback_Name,
-         Boolean'Image (CL_Switches.Debug_Disable_Prover_Feedback));
+         Boolean'Image (Opts.Debug_Disable_Prover_Feedback));
       Hash
         (Debug_No_Cache_Output_Name,
-         Boolean'Image (CL_Switches.Debug_No_Cache_Output));
-      Hash (Debug_Mode_Name, Boolean'Image (Debug));
-      Hash (Flow_Advanced_Debug_Name, Boolean'Image (Flow_Extra_Debug));
+         Boolean'Image (Opts.Debug_No_Cache_Output));
+      Hash (Debug_Mode_Name, Boolean'Image (Opts.Debug));
+      Hash (Flow_Advanced_Debug_Name, Boolean'Image (Opts.Flow_Extra_Debug));
       Hash
         (Flow_Generate_Contracts_Name,
-         Boolean'Image (not CL_Switches.No_Global_Generation));
+         Boolean'Image (Opts.Flow_Generate_Contracts));
 
-      --  Options needed only in phase 2
-
-      if Phase = Translation then
-         Hash (Limit_Units_Name, Boolean'Image (CL_Switches.U));
-         Hash (Limit_Subp_Name, CL_Switches.Limit_Subp);
-         Hash (Limit_Region_Name, CL_Switches.Limit_Region);
-         Hash (Limit_Name_Name, CL_Switches.Limit_Name);
-         Hash (Limit_Lines_Name, Limit_Lines.all);
-         Hash
-           (Report_Mode_Name, Gnat2Why_Opts.Report_Mode_Type'Image (Report));
+      if Opts.Phase = Translation then
+         Hash (Limit_Units_Name, Boolean'Image (Opts.Limit_Units));
+         Hash (Limit_Subp_Name, To_String (Opts.Limit_Subp));
+         Hash (Limit_Region_Name, To_String (Opts.Limit_Region));
+         Hash (Limit_Name_Name, To_String (Opts.Limit_Name));
+         Hash (Limit_Lines_Name, Opts.Limit_Lines);
+         Hash (Report_Mode_Name, Report_Mode_Type'Image (Opts.Report));
          Hash
            (Warning_Mode_Name,
-            Gnat2Why_Opts.SPARK_Warning_Mode_Type'Image (Warning_Mode));
-         Hash (Flow_Show_GG_Name, Boolean'Image (CL_Switches.Flow_Show_GG));
-
-         --  Mirror the if/else logic in Pass_Extra_Options_To_Gnat2why
-         if CL_Switches.Function_Sandboxing = ""
-           or else CL_Switches.Function_Sandboxing = "on"
-         then
-            Hash (Proof_Generate_Guards_Name, Boolean'Image (True));
-         else
-            Hash (Proof_Generate_Guards_Name, Boolean'Image (False));
-         end if;
-
-         Hash (Ide_Mode_Name, Boolean'Image (Configuration.IDE_Mode));
-         Hash (CWE_Name, Boolean'Image (CL_Switches.CWE));
-         Hash (Max_Why3_Processes_Name, Integer'Image (Max_Why3_Processes));
-         Hash (Proof_Manifest_Name, Proof_Manifest);
-         Hash (Data_Rep_Files_Name, Data_Rep_Files);
-         Hash (Why3_Dir_Name, Ada.Directories.Full_Name (Why3_Dir));
+            SPARK_Warning_Mode_Type'Image (Opts.Warning_Mode));
+         Hash (Flow_Show_GG_Name, Boolean'Image (Opts.Flow_Show_GG));
+         Hash
+           (Proof_Generate_Guards_Name,
+            Boolean'Image (Opts.Proof_Generate_Guards));
+         Hash (Ide_Mode_Name, Boolean'Image (Opts.IDE_Mode));
+         Hash (CWE_Name, Boolean'Image (Opts.CWE));
+         Hash
+           (Max_Why3_Processes_Name, Integer'Image (Opts.Max_Why3_Processes));
+         Hash (Proof_Manifest_Name, Opts.Proof_Manifest);
+         Hash (Data_Rep_Files_Name, Opts.Data_Rep_Files);
+         Hash (Why3_Dir_Name, To_String (Opts.Why3_Dir));
       end if;
 
-      --  File-specific options
+      Hash
+        (Check_Counterexamples_Name,
+         Boolean'Image (Opts.Check_Counterexamples));
+      Hash (No_Loop_Unrolling_Name, Boolean'Image (Opts.No_Loop_Unrolling));
+      Hash (No_Inlining_Name, Boolean'Image (Opts.No_Inlining));
+      Hash (GP_Mode_Name, GP_Mode'Image (Opts.Mode));
 
-      declare
-         FS : Configuration.File_Specific renames
-           Configuration.File_Specific_Map (Source_Path_Key);
-      begin
-         Hash
-           (Check_Counterexamples_Name,
-            Boolean'Image (FS.Check_Counterexamples));
-         Hash (No_Loop_Unrolling_Name, Boolean'Image (FS.No_Loop_Unrolling));
-         Hash (No_Inlining_Name, Boolean'Image (FS.No_Inlining));
-         Hash (GP_Mode_Name, GP_Mode'Image (FS.Mode));
+      --  Match the ordering used by To_JSON for warning statuses
+      Update_Hash_Context (Hash_Context, Warning_Status_Name & ASCII.NUL);
+      for MW in Misc_Warning_Kind loop
+         Update_Hash_Context
+           (Hash_Context,
+            Misc_Warning_Kind'Image (MW)
+            & "="
+            & Warning_Enabled_Status'Image (Opts.Warning_Status (MW))
+            & ASCII.NUL);
+      end loop;
 
-         --  Mirror To_JSON (W : Warning_Status_Array) in vc_kinds.adb:
-         --  iterate Misc_Warning_Kind in declaration order.
-         Update_Hash_Context (Hash_Context, Warning_Status_Name & ASCII.NUL);
-         for MW in Misc_Warning_Kind loop
-            Update_Hash_Context
-              (Hash_Context,
-               Misc_Warning_Kind'Image (MW)
-               & "="
-               & Warning_Enabled_Status'Image (FS.Warning_Status (MW))
-               & ASCII.NUL);
-         end loop;
-
-         if Phase = Translation then
-            Hash (Proof_Warnings_Name, Boolean'Image (FS.Proof_Warnings));
-            Hash (Why3_Args_Name, Compute_Why3_Args (Obj_Dir, FS));
-         end if;
-      end;
+      if Opts.Phase = Translation then
+         Hash (Proof_Warnings_Name, Boolean'Image (Opts.Proof_Warnings));
+         Hash (Why3_Args_Name, Opts.Why3_Args);
+      end if;
 
       File_Name := Hash_Digest (Hash_Context) (1 .. 8) & ".tmp";
       return Compose (Obj_Dir, File_Name);
+   end Opt_File_Name;
+
+   -------------------
+   -- Opt_File_Name --
+   -------------------
+
+   function Opt_File_Name
+     (Phase           : Gnat2Why_Phase;
+      Obj_Dir         : String;
+      Why3_Dir        : String;
+      Source_Path_Key : String;
+      Proof_Manifest  : Manifest_Subprogram_Vectors.Vector;
+      Data_Rep_Files  : String_Utils.String_Lists.List) return String
+   is
+      Opts : constant Options :=
+        Collect_Options
+          (Phase, Why3_Dir, Source_Path_Key, Proof_Manifest, Data_Rep_Files);
+   begin
+      return Opt_File_Name (Obj_Dir, Opts);
    end Opt_File_Name;
 
    ------------------------------------
@@ -275,14 +388,10 @@ package body Gnat2Why_Opts.Writing is
          return A;
       end To_JSON;
 
-      Result : constant String :=
-        Opt_File_Name
-          (Phase,
-           Obj_Dir,
-           Why3_Dir,
-           Source_Path_Key,
-           Proof_Manifest,
-           Data_Rep_Files);
+      Opts   : constant Options :=
+        Collect_Options
+          (Phase, Why3_Dir, Source_Path_Key, Proof_Manifest, Data_Rep_Files);
+      Result : constant String := Opt_File_Name (Obj_Dir, Opts);
 
    begin
       --  Skip writing if a file with the same content hash already exists
@@ -294,98 +403,61 @@ package body Gnat2Why_Opts.Writing is
          Obj         : constant JSON_Value := Create_Object;
          Output_File : File_Type;
       begin
-         Set_Field (Obj, Global_Gen_Mode_Name, Phase = Global_Generation);
+         Set_Field (Obj, Global_Gen_Mode_Name, Opts.Phase = Global_Generation);
          Set_Field
-           (Obj,
-            Output_Mode_Name,
-            Gnat2Why_Opts.Output_Mode_Type'Image (Output));
-         Set_Field (Obj, Exclude_Line_Name, CL_Switches.Exclude_Line);
-         Set_Field (Obj, Target_Name_Name, Configuration.Target_Name);
-         Set_Field (Obj, Gnattest_Values_Name, CL_Switches.Gnattest_Values);
-
-         --  Always store debug options
-
-         Set_Field (Obj, Debug_Exec_RAC_Name, Debug_Exec_RAC);
+           (Obj, Output_Mode_Name, Output_Mode_Type'Image (Opts.Output));
+         Set_Field (Obj, Exclude_Line_Name, To_String (Opts.Exclude_Line));
+         Set_Field (Obj, Target_Name_Name, To_String (Opts.Target_Name));
+         Set_Field
+           (Obj, Gnattest_Values_Name, To_String (Opts.Gnattest_Values));
+         Set_Field (Obj, Debug_Exec_RAC_Name, Opts.Debug_Exec_RAC);
          Set_Field
            (Obj,
             Debug_Disable_Prover_Feedback_Name,
-            CL_Switches.Debug_Disable_Prover_Feedback);
+            Opts.Debug_Disable_Prover_Feedback);
          Set_Field
-           (Obj,
-            Debug_No_Cache_Output_Name,
-            CL_Switches.Debug_No_Cache_Output);
-         Set_Field (Obj, Debug_Mode_Name, Debug);
-         Set_Field (Obj, Flow_Advanced_Debug_Name, Flow_Extra_Debug);
+           (Obj, Debug_No_Cache_Output_Name, Opts.Debug_No_Cache_Output);
+         Set_Field (Obj, Debug_Mode_Name, Opts.Debug);
+         Set_Field (Obj, Flow_Advanced_Debug_Name, Opts.Flow_Extra_Debug);
          Set_Field
-           (Obj,
-            Flow_Generate_Contracts_Name,
-            not CL_Switches.No_Global_Generation);
+           (Obj, Flow_Generate_Contracts_Name, Opts.Flow_Generate_Contracts);
 
-         --  Options needed only in phase 2
-         if Phase = Translation then
-            Set_Field (Obj, Limit_Units_Name, CL_Switches.U);
-            Set_Field (Obj, Limit_Subp_Name, CL_Switches.Limit_Subp);
-            Set_Field (Obj, Limit_Region_Name, CL_Switches.Limit_Region);
-            Set_Field (Obj, Limit_Name_Name, CL_Switches.Limit_Name);
-            Set_Field (Obj, Limit_Lines_Name, To_JSON (Limit_Lines.all));
-
+         if Opts.Phase = Translation then
+            Set_Field (Obj, Limit_Units_Name, Opts.Limit_Units);
+            Set_Field (Obj, Limit_Subp_Name, To_String (Opts.Limit_Subp));
+            Set_Field (Obj, Limit_Region_Name, To_String (Opts.Limit_Region));
+            Set_Field (Obj, Limit_Name_Name, To_String (Opts.Limit_Name));
+            Set_Field (Obj, Limit_Lines_Name, To_JSON (Opts.Limit_Lines));
             Set_Field
-              (Obj,
-               Report_Mode_Name,
-               Gnat2Why_Opts.Report_Mode_Type'Image (Report));
-
+              (Obj, Report_Mode_Name, Report_Mode_Type'Image (Opts.Report));
             Set_Field
               (Obj,
                Warning_Mode_Name,
-               Gnat2Why_Opts.SPARK_Warning_Mode_Type'Image (Warning_Mode));
-
-            Set_Field (Obj, Flow_Show_GG_Name, CL_Switches.Flow_Show_GG);
-
-            if CL_Switches.Function_Sandboxing = ""
-              or else CL_Switches.Function_Sandboxing = "on"
-            then
-               Set_Field (Obj, Proof_Generate_Guards_Name, True);
-            else
-               pragma Assert (CL_Switches.Function_Sandboxing = "off");
-               Set_Field (Obj, Proof_Generate_Guards_Name, False);
-            end if;
-
-            Set_Field (Obj, Ide_Mode_Name, Configuration.IDE_Mode);
-            Set_Field (Obj, CWE_Name, CL_Switches.CWE);
-            Set_Field (Obj, Max_Why3_Processes_Name, Max_Why3_Processes);
-
-            Set_Field (Obj, Proof_Manifest_Name, To_JSON (Proof_Manifest));
-
-            Set_Field (Obj, Data_Rep_Files_Name, To_JSON (Data_Rep_Files));
-
-            --  The call to Ada.Directories.Full_Name removes any trailing
-            --  slash, which could confuse gnat2why.
+               SPARK_Warning_Mode_Type'Image (Opts.Warning_Mode));
+            Set_Field (Obj, Flow_Show_GG_Name, Opts.Flow_Show_GG);
             Set_Field
-              (Obj, Why3_Dir_Name, Ada.Directories.Full_Name (Why3_Dir));
+              (Obj, Proof_Generate_Guards_Name, Opts.Proof_Generate_Guards);
+            Set_Field (Obj, Ide_Mode_Name, Opts.IDE_Mode);
+            Set_Field (Obj, CWE_Name, Opts.CWE);
+            Set_Field (Obj, Max_Why3_Processes_Name, Opts.Max_Why3_Processes);
+            Set_Field
+              (Obj, Proof_Manifest_Name, To_JSON (Opts.Proof_Manifest));
+            Set_Field
+              (Obj, Data_Rep_Files_Name, To_JSON (Opts.Data_Rep_Files));
+            Set_Field (Obj, Why3_Dir_Name, To_String (Opts.Why3_Dir));
          end if;
 
-         --  File-specific options (flattened to top level)
+         Set_Field
+           (Obj, Check_Counterexamples_Name, Opts.Check_Counterexamples);
+         Set_Field (Obj, No_Loop_Unrolling_Name, Opts.No_Loop_Unrolling);
+         Set_Field (Obj, No_Inlining_Name, Opts.No_Inlining);
+         Set_Field (Obj, GP_Mode_Name, To_JSON (Opts.Mode));
+         Set_Field (Obj, Warning_Status_Name, To_JSON (Opts.Warning_Status));
 
-         declare
-            FS : Configuration.File_Specific renames
-              Configuration.File_Specific_Map (Source_Path_Key);
-         begin
-            Set_Field
-              (Obj, Check_Counterexamples_Name, FS.Check_Counterexamples);
-            Set_Field (Obj, No_Loop_Unrolling_Name, FS.No_Loop_Unrolling);
-            Set_Field (Obj, No_Inlining_Name, FS.No_Inlining);
-            Set_Field (Obj, GP_Mode_Name, To_JSON (FS.Mode));
-            Set_Field (Obj, Warning_Status_Name, To_JSON (FS.Warning_Status));
-
-            if Phase = Translation then
-               Set_Field (Obj, Proof_Warnings_Name, FS.Proof_Warnings);
-
-               Set_Field
-                 (Obj,
-                  Why3_Args_Name,
-                  To_JSON (Compute_Why3_Args (Obj_Dir, FS)));
-            end if;
-         end;
+         if Opts.Phase = Translation then
+            Set_Field (Obj, Proof_Warnings_Name, Opts.Proof_Warnings);
+            Set_Field (Obj, Why3_Args_Name, To_JSON (Opts.Why3_Args));
+         end if;
 
          Create (Output_File, Name => Result);
          Put (Output_File, Write (Obj));
