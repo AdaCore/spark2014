@@ -1,0 +1,31 @@
+test.adb:10:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+test.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:10:51: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:10:54: info: type is suitable for unchecked conversion (Trivial)
+test.adb:13:04: warning: analyzing unreferenced procedure "Test_Declaration" [unreferenced-procedure]
+test.adb:13:14: warning: subprogram "Test_Declaration" has no effect
+test.adb:14:19: info: range check proved (CVC5: 2 VC)
+test.adb:14:19: medium: validity check might fail
+test.adb:19:04: warning: analyzing unreferenced procedure "Test_Assignment" [unreferenced-procedure]
+test.adb:19:14: warning: subprogram "Test_Assignment" has no effect
+test.adb:22:12: medium: validity check might fail
+test.adb:25:04: warning: analyzing unreferenced procedure "Test_Valid_Result" [unreferenced-procedure]
+test.adb:25:14: warning: subprogram "Test_Valid_Result" has no effect
+test.adb:26:19: info: range check proved (CVC5: 2 VC)
+test.adb:26:19: info: validity check proved (CVC5: 1 VC)
+test.adb:28:22: info: assertion proved (CVC5: 2 VC)
+test.adb:28:39: info: validity check proved (CVC5: 1 VC)
+test.adb:29:12: info: validity check proved (CVC5: 2 VC)
+test.adb:30:22: info: assertion proved (CVC5: 2 VC)
+test.adb:30:39: info: validity check proved (CVC5: 1 VC)
+test.adb:33:04: warning: analyzing unreferenced procedure "Test_Narrowing" [unreferenced-procedure]
+test.adb:33:14: warning: subprogram "Test_Narrowing" has no effect
+test.adb:34:21: info: range check proved (CVC5: 2 VC)
+test.adb:34:21: info: validity check proved (CVC5: 1 VC)
+test.adb:36:12: info: validity check proved (CVC5: 2 VC)
+test.adb:36:12: medium: range check might fail, cannot prove upper bound for To_P (32) [reason for check: value must fit in the target type of the assignment]
+test.adb:39:04: warning: analyzing unreferenced procedure "Test_Matching_Subtypes" [unreferenced-procedure]
+test.adb:39:14: warning: subprogram "Test_Matching_Subtypes" has no effect
+test.adb:41:19: info: range check proved (CVC5: 2 VC)
+test.adb:43:22: info: assertion proved (CVC5: 2 VC)
+test.adb:46:22: info: assertion proved (CVC5: 2 VC)

@@ -1,0 +1,48 @@
+inline_conversion.adb:9:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+inline_conversion.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+inline_conversion.adb:9:51: info: type is suitable as source for unchecked conversion (Trivial)
+inline_conversion.adb:9:54: info: type is suitable for unchecked conversion (Trivial)
+inline_conversion.adb:12:14: info: add a contract to analyze it separately from calling contexts
+inline_conversion.adb:12:14: info: local subprogram "Fill" only analyzed in the context of calls [info-unrolling-inlining]
+inline_conversion.adb:12:20: info: initialization of "X" proved
+inline_conversion.adb:17:16: medium: validity check might fail, in call inlined at inline_conversion.adb:23
+inline_conversion.adb:23:04: info: analyzing call to "Fill" in context
+inline_conversion.adb:23:13: info: validity check proved (CVC5: 1 VC)
+inline_copy.adb:9:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+inline_copy.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+inline_copy.adb:9:51: info: type is suitable as source for unchecked conversion (Trivial)
+inline_copy.adb:9:54: info: type is suitable for unchecked conversion (Trivial)
+inline_copy.adb:14:14: info: add a contract to analyze it separately from calling contexts
+inline_copy.adb:14:14: info: local subprogram "Fill" only analyzed in the context of calls [info-unrolling-inlining]
+inline_copy.adb:14:20: info: initialization of "X" proved
+inline_copy.adb:18:12: medium: validity check might fail, in call inlined at inline_copy.adb:24
+inline_copy.adb:24:04: info: analyzing call to "Fill" in context
+inline_copy.adb:24:13: info: validity check proved (CVC5: 1 VC)
+test.adb:9:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+test.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:9:51: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:9:54: info: type is suitable for unchecked conversion (Trivial)
+test.adb:12:20: info: initialization of "X" proved
+test.adb:13:40: info: postcondition proved (Trivial: 1 VC)
+test.adb:22:40: info: postcondition proved (Trivial: 1 VC)
+test.adb:29:26: info: initialization of "X" proved
+test.adb:30:40: info: postcondition proved (CVC5: 1 VC)
+test.adb:37:04: warning: analyzing unreferenced procedure "Test_Out" [unreferenced-procedure]
+test.adb:37:14: warning: subprogram "Test_Out" has no effect
+test.adb:41:13: medium: in value of subprogram parameter after the call at test.adb:41
+test.adb:41:13: medium: validity check might fail [possible fix: postcondition of call at line 41 should mention X (for argument X)]
+test.adb:41:16: info: validity check proved (CVC5: 1 VC)
+test.adb:44:04: warning: analyzing unreferenced procedure "Test_In_Out" [unreferenced-procedure]
+test.adb:44:14: warning: subprogram "Test_In_Out" has no effect
+test.adb:47:15: medium: in value of subprogram parameter after the call at test.adb:47
+test.adb:47:15: medium: validity check might fail
+test.adb:47:18: info: validity check proved (CVC5: 1 VC)
+test.adb:50:04: warning: analyzing unreferenced procedure "Test_Valid_Out" [unreferenced-procedure]
+test.adb:50:14: warning: subprogram "Test_Valid_Out" has no effect
+test.adb:53:19: info: in value of subprogram parameter after the call at test.adb:53
+test.adb:53:19: info: validity check proved (CVC5: 1 VC)
+test.adb:53:22: info: validity check proved (CVC5: 1 VC)
+test.adb:54:22: info: assertion proved (CVC5: 1 VC)
+test.adb:57:04: warning: analyzing unreferenced procedure "Test_Direct" [unreferenced-procedure]
+test.adb:57:14: warning: subprogram "Test_Direct" has no effect
+test.adb:62:22: medium: assertion might fail [possible fix: postcondition of call at line 61 should mention X (for argument X)]
