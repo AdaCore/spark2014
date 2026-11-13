@@ -1,0 +1,50 @@
+test_calls.adb:24:33: info: data dependencies proved
+test_calls.adb:28:12: info: precondition proved (CVC5: 1 VC)
+test_calls.adb:28:12: medium: validity check might fail
+test_calls.adb:29:22: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:32:31: info: data dependencies proved
+test_calls.adb:34:07: info: initialization of "X" proved
+test_calls.adb:36:12: info: precondition proved (CVC5: 1 VC)
+test_calls.adb:36:12: info: validity check proved (CVC5: 1 VC)
+test_calls.adb:37:22: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:38:22: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:41:37: info: data dependencies proved
+test_calls.adb:43:07: info: initialization of "X" proved
+test_calls.adb:45:12: info: precondition proved (CVC5: 1 VC)
+test_calls.adb:46:22: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:47:22: medium: assertion might fail
+test_calls.adb:50:35: info: data dependencies proved
+test_calls.adb:52:07: info: initialization of "X" proved
+test_calls.adb:54:12: info: precondition proved (CVC5: 1 VC)
+test_calls.adb:55:22: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:56:22: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:57:22: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:57:23: info: validity check proved (CVC5: 1 VC)
+test_calls.adb:62:06: info: data dependencies proved
+test_calls.adb:64:14: info: postcondition proved (CVC5: 1 VC)
+test_calls.adb:64:36: info: overflow check proved (CVC5: 2 VC)
+test_calls.adb:68:14: info: precondition proved (CVC5: 1 VC)
+test_calls.adb:77:32: info: data dependencies proved
+test_calls.adb:80:12: info: precondition proved (CVC5: 1 VC)
+test_calls.adb:80:12: medium: validity check might fail (e.g. when S = (Count => 0))
+test_calls.adb:82:28: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:88:36: info: data dependencies proved
+test_calls.adb:90:07: info: initialization of "X" proved
+test_calls.adb:92:12: info: precondition proved (CVC5: 1 VC)
+test_calls.adb:93:22: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:94:22: medium: assertion might fail (e.g. when X'Valid = False)
+test_calls.adb:103:44: info: data dependencies proved
+test_calls.adb:106:07: info: initialization of "X" proved
+test_calls.adb:108:12: info: only expected exception raised (CVC5: 1 VC)
+test_calls.adb:109:22: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:110:22: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:111:22: medium: assertion might fail
+test_calls.adb:114:25: info: assertion proved (CVC5: 1 VC)
+test_calls.adb:115:25: info: assertion proved (CVC5: 1 VC)
+test_declarations.adb:12:32: info: data dependencies proved
+test_declarations.adb:14:25: medium: validity check might fail [possible fix: you should consider adding a postcondition to function "Read" or turning it into an expression function in its unit spec]
+test_declarations.adb:15:22: info: assertion proved (CVC5: 1 VC)
+test_declarations.adb:18:36: info: data dependencies proved
+test_declarations.adb:21:22: medium: assertion might fail
+test_declarations.adb:25:20: info: data dependencies proved
+test_declarations.adb:29:23: medium: validity check might fail [possible fix: you should consider adding a postcondition to function "Read" or turning it into an expression function in its unit spec]
