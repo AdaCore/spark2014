@@ -4762,6 +4762,19 @@ package body Gnat2Why.Expr is
                     Expected_Type => Formal_T);
             end if;
 
+            --  Unchecked conversion reads all source bits, including those
+            --  of components whose types have relaxed initialization.
+
+            if Is_Unchecked_Conversion_Instance (Subp) then
+               Actual_Expr :=
+                 Insert_Initialization_Check
+                   (Ada_Node           => Actual,
+                    E                  => Etype (Actual),
+                    Name               => Actual_Expr,
+                    Domain             => Domain,
+                    Exclude_Components => None);
+            end if;
+
             --  Store the converted actual into a temporary constant to avoid
             --  computing it several times. It also ensures that checks are
             --  emitted even if the expression happens to not be used.
