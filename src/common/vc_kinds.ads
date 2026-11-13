@@ -798,6 +798,7 @@ package VC_Kinds is
       Lim_Deep_Object_Declaration_Outside_Block,
       Lim_Package_Before_Inv,
       Lim_Potentially_Invalid_Eq,
+      Lim_Potentially_Invalid_Inherited_Rep,
       Lim_Potentially_Invalid_Iterable,
       Lim_Potentially_Invalid_Mutable_Discr,
       Lim_Potentially_Invalid_Part_Of,
@@ -1356,6 +1357,9 @@ package VC_Kinds is
          when Lim_Potentially_Invalid_Eq                                  =>
            "Potentially_Invalid aspect on the primitive equality of a record "
            & "type",
+         when Lim_Potentially_Invalid_Inherited_Rep                       =>
+           "call to an inherited subprogram with a representation change for"
+           & " a potentially invalid parameter or result",
          when Lim_Potentially_Invalid_Iterable                            =>
            "Potentially_Invalid aspect on a function associated to the aspect"
            & " Iterable",

@@ -1322,9 +1322,18 @@ package body Why.Gen.Records is
    procedure Create_Validity_Tree_Theory_For_Record
      (Th : Theory_UC; E : Entity_Id)
    is
-      Ty_Name : constant W_Name_Id := To_Name (WNE_Validity_Tree);
+      Ty_Name  : constant W_Name_Id := To_Name (WNE_Validity_Tree);
+      Ancestor : constant Type_Kind_Id := Oldest_Compatible_Ancestor (E);
 
    begin
+      --  Compatible record types share the ancestor's validity tree. Re-export
+      --  its module so the tree and its operations can be named through E.
+
+      if Ancestor /= E then
+         Add_With_Clause (Th, E_Module (Ancestor, Validity_Tree), EW_Export);
+         return;
+      end if;
+
       --  Create a record type with a flag per component. No need to consider
       --  discriminants nor record extensions, they cannot be invalid.
       --  Also generate a is_valid function and a valid_value constant that

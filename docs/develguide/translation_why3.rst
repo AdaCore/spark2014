@@ -186,6 +186,32 @@ types):
 
     function dummy : t
 
+Potentially Invalid Values
+""""""""""""""""""""""""""
+
+Objects marked with ``Potentially_Invalid`` can contain scalar bit patterns
+which do not represent values of their Ada subtypes. The translation tracks
+validity separately from the encoded values, using Boolean flags organized
+into trees following the component structure. Record fields and whole arrays
+whose representations admit only valid values need no flags. Whether a scalar
+component needs a flag depends on its storage size as well as its subtype.
+
+A derived untagged record reuses the validity tree of its oldest ancestor with
+compatible representation by re-exporting that ancestor's validity module.
+Inherited operations can then transfer flags between parent and derived types
+without converting the tree. A representation change can alter which fields
+need flags, so inherited calls with a representation change for a potentially
+invalid parameter or result are unsupported.
+
+Array validity maps follow the sharing of array value maps, using the same
+representative index types and component subtype. Each base array's validity
+module re-exports the shared map and defines a validity predicate that checks
+only the components within the array bounds.
+
+Record sharing is implemented by ``Create_Validity_Tree_Theory_For_Record`` in
+:file:`src/why/why-gen-records.adb`; array sharing is documented in
+:file:`src/why/why-gen-arrays.ads`.
+
 Scalar Types
 ^^^^^^^^^^^^
 

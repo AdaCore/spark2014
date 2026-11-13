@@ -3893,8 +3893,7 @@ package body Why.Atree.Modules is
 
          if Type_Might_Be_Invalid (E) then
 
-            --  For non-scalar types, introduce symbols for validity trees.
-            --  They are shared in the module of the root retysp.
+            --  For non-scalar types, introduce symbols for validity trees
 
             if not Has_Scalar_Type (E) then
                declare

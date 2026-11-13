@@ -6771,6 +6771,19 @@ package body SPARK_Definition is
          --  Regular checks
          Mark (Actual);
 
+         --  Inherited calls are rewritten to call the parent operation. Its
+         --  validity information cannot describe a changed representation.
+
+         if Has_Potentially_Invalid (Formal)
+           and then Retysp_In_SPARK (Etype (Actual))
+           and then
+             not Sem_Ch13.Has_Compatible_Representation
+                   (Retysp (Etype (Formal)), Retysp (Etype (Actual)))
+         then
+            pragma Assert (Is_Primitive (E));
+            Mark_Unsupported (Lim_Potentially_Invalid_Inherited_Rep, Actual);
+         end if;
+
          --  In a procedure or entry call, copy in of a parameter of an
          --  anonymous access type is considered to be an observe/a borrow.
          --  Check that it abides by the corresponding rules.
@@ -7124,6 +7137,17 @@ package body SPARK_Definition is
 
       Mark_Entity (E);
       Mark_Actuals (N);
+
+      if Ekind (E) = E_Function
+        and then Has_Potentially_Invalid (E)
+        and then Retysp_In_SPARK (Etype (N))
+        and then
+          not Sem_Ch13.Has_Compatible_Representation
+                (Retysp (Etype (N)), Retysp (Etype (E)))
+      then
+         pragma Assert (Is_Primitive (E));
+         Mark_Unsupported (Lim_Potentially_Invalid_Inherited_Rep, N);
+      end if;
 
       --  Call is in SPARK only if the subprogram called is in SPARK
 
@@ -13963,10 +13987,27 @@ package body SPARK_Definition is
       then
          Potentially_Invalid.Include (Base_Retysp (Rep_Ty));
 
-         --  Do not abstract away record types with potentially invalid values
-         --  as we don't handle potentially invalid values of private types.
+         --  Tagged types were rejected above, but marking continues after a
+         --  violation. Exclude them from the compatible ancestor lookup,
+         --  whose precondition forbids tagged types.
 
-         Unused_Records.Exclude (Base_Retysp (Rep_Ty));
+         if Is_Record_Type (Rep_Ty) and then not Is_Tagged_Type (Rep_Ty) then
+
+            --  Untagged records are abstracted away at their root. Keep their
+            --  fields visible as validity trees do not support private parts.
+
+            Unused_Records.Exclude (Root_Retysp (Rep_Ty));
+
+            --  The compatible ancestor provides the shared validity tree,
+            --  even if only the derived type has potentially invalid objects.
+
+            declare
+               Ancestor : constant Type_Kind_Id :=
+                 Oldest_Compatible_Ancestor (Rep_Ty);
+            begin
+               Potentially_Invalid.Include (Ancestor);
+            end;
+         end if;
       end if;
 
    end Mark_Potentially_Invalid_Type;

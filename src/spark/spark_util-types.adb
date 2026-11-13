@@ -29,6 +29,7 @@ with Errout_Wrapper;              use Errout_Wrapper;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Rtsfind;                     use Rtsfind;
+with Sem_Ch13;                    use Sem_Ch13;
 with Sem_Eval;                    use Sem_Eval;
 with Sinfo.Utils;                 use Sinfo.Utils;
 with SPARK_Definition;            use SPARK_Definition;
@@ -2140,6 +2141,27 @@ package body SPARK_Util.Types is
          return Next_Ty;
       end if;
    end Parent_Retysp;
+
+   --------------------------------
+   -- Oldest_Compatible_Ancestor --
+   --------------------------------
+
+   function Oldest_Compatible_Ancestor (Ty : Type_Kind_Id) return Type_Kind_Id
+   is
+      Current : Type_Kind_Id := Base_Retysp (Ty);
+      Result  : Type_Kind_Id := Current;
+      Parent  : Type_Kind_Id;
+   begin
+      loop
+         Parent := Base_Retysp (Parent_Type (Current));
+         exit when Parent = Current;
+         if Has_Compatible_Representation (Parent, Base_Retysp (Ty)) then
+            Result := Parent;
+         end if;
+         Current := Parent;
+      end loop;
+      return Result;
+   end Oldest_Compatible_Ancestor;
 
    -----------------
    -- Parent_Type --
