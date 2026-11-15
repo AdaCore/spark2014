@@ -88,6 +88,7 @@ test_init_by_proof_mem.adb:36:10: warning: no Global contract available for "Bra
 test_init_by_proof_mem.adb:37:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:37:22: medium: initialization check might fail
 test_init_by_proof_mem.adb:37:36: info: initialization check proved (CVC5: 1 VC)
+test_init_by_proof_mem.adb:37:36: info: initialization check proved (CVC5: 1 VC; Trivial: 6 VC)
 test_init_by_proof_mem.adb:38:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:38:22: medium: initialization check might fail
 test_init_by_proof_mem.adb:38:39: info: initialization check proved (CVC5: 1 VC)
@@ -95,6 +96,7 @@ test_init_by_proof_mem.adb:40:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:40:22: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:40:22: info: initialization check proved (CVC5: 1 VC; Trivial: 6 VC)
 test_init_by_proof_mem.adb:40:36: info: initialization check proved (CVC5: 1 VC)
+test_init_by_proof_mem.adb:40:36: info: initialization check proved (CVC5: 1 VC; Trivial: 6 VC)
 test_init_by_proof_mem.adb:41:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:41:22: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:41:39: info: initialization check proved (CVC5: 1 VC)
