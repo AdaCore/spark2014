@@ -475,7 +475,7 @@ cert-attr-priv.ads:99:13: info: implicit aspect Always_Terminates on "Cert_Attr_
 cert-attr.adb:36:09: info: range check proved
 cert-attr.adb:37:09: info: range check proved
 cert-attr.adb:38:09: info: range check proved
-cert-attr.adb:42:07: info: range check proved
+cert-attr.adb:42:07: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
 cert-attr.adb:42:18: info: index check proved
 cert-attr.adb:42:33: info: index check proved
 cert-attr.adb:42:40: info: length check proved
@@ -501,7 +501,7 @@ cert-id.ads:97:13: info: implicit aspect Always_Terminates on "Cert_Id_To_Cert" 
 cert.adb:61:09: info: range check proved
 cert.adb:62:09: info: range check proved
 cert.adb:63:09: info: range check proved
-cert.adb:66:07: info: range check proved
+cert.adb:66:07: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
 cert.adb:66:18: info: index check proved
 cert.adb:66:33: info: index check proved
 cert.adb:66:40: info: length check proved
