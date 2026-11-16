@@ -7897,8 +7897,9 @@ package body Gnat2Why.Expr is
       --  Remember already processed locally declared objects.
 
       function Compute_Check
-        (Path         : N_Subexpr_Id;
-         Under_Access : Boolean)
+        (Path               : N_Subexpr_Id;
+         Under_Access       : Boolean;
+         Directly_In_Return : Boolean)
          return Boolean;
       --  Approximate the accessibility level check on the return statement in
       --  the following way:
@@ -7907,11 +7908,13 @@ package body Gnat2Why.Expr is
       --    * If we have a call to traversal function inside the declaration of
       --      a local object on the path to the ultimate root of E, then the
       --      accessibility check will fail.
-      --    * If we have a call to traversal function inside the return
-      --      expression, the accessibility of the result will be the result
-      --      accessibility. It is still possible that a failed accessibility
-      --      check will occur in the body of the traversal function if its
-      --      first parameter is local, so continue the verification.
+      --    * If a traversal call directly defines the returned result,
+      --      the accessibility of the result will be the result accessibility.
+      --      Calls nested in its actual argument are checked conservatively,
+      --      without propagating the master of the outer call. Calls reached
+      --      through local initializers are outside the return statement.
+      --      An accessibility check can still fail in the traversal function
+      --      if its first parameter is local, so continue the verification.
       --    * Otherwise, we are in a part of the parameter. For all references
       --      of the 'Access attribute on the path linking Returned_Expr to the
       --      traversed parameter, check that its prefix contains at least a
@@ -7927,8 +7930,9 @@ package body Gnat2Why.Expr is
       -------------------
 
       function Compute_Check
-        (Path         : N_Subexpr_Id;
-         Under_Access : Boolean)
+        (Path               : N_Subexpr_Id;
+         Under_Access       : Boolean;
+         Directly_In_Return : Boolean)
          return Boolean is
       begin
          --  We are in a part of a named access type. This type is necessarily
@@ -7969,7 +7973,8 @@ package body Gnat2Why.Expr is
                         Seen.Insert (Root);
                         return Compute_Check
                           (Expression (Enclosing_Declaration (Root)),
-                           Under_Access => False);
+                           Under_Access       => False,
+                           Directly_In_Return => False);
                      end if;
                   end;
                end if;
@@ -7982,25 +7987,44 @@ package body Gnat2Why.Expr is
                --  reference to the 'Access attribute and we should check for a
                --  dereference.
 
-               return Compute_Check (Prefix (Path), Under_Access => True);
+               return Compute_Check
+                 (Prefix (Path),
+                  Under_Access       => True,
+                  Directly_In_Return => Directly_In_Return);
 
             when N_Explicit_Dereference =>
 
                --  We have found a dereference. The previously encountered
                --  accesses (if any) are fine.
 
-               return Compute_Check (Prefix (Path), Under_Access => False);
+               return Compute_Check
+                 (Prefix (Path),
+                  Under_Access       => False,
+                  Directly_In_Return => Directly_In_Return);
 
             when N_Function_Call =>
 
-               --  We have found a function call. If we are not inside the
-               --  return statement, the master of the call is local, we will
-               --  have an accessibility check.
+               --  Only the call directly defining the returned result can
+               --  inherit its accessibility level.
 
                pragma Assert (Is_Traversal_Function_Call (Path));
-               if Get_Root_Object (Returned_Expr) /= Get_Root_Object (Path)
+               if not Directly_In_Return
+                 or else
+                   Get_Root_Object (Returned_Expr) /= Get_Root_Object (Path)
                then
                   return False;
+
+               --  An explicitly aliased formal, or a component of it, can
+               --  be forwarded to the aliased formal of the returned call
+               --  (RM 3.10.2(21.1) and 3.10.2(16)).
+
+               elsif Is_Aliased (Param)
+                 and then Is_Aliased
+                   (First_Formal (Get_Called_Entity_For_Proof (Path)))
+                 and then Get_Root_Object
+                   (First_Actual (Path), Through_Traversal => False) = Param
+               then
+                  return True;
                end if;
 
                --  If the first formal is aliased, an accessibility check might
@@ -8011,25 +8035,28 @@ package body Gnat2Why.Expr is
                return Compute_Check
                  (First_Actual (Path),
                   Under_Access => Is_Aliased
-                    (First_Formal (Get_Called_Entity_For_Proof (Path))));
+                    (First_Formal (Get_Called_Entity_For_Proof (Path))),
+                  Directly_In_Return => False);
 
             when N_Indexed_Component
                | N_Selected_Component
                | N_Slice
             =>
-               return Compute_Check (Prefix (Path), Under_Access);
+               return Compute_Check
+                 (Prefix (Path), Under_Access, Directly_In_Return);
 
             when N_Qualified_Expression
                | N_Type_Conversion
                | N_Unchecked_Type_Conversion
             =>
-               return Compute_Check (Expression (Path), Under_Access);
+               return Compute_Check
+                 (Expression (Path), Under_Access, Directly_In_Return);
 
             when N_If_Expression
                | N_Case_Expression
             =>
                return (for all P of Terminal_Alternatives (Path) =>
-                          Compute_Check (P, Under_Access));
+                          Compute_Check (P, Under_Access, Directly_In_Return));
 
             when others =>
                raise Program_Error;
@@ -8051,7 +8078,8 @@ package body Gnat2Why.Expr is
       Emit_Static_Proof_Result
         (Node   => Returned_Expr,
          Kind   => VC_Dynamic_Accessibility_Check,
-         Proved => Compute_Check (Returned_Expr, Under_Access => False),
+         Proved => Compute_Check
+           (Returned_Expr, Under_Access => False, Directly_In_Return => True),
          E      => Subp);
    end Emit_Dynamic_Accessibility_Check;
 
