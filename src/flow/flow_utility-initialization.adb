@@ -395,7 +395,13 @@ package body Flow_Utility.Initialization is
                      --  internally generated.
 
                      else
-                        Result := No_Possible_Initialization;
+                        if Ignore_DIC then
+                           --  The record is considered to be trivially fully
+                           --  default initialized.
+                           Result := Full_Default_Initialization;
+                        else
+                           Result := No_Possible_Initialization;
+                        end if;
                      end if;
 
                   end;
