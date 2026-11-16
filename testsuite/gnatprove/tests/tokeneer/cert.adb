@@ -58,9 +58,11 @@ package body Cert is
    function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT is
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
       FullString : String := "Issuer: "
-        & CryptoTypes.IssuerIdT'Image (Contents.ID.Issuer.ID)
+        & CommonTypes.Unsigned32T'Image
+            (CommonTypes.Unsigned32T (Contents.ID.Issuer.ID))
         & " SerialNo:  "
-        & CertTypes.SerialNumberT'Image (Contents.ID.SerialNumber);
+        & CommonTypes.Unsigned32T'Image
+            (CommonTypes.Unsigned32T (Contents.ID.SerialNumber));
    begin
       -- the Full string is short enough to use it all
       LocalUser (1 .. FullString'Last) := FullString;
