@@ -1,4 +1,5 @@
 with SPARK.Pointers.Poisoned.Pointers;
+with SPARK.Pointers.Poisoned.Pointers.Array_Operations;
 
 --  A vector whose element cells are poisoned holders.
 --

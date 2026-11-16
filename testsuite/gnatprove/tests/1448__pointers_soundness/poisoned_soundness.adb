@@ -4,6 +4,7 @@
 --  weakening one of them breaks this test rather than going unnoticed.
 
 with SPARK.Pointers.Poisoned.Pointers;
+with SPARK.Pointers.Poisoned.Pointers.Array_Operations;
 
 procedure Poisoned_Soundness with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
