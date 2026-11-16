@@ -489,16 +489,16 @@ cert-attr-priv.ads:92:11: info: data dependencies proved
 cert-attr-priv.ads:93:11: info: flow dependencies proved
 cert-attr-priv.ads:96:13: info: implicit aspect Always_Terminates on "Cert_Attr_Priv_To_Cert" has been proved, subprogram will terminate
 cert-attr-priv.ads:99:13: info: implicit aspect Always_Terminates on "Cert_Attr_Priv_To_Cert_Attr" has been proved, subprogram will terminate
-cert-attr.adb:36:09: info: range check proved
-cert-attr.adb:36:32: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-cert-attr.adb:37:09: info: range check proved
 cert-attr.adb:38:09: info: range check proved
 cert-attr.adb:38:34: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-cert-attr.adb:42:07: info: range check proved
-cert-attr.adb:42:18: info: index check proved
-cert-attr.adb:42:33: info: index check proved
-cert-attr.adb:42:40: info: length check proved
-cert-attr.adb:42:43: info: length check proved
+cert-attr.adb:40:09: info: range check proved
+cert-attr.adb:41:09: info: range check proved
+cert-attr.adb:41:34: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+cert-attr.adb:46:07: info: range check proved
+cert-attr.adb:46:18: info: index check proved
+cert-attr.adb:46:33: info: index check proved
+cert-attr.adb:46:40: info: length check proved
+cert-attr.adb:46:43: info: length check proved
 cert-attr.ads:55:13: info: implicit aspect Always_Terminates on "ExtractUser" has been proved, subprogram will terminate
 cert-attr.ads:66:13: info: implicit aspect Always_Terminates on "TheBaseCert" has been proved, subprogram will terminate
 cert-id.adb:61:07: info: initialization of "LocalContents" proved
@@ -518,18 +518,18 @@ cert-id.ads:93:11: info: data dependencies proved
 cert-id.ads:94:11: info: flow dependencies proved
 cert-id.ads:97:13: info: implicit aspect Always_Terminates on "Cert_Id_To_Cert" has been proved, subprogram will terminate
 cert.adb:61:09: info: range check proved
-cert.adb:61:32: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-cert.adb:62:09: info: range check proved
+cert.adb:61:34: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 cert.adb:63:09: info: range check proved
-cert.adb:63:34: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-cert.adb:66:07: info: range check proved
-cert.adb:66:18: info: index check proved
-cert.adb:66:33: info: index check proved
-cert.adb:66:40: info: length check proved
-cert.adb:66:43: info: length check proved
-cert.adb:100:07: info: initialization of "LocalRawData" proved
-cert.adb:120:07: info: initialization of "LocalSig" proved
-cert.adb:156:07: info: initialization of "IsKnown" proved
+cert.adb:64:09: info: range check proved
+cert.adb:64:34: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+cert.adb:68:07: info: range check proved
+cert.adb:68:18: info: index check proved
+cert.adb:68:33: info: index check proved
+cert.adb:68:40: info: length check proved
+cert.adb:68:43: info: length check proved
+cert.adb:102:07: info: initialization of "LocalRawData" proved
+cert.adb:122:07: info: initialization of "LocalSig" proved
+cert.adb:158:07: info: initialization of "IsKnown" proved
 cert.ads:58:13: info: implicit aspect Always_Terminates on "TheIssuer" has been proved, subprogram will terminate
 cert.ads:69:13: info: implicit aspect Always_Terminates on "TheID" has been proved, subprogram will terminate
 cert.ads:80:13: info: implicit aspect Always_Terminates on "ExtractUser" has been proved, subprogram will terminate
