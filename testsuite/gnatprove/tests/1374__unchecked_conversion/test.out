@@ -8,4 +8,3 @@ test.adb:12:04: warning: in instantiation at g.ads:25
 test.adb:12:04: warning: in instantiation at g.ads:25
 test.adb:12:04: warning: in instantiation at spark-conversions-access_conversions.ads:86
 test.adb:12:04: warning: in instantiation at spark-conversions-access_conversions.ads:91
-test.adb:12:04: warning: pragma "Universal_Aliasing" ignored (not yet supported) [ignored-pragma]

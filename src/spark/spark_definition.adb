@@ -14352,6 +14352,7 @@ package body SPARK_Definition is
             | Pragma_Test_Case
             | Pragma_Type_Invariant
             | Pragma_Type_Invariant_Class
+            | Pragma_Universal_Aliasing
             | Pragma_Unmodified
             | Pragma_Unreferenced
             | Pragma_Unsigned_Base_Range
@@ -14485,7 +14486,6 @@ package body SPARK_Definition is
             | Pragma_Time_Slice
             | Pragma_Title
             | Pragma_Unimplemented_Unit
-            | Pragma_Universal_Aliasing
             | Pragma_Unreferenced_Objects
             | Pragma_Unreserve_All_Interrupts
             | Pragma_Use_VADS_Size
