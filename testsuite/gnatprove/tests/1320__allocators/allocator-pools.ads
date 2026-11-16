@@ -171,6 +171,7 @@ private
          Pad : Padding;
       end record
       with Alignment => 4;
+      pragma Universal_Aliasing (Padded);
 
       pragma
         Compile_Time_Error

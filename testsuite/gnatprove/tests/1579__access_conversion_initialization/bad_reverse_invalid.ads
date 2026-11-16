@@ -5,6 +5,7 @@ package Bad_Reverse_Invalid with SPARK_Mode is
    type Target is record
       Value : Interfaces.Unsigned_32;
    end record with Relaxed_Initialization, Size => 32, Alignment => 4;
+   pragma Universal_Aliasing (Target);
    for Target use record
       Value at 0 range 0 .. 31;
    end record;

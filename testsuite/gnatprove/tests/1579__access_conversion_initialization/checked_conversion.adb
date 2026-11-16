@@ -2,6 +2,8 @@ with Interfaces; use Interfaces;
 with SPARK.Conversions.Access_Conversions;
 
 procedure Checked_Conversion with SPARK_Mode is
+   type Word is new Unsigned_32;
+   pragma Universal_Aliasing (Word);
    type Source is record
       Value : Unsigned_32;
    end record with Relaxed_Initialization, Size => 32, Alignment => 4;
@@ -15,21 +17,21 @@ procedure Checked_Conversion with SPARK_Mode is
 
    package Conversion is new
      SPARK.Conversions.Access_Conversions.Access_Constant_Conversions
-       (Source, Unsigned_32, Is_Initialized);
+       (Source, Word, Is_Initialized);
 
    X : aliased Source := (Value => 42);
    Uninitialized : aliased Source;
 begin
    declare
       P : constant not null access constant Source := X'Access;
-      Y : constant not null access constant Unsigned_32 :=
+      Y : constant not null access constant Word :=
         Conversion.Convert_Constant_Access (P); -- @PRECONDITION:PASS
    begin
       pragma Assert (Y.all = 42); -- @ASSERT:PASS
    end;
    declare
       P : constant not null access constant Source := Uninitialized'Access;
-      Y : constant not null access constant Unsigned_32 :=
+      Y : constant not null access constant Word :=
         Conversion.Convert_Constant_Access (P); -- @PRECONDITION:FAIL
    begin
       null;
