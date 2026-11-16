@@ -181,7 +181,7 @@ procedure Test_Accessibility_2 with SPARK_Mode is
      Post => OK13'Result.all = X.F1
    is
    begin
-      return Hidden_Access (Id (X).F1); -- @ACCESSIBILITY_CHECK:PASS
+      return Hidden_Access (Id (X).F1); -- @ACCESSIBILITY_CHECK:FAIL
    end OK13;
 
    procedure Test (R : aliased Rec) with
