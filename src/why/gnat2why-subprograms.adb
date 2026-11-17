@@ -2113,7 +2113,7 @@ package body Gnat2Why.Subprograms is
                              Expr   => Obj,
                              Ent    => Obj,
                              Domain => EW_Term),
-                       Tree => +New_Move_Tree_Access_For_Identitier (Obj),
+                       Tree => +New_Move_Tree_Access_For_Identifier (Obj),
                        Ty   => Expected_Type_For_Move_Tree (Obj))));
          end loop;
       end;

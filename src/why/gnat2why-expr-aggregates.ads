@@ -150,6 +150,13 @@ package Gnat2Why.Expr.Aggregates is
    --  Generate checks for the initialization and the preservation of the
    --  invariants used to model aggregates.
 
+   function Needs_Leak_Checks_For_Delta_Aggregate (N : Node_Id) return Boolean
+   with Pre => Nkind (N) in N_Delta_Aggregate | N_Aggregate;
+   --  Return True if leak checks need to be performed for discarded components
+   --  of N. Assume surrounding unit is Current_Subp.
+   --  Aggregate case is used for 'Update attribute, it must be its aggregage
+   --  argument.
+
    function Transform_Container_Aggregate
      (Expr : Node_Id; Params : Transformation_Params; Domain : EW_Domain)
       return W_Expr_Id;

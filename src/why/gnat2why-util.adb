@@ -2108,6 +2108,34 @@ package body Gnat2Why.Util is
    end Is_Mutable_In_Why;
 
    -----------------------------
+   -- Is_Never_Executed_Ghost --
+   -----------------------------
+
+   function Is_Never_Executed_Ghost
+     (N : Node_Id; Unit : Entity_Id) return Boolean
+   is
+      function Is_Noexec_Entity (E : Entity_Id) return Boolean
+      is (Is_Ghost_Entity (E)
+          and then Is_Non_Exec_Assertion_Level (Ghost_Assertion_Level (E)));
+   begin
+      if Is_Noexec_Entity (Unit) then
+         return True;
+      end if;
+      if Nkind (N) in N_Entity then
+         --  ??? This does not work for entities declared for local scope,
+         --  e.g declare-expr. Case currently cannot happen.
+
+         pragma Assert (not Comes_From_Declare_Expr (N));
+
+         return Is_Noexec_Entity (N);
+      elsif Present (N) then
+         return In_Non_Exec_Context (N);
+      else
+         return False;
+      end if;
+   end Is_Never_Executed_Ghost;
+
+   -----------------------------
    -- Is_Private_Intrinsic_Op --
    -----------------------------
 

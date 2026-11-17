@@ -491,7 +491,7 @@ package Gnat2Why.Expr is
    function Expected_Type_For_Move_Tree
      (N : Node_Or_Entity_Id) return Type_Kind_Id;
    --  N is an expression or object which can be moved. Return the type that
-   --  should be used to querry its move tree. It might not be the type of N
+   --  should be used to query its move tree. It might not be the type of N
    --  on case of view conversions or unconstrained formal parameters.
 
    function Finalization_Actions
@@ -561,7 +561,7 @@ package Gnat2Why.Expr is
    --  @param Check_Info information for the check
    --  @result Why3 program that performs the check and returns [W_Expr]
 
-   function New_Move_Tree_Access_For_Identitier
+   function New_Move_Tree_Access_For_Identifier
      (Ent : Entity_Id) return W_Expr_Id;
    --  Create an access to the move tree for Ent
 
@@ -593,6 +593,13 @@ package Gnat2Why.Expr is
    --    default value for a type
    --  @param Top_Predicate True to include the top-level predicate of Ty
    --  @return Why3 program that performs the check
+
+   function New_Reclamation_Check
+     (Ada_Node  : Node_Id;
+      W_Expr    : W_Term_Id;
+      Move_Tree : W_Prog_Id := Why_Empty) return W_Prog_Id;
+   --  Return program checking whether W_Expr is reclaimed. If a move tree is
+   --  provided, only check non-moved components.
 
    function Range_Expr
      (N      : Node_Id;

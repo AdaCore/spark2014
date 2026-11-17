@@ -132,6 +132,13 @@ package Gnat2Why.Borrow_Checker is
    --  The entry point of this package. It analyzes an entity and reports
    --  errors when there are violations of ownership rules.
 
+   function Is_Moved_Delta_Aggregate (N : Node_Id) return Boolean;
+   --  Return whether anything deep within a delta aggregate (or aggregate
+   --  argument of an 'Update attribute) is moved. In this case, it may need
+   --  leak checks for overwritten components.
+   --  Must not be called before borrow-checking the enclosing entity succeeds,
+   --  this looks up tabulated information.
+
    function Found_Permission_Error return Boolean;
    --  Return True if an error has been emitted during permission checking
 

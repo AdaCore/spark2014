@@ -300,7 +300,8 @@ package Gnat2Why.Util is
       --  values as Ada nodes (if any, Empty otherwise) for the indexes in the
       --  prefix and a status to represent the write. They contain also an
       --  Ada_Node which can be used to locate checks on writes (either record
-      --  or array accesses or predicate checks) as well as association data.
+      --  or array accesses or predicate checks or leak checks) as well as
+      --  association data.
 
       package Constrained_Value_Vectors is new
         Ada.Containers.Indefinite_Vectors (Positive, Constrained_Value);
@@ -730,6 +731,13 @@ package Gnat2Why.Util is
    --  type (which acts as an implicit formal parameter for protected
    --  operations and possibly as a global for subprograms nested in
    --  protected operations and tasks).
+
+   function Is_Never_Executed_Ghost
+     (N : Node_Id; Unit : Entity_Id) return Boolean;
+   --  Return True iff node N within unit Unit is in never executed ghost code.
+   --  That is, either N is part of a statement marked Ghost with a level
+   --  dependent on Static, or the unit itself is marked Ghost with such a
+   --  level.
 
    function Is_Private_Intrinsic_Op (N : N_Op_Id) return Boolean;
    --  @return True iff N is an intrinsic operator on private types. Intrinsic

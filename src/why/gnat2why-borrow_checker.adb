@@ -57,6 +57,11 @@ use all type Ada.Containers.Count_Type;
 
 package body Gnat2Why.Borrow_Checker is
 
+   Borrow_Checker_Locked : Boolean := False
+   with Ghost;
+   --  Set to True upon making queries requiring borrow-checking to be
+   --  over (e.g, Is_Moved_Delta_Aggregate).
+
    function Is_Read_Only (E : Entity_Id) return Boolean
    with Pre => Is_Object (E);
    --  Return True if E is declared as Read_Only (ie. a constant which is not
@@ -1091,6 +1096,10 @@ package body Gnat2Why.Borrow_Checker is
    -- Global Variables --
    ----------------------
 
+   Moved_Delta_Aggregates : Node_Sets.Set;
+   --  Delta aggregates (of a deep type) for which the prefix have been found
+   --  to be moved.
+
    Current_Perm_Env : Perm_Env;
    --  The permission environment that is used for the analysis. This
    --  environment can be saved, modified, reinitialized, but should be the
@@ -1989,6 +1998,7 @@ package body Gnat2Why.Borrow_Checker is
    procedure Check_Entity (E : Entity_Id) is
 
    begin
+      pragma Assert (not Borrow_Checker_Locked);
       Reset (Default_Perm_Env);
       Reset (Current_Perm_Env);
       pragma Assert (Object_Scope.Is_Initial_Value);
@@ -2229,6 +2239,9 @@ package body Gnat2Why.Borrow_Checker is
                end if;
 
             when N_Delta_Aggregate           =>
+               if Mode = Move and then Is_Deep (Retysp (Etype (Expr))) then
+                  Moved_Delta_Aggregates.Insert (Expr);
+               end if;
                Check_Subobject (Expression (Expr));
                Check_Associations (Component_Associations (Expr));
 
@@ -2242,6 +2255,10 @@ package body Gnat2Why.Borrow_Checker is
             when N_Attribute_Reference       =>
                if Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Update
                then
+                  if Mode = Move and then Is_Deep (Retysp (Etype (Expr))) then
+                     Moved_Delta_Aggregates.Insert
+                       (First (Expressions (Expr)));
+                  end if;
                   Check_Subobject (Prefix (Expr));
                   Check_Expressions (Expressions (Expr));
                end if;
@@ -5415,6 +5432,16 @@ package body Gnat2Why.Borrow_Checker is
             return False;
       end case;
    end Is_Move_To_Constant;
+
+   ------------------------------
+   -- Is_Moved_Delta_Aggregate --
+   ------------------------------
+
+   function Is_Moved_Delta_Aggregate (N : Node_Id) return Boolean is
+   begin
+      Borrow_Checker_Locked := True;
+      return Moved_Delta_Aggregates.Contains (N);
+   end Is_Moved_Delta_Aggregate;
 
    -------------------------
    -- Is_Prefix_Or_Almost --

@@ -29,6 +29,7 @@ with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Unchecked_Deallocation;
 with Elists;                  use Elists;
 with Flow_Utility.Initialization;
+with Gnat2Why.Borrow_Checker; use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;         use Gnat2Why.Tables;
@@ -1831,6 +1832,35 @@ package body Gnat2Why.Expr.Aggregates is
          Axiom);
    end Insert_Extra_Modules;
 
+   -------------------------------------------
+   -- Needs_Leak_Checks_For_Delta_Aggregate --
+   -------------------------------------------
+
+   function Needs_Leak_Checks_For_Delta_Aggregate (N : Node_Id) return Boolean
+   is
+   begin
+      if not Is_Moved_Delta_Aggregate (N)
+        or else Is_Never_Executed_Ghost (N, Current_Subp)
+      then
+         return False;
+      end if;
+
+      declare
+         Assoc : Node_Id := First (Component_Associations (N));
+      begin
+         while Present (Assoc) loop
+            pragma Assert (not Box_Present (Assoc));
+            if Contains_Allocated_Parts (Retysp (Etype (Expression (Assoc))))
+            then
+               return True;
+            end if;
+            Next (Assoc);
+         end loop;
+      end;
+
+      return False;
+   end Needs_Leak_Checks_For_Delta_Aggregate;
+
    -------------------------------
    -- Transform_Array_Aggregate --
    -------------------------------
@@ -1846,6 +1876,10 @@ package body Gnat2Why.Expr.Aggregates is
       --  delta aggregate if and only if Update_Prefix has been supplied.
 
       In_Delta_Aggregate : constant Boolean := Present (Update_Prefix);
+      Need_Leak_Checks   : constant Boolean :=
+        In_Delta_Aggregate
+        and then Domain = EW_Prog
+        and then Needs_Leak_Checks_For_Delta_Aggregate (Expr);
       Empty_Aggregate    : constant Boolean :=
         Nkind (Expr) = N_Aggregate and then Is_Null_Aggregate (Expr);
       --  True if Expr is []
@@ -1989,7 +2023,9 @@ package body Gnat2Why.Expr.Aggregates is
         (T : in out W_Expr_Id; Array_Expr : W_Term_Id)
       with Pre => Domain = EW_Prog;
       --  Insert checks for the choices of the aggregate and for component
-      --  values inside iterated component associations.
+      --  values inside iterated component associations. For a delta aggregate
+      --  of deep type, also insert leak checks for the erased values if
+      --  needed.
 
       function Transform_Aggregate_Value
         (Value  : Node_Id;
@@ -3155,30 +3191,69 @@ package body Gnat2Why.Expr.Aggregates is
                         if Nb_Dim > 1 then
                            pragma Assert (Nkind (Choice) = N_Aggregate);
                            declare
-                              Multi_Expr : Node_Id :=
+                              Multi_Expr  : Node_Id :=
                                 Nlists.First (Expressions (Choice));
+                              Indices     : W_Expr_Array (Dimensions);
+                              Multi_Check : W_Statement_Sequence_Id :=
+                                Void_Sequence;
+                              Index_Base  : W_Type_Id;
+                              Tmp         : W_Identifier_Id;
+                              Ctx         : Ref_Context;
                            begin
                               for I in Dimensions loop
                                  pragma Assert (Present (Multi_Expr));
+                                 Index_Base :=
+                                   Base_Why_Type_No_Bool (Index_Types (I));
+                                 Indices (I) :=
+                                   Transform_Expr
+                                     (Expr          => Multi_Expr,
+                                      Domain        => EW_Pterm,
+                                      Params        => Params,
+                                      Expected_Type => Index_Base);
+                                 if Need_Leak_Checks then
+                                    Tmp :=
+                                      New_Temp_Identifier
+                                        (Base_Name => "index",
+                                         Typ       => Index_Base);
+                                    Ctx.Append
+                                      (Ref_Type'
+                                         (Mutable => False,
+                                          Name    => Tmp,
+                                          Value   => Indices (I)));
+                                    Indices (I) := +Tmp;
+                                 end if;
                                  Append
-                                   (Choice_Checks,
+                                   (Multi_Check,
                                     New_Ignore
                                       (Prog =>
                                          Do_Index_Check
                                            (Ada_Node => Multi_Expr,
                                             Arr_Expr => Array_Expr,
-                                            W_Expr   =>
-                                              Transform_Expr
-                                                (Expr          => Multi_Expr,
-                                                 Domain        => EW_Pterm,
-                                                 Params        => Params,
-                                                 Expected_Type =>
-                                                   Base_Why_Type_No_Bool
-                                                     (Index_Types (I))),
+                                            W_Expr   => Indices (I),
                                             Dim      => I)));
                                  Next (Multi_Expr);
                               end loop;
                               pragma Assert (No (Multi_Expr));
+                              if Need_Leak_Checks then
+                                 Append
+                                   (Multi_Check,
+                                    New_Reclamation_Check
+                                      (Ada_Node => Choice,
+                                       W_Expr   =>
+                                         +New_Array_Access
+                                            (Ar     => +Array_Expr,
+                                             Index  => Indices,
+                                             Domain => EW_Term)));
+                                 Append
+                                   (Choice_Checks,
+                                    W_Prog_Id'
+                                      (+Bindings_For_Ref_Context
+                                          (Expr    => +Multi_Check,
+                                           Context => Ctx,
+                                           Domain  => EW_Prog)));
+                              else
+                                 Append (Choice_Checks, Multi_Check);
+                              end if;
                            end;
 
                         --  Choices of unary aggregates can involve ranges or
@@ -3189,10 +3264,28 @@ package body Gnat2Why.Expr.Aggregates is
 
                         else
                            declare
-                              Tmp : constant W_Identifier_Id :=
+                              Tmp   : constant W_Identifier_Id :=
                                 New_Temp_Identifier
                                   (Base_Name => "index", Typ => Index_Base);
+                              Check : W_Prog_Id :=
+                                Do_Index_Check
+                                  (Ada_Node => Choice,
+                                   Arr_Expr => Array_Expr,
+                                   W_Expr   => +Tmp,
+                                   Dim      => 1);
                            begin
+                              if Need_Leak_Checks then
+                                 Check :=
+                                   New_Statement_Sequence
+                                     (Statements =>
+                                        [New_Ignore (Prog => Check),
+                                         New_Reclamation_Check
+                                           (Ada_Node => Choice,
+                                            W_Expr   =>
+                                              New_Array_Access
+                                                (Ar    => Array_Expr,
+                                                 Index => (1 => +Tmp)))]);
+                              end if;
                               Append
                                 (Choice_Checks,
                                  (New_Ignore
@@ -3213,12 +3306,7 @@ package body Gnat2Why.Expr.Aggregates is
                                                Return_Type => Index_Base,
                                                Labels      =>
                                                  Symbol_Sets.Empty_Set),
-                                          Context =>
-                                            Do_Index_Check
-                                              (Ada_Node => Choice,
-                                               Arr_Expr => Array_Expr,
-                                               W_Expr   => +Tmp,
-                                               Dim      => 1)))));
+                                          Context => Check))));
                            end;
                         end if;
 
@@ -6221,7 +6309,6 @@ package body Gnat2Why.Expr.Aggregates is
      (Expr : Node_Id; Domain : EW_Domain; Params : Transformation_Params)
       return W_Expr_Id
    is
-
       function Is_Simple_Record_Aggregate
         (Writes : Write_Status) return Boolean;
       --  Return True if Writes contains only record accesses
@@ -6257,15 +6344,22 @@ package body Gnat2Why.Expr.Aggregates is
          Indices       : W_Identifier_Array := (1 .. 0 => <>);
          Value_Map     : Ada_Node_To_Why_Id.Map;
          Access_Checks : in out W_Statement_Sequence_Id;
+         Leak_Checks   : in out W_Statement_Sequence_Id;
          Pred_Checks   : in out W_Statement_Sequence_Id;
          Context       : in out Ref_Context);
       --  Generate the context for a call to the predicate function. After the
       --  call, Context contains (among other things) bindings for elements of
-      --  Value_Map. Access_Checks contains checks for accesses inside Old_Name
-      --  and Pred_Checks predicate checks over the final value of the
-      --  aggregate New_Name. Access_Checks are performed on the parent first
-      --  and then on the components, Pred_Checks are done on the components
-      --  before.
+      --  Value_Map. Access_Checks contains checks for accesses inside
+      --  Old_Name, Leak_Checks contains memory leak checks for overwritten
+      --  deep components, and Pred_Checks predicate checks over the final
+      --  value of the aggregate New_Name. Access_Checks are performed on the
+      --  parent first and then on the components, Pred_Checks are done on the
+      --  components before. Leak_Checks are only concerned with terminal
+      --  subcomponents, never their prefixes.
+      --  An initially empty Leak_Checks means no checks should be generated,
+      --  in which case it is left as-is. This is useful in cases no leak
+      --  checks should be generated, e.g statically leaking context (already
+      --  generated in the prefix) or Static-level ghost code.
       --
       --  The aim is to generate:
       --
@@ -6277,6 +6371,12 @@ package body Gnat2Why.Expr.Aggregates is
       --  ignore { old_name.<comp> }; (* for each subcomponent comp updated in
       --                                 the aggregate *)
       --  assert {in_range old_name idx1 };  (* for each index in selector *)
+      --
+      --  (* in Leak_Checks: *)
+      --  assert { is_reclaimed old_name.<comp> }
+      --  (* for each subcomponent comp named in the aggregate *)
+      --  (* Current restrictions make deep overlaps impossible, update values
+      --     cannot be immediately discarded. *)
       --
       --  (* the call itself is not generated by this procedure *)
       --  let new_name = aggregate idx1 ... val1 ... in
@@ -6338,6 +6438,9 @@ package body Gnat2Why.Expr.Aggregates is
       --  Generate the translation of a deep delta aggregate from an
       --  association tree.
 
+      Needs_Leak_Checks : constant Boolean :=
+        Domain = EW_Prog and then Needs_Leak_Checks_For_Delta_Aggregate (Expr);
+
       --------------------------
       -- Complete_Translation --
       --------------------------
@@ -6364,6 +6467,8 @@ package body Gnat2Why.Expr.Aggregates is
          --  Parts of the completion that need to be put together
 
          Access_Checks : W_Statement_Sequence_Id := Void_Sequence;
+         Leak_Checks   : W_Statement_Sequence_Id :=
+           (if not Needs_Leak_Checks then Why_Empty else Void_Sequence);
          Pred_Checks   : W_Statement_Sequence_Id := Void_Sequence;
          Context       : Ref_Context;
          Call          : W_Expr_Id;
@@ -6374,7 +6479,7 @@ package body Gnat2Why.Expr.Aggregates is
          Top := Top + 1;
          Call_Args (Top) := Old_Name;
 
-         --  Use a vector to get values and indexes in a meaningfull order
+         --  Use a vector to get values and indexes in a meaningful order
 
          for Element of Elements loop
             declare
@@ -6408,6 +6513,7 @@ package body Gnat2Why.Expr.Aggregates is
             Params        => Params,
             Value_Map     => Value_Map,
             Access_Checks => Access_Checks,
+            Leak_Checks   => Leak_Checks,
             Pred_Checks   => Pred_Checks,
             Context       => Context);
 
@@ -6416,12 +6522,13 @@ package body Gnat2Why.Expr.Aggregates is
          if Domain = EW_Prog then
             Call :=
               +Sequence
-                 (+Access_Checks,
-                  New_Binding
-                    (Name    => New_Name,
-                     Def     => +Call,
-                     Context => Sequence (+Pred_Checks, +New_Name),
-                     Typ     => Get_Typ (New_Name)));
+                 ([+Access_Checks,
+                   +(if No (Leak_Checks) then Void_Sequence else Leak_Checks),
+                   New_Binding
+                     (Name    => New_Name,
+                      Def     => +Call,
+                      Context => Sequence (+Pred_Checks, +New_Name),
+                      Typ     => Get_Typ (New_Name))]);
          end if;
 
          --  Introduce the context
@@ -6684,6 +6791,7 @@ package body Gnat2Why.Expr.Aggregates is
          Indices       : W_Identifier_Array := (1 .. 0 => <>);
          Value_Map     : Ada_Node_To_Why_Id.Map;
          Access_Checks : in out W_Statement_Sequence_Id;
+         Leak_Checks   : in out W_Statement_Sequence_Id;
          Pred_Checks   : in out W_Statement_Sequence_Id;
          Context       : in out Ref_Context)
       is
@@ -6716,6 +6824,40 @@ package body Gnat2Why.Expr.Aggregates is
                end;
             end if;
          end loop;
+
+         --  For entire writes, generate leak checks.
+
+         if Present (Leak_Checks) and then Contains_Allocated_Parts (Writes.Ty)
+         then
+            for C of
+              Writes.Values
+              when C.Status.Kind = Entire and then C.Status.Value.Kind = Root
+            loop
+               --  Current restrictions ensures that there is a single such
+               --  write, even when merging indices.
+
+               pragma
+                 Assert
+                   (for all C2 of
+                      Writes.Values
+                      when C2.Status.Kind /= Preserved =>
+                      C = C2);
+               Append
+                 (Leak_Checks,
+                  New_Ignore
+                    (Prog =>
+                       Sequence
+                         (New_Assume_Statement
+                            (Pred =>
+                               Transform_Choices
+                                 (Choices   => C.Choices,
+                                  Indices   => Indices,
+                                  Value_Map => Value_Map)),
+                          New_Reclamation_Check
+                            (Ada_Node => C.Ada_Node, W_Expr => +Old_Name))));
+               exit;
+            end loop;
+         end if;
 
          --  Go over the potential component writes to generate the context for
          --  them.
@@ -6899,6 +7041,7 @@ package body Gnat2Why.Expr.Aggregates is
                         Indices       => Indices,
                         Value_Map     => Value_Map,
                         Access_Checks => Access_Checks,
+                        Leak_Checks   => Leak_Checks,
                         Pred_Checks   => Pred_Checks,
                         Context       => Context);
                   end;
@@ -6963,11 +7106,20 @@ package body Gnat2Why.Expr.Aggregates is
                        Base_Name => "index");
                   Content_Node : Node_Id := Empty;
                   Content_Acc  : W_Statement_Sequence_Id := Void_Sequence;
+                  Content_Leak : W_Statement_Sequence_Id :=
+                    (if Present (Leak_Checks)
+                     then Void_Sequence
+                     else Why_Empty);
                   Content_Pred : W_Statement_Sequence_Id := Void_Sequence;
 
                begin
                   --  To locate the checks, search for the first association
                   --  with a non-empty Ada node in Content_Status.
+                  --  Not ideal, several updates could update the same
+                  --  subcomponent. The location could point to an innocent
+                  --  updates. Ex (1) (2) => 74; (2) (3) => 73 for an array
+                  --  subtype constrained to have even values, will point to
+                  --  the => 74 update.
 
                   for C_Value of Writes.Content_Status.Values loop
                      if Present (C_Value.Ada_Node) then
@@ -6994,6 +7146,7 @@ package body Gnat2Why.Expr.Aggregates is
                      Indices       => Indices & Idx_Id,
                      Value_Map     => Value_Map,
                      Access_Checks => Content_Acc,
+                     Leak_Checks   => Content_Leak,
                      Pred_Checks   => Content_Pred,
                      Context       => Context);
 
@@ -7051,7 +7204,7 @@ package body Gnat2Why.Expr.Aggregates is
                                   New_And_Pred
                                     (Left  =>
                                        +New_Array_Range_Expr
-                                          (+Result, +Old_Name, EW_Pred, 1),
+                                          (+Result, +New_Name, EW_Pred, 1),
                                      Right =>
                                        New_Or_Pred
                                          (Conjuncts =>
@@ -7065,6 +7218,16 @@ package body Gnat2Why.Expr.Aggregates is
                                 (Name    => Idx_Id,
                                  Def     => Old_Def,
                                  Context => +Content_Acc));
+                           if Present (Leak_Checks)
+                             and then Content_Leak /= Void_Sequence
+                           then
+                              Append
+                                (Leak_Checks,
+                                 New_Binding
+                                   (Name    => Idx_Id,
+                                    Def     => Old_Def,
+                                    Context => +Content_Leak));
+                           end if;
                            Prepend
                              (New_Binding
                                 (Name    => Idx_Id,
@@ -8061,7 +8224,7 @@ package body Gnat2Why.Expr.Aggregates is
                            New_Ada_Record_Access
                              (Ada_Node => C_Node,
                               Name     => +W_Expr,
-                              Field    => Key (Position),
+                              Field    => Comp,
                               Ty       => Writes.Ty))));
                end if;
 
@@ -8087,6 +8250,20 @@ package body Gnat2Why.Expr.Aggregates is
                         begin
                            if C_Value.Status.Kind = Entire then
                               pragma Assert (C_Value.Status.Value.Kind = Root);
+
+                              if Needs_Leak_Checks
+                                and then Contains_Allocated_Parts (C_Writes.Ty)
+                              then
+                                 Append
+                                   (Checks,
+                                    New_Reclamation_Check
+                                      (Ada_Node => C_Node,
+                                       W_Expr   =>
+                                         New_Ada_Record_Access
+                                           (Name  => +W_Expr,
+                                            Field => Comp,
+                                            Ty    => Writes.Ty)));
+                              end if;
 
                               Res :=
                                 Transform_Expr
@@ -8147,11 +8324,9 @@ package body Gnat2Why.Expr.Aggregates is
            New_Ada_Record_Update
              (Name => W_Expr, Domain => Domain, Updates => Assocs);
 
-         --  Prepend the discriminant checks if any
+         --  Prepend checks
 
-         if Domain = EW_Prog and then Num_Discrs > 0 then
-            Prepend (+Checks, Result);
-         end if;
+         Prepend (+Checks, Result);
 
          --  If the target type has a direct or inherited predicate,
          --  generate a corresponding check.
@@ -8304,7 +8479,9 @@ package body Gnat2Why.Expr.Aggregates is
                 Relaxed_Init =>
                   Expr_Has_Relaxed_Init (Pref, No_Eval => False)));
 
-      W_Pref := New_Temp_For_Expr (W_Pref, Has_Discriminants (Pref_Typ));
+      W_Pref :=
+        New_Temp_For_Expr
+          (W_Pref, Has_Discriminants (Pref_Typ) or else Needs_Leak_Checks);
 
       Create (Pref_Typ, Writes);
 
