@@ -34,8 +34,6 @@ package body Templates is
 
    type String_Access is access all String;
 
-   type Printer is not null access procedure (O : in out Output_Record);
-
    type Substitution_Info is record
       --  Base type for substitutions
 
@@ -64,7 +62,7 @@ package body Templates is
 
    procedure Add
      (Pattern   : String;
-      Generator : not null access procedure (O : in out Output_Record))
+      Generator : Printer)
    is
       use Substitutions;
 

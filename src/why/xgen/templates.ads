@@ -29,9 +29,9 @@ package Templates is
    --  This package provides some support for substitutions of patterns
    --  in template files.
 
-   procedure Add
-     (Pattern   : String;
-      Generator : not null access procedure (O : in out Output_Record));
+   type Printer is not null access procedure (O : in out Output_Record);
+
+   procedure Add (Pattern : String; Generator : Printer);
    --  Associate Pattern to Generator
 
    procedure Process (Filename : String);
