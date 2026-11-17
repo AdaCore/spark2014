@@ -86,7 +86,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
          Cmd_Line.Add_Argument (Configuration.GnateT_Switch);
       end if;
 
-      for Arg of Configuration.CL_Switches.Cargs_List.all loop
+      for Arg of Configuration.Cargs_List.all loop
          Cmd_Line.Add_Argument (Arg);
       end loop;
    end Compute_Command;
@@ -177,7 +177,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
             if Dep.Is_Defined
               and then not Dep.Owning_View.Is_Externally_Built
               and then
-                (not CL_Switches.No_Subprojects
+                (not No_Subprojects
                  or else Dep.Owning_View = Self.CU.Owning_View)
               and then Compile.Ada.Data_Rep.Applicable (Dep)
             then

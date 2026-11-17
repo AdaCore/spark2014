@@ -72,43 +72,29 @@ package Configuration is
 
    end Constants;
 
-   package CL_Switches is
+   --  Effective settings from the command line and root project
 
-      --  Legacy interface for effective switch values from the command line
-      --  and root project. Switch values are exposed through queries; the
-      --  remaining lists are mutable until migrated to the invocation.
-      --  Naming of the variable:
-      --  * single letter variables correspond to single letter switches with
-      --    one dash, like -j, -v
-      --  * variable UU corresponds to -U
-      --  * other variables are with two dashes, e.g. --level
-      --  * File_List stands for the file arguments (that are not arguments of
-      --    some switch)
-      --  * Cargs_List is the list of arguments in the --cargs section
-
-      function Benchmark return Boolean;
-      function Memcached_Server return String;
-      function Cargs_List return not null access constant String_Lists.List;
-      function CWE return Boolean;
-      function Debug_Disable_Prover_Feedback return Boolean;
-      function Debug_No_Cache_Output return Boolean;
-      function Exclude_Line return String;
-      function Flow_Show_GG return Boolean;
-      function Function_Sandboxing return String;
-      function Gnattest_Values return String;
-      SARIF_Base_URIs : String_Lists.List;
-      --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
-      function Limit_Line return String;
-      function Limit_Lines return String;
-      function Limit_Name return String;
-      function Limit_Region return String;
-      function Limit_Subp return String;
-      function No_Global_Generation return Boolean;
-      function No_Subprojects return Boolean;
-      function Output_Header return Boolean;
-      function U return Boolean;
-      function Why3_Server return String;
-   end CL_Switches;
+   function Benchmark return Boolean;
+   function Memcached_Server return String;
+   function Cargs_List return not null access constant String_Lists.List;
+   function CWE return Boolean;
+   function Debug_Disable_Prover_Feedback return Boolean;
+   function Debug_No_Cache_Output return Boolean;
+   function Exclude_Line return String;
+   function Flow_Show_GG return Boolean;
+   function Function_Sandboxing return String;
+   function Gnattest_Values return String;
+   function SARIF_Base_URIs return not null access constant String_Lists.List;
+   --  Validated "IDENTIFIER:PATH" entries, including the %SRCROOT% default
+   function Limit_Name return String;
+   function Limit_Region return String;
+   function Limit_Subp return String;
+   function No_Global_Generation return Boolean;
+   function No_Subprojects return Boolean;
+   function Output_Header return Boolean;
+   function Limit_Units return Boolean;
+   --  Whether -u was explicitly specified
+   function Why3_Server return String;
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
    type Verbosity_Choice is (Quiet_Level, Normal_Level, Verbose_Level);
@@ -129,14 +115,14 @@ package Configuration is
    --  switches.
    function GnateT_Switch return String;
    --  Automatically selected target properties switch, or the empty string
-   Mode               : GP_Mode := GPM_Check;
-   Max_Why3_Processes : Positive;
+   function Mode return GP_Mode;
+   --  Maximum mode across the file-specific settings
+
+   function Max_Why3_Processes return Positive;
    --  Maximum number of concurrent gnatwhy3 processes to spawn
-   Warning_Status     : Warning_Status_Array := VC_Kinds.Warning_Status;
-   Has_Manual_Prover  : Boolean;
-   Has_Coq_Prover     : Boolean;
-   CL_Units           : GPR2.Build.Compilation_Unit.Maps.Map;
-   --  A "copy" of Cl_Switches.File_List, but units instead of files
+   function CL_Units
+      return not null access constant GPR2.Build.Compilation_Unit.Maps.Map;
+   --  Requested files resolved to compilation units
 
    function Checks_As_Errors return Boolean;
    --  Whether unproved checks cause a failure exit status
@@ -213,7 +199,9 @@ package Configuration is
         Equivalent_Keys => "=",
         "="             => "=");
 
-   File_Specific_Map : File_Specific_Maps.Map;
+   function File_Settings
+     (Key : String) return File_Specific_Maps.Constant_Reference_Type;
+   --  Return the effective settings associated with a source-file key
 
    Max_Non_Blank_Lines : constant := 6;
    --  Maximum number of consecutive non blank lines on standard output
@@ -272,22 +260,12 @@ package Configuration is
          else Libexec_Spark);
       GNSA_Dir_Bin              : constant String :=
         Ada.Directories.Compose (GNSA_Dir, "bin");
-      Z3_Present                : Boolean;
-      CVC5_Present              : Boolean;
-      Colibri_Present           : Boolean;
       Help_Message              : constant String :=
         Read_File_Into_String (Help_Msg_File);
    end SPARK_Install;
 
    Label_Length : constant := 26;
    --  Maximum length of label in report. Other characters are discarded
-
-   Proof_Dir : GNAT.Strings.String_Access;
-   --  The name of the directory in which will be stored Why3 session file and
-   --  manual proof files (Attribute of gpr package Prove).
-
-   --  The name of a why3 configuration file to be used in a single run of
-   --  gnatprove.
 
    Socket_Name : GNAT.Strings.String_Access;
    --  Name of the socket used by why3server, based on a hash of the main

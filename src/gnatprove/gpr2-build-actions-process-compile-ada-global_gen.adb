@@ -67,7 +67,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
          Cmd_Line.Add_Argument (Configuration.GnateT_Switch);
       end if;
 
-      for Arg of Configuration.CL_Switches.Cargs_List.all loop
+      for Arg of Configuration.Cargs_List.all loop
          Cmd_Line.Add_Argument (Arg);
       end loop;
 
@@ -183,7 +183,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
             return True;
          end if;
 
-         if Configuration.CL_Switches.No_Subprojects
+         if Configuration.No_Subprojects
            and then CU.Owning_View /= Self.CU.Owning_View
          then
             return True;
@@ -266,7 +266,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
             return True;
          end if;
 
-         if Configuration.CL_Switches.No_Subprojects
+         if Configuration.No_Subprojects
            and then CU.Owning_View /= Self.CU.Owning_View
          then
             return True;

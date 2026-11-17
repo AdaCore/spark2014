@@ -133,7 +133,7 @@ switch sources that these actions assemble explicitly are seen by the analysis:
 * switches of the ``Compiler`` package are added by the GPR2 library itself,
   when the actions call the inherited ``Compute_Command``;
 * switches following ``-cargs`` are stored in the invocation snapshot and
-  appended by each action using ``CL_Switches.Cargs_List``;
+  appended by each action using ``Configuration.Cargs_List``;
 * switches of the ``Builder.Global_Compilation_Switches`` attribute for Ada
   are read when the project is loaded, stored in the invocation snapshot, and
   appended by each Ada action through ``Configuration.Global_Compilation_Switches``.
@@ -409,10 +409,9 @@ loading asserts this invariant.
 SARIF report generation
 =======================
 
-``src/gnatprove/spark_report-generate_sarif_report.adb`` converts these parsed
-artifacts into SARIF. This is separate from the compiler's
-``Erroutc.SARIF_Emitter`` in ``gnat2why/gnat_src/erroutc-sarif_emitter.adb``.
-Compiler frontend diagnostics reach GNATprove's SARIF through ``.spark_error``.
+In addition to report generation, SARIF output acts as a second consumer
+of these parsed artifacts (``.spark_error`` and ``.spark`` files`). A file
+``gnatprove.sarif`` is generated in the object dir.
 
 The conversion preserves diagnostic arguments, related locations, suppressions,
 and entity identity, and maps GNATprove severities to SARIF result kinds and
@@ -430,7 +429,7 @@ are in ``share/spark/explain_codes/E00NN.md``.
 
 For field definitions, consult ``Properties``, ``Rules``, and
 ``Handle_SPARK_File`` in the SARIF generator. Source URI normalization is handled
-by ``Make_Artifact_Location`` there and ``Sanity_Check_SARIF_Base_URI`` in
+by ``Make_Artifact_Location`` there and ``Resolve_SARIF_Base_URIs`` in
 ``configuration.adb``;
 see the `User's Guide report documentation
 <https://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_view_gnatprove_output.html>`__

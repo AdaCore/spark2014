@@ -131,6 +131,12 @@ package body Configuration is
         Equivalent_Keys => "=",
         "="             => Manifest_Subprogram_Vectors."=");
 
+   File_Specific_Map : aliased File_Specific_Maps.Map;
+
+   function File_Settings
+     (Key : String) return File_Specific_Maps.Constant_Reference_Type
+   is (File_Specific_Map.Constant_Reference (Key));
+
    type File_Selection is record
       Files       : String_Lists.List;
       Limit_Lines : aliased String_Lists.List;
@@ -182,6 +188,7 @@ package body Configuration is
       Parallel                      : Natural := 0;
       Proof_Manifest_Path           : Unbounded_String;
       Report                        : Report_Mode_Type := GPR_Fail;
+      SARIF_Base_URIs               : String_Lists.List;
       U                             : Boolean := False;
       Use_Semaphores                : Boolean := False;
       Verbosity                     : Verbosity_Choice := Normal_Level;
@@ -202,53 +209,72 @@ package body Configuration is
      Default_Invocation'Access;
    --  Replaced once with the completed invocation; consumers cannot modify it
 
-   package body CL_Switches is
-      function Benchmark return Boolean
-      is (Invocation_State.Benchmark);
-      function Cargs_List return not null access constant String_Lists.List
-      is (Invocation_State.Cargs_List'Access);
-      function CWE return Boolean
-      is (Invocation_State.CWE);
-      function Debug_Disable_Prover_Feedback return Boolean
-      is (Invocation_State.Debug_Disable_Prover_Feedback);
-      function Debug_No_Cache_Output return Boolean
-      is (Invocation_State.Debug_No_Cache_Output);
-      function Exclude_Line return String
-      is (To_String (Invocation_State.Exclude_Line));
-      function Flow_Show_GG return Boolean
-      is (Invocation_State.Flow_Show_GG);
-      function Function_Sandboxing return String
-      is (To_String (Invocation_State.Function_Sandboxing));
-      function Gnattest_Values return String
-      is (To_String (Invocation_State.Gnattest_Values));
-      function Limit_Line return String
-      is (To_String (Invocation_State.Limit_Line));
-      function Limit_Lines return String
-      is (To_String (Invocation_State.Limit_Lines));
-      function Limit_Name return String
-      is (To_String (Invocation_State.Limit_Name));
-      function Limit_Region return String
-      is (To_String (Invocation_State.Limit_Region));
-      function Limit_Subp return String
-      is (To_String (Invocation_State.Limit_Subp));
-      function Memcached_Server return String
-      is (To_String (Invocation_State.Memcached_Server));
-      function No_Global_Generation return Boolean
-      is (Invocation_State.File_Options.No_Global_Generation);
-      function No_Subprojects return Boolean
-      is (Invocation_State.No_Subprojects);
-      function Output_Header return Boolean
-      is (Invocation_State.Output_Header);
-      function U return Boolean
-      is (Invocation_State.U);
-      function Why3_Server return String
-      is (To_String (Invocation_State.Why3_Server));
-   end CL_Switches;
+   Invocation_Published : Boolean := False;
+
+   Resolved_SARIF_Base_URIs : aliased String_Lists.List;
+   --  Validated invocation entries with the project-derived default added
+
+   Mode_Value               : GP_Mode := GPM_Check;
+   Max_Why3_Processes_Value : Positive := 1;
+   Has_Manual_Prover        : Boolean := False;
+   Has_Coq_Prover           : Boolean := False;
+   --  Results of processing project and file-specific settings
+
+   Z3_Present      : Boolean := False;
+   CVC5_Present    : Boolean := False;
+   Colibri_Present : Boolean := False;
+   Proof_Dir       : GNAT.Strings.String_Access;
+   --  Prover availability and the root project's proof directory
+
+   CL_Units_Value : aliased GPR2.Build.Compilation_Unit.Maps.Map;
+   --  Requested files resolved against the project tree
+
+   function Benchmark return Boolean
+   is (Invocation_State.Benchmark);
+   function Cargs_List return not null access constant String_Lists.List
+   is (Invocation_State.Cargs_List'Access);
+   function CWE return Boolean
+   is (Invocation_State.CWE);
+   function Debug_Disable_Prover_Feedback return Boolean
+   is (Invocation_State.Debug_Disable_Prover_Feedback);
+   function Debug_No_Cache_Output return Boolean
+   is (Invocation_State.Debug_No_Cache_Output);
+   function Exclude_Line return String
+   is (To_String (Invocation_State.Exclude_Line));
+   function Flow_Show_GG return Boolean
+   is (Invocation_State.Flow_Show_GG);
+   function Function_Sandboxing return String
+   is (To_String (Invocation_State.Function_Sandboxing));
+   function Gnattest_Values return String
+   is (To_String (Invocation_State.Gnattest_Values));
+   function Limit_Name return String
+   is (To_String (Invocation_State.Limit_Name));
+   function Limit_Region return String
+   is (To_String (Invocation_State.Limit_Region));
+   function Limit_Subp return String
+   is (To_String (Invocation_State.Limit_Subp));
+   function Memcached_Server return String
+   is (To_String (Invocation_State.Memcached_Server));
+   function No_Global_Generation return Boolean
+   is (Invocation_State.File_Options.No_Global_Generation);
+   function No_Subprojects return Boolean
+   is (Invocation_State.No_Subprojects);
+   function Output_Header return Boolean
+   is (Invocation_State.Output_Header);
+   function SARIF_Base_URIs return not null access constant String_Lists.List
+   is (Resolved_SARIF_Base_URIs'Access);
+   function Limit_Units return Boolean
+   is (Invocation_State.U);
+   function Why3_Server return String
+   is (To_String (Invocation_State.Why3_Server));
 
    function All_Projects return Boolean
    is (Invocation_State.All_Projects);
    function Checks_As_Errors return Boolean
    is (Invocation_State.Checks_As_Errors);
+   function CL_Units
+      return not null access constant GPR2.Build.Compilation_Unit.Maps.Map
+   is (CL_Units_Value'Access);
    function Continue_On_Error return Boolean
    is (Invocation_State.Continue_On_Error);
    function Debug return Boolean
@@ -268,6 +294,10 @@ package body Configuration is
    is (Invocation_State.IDE_Mode);
    function Limit_Lines return not null access constant String_Lists.List
    is (Invocation_State.Selection.Limit_Lines'Access);
+   function Mode return GP_Mode
+   is (Mode_Value);
+   function Max_Why3_Processes return Positive
+   is (Max_Why3_Processes_Value);
    function Only_Given return Boolean
    is (Invocation_State.Only_Given);
    function Output return Output_Mode_Type
@@ -283,7 +313,6 @@ package body Configuration is
    function Warning_Mode return SPARK_Warning_Mode_Type
    is (Invocation_State.Warning_Mode);
 
-   --  Private global state to replace public state from CL_Switches
    File_List           : String_Lists.List;
    Proof_Manifest_Maps : Manifest_Maps.Map;
 
@@ -376,10 +405,11 @@ package body Configuration is
    --  At the same time we check if the unit/file name is unique in the case of
    --  an aggregate project. If it is not, an error is issued.
 
-   procedure Sanity_Check_SARIF_Base_URI (Tree : Project.Tree.Object);
-   --  Validate each entry in CL_Switches.SARIF_Base_URIs (must have the form
-   --  <id>:<path>). If no entry provides the %SRCROOT% identifier, append a
-   --  default one rooted at the project's root directory.
+   function Resolve_SARIF_Base_URIs
+     (Tree : Project.Tree.Object; Raw_URIs : String_Lists.List)
+      return String_Lists.List;
+   --  Validate each entry (which must have the form <id>:<path>). If no entry
+   --  provides %SRCROOT%, add a default rooted at the project's directory.
 
    procedure Produce_Version_Output;
    --  Print the version of gnatprove, why3 and shipped provers
@@ -1023,10 +1053,6 @@ package body Configuration is
    Current_Parsed_Switches : Parsed_Switches_Access := null;
    --  Temporary target for GNAT.Command_Line callbacks during Parse_Switches
 
-   procedure Copy_To_CL_Switches
-     (Parsed : Parsed_Switches; Selected_Files : String_Lists.List);
-   --  Copy parsed switch values into CL_Switches for existing consumers
-
    procedure Merge_Parsed_Switches
      (Base : in out Parsed_Switches; Over : Parsed_Switches);
    --  Merge Over onto Base using command-line precedence semantics
@@ -1559,45 +1585,6 @@ package body Configuration is
 
       Append_List (Over.File_List, Base.File_List);
    end Merge_Parsed_Switches;
-
-   ---------------------------
-   -- Copy_To_CL_Switches --
-   ---------------------------
-
-   procedure Copy_To_CL_Switches
-     (Parsed : Parsed_Switches; Selected_Files : String_Lists.List)
-   is
-      procedure Copy_List
-        (Source : String_Lists.List; Target : in out String_Lists.List);
-      --  Replace Target with Source
-
-      ---------------
-      -- Copy_List --
-      ---------------
-
-      procedure Copy_List
-        (Source : String_Lists.List; Target : in out String_Lists.List) is
-      begin
-         Target.Clear;
-         for Element of Source loop
-            Target.Append (Element);
-         end loop;
-      end Copy_List;
-
-   begin
-      --  package-internal global state
-      Copy_List (Selected_Files, File_List);
-      Copy_List
-        (Parsed.Values (Sw_SARIF_Base_URI).String_List_Val,
-         CL_Switches.SARIF_Base_URIs);
-
-      for WK in Misc_Warning_Kind loop
-         Configuration.Warning_Status (WK) :=
-           (if Parsed.Warning_Status (WK) /= WS_None
-            then Parsed.Warning_Status (WK)
-            else VC_Kinds.Warning_Status (WK));
-      end loop;
-   end Copy_To_CL_Switches;
 
    ----------------------------
    -- Create_Dir_And_Parents --
@@ -3046,7 +3033,6 @@ package body Configuration is
       end if;
    end No_Project_File_Mode;
 
-   --------------------
    -----------------------------
    -- Parse_Switches_Internal --
    -----------------------------
@@ -3983,10 +3969,14 @@ package body Configuration is
         (Switches : out String_Lists.List; GnateT : out Unbounded_String);
       --  Initialize settings derived from the root project.
 
+      procedure Collect_Invocation_Switches
+        (Parsed : Parsed_Switches; Result : in out Invocation_Configuration);
+      --  Copy effective switches that need no further interpretation
+
       procedure Postprocess_Invocation
         (Parsed : Parsed_Switches; Result : out Invocation_Configuration);
       --  Interpret the effective switches from the root project's attributes
-      --  and the command line. Some settings are still written to globals.
+      --  and the command line, validating them and producing the invocation.
 
       procedure Warn_And_Strip_Non_Root_Invocation_Switches
         (View           : Project.View.Object;
@@ -4079,9 +4069,9 @@ package body Configuration is
          end On_Path;
 
       begin
-         SPARK_Install.Z3_Present := On_Path ("z3");
-         SPARK_Install.CVC5_Present := On_Path ("cvc5");
-         SPARK_Install.Colibri_Present := On_Path ("colibri");
+         Z3_Present := On_Path ("z3");
+         CVC5_Present := On_Path ("cvc5");
+         Colibri_Present := On_Path ("colibri");
       end Detect_Installed_Provers;
 
       ------------------------------------
@@ -4559,15 +4549,13 @@ package body Configuration is
          end loop;
       end Parse_Analysis_Attributes;
 
-      ----------------------------
-      -- Postprocess_Invocation --
-      ----------------------------
+      ---------------------------------
+      -- Collect_Invocation_Switches --
+      ---------------------------------
 
-      procedure Postprocess_Invocation
-        (Parsed : Parsed_Switches; Result : out Invocation_Configuration) is
+      procedure Collect_Invocation_Switches
+        (Parsed : Parsed_Switches; Result : in out Invocation_Configuration) is
       begin
-         Sanity_Checking (Parsed);
-
          Result.File_Options := File_Specific_Options_From_Invocation (Parsed);
          Result.All_Projects := Parsed.Values (Sw_UU).Boolean_Val;
          Result.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
@@ -4611,6 +4599,8 @@ package body Configuration is
          Result.Output_Header := Parsed.Values (Sw_Output_Header).Boolean_Val;
          Result.Proof_Manifest_Path :=
            To_Unbounded_String (Switch_String (Parsed, Sw_Proof_Manifest));
+         Result.SARIF_Base_URIs :=
+           Parsed.Values (Sw_SARIF_Base_URI).String_List_Val;
          Result.U := Parsed.Values (Sw_U).Boolean_Val;
          Result.Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
          Result.Why3_Conf :=
@@ -4621,6 +4611,19 @@ package body Configuration is
            To_Unbounded_String (Switch_String (Parsed, Sw_Why3_Server));
          Result.Z3_Counterexample :=
            Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
+
+      end Collect_Invocation_Switches;
+
+      ----------------------------
+      -- Postprocess_Invocation --
+      ----------------------------
+
+      procedure Postprocess_Invocation
+        (Parsed : Parsed_Switches; Result : out Invocation_Configuration) is
+      begin
+         Sanity_Checking (Parsed);
+
+         Collect_Invocation_Switches (Parsed, Result);
 
          Result.Debug :=
            Parsed.Values (Sw_D).Boolean_Val or Result.Flow_Extra_Debug;
@@ -5066,7 +5069,7 @@ package body Configuration is
 
          FS.Counterexamples :=
            FS.Counterexamples
-           and then SPARK_Install.CVC5_Present
+           and then CVC5_Present
            and then not Has_Manual_Prover
            and then not Invocation_Options.Output_Msg_Only;
 
@@ -5282,11 +5285,9 @@ package body Configuration is
             --  are missing from the install.
 
             for Prover of FS.Provers loop
-               if (Prover = "cvc5" and then not SPARK_Install.CVC5_Present)
-                 or else (Prover = "z3" and then not SPARK_Install.Z3_Present)
-                 or else
-                   (Prover = "colibri"
-                    and then not SPARK_Install.Colibri_Present)
+               if (Prover = "cvc5" and then not CVC5_Present)
+                 or else (Prover = "z3" and then not Z3_Present)
+                 or else (Prover = "colibri" and then not Colibri_Present)
                then
                   Abort_Msg
                     ("error: prover "
@@ -5299,13 +5300,13 @@ package body Configuration is
          --  prover switch is set to "all"
 
          else
-            if SPARK_Install.CVC5_Present then
+            if CVC5_Present then
                FS.Provers.Append ("cvc5");
             end if;
-            if SPARK_Install.Z3_Present then
+            if Z3_Present then
                FS.Provers.Append ("z3");
             end if;
-            if SPARK_Install.Colibri_Present then
+            if Colibri_Present then
                FS.Provers.Append ("colibri");
             end if;
             FS.Provers.Append ("altergo");
@@ -5381,6 +5382,10 @@ package body Configuration is
       Root_Attribute_Switches   : Parsed_Switches;
 
    begin
+
+      if Invocation_Published then
+         raise Program_Error with "invocation configuration already published";
+      end if;
 
       for Index in 1 .. Full_Com_Lin'Last loop
          Full_Com_Lin (Index) :=
@@ -5518,17 +5523,17 @@ package body Configuration is
             Maximum_Mode : GP_Mode;
          begin
             Invocation_State := new Invocation_Configuration'(Invocation);
+            Invocation_Published := True;
 
             Parse_Analysis_Attributes
               (Command_Line_Switches,
                Root_Attribute_Switches,
                Invocation.File_Options,
                Maximum_Mode);
-            Mode := Maximum_Mode;
+            Mode_Value := Maximum_Mode;
 
-            --  Publish the final invocation settings for legacy consumers
-            Copy_To_CL_Switches
-              (Invocation_Switches, Invocation.Selection.Files);
+            --  File names are resolved against the project tree below
+            File_List := Invocation.Selection.Files;
          end;
       end;
 
@@ -5576,7 +5581,8 @@ package body Configuration is
          end if;
       end;
       Sanitize_File_List (Tree);
-      Sanity_Check_SARIF_Base_URI (Tree);
+      Resolved_SARIF_Base_URIs :=
+        Resolve_SARIF_Base_URIs (Tree, Invocation_State.SARIF_Base_URIs);
 
       --  Set the maximum number of concurrent gnatwhy3 processes based on
       --  semaphore usage and the calculated parallelism level.
@@ -5586,11 +5592,12 @@ package body Configuration is
               Integer'Max
                 (1, Integer (File_Specific_Map ("default").Provers.Length));
          begin
-            Max_Why3_Processes := Integer'Max (1, Parallel / Num_Provers);
+            Max_Why3_Processes_Value :=
+              Integer'Max (1, Parallel / Num_Provers);
          end;
       else
          --  Sequential mode: limit to 1 process
-         Max_Why3_Processes := 1;
+         Max_Why3_Processes_Value := 1;
       end if;
 
       --  Set reporter for build process
@@ -5709,7 +5716,7 @@ package body Configuration is
                              (Cursor,
                               String (CU.Main_Part.Source.Simple_Name));
                            Found := True;
-                           CL_Units.Include (CU.Name, CU);
+                           CL_Units_Value.Include (CU.Name, CU);
                         end if;
                      end if;
                   end;
@@ -5726,14 +5733,18 @@ package body Configuration is
       end loop;
    end Sanitize_File_List;
 
-   ---------------------------------
-   -- Sanity_Check_SARIF_Base_URI --
-   ---------------------------------
+   -----------------------------
+   -- Resolve_SARIF_Base_URIs --
+   -----------------------------
 
-   procedure Sanity_Check_SARIF_Base_URI (Tree : Project.Tree.Object) is
+   function Resolve_SARIF_Base_URIs
+     (Tree : Project.Tree.Object; Raw_URIs : String_Lists.List)
+      return String_Lists.List
+   is
       Has_SRCROOT : Boolean := False;
+      Result      : String_Lists.List := Raw_URIs;
    begin
-      for Raw of CL_Switches.SARIF_Base_URIs loop
+      for Raw of Raw_URIs loop
          declare
             Colon : constant Natural := Index (Raw, ":");
             --  Split on the first colon. Identifiers never contain ':'
@@ -5759,10 +5770,11 @@ package body Configuration is
          end;
       end loop;
       if not Has_SRCROOT then
-         CL_Switches.SARIF_Base_URIs.Append
+         Result.Append
            ("%SRCROOT%:" & Tree.Root_Project.Dir_Name.String_Value);
       end if;
-   end Sanity_Check_SARIF_Base_URI;
+      return Result;
+   end Resolve_SARIF_Base_URIs;
 
    procedure Set_Project_Attributes is
 
@@ -6010,12 +6022,12 @@ package body Configuration is
          Args.Append ("spark_semaphore_wrapper");
       end if;
 
-      if CL_Switches.Memcached_Server /= "" then
+      if Memcached_Server /= "" then
          Args.Append ("spark_memcached_wrapper");
          --  The first argument of spark_memcached_wrapper is the salt. We
          --  don't use the salt for gnatwhy3, so use any dummy string.
          Args.Append ("salt");
-         Args.Append (CL_Switches.Memcached_Server);
+         Args.Append (Memcached_Server);
       end if;
 
       Args.Append ("gnatwhy3");
@@ -6063,18 +6075,20 @@ package body Configuration is
       Args.Append ("-j");
       Args.Append (Image (Parallel, 1));
 
-      if CL_Switches.Limit_Line /= "" then
+      if To_String (Invocation_State.Limit_Line) /= "" then
          Args.Append ("--limit-line");
-         Args.Append (CL_Switches.Limit_Line);
+         Args.Append (To_String (Invocation_State.Limit_Line));
       end if;
 
-      if CL_Switches.Limit_Lines /= "" then
+      if To_String (Invocation_State.Limit_Lines) /= "" then
          Args.Append ("--limit-lines");
-         Args.Append (Ada.Directories.Full_Name (CL_Switches.Limit_Lines));
+         Args.Append
+           (Ada.Directories.Full_Name
+              (To_String (Invocation_State.Limit_Lines)));
       end if;
-      if CL_Switches.Limit_Region /= "" then
+      if Limit_Region /= "" then
          Args.Append ("--limit-region");
-         Args.Append (CL_Switches.Limit_Region);
+         Args.Append (Limit_Region);
       end if;
 
       if Proof_Dir /= null then
@@ -6114,7 +6128,7 @@ package body Configuration is
 
       if FS.Check_Counterexamples and then not FS.Provers.Is_Empty then
          Args.Append ("--rac-prover");
-         if SPARK_Install.CVC5_Present then
+         if CVC5_Present then
             Args.Append ("cvc5");
          else
             Args.Append ("altergo");
@@ -6127,7 +6141,7 @@ package body Configuration is
       end if;
 
       Args.Append ("--warn-prover");
-      if SPARK_Install.CVC5_Present then
+      if CVC5_Present then
          Args.Append ("cvc5");
       else
          Args.Append ("altergo");

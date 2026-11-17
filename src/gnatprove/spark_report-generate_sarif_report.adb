@@ -69,7 +69,7 @@ is
 
    Base_URIs : Base_URI_Maps.Map;
    --  Maps SARIF uriBaseId identifiers to canonical directory paths.
-   --  Populated at the start of processing from CL_Switches.SARIF_Base_URIs.
+   --  Populated at the start of processing from SARIF_Base_URIs.
 
    function Tool_Invocation return SARIF.Types.invocation;
    function Rules return SARIF.Types.reportingDescriptor_Vector;
@@ -920,7 +920,7 @@ is
    end Tool_Invocation;
 
 begin
-   for Raw of Configuration.CL_Switches.SARIF_Base_URIs loop
+   for Raw of Configuration.SARIF_Base_URIs.all loop
       declare
          Colon : constant Natural := Ada.Strings.Fixed.Index (Raw, ":");
          Id    : constant String := Raw (Raw'First .. Colon - 1);
