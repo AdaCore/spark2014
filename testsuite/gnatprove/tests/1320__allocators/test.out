@@ -671,46 +671,46 @@ allocator-base.ads:170:19: info: assertion proved (Trivial: 1 VC), in instantiat
 allocator-base.ads:170:35: info: range check proved (CVC5: 2 VC), in instantiation at test_base.ads:37
 allocator-base.ads:170:35: info: range check proved (CVC5: 2 VC), in instantiation at test_base.ads:62
 allocator-base.ads:170:35: info: range check proved (CVC5: 2 VC), in instantiation at test_base.ads:69
-allocator-ownership_wrapper.ads:23:26: info: initialization of "Wrapper_16.The_Memory" constituent of "Pools.Memory_16" proved, in instantiation at allocator-pools.ads:243, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:23:26: info: initialization of "Wrapper_32.The_Memory" constituent of "Pools.Memory_32" proved, in instantiation at allocator-pools.ads:249, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:23:26: info: initialization of "Wrapper_4.The_Memory" constituent of "Pools.Memory_4" proved, in instantiation at allocator-pools.ads:231, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:23:26: info: initialization of "Wrapper_64.The_Memory" constituent of "Pools.Memory_64" proved, in instantiation at allocator-pools.ads:255, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:23:26: info: initialization of "Wrapper_8.The_Memory" constituent of "Pools.Memory_8" proved, in instantiation at allocator-pools.ads:237, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at allocator-pools.ads:231, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at allocator-pools.ads:237, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at allocator-pools.ads:243, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at allocator-pools.ads:249, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at allocator-pools.ads:255, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools.ads:231, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools.ads:237, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools.ads:243, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools.ads:249, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools.ads:255, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:231, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:237, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:243, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:249, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:255, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools.ads:231, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools.ads:237, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools.ads:243, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools.ads:249, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools.ads:255, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:231, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:237, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:243, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:249, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:255, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:231, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:237, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:243, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:249, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:255, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:231, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:237, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:243, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:249, in instantiation at test_pools.ads:30
-allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:255, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:23:26: info: initialization of "Wrapper_16.The_Memory" constituent of "Pools.Memory_16" proved, in instantiation at allocator-pools.ads:244, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:23:26: info: initialization of "Wrapper_32.The_Memory" constituent of "Pools.Memory_32" proved, in instantiation at allocator-pools.ads:250, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:23:26: info: initialization of "Wrapper_4.The_Memory" constituent of "Pools.Memory_4" proved, in instantiation at allocator-pools.ads:232, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:23:26: info: initialization of "Wrapper_64.The_Memory" constituent of "Pools.Memory_64" proved, in instantiation at allocator-pools.ads:256, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:23:26: info: initialization of "Wrapper_8.The_Memory" constituent of "Pools.Memory_8" proved, in instantiation at allocator-pools.ads:238, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at allocator-pools.ads:232, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at allocator-pools.ads:238, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at allocator-pools.ads:244, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at allocator-pools.ads:250, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at allocator-pools.ads:256, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools.ads:232, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools.ads:238, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools.ads:244, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools.ads:250, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools.ads:256, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:232, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:238, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:244, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:250, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:256, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools.ads:232, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools.ads:238, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools.ads:244, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools.ads:250, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools.ads:256, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:232, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:238, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:244, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:250, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools.ads:256, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:232, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:238, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:244, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:250, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:256, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:232, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:238, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:244, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:250, in instantiation at test_pools.ads:30
+allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at allocator-pools.ads:256, in instantiation at test_pools.ads:30
 allocator-pools-sized_16.adb:13:38: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:13:55: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:13:72: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
@@ -1604,497 +1604,497 @@ allocator-pools.ads:140:24: info: range check proved (CVC5: 2 VC), in instantiat
 allocator-pools.ads:140:24: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
 allocator-pools.ads:140:24: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
 allocator-pools.ads:140:24: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:177:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:180:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:182:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:182:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:184:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:185:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:187:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:189:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:191:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:192:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:192:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:192:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:192:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:192:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:192:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:192:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:192:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:192:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:192:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:192:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:193:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:196:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:197:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:197:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:197:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:197:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:197:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:197:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:197:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:197:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:197:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:197:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:197:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:197:19: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:197:19: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:197:19: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:197:19: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:198:19: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:198:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:202:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:204:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:206:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:208:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:211:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:215:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:217:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:217:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:217:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:217:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:217:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:217:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:217:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:217:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:217:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:217:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:217:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:217:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:217:58: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:217:58: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:217:58: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:217:58: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:219:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:222:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:225:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:225:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:227:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:227:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:227:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:227:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:227:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:227:52: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:52: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:52: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:52: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
-allocator-pools.ads:227:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:178:18: info: range check proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:56: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:181:64: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:183:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:183:16: info: types in unchecked conversion have the same size (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:185:12: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:186:12: info: type is suitable for unchecked conversion (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:188:16: info: implicit aspect Always_Terminates on "To_Storage" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:190:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:192:16: info: implicit aspect Always_Terminates on "Load" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:193:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:193:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:193:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:193:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:193:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:193:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:193:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:193:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:193:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:193:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:193:23: info: validity check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:194:12: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:197:16: info: implicit aspect Always_Terminates on "Roundtrip" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:198:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:198:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:198:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:198:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:198:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:198:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:198:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:198:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:198:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:198:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:198:19: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:198:19: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:198:19: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:198:19: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:198:19: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:199:19: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:199:43: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:203:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:205:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:207:16: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:209:11: info: dynamic accessibility check proved (Trivial), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:212:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:216:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:218:19: info: postcondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:218:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:218:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:218:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:218:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:218:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:218:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:218:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:218:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:218:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:218:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:218:58: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:218:58: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:218:58: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:218:58: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:218:58: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:220:16: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:223:09: info: data dependencies proved, in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:226:11: info: postcondition proved (CVC5: 2 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:226:32: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:47: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:228:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:228:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:228:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:228:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:228:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:52: info: precondition proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:228:52: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:52: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:52: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:52: info: precondition proved (Trivial: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:113, in instantiation at test_pools.ads:67
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:114, in instantiation at test_pools.ads:67
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_16.ads:115, in instantiation at test_pools.ads:67
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:106, in instantiation at test_pools.ads:79
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_32.ads:107, in instantiation at test_pools.ads:79
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:120, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:121, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:122, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:123, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_4.ads:124, in instantiation at test_pools.ads:45
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_64.ads:93, in instantiation at test_pools.ads:93
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:116, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:117, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:118, in instantiation at test_pools.ads:55
+allocator-pools.ads:228:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at allocator-pools-sized_8.ads:119, in instantiation at test_pools.ads:55
 test_base.ads:23:13: info: implicit aspect Always_Terminates on "Byte_Array_4_Eq" has been proved, subprogram will terminate
 test_base.ads:25:09: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
 test_base.ads:31:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate

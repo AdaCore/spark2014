@@ -20,6 +20,7 @@ is
       Pad   : Padding_Type (1 .. 32 - Element_Type'Object_Size);
    end record
    with Alignment => 4;
+   pragma Universal_Aliasing (Padded);
 
    package Conv is new
      SPARK.Conversions.Access_Conversions.Access_Variable_Conversions
