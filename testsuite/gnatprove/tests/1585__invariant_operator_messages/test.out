@@ -1,0 +1,30 @@
+exits.ads:11:13: medium: function overriding operator "&" does not return on some paths
+exits.ads:13:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
+exits.ads:14:21: info: exit case proved (CVC5: 1 VC)
+exits.ads:14:21: info: exit case proved (CVC5: 1 VC)
+exits.ads:14:21: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+exits.ads:14:21: info: on exceptional exit from "&" at exits.ads:11
+exits.ads:14:21: info: on normal return from "&" at exits.ads:11
+exits.ads:14:21: info: on program exit from "&" at exits.ads:11
+exits.ads:15:21: info: exit case proved (CVC5: 1 VC)
+exits.ads:15:21: info: exit case proved (CVC5: 1 VC)
+exits.ads:15:21: info: on exceptional exit from "&" at exits.ads:11
+exits.ads:15:21: info: on normal return from "&" at exits.ads:11
+exits.ads:16:19: info: exit case proved (CVC5: 1 VC)
+exits.ads:16:19: info: exit case proved (CVC5: 1 VC)
+exits.ads:16:19: info: on exceptional exit from "&" at exits.ads:11
+exits.ads:16:19: info: on program exit from "&" at exits.ads:11
+exits.ads:17:33: info: exceptional case proved (Trivial: 1 VC)
+exits.ads:18:22: info: program exit postcondition proved (Trivial: 1 VC)
+inherited.adb:7:16: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+inherited.adb:12:12: info: implicit aspect Always_Terminates on "&" has been proved, subprogram will terminate
+inherited.adb:12:12: medium: in implicit overriding of primitive function with dispatching result "&" at inherited.adb:7
+inherited.adb:12:12: medium: predicate check might fail
+strings.ads:4:13: info: for the result of "&" at strings.ads:4
+strings.ads:4:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+strings.ads:4:13: info: invariant check proved (CVC5: 1 VC)
+strings.ads:7:09: info: invariant check proved on default value (CVC5: 1 VC)
+unexpected.adb:4:06: info: data dependencies proved
+unexpected.adb:13:10: medium: unexpected exception might be raised [reason for check: "&" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised]
+SARIF reason preserves the unescaped operator name
+Pretty output preserves the operator name
