@@ -8,10 +8,8 @@ strunb.adb:59:17: info: postcondition proved
 strunb.adb:73:37: info: precondition proved
 strunb.adb:74:07: info: range check proved
 strunb.adb:75:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:76:09: info: predicate check proved
 strunb.adb:76:30: info: length check proved
 strunb.adb:78:13: info: pointer dereference check proved
-strunb.adb:78:13: info: predicate check proved
 strunb.adb:78:13: info: range check proved
 strunb.adb:78:25: info: index check proved
 strunb.adb:78:30: info: index check proved
@@ -20,7 +18,6 @@ strunb.adb:78:47: info: length check proved
 strunb.adb:78:47: info: pointer dereference check proved
 strunb.adb:78:47: info: range check proved
 strunb.adb:81:16: info: pointer dereference check proved
-strunb.adb:81:16: info: predicate check proved
 strunb.adb:81:16: info: range check proved
 strunb.adb:81:37: info: index check proved
 strunb.adb:81:37: info: overflow check proved
@@ -33,10 +30,8 @@ strunb.adb:92:38: info: precondition proved
 strunb.adb:92:58: info: range check proved
 strunb.adb:93:07: info: range check proved
 strunb.adb:94:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:95:09: info: predicate check proved
 strunb.adb:95:30: info: length check proved
 strunb.adb:97:13: info: pointer dereference check proved
-strunb.adb:97:13: info: predicate check proved
 strunb.adb:97:13: info: range check proved
 strunb.adb:97:25: info: index check proved
 strunb.adb:97:30: info: index check proved
@@ -45,7 +40,6 @@ strunb.adb:97:47: info: length check proved
 strunb.adb:97:47: info: pointer dereference check proved
 strunb.adb:97:47: info: range check proved
 strunb.adb:100:16: info: pointer dereference check proved
-strunb.adb:100:16: info: predicate check proved
 strunb.adb:100:16: info: range check proved
 strunb.adb:100:37: info: index check proved
 strunb.adb:100:37: info: overflow check proved
@@ -53,14 +47,13 @@ strunb.adb:100:50: info: index check proved
 strunb.adb:100:57: info: length check proved
 strunb.adb:101:12: info: length check proved
 strunb.adb:101:27: info: range check proved
+strunb.adb:104:14: info: invariant check proved
 strunb.adb:111:38: info: precondition proved
 strunb.adb:111:47: info: range check proved
 strunb.adb:112:07: info: range check proved
 strunb.adb:113:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:114:09: info: predicate check proved
 strunb.adb:114:30: info: length check proved
 strunb.adb:116:13: info: pointer dereference check proved
-strunb.adb:116:13: info: predicate check proved
 strunb.adb:116:13: info: range check proved
 strunb.adb:116:25: info: index check proved
 strunb.adb:116:34: info: index check proved
@@ -70,7 +63,6 @@ strunb.adb:116:46: info: length check proved
 strunb.adb:116:61: info: range check proved
 strunb.adb:118:14: info: range check proved
 strunb.adb:119:16: info: pointer dereference check proved
-strunb.adb:119:16: info: predicate check proved
 strunb.adb:119:16: info: range check proved
 strunb.adb:119:32: info: range check proved
 strunb.adb:119:40: info: index check proved
@@ -80,13 +72,12 @@ strunb.adb:119:60: info: length check proved
 strunb.adb:120:17: info: length check proved
 strunb.adb:120:17: info: pointer dereference check proved
 strunb.adb:120:17: info: range check proved
+strunb.adb:123:14: info: invariant check proved
 strunb.adb:129:37: info: precondition proved
 strunb.adb:130:07: info: range check proved
 strunb.adb:131:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:132:09: info: predicate check proved
 strunb.adb:132:30: info: length check proved
 strunb.adb:134:13: info: pointer dereference check proved
-strunb.adb:134:13: info: predicate check proved
 strunb.adb:134:13: info: range check proved
 strunb.adb:134:25: info: index check proved
 strunb.adb:134:42: info: index check proved
@@ -95,18 +86,15 @@ strunb.adb:135:13: info: length check proved
 strunb.adb:135:13: info: pointer dereference check proved
 strunb.adb:135:13: info: range check proved
 strunb.adb:136:13: info: pointer dereference check proved
-strunb.adb:136:13: info: predicate check proved
 strunb.adb:136:31: info: index check proved
+strunb.adb:138:14: info: invariant check proved
 strunb.adb:144:37: info: precondition proved
 strunb.adb:145:07: info: range check proved
 strunb.adb:146:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:147:09: info: predicate check proved
 strunb.adb:147:30: info: length check proved
 strunb.adb:149:13: info: pointer dereference check proved
-strunb.adb:149:13: info: predicate check proved
 strunb.adb:149:25: info: index check proved
 strunb.adb:150:13: info: pointer dereference check proved
-strunb.adb:150:13: info: predicate check proved
 strunb.adb:150:13: info: range check proved
 strunb.adb:150:25: info: index check proved
 strunb.adb:150:36: info: index check proved
@@ -114,6 +102,7 @@ strunb.adb:150:43: info: length check proved
 strunb.adb:150:51: info: length check proved
 strunb.adb:150:51: info: pointer dereference check proved
 strunb.adb:150:51: info: range check proved
+strunb.adb:151:14: info: invariant check proved
 strunb.adb:163:14: info: aspect Always_Terminates on "Lemma_Mod" has been proved, subprogram will terminate
 strunb.adb:168:21: info: division check proved
 strunb.adb:168:30: info: range check proved
@@ -166,11 +155,9 @@ strunb.adb:212:59: info: division check proved
 strunb.adb:212:68: info: range check proved
 strunb.adb:217:07: info: range check proved
 strunb.adb:218:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:219:09: info: predicate check proved
 strunb.adb:219:30: info: length check proved
 strunb.adb:221:22: info: pointer dereference check proved
 strunb.adb:222:16: info: pointer dereference check proved
-strunb.adb:222:16: info: predicate check proved
 strunb.adb:222:28: info: index check proved
 strunb.adb:225:15: info: loop invariant initialization proved
 strunb.adb:225:15: info: loop invariant preservation proved
@@ -184,10 +171,8 @@ strunb.adb:235:07: info: initialization of "K" proved
 strunb.adb:237:37: info: precondition proved
 strunb.adb:238:07: info: range check proved
 strunb.adb:239:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:240:09: info: predicate check proved
 strunb.adb:240:30: info: length check proved
 strunb.adb:248:16: info: pointer dereference check proved
-strunb.adb:248:16: info: predicate check proved
 strunb.adb:248:16: info: range check proved
 strunb.adb:248:30: info: index check proved
 strunb.adb:248:30: info: overflow check proved
@@ -218,7 +203,6 @@ strunb.adb:267:07: info: initialization of "K" proved
 strunb.adb:269:37: info: precondition proved
 strunb.adb:270:07: info: range check proved
 strunb.adb:271:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:272:09: info: predicate check proved
 strunb.adb:272:30: info: length check proved
 strunb.adb:278:22: info: assertion proved
 strunb.adb:278:27: info: overflow check proved
@@ -226,7 +210,6 @@ strunb.adb:278:41: info: pointer dereference check proved
 strunb.adb:278:51: info: range check proved
 strunb.adb:282:41: info: precondition proved
 strunb.adb:284:16: info: pointer dereference check proved
-strunb.adb:284:16: info: predicate check proved
 strunb.adb:284:16: info: range check proved
 strunb.adb:284:30: info: index check proved
 strunb.adb:284:30: info: overflow check proved
@@ -237,6 +220,8 @@ strunb.adb:285:17: info: length check proved
 strunb.adb:285:17: info: pointer dereference check proved
 strunb.adb:285:17: info: range check proved
 strunb.adb:286:10: info: precondition proved
+strunb.adb:286:23: info: for "Source" before the call at strunb.ads:124
+strunb.adb:286:23: info: invariant check proved
 strunb.adb:286:67: info: pointer dereference check proved
 strunb.adb:287:17: info: overflow check proved
 strunb.adb:288:33: info: loop invariant initialization proved
@@ -251,6 +236,8 @@ strunb.adb:292:15: info: loop invariant preservation proved
 strunb.adb:293:23: info: initialization check proved
 strunb.adb:293:23: info: pointer dereference check proved
 strunb.adb:293:35: info: index check proved
+strunb.adb:294:19: info: for "Source" before the call at strunb.ads:124
+strunb.adb:294:19: info: invariant check proved
 strunb.adb:294:40: info: index check proved
 strunb.adb:294:40: info: overflow check proved
 strunb.adb:294:51: info: division check proved
@@ -316,7 +303,6 @@ strunb.adb:403:35: info: pointer dereference check proved
 strunb.adb:403:35: info: range check proved
 strunb.adb:430:07: info: precondition proved
 strunb.adb:433:16: info: pointer dereference check proved
-strunb.adb:433:16: info: predicate check proved
 strunb.adb:433:16: info: range check proved
 strunb.adb:433:40: info: index check proved
 strunb.adb:433:40: info: overflow check proved
@@ -326,12 +312,10 @@ strunb.adb:433:76: info: length check proved
 strunb.adb:434:20: info: length check proved
 strunb.adb:434:20: info: pointer dereference check proved
 strunb.adb:434:20: info: range check proved
-strunb.adb:437:13: info: predicate check proved
 strunb.adb:437:34: info: overflow check proved
 strunb.adb:442:07: info: precondition proved
 strunb.adb:442:42: info: range check proved
 strunb.adb:445:16: info: pointer dereference check proved
-strunb.adb:445:16: info: predicate check proved
 strunb.adb:445:16: info: range check proved
 strunb.adb:445:40: info: index check proved
 strunb.adb:445:40: info: overflow check proved
@@ -341,15 +325,12 @@ strunb.adb:445:69: info: range check proved
 strunb.adb:445:78: info: length check proved
 strunb.adb:446:12: info: length check proved
 strunb.adb:446:27: info: range check proved
-strunb.adb:449:13: info: predicate check proved
 strunb.adb:449:34: info: overflow check proved
 strunb.adb:449:44: info: range check proved
 strunb.adb:454:07: info: precondition proved
 strunb.adb:455:13: info: pointer dereference check proved
-strunb.adb:455:13: info: predicate check proved
 strunb.adb:455:37: info: index check proved
 strunb.adb:455:37: info: overflow check proved
-strunb.adb:456:13: info: predicate check proved
 strunb.adb:456:34: info: overflow check proved
 strunb.adb:469:15: info: precondition proved
 strunb.adb:470:12: info: initialization check proved
@@ -374,7 +355,6 @@ strunb.adb:510:10: info: only expected exception raised
 strunb.adb:515:57: info: overflow check proved
 strunb.adb:515:57: info: range check proved
 strunb.adb:519:22: info: pointer dereference check proved
-strunb.adb:519:22: info: predicate check proved
 strunb.adb:519:22: info: range check proved
 strunb.adb:519:34: info: index check proved
 strunb.adb:519:54: info: index check proved
@@ -384,7 +364,6 @@ strunb.adb:520:24: info: length check proved
 strunb.adb:520:24: info: pointer dereference check proved
 strunb.adb:520:24: info: range check proved
 strunb.adb:520:44: info: overflow check proved
-strunb.adb:523:19: info: predicate check proved
 strunb.adb:523:40: info: overflow check proved
 strunb.adb:523:40: info: range check proved
 strunb.adb:535:19: info: initialization check proved
@@ -392,6 +371,8 @@ strunb.adb:535:19: info: pointer dereference check proved
 strunb.adb:535:31: info: index check proved
 strunb.adb:536:13: info: only expected exception raised
 strunb.adb:577:12: info: assertion proved
+strunb.adb:578:14: info: for "Source" before the call at strunb.ads:224
+strunb.adb:578:14: info: invariant check proved
 strunb.adb:578:14: info: precondition proved
 strunb.adb:578:31: info: range check proved
 strunb.adb:579:16: info: initialization check proved
@@ -422,7 +403,6 @@ strunb.adb:642:37: info: pointer dereference check proved
 strunb.adb:642:40: info: range check proved
 strunb.adb:643:07: info: absence of resource or memory leak at end of scope proved
 strunb.adb:645:14: info: absence of resource or memory leak proved
-strunb.adb:645:34: info: predicate check proved
 strunb.adb:660:15: info: precondition proved
 strunb.adb:661:12: info: initialization check proved
 strunb.adb:661:12: info: range check proved
@@ -448,6 +428,8 @@ strunb.adb:717:12: info: range check proved
 strunb.adb:717:26: info: pointer dereference check proved
 strunb.adb:717:26: info: range check proved
 strunb.adb:733:12: info: assertion proved
+strunb.adb:734:14: info: for "Source" before the call at strunb.ads:224
+strunb.adb:734:14: info: invariant check proved
 strunb.adb:734:14: info: precondition proved
 strunb.adb:735:16: info: initialization check proved
 strunb.adb:735:30: info: pointer dereference check proved
@@ -476,7 +458,6 @@ strunb.adb:797:10: info: only expected exception raised
 strunb.adb:800:07: info: precondition proved
 strunb.adb:800:42: info: range check proved
 strunb.adb:803:16: info: pointer dereference check proved
-strunb.adb:803:16: info: predicate check proved
 strunb.adb:803:16: info: range check proved
 strunb.adb:804:20: info: index check proved
 strunb.adb:804:20: info: overflow check proved
@@ -489,7 +470,6 @@ strunb.adb:805:18: info: length check proved
 strunb.adb:805:18: info: pointer dereference check proved
 strunb.adb:805:18: info: range check proved
 strunb.adb:808:13: info: pointer dereference check proved
-strunb.adb:808:13: info: predicate check proved
 strunb.adb:808:13: info: range check proved
 strunb.adb:808:25: info: index check proved
 strunb.adb:808:46: info: index check proved
@@ -498,7 +478,6 @@ strunb.adb:808:56: info: range check proved
 strunb.adb:808:65: info: length check proved
 strunb.adb:809:09: info: length check proved
 strunb.adb:809:24: info: range check proved
-strunb.adb:810:13: info: predicate check proved
 strunb.adb:810:34: info: overflow check proved
 strunb.adb:810:44: info: range check proved
 strunb.adb:825:13: info: overflow check proved
@@ -510,7 +489,6 @@ strunb.adb:839:32: info: range check proved
 strunb.adb:847:40: info: range check proved
 strunb.adb:849:38: info: overflow check proved
 strunb.adb:850:16: info: pointer dereference check proved
-strunb.adb:850:16: info: predicate check proved
 strunb.adb:850:16: info: range check proved
 strunb.adb:850:28: info: index check proved
 strunb.adb:850:53: info: index check proved
@@ -526,9 +504,7 @@ strunb.adb:858:24: info: range check proved
 strunb.adb:858:38: info: pointer dereference check proved
 strunb.adb:858:38: info: range check proved
 strunb.adb:861:13: info: absence of resource or memory leak at end of scope proved
-strunb.adb:863:19: info: predicate check proved
 strunb.adb:863:30: info: absence of resource or memory leak proved
-strunb.adb:864:19: info: predicate check proved
 strunb.adb:864:34: info: pointer dereference check proved
 strunb.adb:864:44: info: range check proved
 strunb.adb:870:12: info: assertion proved
@@ -555,10 +531,8 @@ strunb.adb:924:45: info: length check proved
 strunb.adb:924:45: info: pointer dereference check proved
 strunb.adb:924:45: info: range check proved
 strunb.adb:927:16: info: absence of resource or memory leak at end of scope proved
-strunb.adb:934:19: info: predicate check proved
 strunb.adb:934:30: info: absence of resource or memory leak proved
 strunb.adb:947:16: info: pointer dereference check proved
-strunb.adb:947:16: info: predicate check proved
 strunb.adb:947:28: info: index check proved
 strunb.adb:949:10: info: only expected exception raised
 strunb.adb:964:20: info: precondition proved
@@ -577,7 +551,6 @@ strunb.adb:985:33: info: pointer dereference check proved
 strunb.adb:985:36: info: range check proved
 strunb.adb:986:07: info: absence of resource or memory leak at end of scope proved
 strunb.adb:988:14: info: absence of resource or memory leak proved
-strunb.adb:988:34: info: predicate check proved
 strunb.adb:999:13: info: precondition proved
 strunb.adb:999:13: info: range check proved
 strunb.adb:1007:33: info: overflow check proved
@@ -586,7 +559,6 @@ strunb.adb:1018:07: info: absence of resource or memory leak at end of scope pro
 strunb.adb:1019:07: info: range check proved
 strunb.adb:1019:48: info: range check proved
 strunb.adb:1021:14: info: absence of resource or memory leak proved
-strunb.adb:1023:11: info: predicate check proved
 strunb.adb:1023:39: info: length check proved
 strunb.adb:1023:63: info: range check proved
 strunb.adb:1037:13: info: only expected exception raised
@@ -609,7 +581,6 @@ strunb.adb:1072:33: info: pointer dereference check proved
 strunb.adb:1072:36: info: range check proved
 strunb.adb:1073:07: info: absence of resource or memory leak at end of scope proved
 strunb.adb:1075:14: info: absence of resource or memory leak proved
-strunb.adb:1075:34: info: predicate check proved
 strunb.adb:1084:08: info: initialization check proved
 strunb.adb:1084:08: info: range check proved
 strunb.adb:1084:22: info: pointer dereference check proved
@@ -617,24 +588,21 @@ strunb.adb:1084:22: info: range check proved
 strunb.adb:1091:07: info: range check proved
 strunb.adb:1091:48: info: range check proved
 strunb.adb:1092:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:1093:09: info: predicate check proved
 strunb.adb:1093:30: info: length check proved
 strunb.adb:1093:61: info: range check proved
-strunb.adb:1095:13: info: predicate check proved
 strunb.adb:1095:24: info: length check proved
 strunb.adb:1095:24: info: pointer dereference check proved
 strunb.adb:1095:28: info: length check proved
 strunb.adb:1095:31: info: length check proved
 strunb.adb:1095:46: info: range check proved
+strunb.adb:1097:14: info: invariant check proved
 strunb.adb:1128:18: info: initialization check proved
 strunb.adb:1128:18: info: range check proved
 strunb.adb:1128:32: info: pointer dereference check proved
 strunb.adb:1128:32: info: range check proved
 strunb.adb:1134:24: info: initialization check proved
 strunb.adb:1134:24: info: range check proved
-strunb.adb:1134:38: info: in value of subprogram parameter after the call at strunb.adb:1134
 strunb.adb:1134:38: info: pointer dereference check proved
-strunb.adb:1134:38: info: predicate check proved
 strunb.adb:1134:38: info: range check proved
 strunb.adb:1144:20: info: precondition proved
 strunb.adb:1145:18: info: initialization check proved
@@ -644,16 +612,18 @@ strunb.adb:1145:32: info: range check proved
 strunb.adb:1152:12: info: precondition proved
 strunb.adb:1152:24: info: initialization check proved
 strunb.adb:1152:24: info: range check proved
-strunb.adb:1152:38: info: in value of subprogram parameter after the call at strunb.adb:1152
 strunb.adb:1152:38: info: pointer dereference check proved
-strunb.adb:1152:38: info: predicate check proved
 strunb.adb:1152:38: info: range check proved
 strunb.adb:1164:12: info: assertion proved
+strunb.adb:1164:12: info: for "Source" before the call at strunb.ads:738
+strunb.adb:1164:12: info: invariant check proved
 strunb.adb:1166:17: info: initialization check proved
 strunb.adb:1166:17: info: range check proved
 strunb.adb:1166:31: info: pointer dereference check proved
 strunb.adb:1166:31: info: range check proved
 strunb.adb:1169:12: info: assertion proved
+strunb.adb:1169:12: info: for "Source" before the call at strunb.ads:738
+strunb.adb:1169:12: info: invariant check proved
 strunb.adb:1171:17: info: initialization check proved
 strunb.adb:1171:17: info: range check proved
 strunb.adb:1171:31: info: pointer dereference check proved
@@ -663,11 +633,15 @@ strunb.adb:1174:24: info: range check proved
 strunb.adb:1174:38: info: pointer dereference check proved
 strunb.adb:1174:38: info: range check proved
 strunb.adb:1180:12: info: assertion proved
+strunb.adb:1180:12: info: for "Source" before the call at strunb.ads:738
+strunb.adb:1180:12: info: invariant check proved
 strunb.adb:1182:17: info: initialization check proved
 strunb.adb:1182:17: info: range check proved
 strunb.adb:1182:31: info: pointer dereference check proved
 strunb.adb:1182:31: info: range check proved
 strunb.adb:1185:12: info: assertion proved
+strunb.adb:1185:12: info: for "Source" before the call at strunb.ads:738
+strunb.adb:1185:12: info: invariant check proved
 strunb.adb:1187:17: info: initialization check proved
 strunb.adb:1187:17: info: range check proved
 strunb.adb:1187:31: info: pointer dereference check proved
@@ -682,19 +656,24 @@ strunb.adb:1193:33: info: pointer dereference check proved
 strunb.adb:1193:36: info: range check proved
 strunb.adb:1194:07: info: absence of resource or memory leak at end of scope proved
 strunb.adb:1196:14: info: absence of resource or memory leak proved
-strunb.adb:1196:34: info: predicate check proved
 strunb.adb:1207:12: info: assertion proved
+strunb.adb:1208:14: info: for "Source" before the call at strunb.ads:224
+strunb.adb:1208:14: info: invariant check proved
 strunb.adb:1208:14: info: precondition proved
 strunb.adb:1209:16: info: initialization check proved
 strunb.adb:1209:30: info: pointer dereference check proved
 strunb.adb:1209:30: info: range check proved
 strunb.adb:1209:62: info: index check proved
 strunb.adb:1212:12: info: assertion proved
+strunb.adb:1212:12: info: for "Source" before the call at strunb.ads:509
+strunb.adb:1212:12: info: invariant check proved
 strunb.adb:1214:17: info: initialization check proved
 strunb.adb:1214:17: info: range check proved
 strunb.adb:1214:31: info: pointer dereference check proved
 strunb.adb:1214:31: info: range check proved
 strunb.adb:1220:12: info: assertion proved
+strunb.adb:1220:12: info: for "Source" before the call at strunb.ads:509
+strunb.adb:1220:12: info: invariant check proved
 strunb.adb:1222:17: info: initialization check proved
 strunb.adb:1222:17: info: range check proved
 strunb.adb:1222:31: info: pointer dereference check proved
@@ -704,17 +683,23 @@ strunb.adb:1231:18: info: range check proved
 strunb.adb:1231:32: info: pointer dereference check proved
 strunb.adb:1231:32: info: range check proved
 strunb.adb:1241:12: info: assertion proved
+strunb.adb:1242:14: info: for "Source" before the call at strunb.ads:224
+strunb.adb:1242:14: info: invariant check proved
 strunb.adb:1242:14: info: precondition proved
 strunb.adb:1243:16: info: initialization check proved
 strunb.adb:1243:30: info: pointer dereference check proved
 strunb.adb:1243:30: info: range check proved
 strunb.adb:1243:62: info: index check proved
 strunb.adb:1246:12: info: assertion proved
+strunb.adb:1246:12: info: for "Source" before the call at strunb.ads:509
+strunb.adb:1246:12: info: invariant check proved
 strunb.adb:1248:17: info: initialization check proved
 strunb.adb:1248:17: info: range check proved
 strunb.adb:1248:31: info: pointer dereference check proved
 strunb.adb:1248:31: info: range check proved
 strunb.adb:1254:12: info: assertion proved
+strunb.adb:1254:12: info: for "Source" before the call at strunb.ads:509
+strunb.adb:1254:12: info: invariant check proved
 strunb.adb:1256:17: info: initialization check proved
 strunb.adb:1256:17: info: range check proved
 strunb.adb:1256:31: info: pointer dereference check proved
@@ -729,7 +714,6 @@ strunb.adb:1265:33: info: pointer dereference check proved
 strunb.adb:1265:36: info: range check proved
 strunb.adb:1266:07: info: absence of resource or memory leak at end of scope proved
 strunb.adb:1268:14: info: absence of resource or memory leak proved
-strunb.adb:1268:34: info: predicate check proved
 strunb.adb:1281:10: info: only expected exception raised
 strunb.adb:1284:33: info: initialization check proved
 strunb.adb:1284:33: info: range check proved
@@ -741,226 +725,538 @@ strunb.adb:1298:33: info: initialization check proved
 strunb.adb:1298:33: info: range check proved
 strunb.adb:1298:58: info: pointer dereference check proved
 strunb.adb:1298:58: info: range check proved
+strunb.ads:64:24: info: for "Source" before the call at strunb.ads:88
 strunb.ads:64:24: info: initial condition proved
-strunb.ads:74:09: info: predicate check justified on default value
+strunb.ads:64:24: info: invariant check proved
 strunb.ads:75:35: info: default initial condition proved
+strunb.ads:75:35: info: invariant check justified
 strunb.ads:88:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
 strunb.ads:89:06: info: data dependencies proved
+strunb.ads:108:13: info: for the result of "To_Unbounded_String" at strunb.ads:108
 strunb.ads:108:13: info: implicit aspect Always_Terminates on "To_Unbounded_String" has been proved, subprogram will terminate
+strunb.ads:108:13: info: invariant check proved
+strunb.ads:111:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:111:16: info: invariant check proved
 strunb.ads:111:16: info: postcondition proved
+strunb.ads:112:17: info: for "Source" before the call at strunb.ads:88
+strunb.ads:112:17: info: invariant check proved
 strunb.ads:112:61: info: range check proved
 strunb.ads:113:06: info: data dependencies proved
 strunb.ads:124:13: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
 strunb.ads:126:08: info: postcondition proved
 strunb.ads:127:35: info: range check proved
+strunb.ads:127:45: info: for "Source" before the call at strunb.ads:88
+strunb.ads:127:45: info: invariant check proved
 strunb.ads:128:06: info: data dependencies proved
 strunb.ads:138:14: info: aspect Always_Terminates on "Set_Unbounded_String" has been proved, subprogram will terminate
+strunb.ads:138:14: info: for "Target" at the end of "Set_Unbounded_String" at strunb.ads:139
+strunb.ads:138:14: info: invariant check proved
+strunb.ads:142:17: info: for "Source" before the call at strunb.ads:124
+strunb.ads:142:17: info: invariant check proved
 strunb.ads:142:17: info: postcondition proved
 strunb.ads:143:06: info: data dependencies proved
 strunb.ads:144:06: info: flow dependencies proved
 strunb.ads:148:14: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+strunb.ads:148:14: info: for "Source" at the end of "Append" at strunb.ads:149
+strunb.ads:148:14: info: invariant check proved
+strunb.ads:152:16: info: for "Source" before the call at strunb.ads:88
+strunb.ads:152:16: info: invariant check proved
 strunb.ads:152:50: info: overflow check proved
+strunb.ads:152:52: info: for "Source" before the call at strunb.ads:88
+strunb.ads:152:52: info: invariant check proved
+strunb.ads:154:08: info: for "Source" before the call at strunb.ads:124
+strunb.ads:154:08: info: invariant check proved
 strunb.ads:154:08: info: postcondition proved
+strunb.ads:154:29: info: for "Source" before the call at strunb.ads:124
+strunb.ads:154:29: info: invariant check proved
 strunb.ads:154:52: info: range check proved
+strunb.ads:154:54: info: for "Source" before the call at strunb.ads:124
+strunb.ads:154:54: info: invariant check proved
 strunb.ads:155:06: info: data dependencies proved
 strunb.ads:157:14: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+strunb.ads:157:14: info: for "Source" at the end of "Append" at strunb.ads:158
+strunb.ads:157:14: info: invariant check proved
 strunb.ads:161:24: info: range check proved
 strunb.ads:161:48: info: overflow check proved
+strunb.ads:161:50: info: for "Source" before the call at strunb.ads:88
+strunb.ads:161:50: info: invariant check proved
+strunb.ads:162:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:162:16: info: invariant check proved
 strunb.ads:162:16: info: postcondition proved
+strunb.ads:162:37: info: for "Source" before the call at strunb.ads:124
+strunb.ads:162:37: info: invariant check proved
 strunb.ads:162:60: info: range check proved
 strunb.ads:163:06: info: data dependencies proved
 strunb.ads:165:14: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+strunb.ads:165:14: info: for "Source" at the end of "Append" at strunb.ads:166
+strunb.ads:165:14: info: invariant check proved
+strunb.ads:169:16: info: for "Source" before the call at strunb.ads:88
+strunb.ads:169:16: info: invariant check proved
+strunb.ads:170:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:170:16: info: invariant check proved
 strunb.ads:170:16: info: postcondition proved
+strunb.ads:170:37: info: for "Source" before the call at strunb.ads:124
+strunb.ads:170:37: info: invariant check proved
 strunb.ads:170:60: info: range check proved
 strunb.ads:171:06: info: data dependencies proved
+strunb.ads:177:13: info: for the result of "&" at strunb.ads:177
 strunb.ads:177:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+strunb.ads:177:13: info: invariant check proved
+strunb.ads:181:16: info: for "Source" before the call at strunb.ads:88
+strunb.ads:181:16: info: invariant check proved
 strunb.ads:181:47: info: overflow check proved
+strunb.ads:181:49: info: for "Source" before the call at strunb.ads:88
+strunb.ads:181:49: info: invariant check proved
+strunb.ads:182:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:182:16: info: invariant check proved
 strunb.ads:182:16: info: postcondition proved
+strunb.ads:182:41: info: for "Source" before the call at strunb.ads:124
+strunb.ads:182:41: info: invariant check proved
 strunb.ads:182:58: info: range check proved
+strunb.ads:182:60: info: for "Source" before the call at strunb.ads:124
+strunb.ads:182:60: info: invariant check proved
 strunb.ads:183:06: info: data dependencies proved
+strunb.ads:185:13: info: for the result of "&" at strunb.ads:185
 strunb.ads:185:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+strunb.ads:185:13: info: invariant check proved
 strunb.ads:189:21: info: range check proved
 strunb.ads:189:45: info: overflow check proved
+strunb.ads:189:47: info: for "Source" before the call at strunb.ads:88
+strunb.ads:189:47: info: invariant check proved
+strunb.ads:190:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:190:16: info: invariant check proved
 strunb.ads:190:16: info: postcondition proved
+strunb.ads:190:41: info: for "Source" before the call at strunb.ads:124
+strunb.ads:190:41: info: invariant check proved
 strunb.ads:190:58: info: range check proved
 strunb.ads:191:06: info: data dependencies proved
+strunb.ads:193:13: info: for the result of "&" at strunb.ads:193
 strunb.ads:193:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+strunb.ads:193:13: info: invariant check proved
 strunb.ads:197:20: info: range check proved
 strunb.ads:197:44: info: overflow check proved
+strunb.ads:197:46: info: for "Source" before the call at strunb.ads:88
+strunb.ads:197:46: info: invariant check proved
+strunb.ads:198:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:198:16: info: invariant check proved
 strunb.ads:198:16: info: postcondition proved
 strunb.ads:198:51: info: range check proved
 strunb.ads:198:57: info: range check proved
+strunb.ads:198:59: info: for "Source" before the call at strunb.ads:124
+strunb.ads:198:59: info: invariant check proved
 strunb.ads:199:06: info: data dependencies proved
+strunb.ads:201:13: info: for the result of "&" at strunb.ads:201
 strunb.ads:201:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+strunb.ads:201:13: info: invariant check proved
+strunb.ads:205:16: info: for "Source" before the call at strunb.ads:88
+strunb.ads:205:16: info: invariant check proved
+strunb.ads:206:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:206:16: info: invariant check proved
 strunb.ads:206:16: info: postcondition proved
+strunb.ads:206:41: info: for "Source" before the call at strunb.ads:124
+strunb.ads:206:41: info: invariant check proved
 strunb.ads:206:58: info: range check proved
 strunb.ads:207:06: info: data dependencies proved
+strunb.ads:209:13: info: for the result of "&" at strunb.ads:209
 strunb.ads:209:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+strunb.ads:209:13: info: invariant check proved
+strunb.ads:213:16: info: for "Source" before the call at strunb.ads:88
+strunb.ads:213:16: info: invariant check proved
+strunb.ads:214:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:214:16: info: invariant check proved
 strunb.ads:214:16: info: postcondition proved
 strunb.ads:214:46: info: range check proved
+strunb.ads:214:48: info: for "Source" before the call at strunb.ads:124
+strunb.ads:214:48: info: invariant check proved
 strunb.ads:215:06: info: data dependencies proved
 strunb.ads:223:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+strunb.ads:227:25: info: for "Source" before the call at strunb.ads:88
+strunb.ads:227:25: info: invariant check proved
 strunb.ads:228:16: info: postcondition proved
+strunb.ads:228:33: info: for "Source" before the call at strunb.ads:124
+strunb.ads:228:33: info: invariant check proved
 strunb.ads:228:53: info: index check proved
 strunb.ads:229:06: info: data dependencies proved
 strunb.ads:233:14: info: aspect Always_Terminates on "Replace_Element" has been proved, subprogram will terminate
+strunb.ads:233:14: info: for "Source" at the end of "Replace_Element" at strunb.ads:234
+strunb.ads:233:14: info: invariant check proved
+strunb.ads:238:25: info: for "Source" before the call at strunb.ads:88
+strunb.ads:238:25: info: invariant check proved
+strunb.ads:240:08: info: for "Source" before the call at strunb.ads:124
+strunb.ads:240:08: info: invariant check proved
 strunb.ads:240:08: info: postcondition proved
+strunb.ads:240:30: info: for "Source" before the call at strunb.ads:124
+strunb.ads:240:30: info: invariant check proved
 strunb.ads:240:64: info: index check proved
 strunb.ads:241:06: info: data dependencies proved
 strunb.ads:246:13: info: implicit aspect Always_Terminates on "Slice" has been proved, subprogram will terminate
+strunb.ads:251:27: info: for "Source" before the call at strunb.ads:88
+strunb.ads:251:27: info: invariant check proved
+strunb.ads:251:60: info: for "Source" before the call at strunb.ads:88
+strunb.ads:251:60: info: invariant check proved
 strunb.ads:252:16: info: postcondition proved
+strunb.ads:254:32: info: for "Source" before the call at strunb.ads:124
+strunb.ads:254:32: info: invariant check proved
 strunb.ads:254:32: info: range check proved
 strunb.ads:255:06: info: data dependencies proved
+strunb.ads:261:13: info: for the result of "Unbounded_Slice" at strunb.ads:261
 strunb.ads:261:13: info: implicit aspect Always_Terminates on "Unbounded_Slice" has been proved, subprogram will terminate
+strunb.ads:261:13: info: invariant check proved
+strunb.ads:266:27: info: for "Source" before the call at strunb.ads:88
+strunb.ads:266:27: info: invariant check proved
+strunb.ads:266:60: info: for "Source" before the call at strunb.ads:88
+strunb.ads:266:60: info: invariant check proved
+strunb.ads:268:08: info: for "Source" before the call at strunb.ads:124
+strunb.ads:268:08: info: invariant check proved
 strunb.ads:268:08: info: postcondition proved
+strunb.ads:268:45: info: for "Source" before the call at strunb.ads:124
+strunb.ads:268:45: info: invariant check proved
 strunb.ads:268:45: info: range check proved
 strunb.ads:269:06: info: data dependencies proved
 strunb.ads:275:14: info: aspect Always_Terminates on "Unbounded_Slice" has been proved, subprogram will terminate
+strunb.ads:275:14: info: for "Target" at the end of "Unbounded_Slice" at strunb.ads:277
+strunb.ads:275:14: info: invariant check proved
 strunb.ads:277:07: info: initialization of parts of "Target" without Relaxed_Initialization proved
+strunb.ads:281:27: info: for "Source" before the call at strunb.ads:88
+strunb.ads:281:27: info: invariant check proved
+strunb.ads:281:60: info: for "Source" before the call at strunb.ads:88
+strunb.ads:281:60: info: invariant check proved
+strunb.ads:282:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:282:16: info: invariant check proved
 strunb.ads:282:16: info: postcondition proved
+strunb.ads:282:37: info: for "Source" before the call at strunb.ads:124
+strunb.ads:282:37: info: invariant check proved
 strunb.ads:282:37: info: range check proved
 strunb.ads:283:06: info: data dependencies proved
 strunb.ads:289:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 strunb.ads:293:16: info: postcondition proved
+strunb.ads:293:30: info: for "Source" before the call at strunb.ads:124
+strunb.ads:293:30: info: invariant check proved
+strunb.ads:293:49: info: for "Source" before the call at strunb.ads:124
+strunb.ads:293:49: info: invariant check proved
 strunb.ads:294:06: info: data dependencies proved
 strunb.ads:296:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 strunb.ads:300:16: info: postcondition proved
+strunb.ads:300:30: info: for "Source" before the call at strunb.ads:124
+strunb.ads:300:30: info: invariant check proved
 strunb.ads:301:06: info: data dependencies proved
 strunb.ads:303:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 strunb.ads:307:16: info: postcondition proved
+strunb.ads:307:37: info: for "Source" before the call at strunb.ads:124
+strunb.ads:307:37: info: invariant check proved
 strunb.ads:308:06: info: data dependencies proved
 strunb.ads:310:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
 strunb.ads:314:16: info: postcondition proved
+strunb.ads:314:30: info: for "Source" before the call at strunb.ads:124
+strunb.ads:314:30: info: invariant check proved
+strunb.ads:314:49: info: for "Source" before the call at strunb.ads:124
+strunb.ads:314:49: info: invariant check proved
 strunb.ads:315:06: info: data dependencies proved
 strunb.ads:317:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
 strunb.ads:321:16: info: postcondition proved
+strunb.ads:321:30: info: for "Source" before the call at strunb.ads:124
+strunb.ads:321:30: info: invariant check proved
 strunb.ads:322:06: info: data dependencies proved
 strunb.ads:324:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
 strunb.ads:328:16: info: postcondition proved
+strunb.ads:328:37: info: for "Source" before the call at strunb.ads:124
+strunb.ads:328:37: info: invariant check proved
 strunb.ads:329:06: info: data dependencies proved
 strunb.ads:331:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
 strunb.ads:335:16: info: postcondition proved
+strunb.ads:335:31: info: for "Source" before the call at strunb.ads:124
+strunb.ads:335:31: info: invariant check proved
+strunb.ads:335:51: info: for "Source" before the call at strunb.ads:124
+strunb.ads:335:51: info: invariant check proved
 strunb.ads:336:06: info: data dependencies proved
 strunb.ads:338:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
 strunb.ads:342:16: info: postcondition proved
+strunb.ads:342:31: info: for "Source" before the call at strunb.ads:124
+strunb.ads:342:31: info: invariant check proved
 strunb.ads:343:06: info: data dependencies proved
 strunb.ads:345:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
 strunb.ads:349:16: info: postcondition proved
+strunb.ads:349:39: info: for "Source" before the call at strunb.ads:124
+strunb.ads:349:39: info: invariant check proved
 strunb.ads:350:06: info: data dependencies proved
 strunb.ads:352:13: info: implicit aspect Always_Terminates on overriding operator ">" has been proved, subprogram will terminate
 strunb.ads:356:16: info: postcondition proved
+strunb.ads:356:30: info: for "Source" before the call at strunb.ads:124
+strunb.ads:356:30: info: invariant check proved
+strunb.ads:356:49: info: for "Source" before the call at strunb.ads:124
+strunb.ads:356:49: info: invariant check proved
 strunb.ads:357:06: info: data dependencies proved
 strunb.ads:359:13: info: implicit aspect Always_Terminates on overriding operator ">" has been proved, subprogram will terminate
 strunb.ads:363:16: info: postcondition proved
+strunb.ads:363:30: info: for "Source" before the call at strunb.ads:124
+strunb.ads:363:30: info: invariant check proved
 strunb.ads:364:06: info: data dependencies proved
 strunb.ads:366:13: info: implicit aspect Always_Terminates on overriding operator ">" has been proved, subprogram will terminate
 strunb.ads:370:16: info: postcondition proved
+strunb.ads:370:37: info: for "Source" before the call at strunb.ads:124
+strunb.ads:370:37: info: invariant check proved
 strunb.ads:371:06: info: data dependencies proved
 strunb.ads:373:13: info: implicit aspect Always_Terminates on overriding operator ">=" has been proved, subprogram will terminate
 strunb.ads:377:16: info: postcondition proved
+strunb.ads:377:31: info: for "Source" before the call at strunb.ads:124
+strunb.ads:377:31: info: invariant check proved
+strunb.ads:377:51: info: for "Source" before the call at strunb.ads:124
+strunb.ads:377:51: info: invariant check proved
 strunb.ads:378:06: info: data dependencies proved
 strunb.ads:380:13: info: implicit aspect Always_Terminates on overriding operator ">=" has been proved, subprogram will terminate
 strunb.ads:384:16: info: postcondition proved
+strunb.ads:384:31: info: for "Source" before the call at strunb.ads:124
+strunb.ads:384:31: info: invariant check proved
 strunb.ads:385:06: info: data dependencies proved
 strunb.ads:387:13: info: implicit aspect Always_Terminates on overriding operator ">=" has been proved, subprogram will terminate
 strunb.ads:391:16: info: postcondition proved
+strunb.ads:391:39: info: for "Source" before the call at strunb.ads:124
+strunb.ads:391:39: info: invariant check proved
 strunb.ads:392:06: info: data dependencies proved
 strunb.ads:402:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
 strunb.ads:409:24: info: postcondition proved
+strunb.ads:409:40: info: for "Source" before the call at strunb.ads:88
+strunb.ads:409:40: info: invariant check proved
 strunb.ads:410:06: info: disjoint contract or exit cases proved
 strunb.ads:414:09: info: contract case proved
+strunb.ads:414:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:414:09: info: invariant check proved
 strunb.ads:421:09: info: contract case proved
+strunb.ads:421:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:421:09: info: invariant check proved
+strunb.ads:423:33: info: for "Source" before the call at strunb.ads:88
+strunb.ads:423:33: info: invariant check proved
 strunb.ads:423:49: info: overflow check proved
 strunb.ads:423:59: info: range check proved
 strunb.ads:424:22: info: precondition proved
+strunb.ads:424:30: info: for "Source" before the call at strunb.ads:124
+strunb.ads:424:30: info: invariant check proved
+strunb.ads:428:32: info: for "Source" before the call at strunb.ads:88
+strunb.ads:428:32: info: invariant check proved
 strunb.ads:428:48: info: overflow check proved
 strunb.ads:428:58: info: range check proved
 strunb.ads:432:28: info: precondition proved
+strunb.ads:433:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:433:16: info: invariant check proved
+strunb.ads:440:34: info: for "Source" before the call at strunb.ads:88
+strunb.ads:440:34: info: invariant check proved
+strunb.ads:444:40: info: for "Source" before the call at strunb.ads:88
+strunb.ads:444:40: info: invariant check proved
 strunb.ads:444:56: info: overflow check proved
 strunb.ads:444:65: info: range check proved
 strunb.ads:445:35: info: precondition proved
+strunb.ads:446:22: info: for "Source" before the call at strunb.ads:124
+strunb.ads:446:22: info: invariant check proved
 strunb.ads:450:09: info: contract case proved
 strunb.ads:453:06: info: data dependencies proved
 strunb.ads:455:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
 strunb.ads:462:24: info: postcondition proved
+strunb.ads:462:40: info: for "Source" before the call at strunb.ads:88
+strunb.ads:462:40: info: invariant check proved
 strunb.ads:463:06: info: disjoint contract or exit cases proved
 strunb.ads:467:09: info: contract case proved
+strunb.ads:467:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:467:09: info: invariant check proved
 strunb.ads:474:09: info: contract case proved
+strunb.ads:474:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:474:09: info: invariant check proved
+strunb.ads:476:33: info: for "Source" before the call at strunb.ads:88
+strunb.ads:476:33: info: invariant check proved
 strunb.ads:476:49: info: overflow check proved
 strunb.ads:476:59: info: range check proved
 strunb.ads:477:22: info: precondition proved
+strunb.ads:477:30: info: for "Source" before the call at strunb.ads:124
+strunb.ads:477:30: info: invariant check proved
+strunb.ads:481:32: info: for "Source" before the call at strunb.ads:88
+strunb.ads:481:32: info: invariant check proved
 strunb.ads:481:48: info: overflow check proved
 strunb.ads:481:58: info: range check proved
 strunb.ads:485:28: info: precondition proved
+strunb.ads:486:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:486:16: info: invariant check proved
+strunb.ads:493:34: info: for "Source" before the call at strunb.ads:88
+strunb.ads:493:34: info: invariant check proved
+strunb.ads:497:40: info: for "Source" before the call at strunb.ads:88
+strunb.ads:497:40: info: invariant check proved
 strunb.ads:497:56: info: overflow check proved
 strunb.ads:497:65: info: range check proved
 strunb.ads:498:35: info: precondition proved
+strunb.ads:499:22: info: for "Source" before the call at strunb.ads:124
+strunb.ads:499:22: info: invariant check proved
 strunb.ads:503:09: info: contract case proved
 strunb.ads:506:06: info: data dependencies proved
 strunb.ads:508:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
 strunb.ads:514:24: info: postcondition proved
+strunb.ads:514:40: info: for "Source" before the call at strunb.ads:88
+strunb.ads:514:40: info: invariant check proved
 strunb.ads:520:09: info: contract case proved
+strunb.ads:520:23: info: for "Source" before the call at strunb.ads:124
+strunb.ads:520:23: info: invariant check proved
 strunb.ads:527:09: info: contract case proved
+strunb.ads:531:32: info: for "Source" before the call at strunb.ads:88
+strunb.ads:531:32: info: invariant check proved
+strunb.ads:538:29: info: for "Source" before the call at strunb.ads:224
+strunb.ads:538:29: info: invariant check proved
 strunb.ads:538:29: info: precondition proved
 strunb.ads:538:51: info: range check proved
+strunb.ads:545:34: info: for "Source" before the call at strunb.ads:88
+strunb.ads:545:34: info: invariant check proved
+strunb.ads:549:39: info: for "Source" before the call at strunb.ads:224
+strunb.ads:549:39: info: invariant check proved
 strunb.ads:549:39: info: precondition proved
 strunb.ads:550:06: info: data dependencies proved
 strunb.ads:552:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
+strunb.ads:560:12: info: for "Source" before the call at strunb.ads:88
+strunb.ads:560:12: info: invariant check proved
+strunb.ads:560:46: info: for "Source" before the call at strunb.ads:88
+strunb.ads:560:46: info: invariant check proved
 strunb.ads:562:24: info: postcondition proved
+strunb.ads:562:40: info: for "Source" before the call at strunb.ads:88
+strunb.ads:562:40: info: invariant check proved
 strunb.ads:563:06: info: disjoint contract or exit cases proved
 strunb.ads:567:09: info: contract case proved
+strunb.ads:567:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:567:09: info: invariant check proved
 strunb.ads:574:09: info: contract case proved
+strunb.ads:574:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:574:09: info: invariant check proved
+strunb.ads:578:44: info: for "Source" before the call at strunb.ads:88
+strunb.ads:578:44: info: invariant check proved
 strunb.ads:579:17: info: overflow check proved
 strunb.ads:579:27: info: range check proved
 strunb.ads:580:21: info: precondition proved
+strunb.ads:580:29: info: for "Source" before the call at strunb.ads:124
+strunb.ads:580:29: info: invariant check proved
+strunb.ads:586:41: info: for "Source" before the call at strunb.ads:88
+strunb.ads:586:41: info: invariant check proved
 strunb.ads:587:14: info: overflow check proved
 strunb.ads:587:24: info: range check proved
 strunb.ads:591:28: info: precondition proved
+strunb.ads:592:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:592:16: info: invariant check proved
+strunb.ads:599:34: info: for "Source" before the call at strunb.ads:88
+strunb.ads:599:34: info: invariant check proved
 strunb.ads:603:45: info: overflow check proved
 strunb.ads:603:54: info: range check proved
 strunb.ads:604:35: info: precondition proved
+strunb.ads:605:22: info: for "Source" before the call at strunb.ads:124
+strunb.ads:605:22: info: invariant check proved
 strunb.ads:609:09: info: contract case proved
 strunb.ads:612:06: info: data dependencies proved
 strunb.ads:615:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
+strunb.ads:623:12: info: for "Source" before the call at strunb.ads:88
+strunb.ads:623:12: info: invariant check proved
+strunb.ads:623:46: info: for "Source" before the call at strunb.ads:88
+strunb.ads:623:46: info: invariant check proved
 strunb.ads:626:24: info: postcondition proved
+strunb.ads:626:40: info: for "Source" before the call at strunb.ads:88
+strunb.ads:626:40: info: invariant check proved
 strunb.ads:627:06: info: disjoint contract or exit cases proved
 strunb.ads:631:09: info: contract case proved
+strunb.ads:631:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:631:09: info: invariant check proved
 strunb.ads:638:09: info: contract case proved
+strunb.ads:638:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:638:09: info: invariant check proved
+strunb.ads:642:44: info: for "Source" before the call at strunb.ads:88
+strunb.ads:642:44: info: invariant check proved
 strunb.ads:643:17: info: overflow check proved
 strunb.ads:643:27: info: range check proved
 strunb.ads:644:21: info: precondition proved
+strunb.ads:644:29: info: for "Source" before the call at strunb.ads:124
+strunb.ads:644:29: info: invariant check proved
+strunb.ads:650:41: info: for "Source" before the call at strunb.ads:88
+strunb.ads:650:41: info: invariant check proved
 strunb.ads:651:14: info: overflow check proved
 strunb.ads:651:24: info: range check proved
 strunb.ads:655:28: info: precondition proved
+strunb.ads:656:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:656:16: info: invariant check proved
+strunb.ads:663:34: info: for "Source" before the call at strunb.ads:88
+strunb.ads:663:34: info: invariant check proved
 strunb.ads:667:45: info: overflow check proved
 strunb.ads:667:54: info: range check proved
 strunb.ads:668:35: info: precondition proved
+strunb.ads:669:22: info: for "Source" before the call at strunb.ads:124
+strunb.ads:669:22: info: invariant check proved
 strunb.ads:673:09: info: contract case proved
 strunb.ads:676:06: info: data dependencies proved
 strunb.ads:679:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
+strunb.ads:687:12: info: for "Source" before the call at strunb.ads:88
+strunb.ads:687:12: info: invariant check proved
+strunb.ads:687:46: info: for "Source" before the call at strunb.ads:88
+strunb.ads:687:46: info: invariant check proved
 strunb.ads:688:24: info: postcondition proved
+strunb.ads:688:40: info: for "Source" before the call at strunb.ads:88
+strunb.ads:688:40: info: invariant check proved
 strunb.ads:695:09: info: contract case proved
+strunb.ads:695:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:695:09: info: invariant check proved
+strunb.ads:697:32: info: for "Source" before the call at strunb.ads:88
+strunb.ads:697:32: info: invariant check proved
+strunb.ads:699:50: info: for "Source" before the call at strunb.ads:224
+strunb.ads:699:50: info: invariant check proved
 strunb.ads:699:50: info: precondition proved
 strunb.ads:706:09: info: contract case proved
+strunb.ads:710:32: info: for "Source" before the call at strunb.ads:88
+strunb.ads:710:32: info: invariant check proved
+strunb.ads:720:29: info: for "Source" before the call at strunb.ads:224
+strunb.ads:720:29: info: invariant check proved
 strunb.ads:720:29: info: precondition proved
 strunb.ads:720:51: info: range check proved
+strunb.ads:727:34: info: for "Source" before the call at strunb.ads:88
+strunb.ads:727:34: info: invariant check proved
+strunb.ads:733:39: info: for "Source" before the call at strunb.ads:224
+strunb.ads:733:39: info: invariant check proved
 strunb.ads:733:39: info: precondition proved
 strunb.ads:734:06: info: data dependencies proved
 strunb.ads:737:13: info: implicit aspect Always_Terminates on "Index_Non_Blank" has been proved, subprogram will terminate
 strunb.ads:741:24: info: postcondition proved
+strunb.ads:741:50: info: for "Source" before the call at strunb.ads:88
+strunb.ads:741:50: info: invariant check proved
 strunb.ads:747:09: info: contract case proved
+strunb.ads:747:23: info: for "Source" before the call at strunb.ads:124
+strunb.ads:747:23: info: invariant check proved
 strunb.ads:753:09: info: contract case proved
+strunb.ads:757:42: info: for "Source" before the call at strunb.ads:88
+strunb.ads:757:42: info: invariant check proved
+strunb.ads:761:22: info: for "Source" before the call at strunb.ads:224
+strunb.ads:761:22: info: invariant check proved
 strunb.ads:761:22: info: precondition proved
 strunb.ads:761:54: info: range check proved
+strunb.ads:768:34: info: for "Source" before the call at strunb.ads:88
+strunb.ads:768:34: info: invariant check proved
+strunb.ads:772:24: info: for "Source" before the call at strunb.ads:224
+strunb.ads:772:24: info: invariant check proved
 strunb.ads:772:24: info: precondition proved
 strunb.ads:773:06: info: data dependencies proved
 strunb.ads:775:13: info: implicit aspect Always_Terminates on "Index_Non_Blank" has been proved, subprogram will terminate
+strunb.ads:781:12: info: for "Source" before the call at strunb.ads:88
+strunb.ads:781:12: info: invariant check proved
+strunb.ads:781:46: info: for "Source" before the call at strunb.ads:88
+strunb.ads:781:46: info: invariant check proved
 strunb.ads:782:24: info: postcondition proved
+strunb.ads:782:50: info: for "Source" before the call at strunb.ads:88
+strunb.ads:782:50: info: invariant check proved
 strunb.ads:789:09: info: contract case proved
+strunb.ads:789:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:789:09: info: invariant check proved
+strunb.ads:791:32: info: for "Source" before the call at strunb.ads:88
+strunb.ads:791:32: info: invariant check proved
+strunb.ads:793:19: info: for "Source" before the call at strunb.ads:224
+strunb.ads:793:19: info: invariant check proved
 strunb.ads:793:19: info: precondition proved
 strunb.ads:800:09: info: contract case proved
+strunb.ads:804:42: info: for "Source" before the call at strunb.ads:88
+strunb.ads:804:42: info: invariant check proved
+strunb.ads:812:22: info: for "Source" before the call at strunb.ads:224
+strunb.ads:812:22: info: invariant check proved
 strunb.ads:812:22: info: precondition proved
 strunb.ads:812:54: info: range check proved
+strunb.ads:819:34: info: for "Source" before the call at strunb.ads:88
+strunb.ads:819:34: info: invariant check proved
+strunb.ads:825:24: info: for "Source" before the call at strunb.ads:224
+strunb.ads:825:24: info: invariant check proved
 strunb.ads:825:24: info: precondition proved
 strunb.ads:826:06: info: data dependencies proved
 strunb.ads:829:13: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate
@@ -972,14 +1268,36 @@ strunb.ads:849:06: info: data dependencies proved
 strunb.ads:851:14: info: aspect Always_Terminates on "Find_Token" has been proved, subprogram will terminate
 strunb.ads:856:07: info: initialization of "First" proved
 strunb.ads:857:07: info: initialization of "Last" proved
+strunb.ads:860:12: info: for "Source" before the call at strunb.ads:88
+strunb.ads:860:12: info: invariant check proved
+strunb.ads:860:46: info: for "Source" before the call at strunb.ads:88
+strunb.ads:860:46: info: invariant check proved
 strunb.ads:867:09: info: contract case proved
+strunb.ads:867:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:867:09: info: invariant check proved
+strunb.ads:869:35: info: for "Source" before the call at strunb.ads:88
+strunb.ads:869:35: info: invariant check proved
+strunb.ads:870:47: info: for "Source" before the call at strunb.ads:224
+strunb.ads:870:47: info: invariant check proved
 strunb.ads:870:47: info: precondition proved
 strunb.ads:870:64: info: range check proved
 strunb.ads:876:09: info: contract case proved
+strunb.ads:880:28: info: for "Source" before the call at strunb.ads:88
+strunb.ads:880:28: info: invariant check proved
+strunb.ads:881:39: info: for "Source" before the call at strunb.ads:88
+strunb.ads:881:39: info: invariant check proved
+strunb.ads:888:49: info: for "Source" before the call at strunb.ads:224
+strunb.ads:888:49: info: invariant check proved
 strunb.ads:888:49: info: precondition proved
 strunb.ads:888:66: info: range check proved
+strunb.ads:895:48: info: for "Source" before the call at strunb.ads:224
+strunb.ads:895:48: info: invariant check proved
 strunb.ads:895:48: info: precondition proved
 strunb.ads:895:65: info: range check proved
+strunb.ads:901:26: info: for "Source" before the call at strunb.ads:88
+strunb.ads:901:26: info: invariant check proved
+strunb.ads:904:33: info: for "Source" before the call at strunb.ads:224
+strunb.ads:904:33: info: invariant check proved
 strunb.ads:904:33: info: precondition proved
 strunb.ads:904:55: info: overflow check proved
 strunb.ads:905:06: info: data dependencies proved
@@ -987,345 +1305,863 @@ strunb.ads:908:14: info: aspect Always_Terminates on "Find_Token" has been prove
 strunb.ads:912:07: info: initialization of "First" proved
 strunb.ads:913:07: info: initialization of "Last" proved
 strunb.ads:921:09: info: contract case proved
+strunb.ads:921:09: info: for "Source" before the call at strunb.ads:88
+strunb.ads:921:09: info: invariant check proved
+strunb.ads:923:32: info: for "Source" before the call at strunb.ads:88
+strunb.ads:923:32: info: invariant check proved
+strunb.ads:924:47: info: for "Source" before the call at strunb.ads:224
+strunb.ads:924:47: info: invariant check proved
 strunb.ads:924:47: info: precondition proved
 strunb.ads:930:09: info: contract case proved
+strunb.ads:934:25: info: for "Source" before the call at strunb.ads:88
+strunb.ads:934:25: info: invariant check proved
+strunb.ads:935:39: info: for "Source" before the call at strunb.ads:88
+strunb.ads:935:39: info: invariant check proved
+strunb.ads:942:49: info: for "Source" before the call at strunb.ads:224
+strunb.ads:942:49: info: invariant check proved
 strunb.ads:942:49: info: precondition proved
+strunb.ads:949:48: info: for "Source" before the call at strunb.ads:224
+strunb.ads:949:48: info: invariant check proved
 strunb.ads:949:48: info: precondition proved
 strunb.ads:949:65: info: range check proved
+strunb.ads:955:26: info: for "Source" before the call at strunb.ads:88
+strunb.ads:955:26: info: invariant check proved
+strunb.ads:958:33: info: for "Source" before the call at strunb.ads:224
+strunb.ads:958:33: info: invariant check proved
 strunb.ads:958:33: info: precondition proved
 strunb.ads:958:55: info: overflow check proved
 strunb.ads:959:06: info: data dependencies proved
+strunb.ads:970:13: info: for the result of "Translate" at strunb.ads:970
 strunb.ads:970:13: info: implicit aspect Always_Terminates on "Translate" has been proved, subprogram will terminate
+strunb.ads:970:13: info: invariant check proved
+strunb.ads:974:16: info: for "Source" before the call at strunb.ads:88
+strunb.ads:974:16: info: invariant check proved
 strunb.ads:974:16: info: postcondition proved
+strunb.ads:974:44: info: for "Source" before the call at strunb.ads:88
+strunb.ads:974:44: info: invariant check proved
+strunb.ads:976:29: info: for "Source" before the call at strunb.ads:88
+strunb.ads:976:29: info: invariant check proved
+strunb.ads:977:13: info: for "Source" before the call at strunb.ads:224
+strunb.ads:977:13: info: invariant check proved
 strunb.ads:977:13: info: precondition proved
+strunb.ads:978:48: info: for "Source" before the call at strunb.ads:224
+strunb.ads:978:48: info: invariant check proved
 strunb.ads:978:48: info: precondition proved
 strunb.ads:979:06: info: data dependencies proved
 strunb.ads:981:14: info: aspect Always_Terminates on "Translate" has been proved, subprogram will terminate
+strunb.ads:981:14: info: for "Source" at the end of "Translate" at strunb.ads:982
+strunb.ads:981:14: info: invariant check proved
+strunb.ads:985:16: info: for "Source" before the call at strunb.ads:88
+strunb.ads:985:16: info: invariant check proved
 strunb.ads:985:16: info: postcondition proved
+strunb.ads:985:34: info: for "Source" before the call at strunb.ads:88
+strunb.ads:985:34: info: invariant check proved
+strunb.ads:987:29: info: for "Source" before the call at strunb.ads:88
+strunb.ads:987:29: info: invariant check proved
+strunb.ads:988:13: info: for "Source" before the call at strunb.ads:224
+strunb.ads:988:13: info: invariant check proved
 strunb.ads:988:13: info: precondition proved
+strunb.ads:989:48: info: for "Source" before the call at strunb.ads:124
+strunb.ads:989:48: info: invariant check proved
 strunb.ads:989:72: info: index check proved
 strunb.ads:990:06: info: data dependencies proved
+strunb.ads:992:13: info: for the result of "Translate" at strunb.ads:992
 strunb.ads:992:13: info: implicit aspect Always_Terminates on "Translate" has been proved, subprogram will terminate
+strunb.ads:992:13: info: invariant check proved
+strunb.ads:997:16: info: for "Source" before the call at strunb.ads:88
+strunb.ads:997:16: info: invariant check proved
 strunb.ads:997:16: info: postcondition proved
+strunb.ads:997:44: info: for "Source" before the call at strunb.ads:88
+strunb.ads:997:44: info: invariant check proved
+strunb.ads:999:29: info: for "Source" before the call at strunb.ads:88
+strunb.ads:999:29: info: invariant check proved
+strunb.ads:1000:13: info: for "Source" before the call at strunb.ads:224
+strunb.ads:1000:13: info: invariant check proved
 strunb.ads:1000:13: info: precondition proved
 strunb.ads:1000:45: info: pointer dereference check proved
+strunb.ads:1000:54: info: for "Source" before the call at strunb.ads:224
+strunb.ads:1000:54: info: invariant check proved
 strunb.ads:1000:54: info: precondition proved
 strunb.ads:1001:06: info: data dependencies proved
 strunb.ads:1003:14: info: aspect Always_Terminates on "Translate" has been proved, subprogram will terminate
+strunb.ads:1003:14: info: for "Source" at the end of "Translate" at strunb.ads:1004
+strunb.ads:1003:14: info: invariant check proved
+strunb.ads:1008:16: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1008:16: info: invariant check proved
 strunb.ads:1008:16: info: postcondition proved
+strunb.ads:1008:34: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1008:34: info: invariant check proved
+strunb.ads:1010:29: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1010:29: info: invariant check proved
+strunb.ads:1011:13: info: for "Source" before the call at strunb.ads:224
+strunb.ads:1011:13: info: invariant check proved
 strunb.ads:1011:13: info: precondition proved
 strunb.ads:1011:35: info: pointer dereference check proved
+strunb.ads:1011:44: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1011:44: info: invariant check proved
 strunb.ads:1011:68: info: index check proved
 strunb.ads:1012:06: info: data dependencies proved
+strunb.ads:1023:13: info: for the result of "Replace_Slice" at strunb.ads:1023
 strunb.ads:1023:13: info: implicit aspect Always_Terminates on "Replace_Slice" has been proved, subprogram will terminate
+strunb.ads:1023:13: info: invariant check proved
+strunb.ads:1030:19: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1030:19: info: invariant check proved
 strunb.ads:1033:38: info: overflow check proved
 strunb.ads:1033:42: info: range check proved
 strunb.ads:1034:23: info: overflow check proved
+strunb.ads:1034:38: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1034:38: info: invariant check proved
 strunb.ads:1034:54: info: overflow check proved
+strunb.ads:1035:25: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1035:25: info: invariant check proved
 strunb.ads:1035:57: info: overflow check proved
 strunb.ads:1035:61: info: range check proved
 strunb.ads:1043:09: info: contract case proved
+strunb.ads:1047:11: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1047:11: info: invariant check proved
 strunb.ads:1048:21: info: overflow check proved
 strunb.ads:1048:25: info: range check proved
 strunb.ads:1048:33: info: overflow check proved
+strunb.ads:1048:48: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1048:48: info: invariant check proved
 strunb.ads:1048:64: info: overflow check proved
+strunb.ads:1053:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1053:15: info: invariant check proved
 strunb.ads:1053:15: info: precondition proved
+strunb.ads:1054:17: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1054:17: info: invariant check proved
 strunb.ads:1054:17: info: precondition proved
+strunb.ads:1056:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1056:15: info: invariant check proved
 strunb.ads:1056:15: info: precondition proved
 strunb.ads:1056:57: info: overflow check proved
 strunb.ads:1056:61: info: range check proved
+strunb.ads:1062:26: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1062:26: info: invariant check proved
+strunb.ads:1064:18: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1064:18: info: invariant check proved
 strunb.ads:1064:18: info: precondition proved
 strunb.ads:1065:24: info: overflow check proved
 strunb.ads:1065:28: info: range check proved
+strunb.ads:1065:37: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1065:37: info: invariant check proved
+strunb.ads:1066:22: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1066:22: info: invariant check proved
 strunb.ads:1066:22: info: precondition proved
 strunb.ads:1066:42: info: overflow check proved
+strunb.ads:1066:47: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1066:47: info: invariant check proved
 strunb.ads:1071:09: info: contract case proved
+strunb.ads:1075:11: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1075:11: info: invariant check proved
+strunb.ads:1075:43: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1075:43: info: invariant check proved
 strunb.ads:1075:59: info: overflow check proved
 strunb.ads:1075:63: info: range check proved
+strunb.ads:1080:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1080:15: info: invariant check proved
 strunb.ads:1080:15: info: precondition proved
+strunb.ads:1081:17: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1081:17: info: invariant check proved
 strunb.ads:1081:17: info: precondition proved
+strunb.ads:1083:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1083:15: info: invariant check proved
 strunb.ads:1083:15: info: precondition proved
 strunb.ads:1083:57: info: overflow check proved
 strunb.ads:1083:61: info: range check proved
+strunb.ads:1089:25: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1089:25: info: invariant check proved
+strunb.ads:1091:17: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1091:17: info: invariant check proved
 strunb.ads:1091:17: info: precondition proved
 strunb.ads:1092:23: info: overflow check proved
 strunb.ads:1092:27: info: range check proved
+strunb.ads:1092:36: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1092:36: info: invariant check proved
+strunb.ads:1093:21: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1093:21: info: invariant check proved
 strunb.ads:1093:21: info: precondition proved
+strunb.ads:1093:41: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1093:41: info: invariant check proved
 strunb.ads:1094:06: info: data dependencies proved
 strunb.ads:1105:14: info: aspect Always_Terminates on "Replace_Slice" has been proved, subprogram will terminate
+strunb.ads:1105:14: info: for "Source" at the end of "Replace_Slice" at strunb.ads:1106
+strunb.ads:1105:14: info: invariant check proved
+strunb.ads:1112:19: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1112:19: info: invariant check proved
 strunb.ads:1115:38: info: overflow check proved
 strunb.ads:1115:42: info: range check proved
 strunb.ads:1116:23: info: overflow check proved
+strunb.ads:1116:38: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1116:38: info: invariant check proved
 strunb.ads:1116:54: info: overflow check proved
+strunb.ads:1117:25: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1117:25: info: invariant check proved
 strunb.ads:1117:57: info: overflow check proved
 strunb.ads:1117:61: info: range check proved
 strunb.ads:1125:09: info: contract case proved
+strunb.ads:1129:11: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1129:11: info: invariant check proved
 strunb.ads:1130:21: info: overflow check proved
 strunb.ads:1130:25: info: range check proved
 strunb.ads:1130:33: info: overflow check proved
+strunb.ads:1130:48: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1130:48: info: invariant check proved
 strunb.ads:1130:68: info: overflow check proved
+strunb.ads:1134:22: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1134:22: info: invariant check proved
 strunb.ads:1134:22: info: precondition proved
+strunb.ads:1135:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1135:15: info: invariant check proved
 strunb.ads:1135:15: info: precondition proved
+strunb.ads:1136:22: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1136:22: info: invariant check proved
 strunb.ads:1136:22: info: precondition proved
 strunb.ads:1136:50: info: overflow check proved
 strunb.ads:1136:54: info: range check proved
+strunb.ads:1142:26: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1142:26: info: invariant check proved
+strunb.ads:1143:21: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1143:21: info: invariant check proved
 strunb.ads:1143:21: info: precondition proved
 strunb.ads:1143:40: info: overflow check proved
 strunb.ads:1143:44: info: range check proved
+strunb.ads:1143:53: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1143:53: info: invariant check proved
+strunb.ads:1144:18: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1144:18: info: invariant check proved
 strunb.ads:1144:18: info: precondition proved
+strunb.ads:1149:31: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1149:31: info: invariant check proved
 strunb.ads:1149:57: info: overflow check proved
+strunb.ads:1150:20: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1150:20: info: invariant check proved
 strunb.ads:1155:09: info: contract case proved
+strunb.ads:1159:11: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1159:11: info: invariant check proved
+strunb.ads:1159:29: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1159:29: info: invariant check proved
 strunb.ads:1159:49: info: overflow check proved
 strunb.ads:1159:53: info: range check proved
+strunb.ads:1163:22: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1163:22: info: invariant check proved
 strunb.ads:1163:22: info: precondition proved
+strunb.ads:1164:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1164:15: info: invariant check proved
 strunb.ads:1164:15: info: precondition proved
+strunb.ads:1165:22: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1165:22: info: invariant check proved
 strunb.ads:1165:22: info: precondition proved
 strunb.ads:1165:50: info: overflow check proved
 strunb.ads:1165:54: info: range check proved
+strunb.ads:1171:25: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1171:25: info: invariant check proved
+strunb.ads:1172:21: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1172:21: info: invariant check proved
 strunb.ads:1172:21: info: precondition proved
 strunb.ads:1172:40: info: overflow check proved
 strunb.ads:1172:44: info: range check proved
+strunb.ads:1172:53: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1172:53: info: invariant check proved
+strunb.ads:1173:18: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1173:18: info: invariant check proved
 strunb.ads:1173:18: info: precondition proved
+strunb.ads:1173:38: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1173:38: info: invariant check proved
 strunb.ads:1174:06: info: data dependencies proved
+strunb.ads:1176:13: info: for the result of "Insert" at strunb.ads:1176
 strunb.ads:1176:13: info: implicit aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
+strunb.ads:1176:13: info: invariant check proved
+strunb.ads:1181:30: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1181:30: info: invariant check proved
 strunb.ads:1182:35: info: range check proved
 strunb.ads:1182:59: info: overflow check proved
+strunb.ads:1182:61: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1182:61: info: invariant check proved
+strunb.ads:1186:08: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1186:08: info: invariant check proved
 strunb.ads:1186:08: info: postcondition proved
+strunb.ads:1186:33: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1186:33: info: invariant check proved
 strunb.ads:1186:49: info: overflow check proved
 strunb.ads:1186:59: info: range check proved
+strunb.ads:1191:12: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1191:12: info: invariant check proved
 strunb.ads:1191:12: info: precondition proved
+strunb.ads:1191:51: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1191:51: info: invariant check proved
 strunb.ads:1191:51: info: precondition proved
+strunb.ads:1193:12: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1193:12: info: invariant check proved
 strunb.ads:1193:12: info: precondition proved
 strunb.ads:1193:53: info: overflow check proved
 strunb.ads:1193:63: info: range check proved
+strunb.ads:1200:26: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1200:26: info: invariant check proved
+strunb.ads:1201:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1201:15: info: invariant check proved
 strunb.ads:1201:15: info: precondition proved
 strunb.ads:1201:44: info: overflow check proved
 strunb.ads:1201:54: info: range check proved
+strunb.ads:1202:17: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1202:17: info: invariant check proved
+strunb.ads:1203:19: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1203:19: info: invariant check proved
 strunb.ads:1203:19: info: precondition proved
+strunb.ads:1203:42: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1203:42: info: invariant check proved
 strunb.ads:1204:06: info: data dependencies proved
 strunb.ads:1210:14: info: aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
+strunb.ads:1210:14: info: for "Source" at the end of "Insert" at strunb.ads:1211
+strunb.ads:1210:14: info: invariant check proved
+strunb.ads:1215:30: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1215:30: info: invariant check proved
 strunb.ads:1216:35: info: range check proved
 strunb.ads:1216:59: info: overflow check proved
+strunb.ads:1216:61: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1216:61: info: invariant check proved
+strunb.ads:1220:08: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1220:08: info: invariant check proved
 strunb.ads:1220:08: info: postcondition proved
+strunb.ads:1220:26: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1220:26: info: invariant check proved
 strunb.ads:1220:46: info: overflow check proved
 strunb.ads:1220:56: info: range check proved
+strunb.ads:1225:12: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1225:12: info: invariant check proved
 strunb.ads:1225:12: info: precondition proved
+strunb.ads:1225:44: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1225:44: info: invariant check proved
 strunb.ads:1225:44: info: precondition proved
+strunb.ads:1227:12: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1227:12: info: invariant check proved
 strunb.ads:1227:12: info: precondition proved
 strunb.ads:1227:46: info: overflow check proved
 strunb.ads:1227:56: info: range check proved
+strunb.ads:1233:26: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1233:26: info: invariant check proved
+strunb.ads:1234:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1234:15: info: invariant check proved
 strunb.ads:1234:15: info: precondition proved
 strunb.ads:1234:37: info: overflow check proved
 strunb.ads:1234:47: info: range check proved
+strunb.ads:1234:56: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1234:56: info: invariant check proved
+strunb.ads:1235:17: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1235:17: info: invariant check proved
 strunb.ads:1235:17: info: precondition proved
+strunb.ads:1235:40: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1235:40: info: invariant check proved
 strunb.ads:1236:06: info: data dependencies proved
+strunb.ads:1238:13: info: for the result of "Overwrite" at strunb.ads:1238
 strunb.ads:1238:13: info: implicit aspect Always_Terminates on "Overwrite" has been proved, subprogram will terminate
+strunb.ads:1238:13: info: invariant check proved
+strunb.ads:1243:32: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1243:32: info: invariant check proved
 strunb.ads:1244:35: info: range check proved
 strunb.ads:1244:59: info: overflow check proved
+strunb.ads:1248:08: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1248:08: info: invariant check proved
 strunb.ads:1248:08: info: postcondition proved
+strunb.ads:1249:23: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1249:23: info: invariant check proved
 strunb.ads:1249:53: info: overflow check proved
 strunb.ads:1249:63: info: range check proved
+strunb.ads:1254:12: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1254:12: info: invariant check proved
 strunb.ads:1254:12: info: precondition proved
+strunb.ads:1255:14: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1255:14: info: invariant check proved
 strunb.ads:1255:14: info: precondition proved
+strunb.ads:1257:12: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1257:12: info: invariant check proved
 strunb.ads:1257:12: info: precondition proved
 strunb.ads:1257:60: info: overflow check proved
 strunb.ads:1257:70: info: range check proved
 strunb.ads:1260:29: info: overflow check proved
 strunb.ads:1260:39: info: range check proved
+strunb.ads:1260:49: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1260:49: info: invariant check proved
+strunb.ads:1265:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1265:15: info: invariant check proved
 strunb.ads:1265:15: info: precondition proved
 strunb.ads:1266:26: info: overflow check proved
 strunb.ads:1266:36: info: range check proved
+strunb.ads:1266:45: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1266:45: info: invariant check proved
+strunb.ads:1267:19: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1267:19: info: invariant check proved
 strunb.ads:1267:19: info: precondition proved
 strunb.ads:1268:30: info: overflow check proved
 strunb.ads:1268:40: info: range check proved
+strunb.ads:1268:49: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1268:49: info: invariant check proved
 strunb.ads:1269:06: info: data dependencies proved
 strunb.ads:1271:14: info: aspect Always_Terminates on "Overwrite" has been proved, subprogram will terminate
+strunb.ads:1271:14: info: for "Source" at the end of "Overwrite" at strunb.ads:1272
+strunb.ads:1271:14: info: invariant check proved
+strunb.ads:1276:32: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1276:32: info: invariant check proved
 strunb.ads:1277:35: info: range check proved
 strunb.ads:1277:59: info: overflow check proved
+strunb.ads:1281:08: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1281:08: info: invariant check proved
 strunb.ads:1281:08: info: postcondition proved
+strunb.ads:1282:23: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1282:23: info: invariant check proved
 strunb.ads:1282:57: info: overflow check proved
 strunb.ads:1282:67: info: range check proved
+strunb.ads:1287:12: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1287:12: info: invariant check proved
 strunb.ads:1287:12: info: precondition proved
+strunb.ads:1287:46: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1287:46: info: invariant check proved
 strunb.ads:1287:46: info: precondition proved
+strunb.ads:1289:12: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1289:12: info: invariant check proved
 strunb.ads:1289:12: info: precondition proved
 strunb.ads:1289:50: info: overflow check proved
 strunb.ads:1289:60: info: range check proved
 strunb.ads:1291:29: info: overflow check proved
 strunb.ads:1291:39: info: range check proved
+strunb.ads:1291:49: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1291:49: info: invariant check proved
+strunb.ads:1296:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1296:15: info: invariant check proved
 strunb.ads:1296:15: info: precondition proved
 strunb.ads:1297:26: info: overflow check proved
 strunb.ads:1297:36: info: range check proved
+strunb.ads:1297:45: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1297:45: info: invariant check proved
+strunb.ads:1298:19: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1298:19: info: invariant check proved
 strunb.ads:1298:19: info: precondition proved
 strunb.ads:1303:38: info: overflow check proved
 strunb.ads:1303:48: info: range check proved
+strunb.ads:1303:58: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1303:58: info: invariant check proved
 strunb.ads:1304:36: info: overflow check proved
 strunb.ads:1304:46: info: range check proved
+strunb.ads:1306:21: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1306:21: info: invariant check proved
 strunb.ads:1307:06: info: data dependencies proved
+strunb.ads:1309:13: info: for the result of "Delete" at strunb.ads:1309
 strunb.ads:1309:13: info: implicit aspect Always_Terminates on "Delete" has been proved, subprogram will terminate
+strunb.ads:1309:13: info: invariant check proved
+strunb.ads:1314:61: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1314:61: info: invariant check proved
 strunb.ads:1316:09: info: contract case proved
+strunb.ads:1317:11: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1317:11: info: invariant check proved
 strunb.ads:1318:22: info: overflow check proved
+strunb.ads:1318:37: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1318:37: info: invariant check proved
 strunb.ads:1318:53: info: overflow check proved
+strunb.ads:1320:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1320:15: info: invariant check proved
 strunb.ads:1320:15: info: precondition proved
+strunb.ads:1320:52: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1320:52: info: invariant check proved
 strunb.ads:1320:52: info: precondition proved
+strunb.ads:1322:29: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1322:29: info: invariant check proved
+strunb.ads:1323:18: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1323:18: info: invariant check proved
 strunb.ads:1323:18: info: precondition proved
+strunb.ads:1323:46: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1323:46: info: invariant check proved
+strunb.ads:1324:20: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1324:20: info: invariant check proved
 strunb.ads:1324:20: info: precondition proved
 strunb.ads:1324:43: info: overflow check proved
+strunb.ads:1324:48: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1324:48: info: invariant check proved
 strunb.ads:1325:09: info: contract case proved
+strunb.ads:1326:28: info: for "Left" before the call at strunb.ads:290
+strunb.ads:1326:28: info: for "Right" before the call at strunb.ads:291
+strunb.ads:1326:28: info: invariant check proved
+strunb.ads:1326:28: info: invariant check proved
 strunb.ads:1327:06: info: data dependencies proved
 strunb.ads:1329:14: info: aspect Always_Terminates on "Delete" has been proved, subprogram will terminate
+strunb.ads:1329:14: info: for "Source" at the end of "Delete" at strunb.ads:1330
+strunb.ads:1329:14: info: invariant check proved
+strunb.ads:1334:61: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1334:61: info: invariant check proved
 strunb.ads:1336:09: info: contract case proved
+strunb.ads:1337:11: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1337:11: info: invariant check proved
 strunb.ads:1338:22: info: overflow check proved
+strunb.ads:1338:37: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1338:37: info: invariant check proved
 strunb.ads:1338:57: info: overflow check proved
+strunb.ads:1340:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1340:15: info: invariant check proved
 strunb.ads:1340:15: info: precondition proved
+strunb.ads:1341:17: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1341:17: info: invariant check proved
 strunb.ads:1341:35: info: range check proved
+strunb.ads:1343:29: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1343:29: info: invariant check proved
+strunb.ads:1344:17: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1344:17: info: invariant check proved
 strunb.ads:1344:17: info: precondition proved
+strunb.ads:1344:38: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1344:38: info: invariant check proved
+strunb.ads:1345:19: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1345:19: info: invariant check proved
 strunb.ads:1345:37: info: range check proved
 strunb.ads:1345:51: info: overflow check proved
+strunb.ads:1345:58: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1345:58: info: invariant check proved
 strunb.ads:1346:09: info: contract case proved
+strunb.ads:1347:11: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1347:11: info: invariant check proved
+strunb.ads:1347:32: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1347:32: info: invariant check proved
 strunb.ads:1348:06: info: data dependencies proved
+strunb.ads:1350:13: info: for the result of "Trim" at strunb.ads:1350
 strunb.ads:1350:13: info: implicit aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1350:13: info: invariant check proved
 strunb.ads:1358:09: info: contract case proved
+strunb.ads:1358:23: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1358:23: info: invariant check proved
+strunb.ads:1360:11: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1360:11: info: invariant check proved
 strunb.ads:1364:09: info: contract case proved
+strunb.ads:1369:22: info: for "Source" before the call at strunb.ads:738
+strunb.ads:1369:22: info: invariant check proved
 strunb.ads:1369:22: info: range check proved
+strunb.ads:1371:37: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1371:37: info: invariant check proved
 strunb.ads:1371:37: info: range check proved
+strunb.ads:1372:22: info: for "Source" before the call at strunb.ads:738
+strunb.ads:1372:22: info: invariant check proved
 strunb.ads:1372:22: info: range check proved
+strunb.ads:1374:14: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1374:14: info: invariant check proved
+strunb.ads:1374:40: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1374:40: info: invariant check proved
 strunb.ads:1374:40: info: precondition proved
 strunb.ads:1375:06: info: data dependencies proved
 strunb.ads:1377:14: info: aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1377:14: info: for "Source" at the end of "Trim" at strunb.ads:1378
+strunb.ads:1377:14: info: invariant check proved
 strunb.ads:1385:09: info: contract case proved
+strunb.ads:1385:23: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1385:23: info: invariant check proved
+strunb.ads:1387:11: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1387:11: info: invariant check proved
 strunb.ads:1391:09: info: contract case proved
+strunb.ads:1396:22: info: for "Source" before the call at strunb.ads:738
+strunb.ads:1396:22: info: invariant check proved
 strunb.ads:1396:55: info: range check proved
+strunb.ads:1398:37: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1398:37: info: invariant check proved
 strunb.ads:1398:52: info: range check proved
+strunb.ads:1399:22: info: for "Source" before the call at strunb.ads:738
+strunb.ads:1399:22: info: invariant check proved
 strunb.ads:1399:56: info: range check proved
+strunb.ads:1401:14: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1401:14: info: invariant check proved
+strunb.ads:1401:35: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1401:35: info: invariant check proved
 strunb.ads:1401:53: info: range check proved
 strunb.ads:1402:06: info: data dependencies proved
+strunb.ads:1404:13: info: for the result of "Trim" at strunb.ads:1404
 strunb.ads:1404:13: info: implicit aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1404:13: info: invariant check proved
 strunb.ads:1413:09: info: contract case proved
+strunb.ads:1413:23: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1413:23: info: invariant check proved
+strunb.ads:1415:27: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1415:27: info: invariant check proved
+strunb.ads:1417:11: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1417:11: info: invariant check proved
 strunb.ads:1421:09: info: contract case proved
+strunb.ads:1425:16: info: for "Source" before the call at strunb.ads:509
+strunb.ads:1425:16: info: invariant check proved
 strunb.ads:1425:16: info: range check proved
+strunb.ads:1427:16: info: for "Source" before the call at strunb.ads:509
+strunb.ads:1427:16: info: invariant check proved
 strunb.ads:1427:16: info: range check proved
+strunb.ads:1429:14: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1429:14: info: invariant check proved
+strunb.ads:1429:40: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1429:40: info: invariant check proved
 strunb.ads:1429:40: info: precondition proved
 strunb.ads:1430:06: info: data dependencies proved
 strunb.ads:1432:14: info: aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1432:14: info: for "Source" at the end of "Trim" at strunb.ads:1433
+strunb.ads:1432:14: info: invariant check proved
 strunb.ads:1441:09: info: contract case proved
+strunb.ads:1441:23: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1441:23: info: invariant check proved
+strunb.ads:1443:27: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1443:27: info: invariant check proved
+strunb.ads:1445:11: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1445:11: info: invariant check proved
 strunb.ads:1449:09: info: contract case proved
+strunb.ads:1453:16: info: for "Source" before the call at strunb.ads:509
+strunb.ads:1453:16: info: invariant check proved
 strunb.ads:1453:54: info: range check proved
+strunb.ads:1455:16: info: for "Source" before the call at strunb.ads:509
+strunb.ads:1455:16: info: invariant check proved
 strunb.ads:1455:56: info: range check proved
+strunb.ads:1457:14: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1457:14: info: invariant check proved
+strunb.ads:1457:35: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1457:35: info: invariant check proved
 strunb.ads:1457:53: info: range check proved
 strunb.ads:1458:06: info: data dependencies proved
+strunb.ads:1460:13: info: for the result of "Head" at strunb.ads:1460
 strunb.ads:1460:13: info: implicit aspect Always_Terminates on "Head" has been proved, subprogram will terminate
+strunb.ads:1460:13: info: invariant check proved
+strunb.ads:1465:24: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1465:24: info: invariant check proved
 strunb.ads:1465:24: info: postcondition proved
 strunb.ads:1467:09: info: contract case proved
+strunb.ads:1467:18: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1467:18: info: invariant check proved
+strunb.ads:1471:11: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1471:11: info: invariant check proved
+strunb.ads:1471:37: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1471:37: info: invariant check proved
 strunb.ads:1471:37: info: precondition proved
 strunb.ads:1473:09: info: contract case proved
+strunb.ads:1477:11: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1477:11: info: invariant check proved
 strunb.ads:1477:11: info: precondition proved
+strunb.ads:1477:34: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1477:34: info: invariant check proved
+strunb.ads:1477:53: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1477:53: info: invariant check proved
+strunb.ads:1479:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1479:15: info: invariant check proved
 strunb.ads:1479:15: info: precondition proved
+strunb.ads:1479:35: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1479:35: info: invariant check proved
 strunb.ads:1479:51: info: overflow check proved
 strunb.ads:1480:17: info: range check proved
 strunb.ads:1480:20: info: range check proved
 strunb.ads:1480:29: info: overflow check proved
+strunb.ads:1480:31: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1480:31: info: invariant check proved
 strunb.ads:1481:06: info: data dependencies proved
 strunb.ads:1483:14: info: aspect Always_Terminates on "Head" has been proved, subprogram will terminate
+strunb.ads:1483:14: info: for "Source" at the end of "Head" at strunb.ads:1484
+strunb.ads:1483:14: info: invariant check proved
+strunb.ads:1488:24: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1488:24: info: invariant check proved
 strunb.ads:1488:24: info: postcondition proved
 strunb.ads:1490:09: info: contract case proved
+strunb.ads:1490:18: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1490:18: info: invariant check proved
+strunb.ads:1494:11: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1494:11: info: invariant check proved
+strunb.ads:1494:32: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1494:32: info: invariant check proved
 strunb.ads:1494:32: info: precondition proved
 strunb.ads:1496:09: info: contract case proved
+strunb.ads:1500:11: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1500:11: info: invariant check proved
 strunb.ads:1500:11: info: precondition proved
+strunb.ads:1500:29: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1500:29: info: invariant check proved
+strunb.ads:1500:52: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1500:52: info: invariant check proved
+strunb.ads:1502:15: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1502:15: info: invariant check proved
 strunb.ads:1502:15: info: precondition proved
+strunb.ads:1502:30: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1502:30: info: invariant check proved
 strunb.ads:1502:50: info: overflow check proved
 strunb.ads:1503:17: info: range check proved
 strunb.ads:1503:20: info: range check proved
 strunb.ads:1503:29: info: overflow check proved
+strunb.ads:1503:31: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1503:31: info: invariant check proved
 strunb.ads:1504:06: info: data dependencies proved
+strunb.ads:1506:13: info: for the result of "Tail" at strunb.ads:1506
 strunb.ads:1506:13: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
+strunb.ads:1506:13: info: invariant check proved
+strunb.ads:1511:24: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1511:24: info: invariant check proved
 strunb.ads:1511:24: info: postcondition proved
 strunb.ads:1512:06: info: disjoint contract or exit cases proved
 strunb.ads:1513:09: info: contract case proved
 strunb.ads:1517:09: info: contract case proved
+strunb.ads:1517:24: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1517:24: info: invariant check proved
+strunb.ads:1521:11: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1521:11: info: invariant check proved
+strunb.ads:1522:13: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1522:13: info: invariant check proved
 strunb.ads:1522:13: info: precondition proved
+strunb.ads:1522:28: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1522:28: info: invariant check proved
 strunb.ads:1522:44: info: overflow check proved
 strunb.ads:1522:52: info: overflow check proved
 strunb.ads:1522:52: info: range check proved
+strunb.ads:1522:57: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1522:57: info: invariant check proved
 strunb.ads:1524:09: info: contract case proved
+strunb.ads:1528:15: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1528:15: info: invariant check proved
+strunb.ads:1529:13: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1529:13: info: invariant check proved
 strunb.ads:1529:39: info: range check proved
 strunb.ads:1529:42: info: range check proved
+strunb.ads:1531:13: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1531:13: info: invariant check proved
 strunb.ads:1531:13: info: precondition proved
 strunb.ads:1531:42: info: overflow check proved
 strunb.ads:1531:42: info: range check proved
+strunb.ads:1531:44: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1531:44: info: invariant check proved
 strunb.ads:1532:15: info: range check proved
 strunb.ads:1532:18: info: range check proved
 strunb.ads:1532:27: info: overflow check proved
+strunb.ads:1532:29: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1532:29: info: invariant check proved
+strunb.ads:1534:17: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1534:17: info: invariant check proved
 strunb.ads:1534:17: info: precondition proved
 strunb.ads:1534:43: info: overflow check proved
+strunb.ads:1534:45: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1534:45: info: invariant check proved
 strunb.ads:1534:61: info: overflow check proved
 strunb.ads:1534:61: info: range check proved
+strunb.ads:1535:19: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1535:19: info: invariant check proved
 strunb.ads:1536:06: info: data dependencies proved
 strunb.ads:1538:14: info: aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
+strunb.ads:1538:14: info: for "Source" at the end of "Tail" at strunb.ads:1539
+strunb.ads:1538:14: info: invariant check proved
+strunb.ads:1543:24: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1543:24: info: invariant check proved
 strunb.ads:1543:24: info: postcondition proved
 strunb.ads:1544:06: info: disjoint contract or exit cases proved
 strunb.ads:1545:09: info: contract case proved
 strunb.ads:1549:09: info: contract case proved
+strunb.ads:1549:25: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1549:25: info: invariant check proved
+strunb.ads:1553:11: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1553:11: info: invariant check proved
+strunb.ads:1554:13: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1554:13: info: invariant check proved
 strunb.ads:1554:13: info: precondition proved
+strunb.ads:1559:28: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1559:28: info: invariant check proved
+strunb.ads:1559:49: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1559:49: info: invariant check proved
 strunb.ads:1559:65: info: overflow check proved
 strunb.ads:1559:73: info: overflow check proved
 strunb.ads:1559:73: info: range check proved
+strunb.ads:1561:15: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1561:15: info: invariant check proved
 strunb.ads:1563:09: info: contract case proved
+strunb.ads:1567:15: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1567:15: info: invariant check proved
+strunb.ads:1568:13: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1568:13: info: invariant check proved
 strunb.ads:1568:34: info: range check proved
 strunb.ads:1568:37: info: range check proved
+strunb.ads:1570:13: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1570:13: info: invariant check proved
 strunb.ads:1570:13: info: precondition proved
 strunb.ads:1570:37: info: overflow check proved
 strunb.ads:1570:37: info: range check proved
+strunb.ads:1570:39: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1570:39: info: invariant check proved
 strunb.ads:1571:15: info: range check proved
 strunb.ads:1571:18: info: range check proved
 strunb.ads:1571:27: info: overflow check proved
+strunb.ads:1571:29: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1571:29: info: invariant check proved
+strunb.ads:1573:17: info: for "Source" before the call at strunb.ads:247
+strunb.ads:1573:17: info: invariant check proved
 strunb.ads:1573:17: info: precondition proved
 strunb.ads:1573:38: info: overflow check proved
+strunb.ads:1573:40: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1573:40: info: invariant check proved
 strunb.ads:1573:60: info: overflow check proved
 strunb.ads:1573:60: info: range check proved
+strunb.ads:1574:19: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1574:19: info: invariant check proved
 strunb.ads:1575:06: info: data dependencies proved
+strunb.ads:1577:13: info: for the result of "*" at strunb.ads:1577
 strunb.ads:1577:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
+strunb.ads:1577:13: info: invariant check proved
+strunb.ads:1582:16: info: for "Source" before the call at strunb.ads:124
+strunb.ads:1582:16: info: invariant check proved
 strunb.ads:1582:16: info: postcondition proved
 strunb.ads:1582:41: info: range check proved
 strunb.ads:1582:44: info: range check proved
 strunb.ads:1583:06: info: data dependencies proved
+strunb.ads:1585:13: info: for the result of "*" at strunb.ads:1585
 strunb.ads:1585:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
+strunb.ads:1585:13: info: invariant check proved
 strunb.ads:1589:40: info: range check proved
 strunb.ads:1589:64: info: division check proved
+strunb.ads:1591:08: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1591:08: info: invariant check proved
 strunb.ads:1591:08: info: postcondition proved
 strunb.ads:1591:35: info: overflow check proved
 strunb.ads:1591:42: info: range check proved
 strunb.ads:1594:39: info: overflow check proved
 strunb.ads:1594:46: info: range check proved
+strunb.ads:1595:18: info: for "Source" before the call at strunb.ads:224
+strunb.ads:1595:18: info: invariant check proved
 strunb.ads:1595:18: info: precondition proved
 strunb.ads:1596:39: info: index check proved
 strunb.ads:1596:39: info: overflow check proved
 strunb.ads:1596:49: info: division check proved
 strunb.ads:1596:58: info: range check proved
 strunb.ads:1597:06: info: data dependencies proved
+strunb.ads:1599:13: info: for the result of "*" at strunb.ads:1599
 strunb.ads:1599:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
+strunb.ads:1599:13: info: invariant check proved
+strunb.ads:1603:35: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1603:35: info: invariant check proved
 strunb.ads:1603:66: info: division check proved
+strunb.ads:1605:08: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1605:08: info: invariant check proved
 strunb.ads:1605:08: info: postcondition proved
 strunb.ads:1605:35: info: overflow check proved
+strunb.ads:1605:37: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1605:37: info: invariant check proved
+strunb.ads:1607:16: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1607:16: info: invariant check proved
 strunb.ads:1608:39: info: overflow check proved
+strunb.ads:1608:41: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1608:41: info: invariant check proved
+strunb.ads:1609:18: info: for "Source" before the call at strunb.ads:224
+strunb.ads:1609:18: info: invariant check proved
 strunb.ads:1609:18: info: precondition proved
+strunb.ads:1610:20: info: for "Source" before the call at strunb.ads:224
+strunb.ads:1610:20: info: invariant check proved
 strunb.ads:1610:20: info: precondition proved
 strunb.ads:1610:38: info: overflow check proved
 strunb.ads:1610:48: info: division check proved
+strunb.ads:1610:52: info: for "Source" before the call at strunb.ads:88
+strunb.ads:1610:52: info: invariant check proved
 strunb.ads:1611:06: info: data dependencies proved
-strunb.ads:1639:17: info: pointer dereference check proved
-strunb.ads:1640:36: info: pointer dereference check proved
-strunb.ads:1641:17: info: pointer dereference check proved
-strunb.ads:1641:17: info: range check proved
-strunb.ads:1664:14: info: aspect Always_Terminates on "Realloc_For_Chunk" has been proved, subprogram will terminate
-strunb.ads:1668:42: info: overflow check proved
-strunb.ads:1669:14: info: postcondition proved
-strunb.ads:1669:20: info: pointer dereference check proved
-strunb.ads:1669:30: info: range check proved
-strunb.ads:1669:57: info: overflow check proved
-strunb.ads:1671:23: info: initialization check proved
-strunb.ads:1671:23: info: pointer dereference check proved
-strunb.ads:1671:23: info: range check proved
-strunb.ads:1672:16: info: pointer dereference check proved
-strunb.ads:1672:16: info: range check proved
-strunb.ads:1672:45: info: initialization check proved
-strunb.ads:1682:30: info: predicate check proved
+strunb.ads:1634:13: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
+strunb.ads:1636:09: info: invariant check justified on default value
+strunb.ads:1665:23: info: pointer dereference check proved
+strunb.ads:1666:49: info: pointer dereference check proved
+strunb.ads:1667:23: info: pointer dereference check proved
+strunb.ads:1667:23: info: range check proved
+strunb.ads:1673:14: info: aspect Always_Terminates on "Realloc_For_Chunk" has been proved, subprogram will terminate
+strunb.ads:1678:45: info: overflow check proved
+strunb.ads:1679:14: info: postcondition proved
+strunb.ads:1680:23: info: pointer dereference check proved
+strunb.ads:1680:33: info: range check proved
+strunb.ads:1680:60: info: overflow check proved
+strunb.ads:1682:23: info: initialization check proved
+strunb.ads:1682:23: info: pointer dereference check proved
+strunb.ads:1682:23: info: range check proved
+strunb.ads:1683:16: info: pointer dereference check proved
+strunb.ads:1683:16: info: range check proved
+strunb.ads:1683:45: info: initialization check proved
+strunb.ads:1692:04: info: invariant check proved
