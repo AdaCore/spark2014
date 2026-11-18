@@ -119,10 +119,6 @@ stages:
     - mkdir -p $CI_PROJECT_DIR/gnatprove_cache
     - mv $CI_PROJECT_DIR/gnatprove_cache /tmp
     - export GNATPROVE_CACHE="file:/tmp/gnatprove_cache"
-    # set location of sources for coverage
-    - ANOD_BUILDSPACE_SOURCES=`anod eval spark2014 build_space_name --primitive build --qualifier=coverage,assertions`
-    - export COVERAGE_ROOT_DIR=$ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE_SOURCES/src
-    - export COVERAGE_SOURCE_DIR=$CI_PROJECT_DIR
     # Test using anod
     - anod run $ANOD_ENTRY_POINT --latest
 
@@ -130,8 +126,7 @@ stages:
     - ANOD_BUILDSPACE=`anod eval spark2014 build_space_name --primitive test --qualifier=$ANOD_QUALIFIERS`
     - testsuite_reports || testsuite_exit_code=$?
     - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/results/new/ $CI_PROJECT_DIR/testsuite-results
-    - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/cobertura-report/ $CI_PROJECT_DIR/coverage
-    - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/html-report/ $CI_PROJECT_DIR/coverage-html
+    - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/test/coverage/ $CI_PROJECT_DIR/coverage
 
     # Check for slow non-large tests or fast large tests
     - |
@@ -259,7 +254,7 @@ spark2014:
         - xunit-*.xml
         - testsuite-results
         - coverage/cobertura.xml
-        - coverage-html
+        - coverage/html
      reports:
        junit: xunit-*.xml
        coverage_report:
@@ -402,7 +397,7 @@ upload_coverage_html:
     - export HTMLTARGETDIR=$CI_COMMIT_BRANCH
     - if [[ $CI_PIPELINE_SOURCE == "merge_request_event" ]]; then export HTMLTARGETDIR=MRs/$CI_MERGE_REQUEST_IID ; fi
     - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then export HTMLTARGETDIR=weekly ; fi
-    - publish-pages $CI_PROJECT_DIR/coverage-html --target-subdir $HTMLTARGETDIR --expires 30
+    - publish-pages $CI_PROJECT_DIR/coverage/html --target-subdir $HTMLTARGETDIR --expires 30
     - section_end "coverage_report"
 
 ################
