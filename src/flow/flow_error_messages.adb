@@ -85,6 +85,8 @@ package body Flow_Error_Messages is
    --  detailed message explaining why this check is issued (typically in the
    --  case of a length/range/overflow/index check), or the empty string.
    --  E should be the entity analyzed when the check is emitted.
+   --  The result is plain text, also stored in the structured report. Escape
+   --  it when inserting it into a diagnostic message.
 
    function Get_Explanation
      (N : Node_Id; E : Entity_Id; Tag : VC_Kind; Explanation : String)
@@ -1148,7 +1150,7 @@ package body Flow_Error_Messages is
                return
                  (if Ekind (E) = E_Entry then "entry" else "procedure")
                  & " "
-                 & Pretty_Source_Name (E)
+                 & Pretty_Source_Name (E, Escape => False)
                  & " has an Always_Terminates aspect";
 
             --  Search for an enclosing package with an Always_Terminates
@@ -1166,10 +1168,10 @@ package body Flow_Error_Messages is
                            then "entry"
                            else "procedure")
                           & " "
-                          & Pretty_Source_Name (E)
+                          & Pretty_Source_Name (E, Escape => False)
                           & " has an implicit "
                           & "Always_Terminates aspect inherited from "
-                          & Pretty_Source_Name (Scop);
+                          & Pretty_Source_Name (Scop, Escape => False);
                      end if;
                      Scop := Scope (Scop);
                   end loop;
@@ -1223,7 +1225,7 @@ package body Flow_Error_Messages is
                              Get_Exceptions_For_Subp (Caller).Print;
                         begin
                            return
-                             Pretty_Source_Name (Caller)
+                             Pretty_Source_Name (Caller, Escape => False)
                              & " allows propagating "
                              & Expected_Exc;
                         end;
@@ -1235,12 +1237,12 @@ package body Flow_Error_Messages is
                            if No_Raise (Callee) then
                               return
                                 "inlined call to "
-                                & Pretty_Source_Name (Callee)
+                                & Pretty_Source_Name (Callee, Escape => False)
                                 & " shall not propagate exceptions";
                            else
                               return
                                 "ghost inlined call to "
-                                & Pretty_Source_Name (Callee)
+                                & Pretty_Source_Name (Callee, Escape => False)
                                 & " shall not propagate exceptions";
                            end if;
                         end;
@@ -1279,14 +1281,15 @@ package body Flow_Error_Messages is
                              Unique_Defining_Entity (Scop);
                         begin
                            return
-                             Pretty_Source_Name (Caller)
+                             Pretty_Source_Name (Caller, Escape => False)
                              & " does not allow exiting the program";
                         end;
                      elsif Is_Inlined_Call (Scop) then
                         return
                           "ghost inlined call to "
                           & Pretty_Source_Name
-                              (Called_Entity_From_Inlined_Call (Scop))
+                              (Called_Entity_From_Inlined_Call (Scop),
+                               Escape => False)
                           & " shall not exit the program";
                      else
                         raise Program_Error;
@@ -4175,7 +4178,10 @@ package body Flow_Error_Messages is
                Details_Msg      : constant String :=
                  (if not Is_Suppressed
                     and then Obj.Details /= Null_Unbounded_String
-                  then " [reason for check: " & To_String (Obj.Details) & "]"
+                  then
+                    " [reason for check: "
+                    & Escape (To_String (Obj.Details))
+                    & "]"
                   else "");
                Explanation_Msg  : constant String :=
                  (if Obj.Explanation /= Null_Unbounded_String
@@ -4246,7 +4252,7 @@ package body Flow_Error_Messages is
                     (Erroutc.SGR_Note
                      & "reason for check: "
                      & Erroutc.SGR_Reset
-                     & To_String (Obj.Details)));
+                     & Escape (To_String (Obj.Details))));
             end if;
 
             if Obj.Explanation /= "" then
@@ -4645,7 +4651,15 @@ package body Flow_Error_Messages is
 
    begin
       for Index in Positive range 1 .. Length (S) loop
-         if Do_Sub then
+         --  Preserve literal insertion characters, including those introduced
+         --  by an earlier substitution of an operator name.
+
+         if Do_Sub
+           and then
+             not (Index > 1
+                  and then Element (S, Index - 1) = '''
+                  and then Element (S, Index) in '&' | '#')
+         then
             case Element (S, Index) is
                when '&' | '#' | '%' =>
                   Quote := Element (S, Index) in '&' | '#';
