@@ -2705,7 +2705,7 @@ module BV8
     function ( * ) = mul,
     function neg = neg,
     function one = one,
-    function two_power_size_minus_one = two_power_size_minus_one
+    function two_power_size_minus_one = two_power_sizem1
 
   val of_int_ (i : int) : t
     requires{ uint_in_range i }
@@ -2744,7 +2744,7 @@ module BV16
     function ( * ) = mul,
     function neg = neg,
     function one = one,
-    function two_power_size_minus_one = two_power_size_minus_one
+    function two_power_size_minus_one = two_power_sizem1
 
   val of_int_ (i : int) : t
     requires{ uint_in_range i }
@@ -2783,7 +2783,7 @@ module BV32
     function ( * ) = mul,
     function neg = neg,
     function one = one,
-    function two_power_size_minus_one = two_power_size_minus_one
+    function two_power_size_minus_one = two_power_sizem1
 
   val of_int_ (i : int) : t
     requires{ uint_in_range i }
@@ -2822,7 +2822,7 @@ module BV64
     function ( * ) = mul,
     function neg = neg,
     function one = one,
-    function two_power_size_minus_one = two_power_size_minus_one
+    function two_power_size_minus_one = two_power_sizem1
 
   val of_int_ (i : int) : t
     requires{ uint_in_range i }
@@ -2861,7 +2861,7 @@ module BV128
     function ( * ) = mul,
     function neg = neg,
     function one = one,
-    function two_power_size_minus_one = two_power_size_minus_one
+    function two_power_size_minus_one = two_power_sizem1
 
   val of_int_ (i : int) : t
     requires{ uint_in_range i }
