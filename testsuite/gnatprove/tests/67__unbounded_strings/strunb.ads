@@ -75,10 +75,10 @@ is
      Default_Initial_Condition => Length (Unbounded_String) = 0;
    pragma Annotate
      (GNATprove, Intentional,
-      "predicate check might fail on default value",
+      "invariant check might fail",
       "this is true for that mockup version due to SPARK constraints");
    --  Reference component cannot be default initialized to a non-null value as
-   --  expected in the type predicate.
+   --  expected in the type invariant.
 
    Null_Unbounded_String : constant Unbounded_String;
    --  Represents the null String. If an object of type Unbounded_String is not
@@ -1631,14 +1631,17 @@ private
    function To_Unbounded (S : String) return Unbounded_String
      renames To_Unbounded_String;
 
+   function Is_Valid (Source : Unbounded_String) return Boolean with Ghost;
+
    type Unbounded_String is record
       Reference : String_Access;
       Last      : Natural := 0;
    end record with Put_Image => Put_Image,
-     Ghost_Predicate => Reference /= null
-       and then Reference'First = 1
-       and then (if Last /= 0 then Reference'Last >= Last)
-       and then Reference (1 .. Last)'Initialized;
+     Type_Invariant => Is_Valid (Unbounded_String);
+   pragma Annotate
+     (GNATprove, Intentional,
+      "invariant check might fail on default value",
+      "this is true for that mockup version due to SPARK constraints");
 
    procedure Put_Image
      (S : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class;
@@ -1657,6 +1660,12 @@ private
    --  Provide stream routines without dragging in Ada.Streams
    pragma Warnings (GNATprove, On, "pragma ""Stream_Convert"" ignored");
 
+   function Is_Valid (Source : Unbounded_String) return Boolean is
+     (Source.Reference /= null
+       and then Source.Reference'First = 1
+       and then (if Source.Last /= 0 then Source.Reference'Last >= Source.Last)
+       and then Source.Reference (1 .. Source.Last)'Initialized);
+
    procedure Initialize (Object : in out Unbounded_String);
    procedure Adjust     (Object : in out Unbounded_String);
    procedure Finalize   (Object : in out Unbounded_String);
@@ -1665,8 +1674,10 @@ private
      (Source     : in out Unbounded_String;
       Chunk_Size : Natural)
    with
-     Pre  => Source.Last <= Natural'Last - Chunk_Size,
-     Post => Source.Reference'Length >= Source.Last'Old + Chunk_Size
+     Pre  => Is_Valid (Source)
+       and then Source.Last <= Natural'Last - Chunk_Size,
+     Post => Is_Valid (Source)
+       and then Source.Reference'Length >= Source.Last'Old + Chunk_Size
        and then Source.Last = Source.Last'Old
        and then Source.Reference (1 .. Source.Last) =
          Source.Reference (1 .. Source.Last)'Old;
