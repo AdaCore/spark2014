@@ -7,4 +7,5 @@ foo.adb:12:13: warning: Global contract expected for "F"
 foo.adb:18:13: info: implicit aspect Always_Terminates on "E" has been proved, subprogram will terminate
 foo.adb:18:13: warning: Global contract expected for "E"
 foo.ads:5:14: warning: Global contract expected for "P"
+foo.ads:5:14: warning: Global contract expected for "P"
 foo.ads:5:17: info: initialization of "X" proved
