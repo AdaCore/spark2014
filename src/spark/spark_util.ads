@@ -493,9 +493,12 @@ package SPARK_Util is
    --  @param N any node with Chars field
    --  @return The unqualified name of N as it appears in the source code
 
-   function Pretty_Source_Name (N : Node_Id) return String
+   function Pretty_Source_Name
+     (N : Node_Id; Escape : Boolean := True) return String
    with Pre => Present (N) and then Nkind (N) in N_Has_Chars;
    --  @param N any node with Chars field
+   --  @param Escape whether to escape diagnostic insertion characters. Set
+   --     False for plain text that is not interpreted as a diagnostic message.
    --  @return Same as above but use pretty printing and try to avoid internal
    --     names. It should only be used in messages.
 
