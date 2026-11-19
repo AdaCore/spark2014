@@ -126,19 +126,16 @@ c392008.adb:58:04: info: no contextual analysis of "New_Account" (possible check
 c392008.adb:58:17: high: "C_Acct" is not initialized
 c392008.adb:59:04: info: no contextual analysis of "New_Account" (possible check on parameters)
 c392008.adb:59:17: high: "IC_Acct" is not initialized
-c392008.adb:65:13: medium: precondition might fail
 c392008.adb:65:13: warning: assuming "FAILED" always terminates
 c392008.adb:65:13: warning: no Always_Terminates aspect available for "FAILED" [assumed-always-terminates]
 c392008.adb:69:04: info: no contextual analysis of "Annual_Interest" (possible check on parameters)
 c392008.adb:70:04: info: no contextual analysis of "Annual_Interest" (possible check on parameters)
 c392008.adb:71:04: info: no contextual analysis of "Annual_Interest" (possible check on parameters)
-c392008.adb:78:13: medium: precondition might fail
 c392008.adb:78:13: warning: assuming "FAILED" always terminates
 c392008.adb:78:13: warning: no Always_Terminates aspect available for "FAILED" [assumed-always-terminates]
 c392008.adb:82:04: info: no contextual analysis of "Apply_Service_Charge" (possible check on parameters)
 c392008.adb:83:04: info: no contextual analysis of "Apply_Service_Charge" (possible check on parameters)
 c392008.adb:84:04: info: no contextual analysis of "Apply_Service_Charge" (possible check on parameters)
-c392008.adb:92:13: medium: precondition might fail
 c392008.adb:92:13: warning: assuming "FAILED" always terminates
 c392008.adb:92:13: warning: no Always_Terminates aspect available for "FAILED" [assumed-always-terminates]
 c392008.adb:95:10: warning: assuming "RESULT" always terminates
@@ -153,6 +150,7 @@ c392008_0.adb:33:46: info: range check proved (CVC5: 2 VC)
 c392008_0.ads:156:14: info: implicit aspect Always_Terminates on "Balance" has been proved, subprogram will terminate
 c392008_0.ads:159:30: warning: unused initial value of "A"
 c392008_1.ads:19:20: warning: unused initial value of "A"
+c392008_2.ads:26:14: error: "Current_Rate" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Open" at c392008_1.ads:19 (SPARK RM 6.1.6)
 c392008_2.ads:26:14: error: "Current_Rate" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Open" at c392008_1.ads:19 (SPARK RM 6.1.6)
 cc1311a.adb:101:22: info: precondition proved (CVC5: 1 VC), in instantiation at cc1311a.adb:387
 cc1311a.adb:137:22: info: precondition proved (CVC5: 1 VC), in instantiation at cc1311a.adb:396

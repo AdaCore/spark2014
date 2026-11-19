@@ -194,6 +194,15 @@ in ``flow.adb``, which runs before the graphs are built. There is no ``Sane``
 flag here: with no graph to protect, the checks are independent and all of them
 run.
 
+Contract validation must cover every subprogram declaration used by proof
+translation, including dependencies and declarations accepted by marking
+without an explicit ``SPARK_Mode => On``. Selecting which bodies to analyze
+does not restrict which contracts translation relies on. For example, the
+equality axioms assume that primitive equality on nonlimited record types has
+no global inputs. The declaration checks therefore follow marking's
+``Entities_To_Translate`` collection rather than the selection of bodies for
+analysis.
+
 A rule that constrains a subprogram's contract rather than its implementation
 belongs in the second family, even when the body happens to be in SPARK.
 Putting it in the first family silently exempts every subprogram with a
