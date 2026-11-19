@@ -91,10 +91,12 @@ procedure Test_Callback with SPARK_Mode is
                     B : Boolean) return access function (X : Integer) return Integer is
      (if B then F else G);
 
-   function Choose_2 (F : access function (X : Integer) return Integer;
+   type Plain_Fun is access function (X : Integer) return Integer;
+
+   function Choose_2 (F : Plain_Fun;
                       G : Incr_Fun;
                       B : Boolean) return Incr_Fun_2 is
-     (if B then F else Incr_Fun_2 (G));
+     (if B then Incr_Fun_2 (F) else Incr_Fun_2 (G));
 
    function Choose_3 (F : Incr_Fun;
                       G : Incr_Fun;
@@ -110,10 +112,11 @@ procedure Test_Callback with SPARK_Mode is
    end P;
 
    X : Incr_Fun := Increment'Access;
-   Y : access function (X : Integer) return Integer := Increment_2'Access; --@WEAKER_PRE_ACCESS:FAIL
+   Y_Named : Plain_Fun := Increment_2'Access; --@WEAKER_PRE_ACCESS:FAIL
+   Y : access function (X : Integer) return Integer := Y_Named;
    Z : Incr_Fun := Increment_2'Access; --@STRONGER_POST_ACCESS:FAIL
 begin
-   pragma Assert (Incr_Fun_2 (X) (15) = Choose_2 (Y, Increment'Access, False) (15));
+   pragma Assert (Incr_Fun_2 (X) (15) = Choose_2 (Y_Named, Increment'Access, False) (15));
    pragma Assert (X in S);
    pragma Assert (Y in S); --@ASSERT:FAIL
 end Test_Callback;

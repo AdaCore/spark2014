@@ -1,6 +1,6 @@
 ho_specialization.adb:12:14: warning: automatically instantiated lemma contains calls to "Call" which cannot be arbitrarily specialized [auto-lemma-calls]
 ho_specialization.adb:12:14: warning: it will not be automatically instantiated on specializations of "Call"
-ho_specialization.adb:29:52: error: subprogram with the "Higher_Order_Specialization" annotation shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions with the "Higher_Order_Specialization" annotation
+ho_specialization.adb:28:59: error: subprogram with the "Higher_Order_Specialization" annotation shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions with the "Higher_Order_Specialization" annotation
 inline_and_logical_equal.adb:7:47: error: function shall not have both the "Inline_For_Proof" annotation and the "Logical_Equal" annotation
 inline_and_logical_equal.adb:11:50: error: function shall not have both the "Inline_For_Proof" annotation and the "Logical_Equal" annotation
 inline_and_logical_equal.adb:16:16: error: the body of expression functions with the "Inline_For_Proof" annotation shall be in SPARK
