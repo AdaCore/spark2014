@@ -721,33 +721,33 @@ allocator-pools-sized_16.adb:15:38: info: precondition proved (CVC5: 1 VC), in i
 allocator-pools-sized_16.adb:15:55: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:15:72: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:16:30: info: only expected exception raised (CVC5: 1 VC), in instantiation at test_pools.ads:67
-allocator-pools-sized_16.adb:28:23: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:28:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
+allocator-pools-sized_16.adb:28:23: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:67 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_16.adb:29:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:29:58: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
-allocator-pools-sized_16.adb:33:23: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:33:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
+allocator-pools-sized_16.adb:33:23: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:67 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_16.adb:34:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:34:58: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
-allocator-pools-sized_16.adb:38:23: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:38:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
+allocator-pools-sized_16.adb:38:23: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:67 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_16.adb:39:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:39:58: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:42:13: info: only expected exception raised (CVC5: 1 VC), in instantiation at test_pools.ads:67
-allocator-pools-sized_16.adb:55:28: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:55:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
+allocator-pools-sized_16.adb:55:28: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:67 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_16.adb:55:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:55:62: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_16.ads:75, in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:55:62: info: predicate check proved (CVC5: 4 VC; Trivial: 2 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:55:71: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
-allocator-pools-sized_16.adb:58:28: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:58:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
+allocator-pools-sized_16.adb:58:28: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:67 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_16.adb:58:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:58:62: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_16.ads:75, in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:58:62: info: predicate check proved (CVC5: 4 VC; Trivial: 2 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:58:71: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
-allocator-pools-sized_16.adb:61:28: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:61:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
+allocator-pools-sized_16.adb:61:28: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:67 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_16.adb:61:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:61:62: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_16.ads:75, in instantiation at test_pools.ads:67
 allocator-pools-sized_16.adb:61:62: info: predicate check proved (CVC5: 4 VC; Trivial: 2 VC), in instantiation at test_pools.ads:67
@@ -876,23 +876,23 @@ allocator-pools-sized_32.adb:14:38: info: precondition proved (CVC5: 1 VC), in i
 allocator-pools-sized_32.adb:14:55: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:14:72: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:15:30: info: only expected exception raised (CVC5: 1 VC), in instantiation at test_pools.ads:79
-allocator-pools-sized_32.adb:28:23: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:28:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
+allocator-pools-sized_32.adb:28:23: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:79 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_32.adb:29:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:29:58: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
-allocator-pools-sized_32.adb:33:23: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:33:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
+allocator-pools-sized_32.adb:33:23: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:79 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_32.adb:34:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:34:58: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:37:13: info: only expected exception raised (CVC5: 1 VC), in instantiation at test_pools.ads:79
-allocator-pools-sized_32.adb:50:28: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:50:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
+allocator-pools-sized_32.adb:50:28: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:79 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_32.adb:50:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:50:62: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_32.ads:70, in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:50:62: info: predicate check proved (CVC5: 3 VC; Trivial: 2 VC), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:50:71: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
-allocator-pools-sized_32.adb:53:28: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:53:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
+allocator-pools-sized_32.adb:53:28: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:79 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_32.adb:53:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:53:62: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_32.ads:70, in instantiation at test_pools.ads:79
 allocator-pools-sized_32.adb:53:62: info: predicate check proved (CVC5: 3 VC; Trivial: 2 VC), in instantiation at test_pools.ads:79
@@ -1002,53 +1002,53 @@ allocator-pools-sized_4.adb:17:38: info: precondition proved (CVC5: 1 VC), in in
 allocator-pools-sized_4.adb:17:55: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:17:72: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:18:30: info: only expected exception raised (CVC5: 1 VC), in instantiation at test_pools.ads:45
-allocator-pools-sized_4.adb:30:22: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:30:22: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
+allocator-pools-sized_4.adb:30:22: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:45 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_4.adb:31:27: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:31:57: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
-allocator-pools-sized_4.adb:35:22: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:35:22: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
+allocator-pools-sized_4.adb:35:22: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:45 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_4.adb:36:27: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:36:57: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
-allocator-pools-sized_4.adb:40:23: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:40:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
+allocator-pools-sized_4.adb:40:23: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:45 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_4.adb:41:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:41:58: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
-allocator-pools-sized_4.adb:45:23: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:45:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
+allocator-pools-sized_4.adb:45:23: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:45 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_4.adb:46:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:46:58: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
-allocator-pools-sized_4.adb:50:23: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:50:23: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
+allocator-pools-sized_4.adb:50:23: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:45 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_4.adb:51:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:51:58: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:54:13: info: only expected exception raised (CVC5: 1 VC), in instantiation at test_pools.ads:45
-allocator-pools-sized_4.adb:67:27: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:67:27: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
+allocator-pools-sized_4.adb:67:27: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:45 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_4.adb:67:48: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:67:60: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_4.ads:76, in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:67:60: info: predicate check proved (CVC5: 6 VC; Trivial: 2 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:67:69: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
-allocator-pools-sized_4.adb:70:27: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:70:27: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
+allocator-pools-sized_4.adb:70:27: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:45 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_4.adb:70:48: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:70:60: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_4.ads:76, in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:70:60: info: predicate check proved (CVC5: 6 VC; Trivial: 2 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:70:69: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
-allocator-pools-sized_4.adb:73:28: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:73:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
+allocator-pools-sized_4.adb:73:28: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:45 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_4.adb:73:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:73:62: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_4.ads:76, in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:73:62: info: predicate check proved (CVC5: 6 VC; Trivial: 2 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:73:71: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
-allocator-pools-sized_4.adb:76:28: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:76:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
+allocator-pools-sized_4.adb:76:28: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:45 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_4.adb:76:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:76:62: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_4.ads:76, in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:76:62: info: predicate check proved (CVC5: 6 VC; Trivial: 2 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:76:71: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
-allocator-pools-sized_4.adb:79:28: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:79:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
+allocator-pools-sized_4.adb:79:28: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:45 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_4.adb:79:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:79:62: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_4.ads:76, in instantiation at test_pools.ads:45
 allocator-pools-sized_4.adb:79:62: info: predicate check proved (CVC5: 6 VC; Trivial: 2 VC), in instantiation at test_pools.ads:45
@@ -1232,11 +1232,11 @@ allocator-pools-sized_4.ads:235:72: info: discriminant check proved (CVC5: 1 VC)
 allocator-pools-sized_4.ads:237:72: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:45
 allocator-pools-sized_64.adb:12:16: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:93
 allocator-pools-sized_64.adb:12:33: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:93
-allocator-pools-sized_64.adb:22:17: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:93
 allocator-pools-sized_64.adb:22:17: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:93
+allocator-pools-sized_64.adb:22:17: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:93 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_64.adb:23:22: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:93
-allocator-pools-sized_64.adb:33:22: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:93
 allocator-pools-sized_64.adb:33:22: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:93
+allocator-pools-sized_64.adb:33:22: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:93 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_64.adb:33:44: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:93
 allocator-pools-sized_64.adb:33:56: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_64.ads:64, in instantiation at test_pools.ads:93
 allocator-pools-sized_64.adb:33:56: info: predicate check proved (CVC5: 1 VC), in instantiation at test_pools.ads:93
@@ -1305,43 +1305,43 @@ allocator-pools-sized_8.adb:16:38: info: precondition proved (Trivial: 1 VC), in
 allocator-pools-sized_8.adb:16:55: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:16:72: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:17:30: info: only expected exception raised (CVC5: 1 VC), in instantiation at test_pools.ads:55
-allocator-pools-sized_8.adb:29:22: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:29:22: info: precondition proved (Trivial: 1 VC), in instantiation at test_pools.ads:55
+allocator-pools-sized_8.adb:29:22: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:55 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_8.adb:30:27: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:30:57: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
-allocator-pools-sized_8.adb:34:23: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:34:23: info: precondition proved (Trivial: 1 VC), in instantiation at test_pools.ads:55
+allocator-pools-sized_8.adb:34:23: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:55 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_8.adb:35:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:35:58: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
-allocator-pools-sized_8.adb:39:23: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:39:23: info: precondition proved (Trivial: 1 VC), in instantiation at test_pools.ads:55
+allocator-pools-sized_8.adb:39:23: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:55 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_8.adb:40:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:40:58: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
-allocator-pools-sized_8.adb:44:23: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:44:23: info: precondition proved (Trivial: 1 VC), in instantiation at test_pools.ads:55
+allocator-pools-sized_8.adb:44:23: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:55 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_8.adb:45:28: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:45:58: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:48:13: info: only expected exception raised (CVC5: 1 VC), in instantiation at test_pools.ads:55
-allocator-pools-sized_8.adb:61:27: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:61:27: info: precondition proved (Trivial: 1 VC), in instantiation at test_pools.ads:55
+allocator-pools-sized_8.adb:61:27: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:55 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_8.adb:61:48: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:61:60: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_8.ads:76, in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:61:60: info: predicate check proved (CVC5: 5 VC; Trivial: 2 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:61:69: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
-allocator-pools-sized_8.adb:64:28: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:64:28: info: precondition proved (Trivial: 1 VC), in instantiation at test_pools.ads:55
+allocator-pools-sized_8.adb:64:28: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:55 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_8.adb:64:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:64:62: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_8.ads:76, in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:64:62: info: predicate check proved (CVC5: 5 VC; Trivial: 2 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:64:71: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
-allocator-pools-sized_8.adb:67:28: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:67:28: info: precondition proved (Trivial: 1 VC), in instantiation at test_pools.ads:55
+allocator-pools-sized_8.adb:67:28: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:55 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_8.adb:67:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:67:62: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_8.ads:76, in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:67:62: info: predicate check proved (CVC5: 5 VC; Trivial: 2 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:67:71: info: discriminant check proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
-allocator-pools-sized_8.adb:70:28: info: dynamic accessibility check proved (Trivial), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:70:28: info: precondition proved (Trivial: 1 VC), in instantiation at test_pools.ads:55
+allocator-pools-sized_8.adb:70:28: medium: dynamic accessibility check might fail, in instantiation at test_pools.ads:55 [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 allocator-pools-sized_8.adb:70:50: info: precondition proved (CVC5: 1 VC), in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:70:62: info: in possible reconstructed values at the end of the borrow at allocator-pools-sized_8.ads:76, in instantiation at test_pools.ads:55
 allocator-pools-sized_8.adb:70:62: info: predicate check proved (CVC5: 5 VC; Trivial: 2 VC), in instantiation at test_pools.ads:55
