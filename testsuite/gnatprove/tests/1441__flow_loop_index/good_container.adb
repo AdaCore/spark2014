@@ -2,7 +2,7 @@ with Iterable;
 
 function Good_Container
   (A : Iterable.Container) return Integer
-with Depends => (Good_Container'Result => A)
+with Depends => (Good_Container'Result => A), Ghost
 is
 begin
    for E of A loop
