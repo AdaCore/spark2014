@@ -19,17 +19,16 @@ procedure Ho_Specialization with SPARK_Mode is
        Annotate => (GNATprove, Higher_Order_Specialization);
    procedure Bad_Lemma (F : not null access function return Integer) is null;
 
-   --  Call through non-anonymous pointers is known to not have higher-order
-   --  specialization, so are not allowed in contract of specializable
-   --  functions.
+   --  Passing an access-to-function parameter to a function without higher-order
+   --  specialization is not allowed in the contract of a specializable function.
 
-   type Not_Anonymous is not null access function return Integer;
-   function Non_Anon_Call (F : Not_Anonymous) return Integer is (F.all);
+   function Non_Specialized_Call
+     (F : not null access function return Integer) return Integer is (F.all);
    function Bad_Call (F : not null access function return Integer) return Integer
-     with Post => Bad_Call'Result = Non_Anon_Call (F),
+     with Post => Bad_Call'Result = Non_Specialized_Call (F),
        Annotate => (GNATprove, Higher_Order_Specialization);
    function Bad_Call (F : not null access function return Integer) return Integer
-     is (Non_Anon_Call (F));
+     is (Non_Specialized_Call (F));
 
 begin
    null;
