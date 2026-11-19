@@ -3889,6 +3889,9 @@ package body SPARK_Definition.Annotate is
       Check : Boolean;
       Info  : out Annotated_Range)
    is
+      Plain_Msg : constant String := Unescape (Msg);
+      --  Annotation patterns refer to the displayed message text
+
       procedure Search (Node_Slc : Source_Ptr; Info : out Annotated_Range);
       --  Search for an annotation range which covers the location Node_Slc
       --  and whose pattern matches Msg.
@@ -3919,7 +3922,7 @@ package body SPARK_Definition.Annotate is
             elsif Node_Slc <= E.Last
               and then
                 Erroutc.Matches
-                  (S => Msg, P => '*' & String_Value (E.Pattern) & '*')
+                  (S => Plain_Msg, P => '*' & String_Value (E.Pattern) & '*')
             then
                Info := E;
 

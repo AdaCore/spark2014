@@ -278,6 +278,9 @@ package Errout_Wrapper is
    function Escape (S : String) return String;
    --  Escape the special characters # and & in the error message
 
+   function Unescape (S : String) return String;
+   --  Remove the apostrophes added by Escape before # and &
+
    procedure Add_Frontend_Messages;
    --  Snapshot all frontend messages that Errout has accumulated before the
    --  gnat2why backend starts, and add them to Warnings_Errors so that they
