@@ -1,3 +1,4 @@
+persistent_list.adb:20:11: info: implicit aspect Always_Terminates on "Create_Object" has been proved, subprogram will terminate
 persistent_list.adb:41:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 persistent_list.adb:41:55: info: data dependencies proved
 persistent_list.adb:48:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate

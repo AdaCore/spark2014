@@ -18,7 +18,7 @@ with SPARK.Pointers.Poisoned.Views.Array_Operations;
 --  rejects those outright, which stops the run before proof and would hide
 --  everything here.
 
-package Bad_Params with SPARK_Mode is
+package Bad_Params with SPARK_Mode is -- @PRECONDITION:FAIL
    pragma Unevaluated_Use_Of_Old (Allow);
 
    --  A designated object that owns a cell
@@ -46,8 +46,8 @@ package Bad_Params with SPARK_Mode is
      SPARK.Pointers.Auto_Reclaimed.Immutable (Owning);
 
    ----------------------------------------------------------------
-   --  Copy: nothing currently checks that it has no precondition --
-   --  or reads no globals, so no check is expected from here.    --
+   --  Copy must accept every value of the designated type.      --
+   --  This actual requires a positive component instead.        --
    ----------------------------------------------------------------
 
    type Plain is record

@@ -1,3 +1,4 @@
+doubly_linked_list_separate_mem.adb:27:11: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
 doubly_linked_list_separate_mem.adb:27:11: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
 doubly_linked_list_separate_mem.adb:27:11: info: precondition proved (CVC5: 4 VC)
 doubly_linked_list_separate_mem.adb:64:13: info: implicit aspect Always_Terminates on "Cell_Next" has been proved, subprogram will terminate
@@ -269,8 +270,7 @@ doubly_linked_list_separate_mem.adb:498:15: info: predicate check proved (Trivia
 doubly_linked_list_separate_mem.adb:498:35: info: precondition proved (CVC5: 1 VC)
 doubly_linked_list_separate_mem.adb:499:15: info: precondition proved (CVC5: 3 VC)
 doubly_linked_list_separate_mem.adb:524:06: info: data dependencies proved
-doubly_linked_list_separate_mem.adb:531:11: medium: in inlined expression function body at doubly_linked_list_separate_mem.adb:254
-doubly_linked_list_separate_mem.adb:531:11: medium: postcondition might fail, cannot prove Reach.Reachable (L.First, +L.Memory, A)
+doubly_linked_list_separate_mem.adb:531:11: info: postcondition proved (CVC5: 3 VC; Z3: 5 VC)
 doubly_linked_list_separate_mem.adb:535:16: info: implicit aspect Always_Terminates on "In_L2_From" has been proved, subprogram will terminate
 doubly_linked_list_separate_mem.adb:535:16: warning: "In_L2_From" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 doubly_linked_list_separate_mem.adb:541:14: info: postcondition proved (CVC5: 3 VC)
