@@ -6405,10 +6405,13 @@ package body Gnat2Why.Expr is
          else
             pragma Assert (Is_Record_Type_In_Why (Ty));
             declare
-               Root         : constant Entity_Id := Root_Retysp (Ty);
-               Num_Discr    : constant Natural := Count_Discriminants (Ty);
-               Num_Fields   : constant Natural :=
-                 Count_Why_Regular_Fields (Ty);
+               Root       : constant Entity_Id := Root_Retysp (Ty);
+               Num_Discr  : constant Natural := Count_Discriminants (Ty);
+               Num_Fields : constant Natural :=
+                 Natural (Get_Component_Set (Ty).Length);
+               --  New_Ada_Record_Aggregate adds the extension field for tagged
+               --  types.
+
                Discr_Assocs : W_Field_Association_Array (1 .. Num_Discr);
                Discr_Ids    : W_Identifier_Array (1 .. Num_Discr);
                Discr_Vals   : W_Term_Array (1 .. Num_Discr);
