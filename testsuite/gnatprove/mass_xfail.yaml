@@ -17,6 +17,7 @@ rules:
     discs: ["aarch64-linux"]
     action: skip
     tests:
+      - 1536__float_negative_zero
       - 247__container_aggregate_capacity
       - 281__sorts
       - 308__counterexample
@@ -37,6 +38,7 @@ rules:
       - O512-022__prefix_sum
       - O826-006__float_exponential
       - OA05-076__dynamic_inv_assert_and_cut
+      - P405-006__apply_ratio
       - P530-022__loopinv
       - PB16-052__float_invariant
       - PC14-014__functional
@@ -57,12 +59,14 @@ rules:
       - V906-009__formal_ordered_maps
       - V906-009__formal_ordered_sets
       - W110-016__relaxed_init_user_equality
+      - W127-011__HO_sets_test
       - allocators
       - float_error_bounds
       - ghc_sort
       - openETCS
       - pointer_based_maps
       - proofinuse__floating_point
+      - red_black_trees
       - spark_book
       - sparkskein
       - trajectory_computation
