@@ -1,3 +1,4 @@
+doubly_linked_list.adb:27:11: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
 doubly_linked_list.adb:27:11: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
 doubly_linked_list.adb:27:11: info: precondition proved (CVC5: 4 VC)
 doubly_linked_list.adb:60:13: info: implicit aspect Always_Terminates on "Cell_Next" has been proved, subprogram will terminate

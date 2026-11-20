@@ -1,3 +1,4 @@
+poisoned_vector.adb:23:11: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
 poisoned_vector.adb:56:13: info: implicit aspect Always_Terminates on "Valid_Elements" has been proved, subprogram will terminate
 poisoned_vector.adb:63:26: info: data dependencies proved
 poisoned_vector.adb:67:13: info: implicit aspect Always_Terminates on "Hole_At" has been proved, subprogram will terminate
