@@ -1,0 +1,13 @@
+flow_op.ads:15:13: info: justified that function overriding operator "&" does not return on some paths
+flow_op.ads:16:39: info: program exit postcondition proved (Trivial: 1 VC)
+flow_op.ads:26:13: info: justified that function overriding operator "&" does not return on some paths
+flow_op.ads:27:39: info: program exit postcondition proved (Trivial: 1 VC)
+proof_op.adb:9:25: info: overflow check justified
+proof_op.adb:19:25: info: overflow check justified
+proof_op.ads:3:13: info: implicit aspect Always_Terminates on "By_Op_Name" has been proved, subprogram will terminate
+proof_op.ads:4:13: info: implicit aspect Always_Terminates on "By_Check_Kind" has been proved, subprogram will terminate
+==== Justified checks in gnatprove.out ====
+flow_op.ads:15:13: justified that function overriding operator "&" does not return on some paths (marked as: intentional, reason: "")
+flow_op.ads:26:13: justified that function overriding operator "&" does not return on some paths (marked as: intentional, reason: "")
+proof_op.adb:19:25: overflow check justified (marked as: intentional, reason: "")
+proof_op.adb:9:25: overflow check justified (marked as: intentional, reason: "")

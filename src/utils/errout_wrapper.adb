@@ -202,7 +202,9 @@ package body Errout_Wrapper is
                   "annot_kind",
                   To_Lower (Pretty_Annotation_Name (Obj.Suppr.Annot_Kind)));
                Set_Field
-                 (Value, "justif_msg", To_String (Obj.Suppr.Justification));
+                 (Value,
+                  "justif_msg",
+                  Unescape (To_String (Obj.Suppr.Justification)));
             end if;
          end;
       end if;
@@ -883,6 +885,26 @@ package body Errout_Wrapper is
             end;
       end case;
    end To_User_Msg;
+
+   --------------
+   -- Unescape --
+   --------------
+
+   function Unescape (S : String) return String is
+      Result : String (1 .. S'Length);
+      Last   : Natural := 0;
+   begin
+      for J in S'Range loop
+         if not (S (J) = '''
+                 and then J < S'Last
+                 and then S (J + 1) in '&' | '#')
+         then
+            Last := Last + 1;
+            Result (Last) := S (J);
+         end if;
+      end loop;
+      return Result (1 .. Last);
+   end Unescape;
 
    ---------------------------
    -- Warning_Is_Suppressed --
