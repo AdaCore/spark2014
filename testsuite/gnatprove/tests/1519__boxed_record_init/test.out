@@ -17,4 +17,4 @@ boxed_records.adb:22:19: info: initialization check proved (CVC5: 1 VC)
 boxed_records.adb:22:24: info: initialization check proved (CVC5: 1 VC)
 boxed_records.adb:24:19: info: for mutable discriminants at boxed_records.adb:8
 boxed_records.adb:24:19: info: initialization check proved (CVC5: 1 VC)
-boxed_records.adb:24:19: medium: assertion might fail
+boxed_records.adb:24:19: medium: assertion might fail (e.g. when Y = (1 => (D => True, F => 7, G => ?), 2 => (D => True, F => 7, G => ?)))
