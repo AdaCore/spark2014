@@ -7130,14 +7130,16 @@ package body SPARK_Util is
    -- Pretty_Source_Name --
    ------------------------
 
-   function Pretty_Source_Name (N : Node_Id) return String is
+   function Pretty_Source_Name
+     (N : Node_Id; Escape : Boolean := True) return String
+   is
       Classwide : Boolean := False;
       Is_Base   : Boolean := False;
       R         : Unbounded_String;
       Ent       : Node_Id := N;
    begin
       if Nkind (N) in N_Entity and then Is_Single_Concurrent_Type (N) then
-         return Pretty_Source_Name (Anonymous_Object (N));
+         return Pretty_Source_Name (Anonymous_Object (N), Escape);
 
       --  Special case of anonymous arrays
 
@@ -7147,7 +7149,8 @@ package body SPARK_Util is
         and then Present (Related_Array_Object (N))
         and then Nkind (Related_Array_Object (N)) in N_Has_Chars
       then
-         return "type of " & Pretty_Source_Name (Related_Array_Object (N));
+         return
+           "type of " & Pretty_Source_Name (Related_Array_Object (N), Escape);
 
       --  Types introduced for object declarations are generally right after
       --  the object entity.
@@ -7161,7 +7164,7 @@ package body SPARK_Util is
         and then Is_Object (Prev_Entity (N))
         and then not Is_Internal_Name (Chars (Prev_Entity (N)))
       then
-         return "type of " & Pretty_Source_Name (Prev_Entity (N));
+         return "type of " & Pretty_Source_Name (Prev_Entity (N), Escape);
 
       --  Try to get a proper name for internal types
 
@@ -7184,7 +7187,7 @@ package body SPARK_Util is
             else
                return
                  "access to "
-                 & Pretty_Source_Name (Directly_Designated_Type (N));
+                 & Pretty_Source_Name (Directly_Designated_Type (N), Escape);
             end if;
 
          --  Classwide type
@@ -7264,7 +7267,10 @@ package body SPARK_Util is
          end if;
       end;
 
-      return To_String (R);
+      return
+        (if Escape
+         then Errout_Wrapper.Escape (To_String (R))
+         else To_String (R));
    end Pretty_Source_Name;
 
    ------------------------------
