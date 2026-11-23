@@ -2925,6 +2925,12 @@ package body Gnat2Why.Expr.Aggregates is
       procedure Insert_Check_For_Choices
         (T : in out W_Expr_Id; Array_Expr : W_Term_Id)
       is
+         Bound_Temps : W_Term_Array (Dimensions) := (others => Why_Empty);
+         --  Positional subaggregates at a given dimension share their lower
+         --  bound, from the applicable index constraint or the index subtype.
+         --  These bounds cannot depend on index parameters of this aggregate,
+         --  so their bindings can enclose both check sequences.
+
          Choice_Checks     : W_Statement_Sequence_Id := Void_Sequence;
          Comp_Checks       : W_Statement_Sequence_Id := Void_Sequence;
          In_Iterated_Assoc : Boolean := False;
@@ -3129,13 +3135,16 @@ package body Gnat2Why.Expr.Aggregates is
                   Bounds : constant Node_Id := Aggregate_Bounds (Subexpr);
                   pragma Assert (Present (Bounds));
                   Low    : constant W_Term_Id :=
-                    New_Temp_For_Expr
-                      (W_Term_Id'
-                         (+Transform_Expr
-                             (Low_Bound (Bounds),
-                              Index_Base,
-                              EW_Term,
-                              Params)));
+                    (if Bound_Temps (Dim) /= Why_Empty
+                     then Bound_Temps (Dim)
+                     else
+                       New_Temp_For_Expr
+                         (W_Term_Id'
+                            (+Transform_Expr
+                                (Low_Bound (Bounds),
+                                 Index_Base,
+                                 EW_Term,
+                                 Params))));
                   --  Translate lower bound
 
                   Offset : constant W_Term_Id :=
@@ -3164,6 +3173,8 @@ package body Gnat2Why.Expr.Aggregates is
                   --  the upper bound.
 
                begin
+                  Bound_Temps (Dim) := Low;
+
                   if Why_Type_Is_BitVector (Index_Base) then
                      --  Generate no-wraparound check.
 
@@ -3196,6 +3207,19 @@ package body Gnat2Why.Expr.Aggregates is
                                    Index_Base,
                                    EW_Term,
                                    Params)));
+
+                     --  Positional components are not covered by others
+
+                     Others_Guard :=
+                       New_And_Pred
+                         (Left  => Others_Guard,
+                          Right =>
+                            New_Not
+                              (Right =>
+                                 New_Range_Expr
+                                   (Low  => Low,
+                                    High => Last_Index,
+                                    Expr => +New_Result_Ident (Index_Base))));
                   end if;
 
                   pragma Assert (not W_Pred_Vectors.Is_Empty (Pred));
@@ -3207,11 +3231,7 @@ package body Gnat2Why.Expr.Aggregates is
                         Reason   => VC_Range_Check,
                         Kind     => EW_Assert,
                         Pred     =>
-                          Binding_For_Temp
-                            (Tmp     => Low,
-                             Context =>
-                               New_And_Pred
-                                 (W_Pred_Vectors.To_Array (Pred)))));
+                          New_And_Pred (W_Pred_Vectors.To_Array (Pred))));
                end;
             end if;
 
@@ -3418,8 +3438,7 @@ package body Gnat2Why.Expr.Aggregates is
                      Constr    : W_Pred_Id;
                   begin
                      --  Store in Constr the known constraints for the
-                     --  quantified variables. If Choices is not others, also
-                     --  update the Others_Guard to exclude the current choice.
+                     --  quantified variables.
 
                      if Is_Others_Choice (Choices) then
                         Constr := Others_Guard;
@@ -3430,10 +3449,6 @@ package body Gnat2Why.Expr.Aggregates is
                              Choice_Type  => Etype (Quant_Var),
                              Matched_Expr => +New_Result_Ident (Index_Base),
                              Params       => Params);
-                        Others_Guard :=
-                          New_And_Pred
-                            (Left  => Others_Guard,
-                             Right => New_Not (Right => Constr));
                      end if;
 
                      Idx :=
@@ -3500,6 +3515,26 @@ package body Gnat2Why.Expr.Aggregates is
                   Comp_Checks := Save_Checks;
 
                   In_Iterated_Assoc := Save_In_Iter;
+               end if;
+
+               --  Exclude all preceding associations from others, including
+               --  ordinary associations without an explicit iterator.
+
+               if not In_Delta_Aggregate
+                 and then not Is_Others_Choice (Choice_List (Association))
+               then
+                  Others_Guard :=
+                    New_And_Pred
+                      (Left  => Others_Guard,
+                       Right =>
+                         New_Not
+                           (Right =>
+                              Transform_Discrete_Choices
+                                (Choices      => Choice_List (Association),
+                                 Choice_Type  => Index_Typ,
+                                 Matched_Expr =>
+                                   +New_Result_Ident (Index_Base),
+                                 Params       => Params)));
                end if;
 
                Next (Association);
@@ -3683,6 +3718,14 @@ package body Gnat2Why.Expr.Aggregates is
 
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          Prepend (+Choice_Checks, +Comp_Checks, T);
+
+         for Low of reverse Bound_Temps loop
+            if Low /= Why_Empty then
+               T :=
+                 Binding_For_Temp
+                   (Domain => EW_Prog, Tmp => +Low, Context => T);
+            end if;
+         end loop;
       end Insert_Check_For_Choices;
 
       -------------------------------
