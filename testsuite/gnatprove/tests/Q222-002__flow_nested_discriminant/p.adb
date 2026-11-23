@@ -10,7 +10,7 @@ procedure P with Global => null is
       function Proxy1 return Integer is (X.D) with Pre => True;
 
       type T2 is record
-         C1 : Integer := Proxy1;  --  NOK
+         C1 : Integer := Proxy1;  --  OK
       end record;
    begin
       null;
@@ -20,7 +20,7 @@ procedure P with Global => null is
       function Proxy2 return Integer is (X.Component.D) with Pre => True;
 
       type T2 is record
-         C1 : Integer := Proxy2;  --  NOK
+         C1 : Integer := Proxy2;  --  OK
       end record;
    begin
       null;
