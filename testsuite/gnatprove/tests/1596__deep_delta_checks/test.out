@@ -1,3 +1,17 @@
+deep_leak.adb:12:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+deep_leak.adb:14:16: info: absence of resource or memory leak proved (CVC5: 1 VC)
+deep_leak.adb:16:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+deep_leak.adb:18:13: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:18:19: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:19:13: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:19:16: medium: resource or memory leak might occur
+deep_leak.adb:19:19: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:21:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+deep_leak.adb:21:27: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:21:30: info: absence of resource or memory leak proved (CVC5: 1 VC)
+deep_leak.adb:21:33: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:22:22: info: assertion proved (CVC5: 1 VC)
+deep_leak.adb:23:22: info: assertion proved (CVC5: 1 VC)
 deep_paths.adb:3:11: warning: subprogram "Deep_Paths" has no effect
 deep_paths.adb:11:21: info: index check proved (CVC5: 2 VC)
 deep_paths.adb:11:27: info: index check proved (CVC5: 2 VC)
