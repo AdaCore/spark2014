@@ -17,8 +17,8 @@ test_accessibility.adb:33:25: info: pointer dereference check proved (CVC5: 1 VC
 test_accessibility.adb:39:13: info: implicit aspect Always_Terminates on "OK3" has been proved, subprogram will terminate
 test_accessibility.adb:40:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:40:25: info: pointer dereference check proved (CVC5: 1 VC)
+test_accessibility.adb:43:14: info: dynamic accessibility check proved (Trivial)
 test_accessibility.adb:43:14: info: null exclusion check proved (CVC5: 1 VC)
-test_accessibility.adb:43:14: medium: dynamic accessibility check might fail [possible fix: subprogram at line 39 should mention X in a precondition]
 test_accessibility.adb:48:13: info: implicit aspect Always_Terminates on "OK4" has been proved, subprogram will terminate
 test_accessibility.adb:49:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:49:25: info: pointer dereference check proved (CVC5: 1 VC)
@@ -186,8 +186,8 @@ test_accessibility_2.adb:180:13: info: implicit aspect Always_Terminates on "OK1
 test_accessibility_2.adb:181:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:181:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:181:33: info: pointer dereference check proved (CVC5: 1 VC)
-test_accessibility_2.adb:184:14: info: dynamic accessibility check proved (Trivial)
 test_accessibility_2.adb:184:14: info: null exclusion check proved (CVC5: 1 VC)
+test_accessibility_2.adb:184:14: medium: dynamic accessibility check might fail [possible fix: subprogram at line 180 should mention X in a precondition]
 test_accessibility_2.adb:184:33: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:184:35: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_2.adb:188:06: info: data dependencies proved
@@ -288,3 +288,44 @@ test_accessibility_list.adb:61:19: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:64:45: info: pointer dereference check proved (CVC5: 1 VC)
 test_accessibility_list.adb:66:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_list.adb:66:17: medium: dynamic accessibility check might fail
+test_nested_calls.adb:2:13: info: implicit aspect Always_Terminates on "Identity" has been proved, subprogram will terminate
+test_nested_calls.adb:4:11: info: data dependencies proved
+test_nested_calls.adb:7:14: info: dynamic accessibility check proved (Trivial)
+test_nested_calls.adb:7:14: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:10:13: info: implicit aspect Always_Terminates on "Forward" has been proved, subprogram will terminate
+test_nested_calls.adb:12:11: info: data dependencies proved
+test_nested_calls.adb:15:14: info: dynamic accessibility check proved (Trivial)
+test_nested_calls.adb:15:14: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:15:24: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:18:13: info: implicit aspect Always_Terminates on "Nested" has been proved, subprogram will terminate
+test_nested_calls.adb:20:11: info: data dependencies proved
+test_nested_calls.adb:23:14: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:23:14: medium: dynamic accessibility check might fail [possible fix: subprogram at line 18 should mention X in a precondition]
+test_nested_calls.adb:23:24: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:23:34: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:26:13: info: implicit aspect Always_Terminates on "Borrow" has been proved, subprogram will terminate
+test_nested_calls.adb:28:11: info: data dependencies proved
+test_nested_calls.adb:31:14: info: dynamic accessibility check proved (Trivial)
+test_nested_calls.adb:31:14: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:34:13: info: implicit aspect Always_Terminates on "Nested_Borrow" has been proved, subprogram will terminate
+test_nested_calls.adb:36:11: info: data dependencies proved
+test_nested_calls.adb:39:14: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:39:14: medium: dynamic accessibility check might fail [possible fix: subprogram at line 34 should mention X in a precondition]
+test_nested_calls.adb:39:22: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:39:30: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:42:13: info: implicit aspect Always_Terminates on "Aliased_Identity" has been proved, subprogram will terminate
+test_nested_calls.adb:44:11: info: data dependencies proved
+test_nested_calls.adb:50:13: info: implicit aspect Always_Terminates on "Forward_Aliased" has been proved, subprogram will terminate
+test_nested_calls.adb:52:11: info: data dependencies proved
+test_nested_calls.adb:55:14: info: dynamic accessibility check proved (Trivial)
+test_nested_calls.adb:55:14: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:58:13: info: implicit aspect Always_Terminates on "Nested_Access" has been proved, subprogram will terminate
+test_nested_calls.adb:60:11: info: data dependencies proved
+test_nested_calls.adb:63:14: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:63:14: medium: dynamic accessibility check might fail [possible fix: subprogram at line 58 should mention X in a precondition]
+test_nested_calls.adb:63:24: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:66:13: info: implicit aspect Always_Terminates on "Nested_Aliased" has been proved, subprogram will terminate
+test_nested_calls.adb:68:11: info: data dependencies proved
+test_nested_calls.adb:72:14: info: null exclusion check proved (CVC5: 1 VC)
+test_nested_calls.adb:72:14: medium: dynamic accessibility check might fail [possible fix: subprogram at line 66 should mention X in a precondition]
+test_nested_calls.adb:72:53: info: pointer dereference check proved (CVC5: 1 VC)
