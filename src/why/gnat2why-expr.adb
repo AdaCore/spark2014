@@ -19787,6 +19787,28 @@ package body Gnat2Why.Expr is
                pragma Assert (Domain = EW_Prog);
                T := +Void;
 
+               --  Equality reads both arrays, including relaxed components
+               --  compared using predefined equality.
+
+               Append
+                 (T,
+                  New_Ignore
+                    (Prog =>
+                       +Insert_Initialization_Check
+                          (Var,
+                           Etype (Var),
+                           Transform_Expr (Var, Subd_No_Check, Params),
+                           Domain,
+                           Exclude_Components => For_Eq)),
+                  New_Ignore
+                    (Prog =>
+                       +Insert_Initialization_Check
+                          (Upd,
+                           Etype (Upd),
+                           Transform_Expr (Upd, Subd_No_Check, Params),
+                           Domain,
+                           Exclude_Components => For_Eq)));
+
                --  Instead of a conditional, we generate a sequence to avoid
                --  shadowing checks coming from the first occurrence of
                --  duplicated choices.
