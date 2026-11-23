@@ -1,0 +1,8 @@
+bad_relaxed_init.ads:5:09: info: invariant check proved on default value (CVC5: 1 VC)
+direct_read.adb:5:17: warning: subprogram "Read_Value" has no effect
+direct_read.adb:7:07: medium: type "T" is not fully initialized
+direct_read.adb:12:10: info: default initial condition proved (Trivial: 1 VC)
+direct_read.adb:12:10: info: in default value at direct_read.adb:12
+direct_read.adb:12:10: info: initialization of "X" proved
+direct_read.adb:13:10: info: initialization of "V" proved
+direct_read.adb:16:25: high: assertion might fail (e.g. when V = False)
