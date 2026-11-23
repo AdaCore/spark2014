@@ -1,0 +1,6 @@
+missing_init.adb:4:25: info: initialization of "Value" proved
+missing_init.adb:31:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Target doesn't have a Size representation clause or aspect]
+missing_init.adb:31:54: info: type is suitable as source for unchecked conversion (Trivial)
+missing_init.adb:31:62: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Target doesn't have a Size representation clause or aspect]
+missing_init.adb:33:04: info: initialization of parts of "X" without Relaxed_Initialization proved
+missing_init.adb:37:39: medium: initialization check might fail (e.g. when X = (Ordinary => (others => 0), Relaxed => ?) and X.Relaxed.Value'Initialized = False and Y = (others => 0))

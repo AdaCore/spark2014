@@ -3705,7 +3705,7 @@ package body Gnat2Why.Expr is
                  or else Is_Access_Type (Retysp (Etype (Formal))))
                and then Domain = EW_Prog
                then EW_Pterm else Domain);
-            Actual_Expr   : constant W_Expr_Id :=
+            Actual_Expr   : W_Expr_Id :=
             --  Expression for the actual
 
               (if Is_Self and then Is_External_Call (Call)
@@ -3793,6 +3793,19 @@ package body Gnat2Why.Expr is
             --  these expressions.
 
          begin
+            --  Unchecked conversion reads all source bits, including those
+            --  of components whose types have relaxed initialization.
+
+            if Is_Unchecked_Conversion_Instance (Subp) then
+               Actual_Expr :=
+                 Insert_Initialization_Check
+                   (Ada_Node        => Actual,
+                    E               => Etype (Actual),
+                    Name            => Actual_Expr,
+                    Domain          => Domain,
+                    Exclude_Relaxed => False);
+            end if;
+
             --  Store the converted actual into a temporary constant to avoid
             --  computing it several times. It also ensures that checks are
             --  emitted even if the expression happens to not be used.
