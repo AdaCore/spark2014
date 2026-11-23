@@ -1,126 +1,83 @@
 #!/usr/bin/env python3
-"""Format changed Ada files after Codex edits."""
+"""Apply the repository's project formatting to Ada files in the current edit."""
 
 from __future__ import annotations
 
 import json
-import os
 import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any, Iterable
 
 
-ADA_RE = re.compile(r'[^\s"\'<>]+\.(?:ads|adb)')
+ROOT = Path(__file__).resolve().parents[2]
+GNAT_SRC = (ROOT / "gnat2why/gnat_src").resolve()
+PATCH_PATH = re.compile(r"^\*\*\* (?:Add File|Update File|Move to): (.+)$", re.M)
 
 
-def walk_strings(value: Any) -> Iterable[str]:
-    if isinstance(value, str):
-        yield value
-    elif isinstance(value, dict):
-        for item in value.values():
-            yield from walk_strings(item)
-    elif isinstance(value, list):
-        for item in value:
-            yield from walk_strings(item)
+def edited_files(payload: dict) -> set[Path]:
+    tool_input = payload.get("tool_input", {})
+    paths = PATCH_PATH.findall(tool_input.get("command", ""))
+    if "file_path" in tool_input:
+        paths.append(tool_input["file_path"])
+
+    cwd = Path(payload.get("cwd") or ROOT)
+    result = set()
+    for name in paths:
+        path = (cwd / name).resolve()
+        if (
+            path.suffix in {".ads", ".adb"}
+            and path.is_relative_to(ROOT)
+            and not path.is_relative_to(GNAT_SRC)
+            and path.is_file()
+        ):
+            result.add(path)
+    return result
 
 
-def collect_paths(payload: dict[str, Any]) -> list[str]:
-    paths: list[str] = []
-    for text in walk_strings(payload):
-        paths.extend(ADA_RE.findall(text))
-    return paths
+def project_files(project: str, edited: set[Path]) -> set[Path]:
+    # Source_Dirs depends on the target and GPR_TOOL. Only inspect the closure
+    # if the edit touched one of the root project's source directories.
+    info = subprocess.check_output(
+        ["gprinspect", "-P", project, "--display=json-compact"], cwd=ROOT
+    )
+    project_info = json.loads(info)["projects"][0]["project"]
+    source_dirs = set(map(Path, project_info["source-directories"]))
+    candidates = {path for path in edited if path.parent in source_dirs}
+    if not candidates:
+        return set()
+
+    sources = subprocess.check_output(
+        ["gprls", "-P", project, "-s", "--closure", "--source-parser"],
+        cwd=ROOT,
+        text=True,
+    )
+    return candidates.intersection(map(Path, sources.splitlines()))
 
 
-def git_changed_paths(repo_root: Path) -> list[str]:
-    try:
-        result = subprocess.run(
-            [
-                "git",
-                "diff",
-                "--name-only",
-                "--diff-filter=ACMRTUXB",
-                "HEAD",
-            ],
-            cwd=repo_root,
+def format_files(project: str, files: set[Path]) -> None:
+    if files:
+        subprocess.run(
+            ["gnatformat", "-P", project, "--no-subprojects", *sorted(files)],
+            cwd=ROOT,
             check=True,
-            text=True,
-            capture_output=True,
         )
-    except (OSError, subprocess.CalledProcessError):
-        return []
-
-    paths: list[str] = []
-    for line in result.stdout.splitlines():
-        if line.endswith((".ads", ".adb")):
-            paths.append(line)
-
-    try:
-        status = subprocess.run(
-            [
-                "git",
-                "status",
-                "--porcelain=v1",
-                "--untracked-files=all",
-            ],
-            cwd=repo_root,
-            check=True,
-            text=True,
-            capture_output=True,
-        )
-    except (OSError, subprocess.CalledProcessError):
-        status = None
-
-    if status is not None:
-        for line in status.stdout.splitlines():
-            if len(line) >= 4:
-                candidate = line[3:]
-                if candidate.endswith((".ads", ".adb")):
-                    paths.append(candidate)
-
-    return paths
 
 
-def main() -> int:
-    try:
-        payload = json.load(sys.stdin)
-    except json.JSONDecodeError:
-        return 0
+def main() -> None:
+    edited = edited_files(json.load(sys.stdin))
+    if not edited:
+        return
 
-    repo_root = Path(payload.get("cwd") or os.getcwd())
-    paths = collect_paths(payload)
-    if not paths:
-        paths = git_changed_paths(repo_root)
+    # Use the same project order and explicit table generator source as
+    # "make format". A source shared by two projects goes through both.
+    for project in ("gnatprove.gpr", "gnat2why/gnat2why.gpr"):
+        format_files(project, project_files(project, edited))
 
-    unique_paths = []
-    for raw_path in paths:
-        candidate = Path(raw_path)
-        if not candidate.is_absolute():
-            candidate = repo_root / candidate
-        try:
-            candidate = candidate.resolve()
-        except OSError:
-            continue
-        if candidate.exists() and candidate.suffix in {".ads", ".adb"}:
-            try:
-                relative_path = candidate.relative_to(repo_root)
-                if "tests" in relative_path.parts or "testsuite" in relative_path.parts:
-                    continue
-                unique_paths.append(str(relative_path))
-            except ValueError:
-                continue
-
-    unique_paths = sorted(set(unique_paths))
-    if not unique_paths:
-        return 0
-
-    try:
-        subprocess.run(["gnatformat", *unique_paths], cwd=repo_root, check=False)
-    except OSError:
-        return 0
-    return 0
+    table_project = "docs/ug/table_generator/table_generator.gpr"
+    table_source = (ROOT / table_project).with_suffix(".adb")
+    format_files(table_project, edited.intersection({table_source}))
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()

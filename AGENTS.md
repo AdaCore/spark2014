@@ -13,7 +13,6 @@ Assume the environment is already set up.
 - Build and install with `make` and `make install-all`.
 - The gnatprove testsuite does not rebuild tools automatically. Re-run `make`
   and `make install-all` before testing source changes.
-- Format Ada code with `make format`; verify formatting with `make check-format`.
 - Before big test runs or expensive proof-session/baseline regeneration,
   finish the edits and formatting, present the diff for the user's validation,
   and wait for approval. Keep preliminary checks short so the user can review
