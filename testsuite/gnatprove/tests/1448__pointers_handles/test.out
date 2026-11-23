@@ -1,4 +1,3 @@
-test_handles.adb:17:11: info: implicit aspect Always_Terminates on "Create_Object" has been proved, subprogram will terminate
 test_handles.adb:35:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_handles.adb:50:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
 test_handles.adb:60:13: info: implicit aspect Always_Terminates on "Leaf" has been proved, subprogram will terminate

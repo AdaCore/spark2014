@@ -1,7 +1,7 @@
-main.adb:3:11: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-main.adb:3:11: info: implicit aspect Always_Terminates on "P" has been proved, subprogram will terminate
-main.adb:3:11: info: precondition proved (CVC5: 1 VC)
-main.adb:3:11: info: precondition proved (CVC5: 2 VC)
+main.adb:12:21: info: implicit aspect Always_Terminates on "P" has been proved, subprogram will terminate, in instantiation at main.adb:39
+main.adb:12:21: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:39
+main.adb:14:21: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate, in instantiation at main.adb:39
+main.adb:14:21: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:39
 main.adb:15:40: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:39
 main.adb:17:16: info: implicit aspect Always_Terminates on "Use_It" has been proved, subprogram will terminate, in instantiation at main.adb:39
 main.adb:18:40: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:39

@@ -1,4 +1,3 @@
-test_auto_reclaimed.adb:10:11: info: implicit aspect Always_Terminates on "Create_Object" has been proved, subprogram will terminate
 test_auto_reclaimed.adb:24:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_auto_reclaimed.adb:39:14: info: aspect Always_Terminates on "Reclaim" has been proved, subprogram will terminate
 test_auto_reclaimed.adb:40:09: info: data dependencies proved
