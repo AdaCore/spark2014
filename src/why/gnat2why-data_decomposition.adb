@@ -40,10 +40,11 @@ with SPARK_Util;           use SPARK_Util;
 package body Gnat2Why.Data_Decomposition is
 
    type Data_Decomposition_Entry is record
-      Size        : Uint := No_Uint;
-      Value_Size  : Uint := No_Uint;
-      Object_Size : Uint := No_Uint;
-      Alignment   : Uint := No_Uint;
+      Size           : Uint := No_Uint;
+      Value_Size     : Uint := No_Uint;
+      Object_Size    : Uint := No_Uint;
+      Component_Size : Uint := No_Uint;
+      Alignment      : Uint := No_Uint;
    end record;
 
    package String_To_Data_Decomposition_Maps is new
@@ -142,6 +143,9 @@ package body Gnat2Why.Data_Decomposition is
       if Attr_Id = Attribute_Alignment then
          return Data_Entry.Alignment;
 
+      elsif Attr_Id = Attribute_Component_Size then
+         return Data_Entry.Component_Size;
+
       elsif Is_Type (E) then
 
          --  If value of Size is present for a type, it means that Esize
@@ -160,7 +164,7 @@ package body Gnat2Why.Data_Decomposition is
                   return Data_Entry.Object_Size;
 
                when Attribute_Component_Size              =>
-                  return No_Uint;
+                  return Data_Entry.Component_Size;
             end case;
          end if;
 
@@ -499,6 +503,8 @@ package body Gnat2Why.Data_Decomposition is
                Read_Integer_Value (Data_Entry.Value_Size);
             elsif Key = "Object_Size" then
                Read_Integer_Value (Data_Entry.Object_Size);
+            elsif Key = "Component_Size" then
+               Read_Integer_Value (Data_Entry.Component_Size);
             elsif Key = "Alignment" then
                Read_Integer_Value (Data_Entry.Alignment);
             else
@@ -509,7 +515,6 @@ package body Gnat2Why.Data_Decomposition is
                  Assert
                    (Key
                     in "Bit_Order"
-                     | "Component_Size"
                      | "Linker_Section"
                      | "Range"
                      | "Scalar_Storage_Order"

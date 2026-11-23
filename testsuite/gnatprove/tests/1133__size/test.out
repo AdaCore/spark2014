@@ -54,10 +54,10 @@ test.adb:103:48: warning: the value of attribute "Object_Size" is handled in an 
 test.adb:103:48: warning: type "Bool_Array" is unconstrained
 test.adb:108:07: info: precondition proved (Trivial: 1 VC)
 test.adb:111:14: warning: subprogram "Test_Array_Comp" has no effect
+test.adb:118:17: high: all paths in "P" raise exceptions or do not terminate normally
 test.adb:118:17: warning: subprogram "P" has no effect
 test.adb:120:07: info: no contextual analysis of "Test_Array_Comp" (nested subprogram)
-test.adb:122:25: medium: assertion might fail
-test.adb:122:28: info: index check proved (CVC5: 2 VC)
+test.adb:122:10: high: assertion might fail
 test.adb:126:07: info: precondition proved (CVC5: 2 VC)
 test.adb:129:14: warning: subprogram "Test_Record_Comp" has no effect
 test.adb:138:17: warning: subprogram "P" has no effect
