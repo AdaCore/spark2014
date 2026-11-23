@@ -8011,7 +8011,11 @@ package body SPARK_Definition is
             D : Opt_E_Discriminant_Id := First_Discriminant (E);
          begin
             while Present (D) loop
-               Mark_Entity (D);
+               if Is_Access_Type (Etype (D)) then
+                  Mark_Violation (Vio_Discriminant_Access, D);
+               else
+                  Mark_Entity (D);
+               end if;
                Next_Discriminant (D);
             end loop;
          end;
@@ -11164,9 +11168,15 @@ package body SPARK_Definition is
             begin
                while Present (Disc) loop
 
+                  --  Reject access discriminants before marking their
+                  --  anonymous types (SPARK RM 3.7(1)).
+
+                  if Is_Access_Type (Etype (Disc)) then
+                     Mark_Violation (Vio_Discriminant_Access, Disc);
+
                   --  Check that the type of the discriminant is in SPARK
 
-                  if not In_SPARK (Etype (Disc)) then
+                  elsif not In_SPARK (Etype (Disc)) then
                      Mark_Violation (Disc, From => Etype (Disc));
                   end if;
 
@@ -11176,21 +11186,21 @@ package body SPARK_Definition is
                      Mark_Violation (Vio_Volatile_Discriminant, Disc);
                   end if;
 
-                  --  Check that the discriminant is not of an access type as
-                  --  specified in SPARK RM 3.7(1)
+                  --  Check defaults of non-access discriminants only. Marking
+                  --  an access discriminant's default would also mark its
+                  --  unsupported anonymous type.
 
-                  if Has_Access_Type (Etype (Disc)) then
-                     Mark_Violation (Vio_Discriminant_Access, Disc);
+                  if not Is_Access_Type (Etype (Disc)) then
+                     Mark_Default_Expression (Disc);
                   end if;
 
-                  --  Check that the default expression is in SPARK
-
-                  Mark_Default_Expression (Disc);
-
-                  --  Check that the discriminant constraint is in SPARK
+                  --  As for defaults, only mark constraints of non-access
+                  --  discriminants.
 
                   if Present (Elmt) then
-                     Mark (Node (Elmt));
+                     if not Is_Access_Type (Etype (Disc)) then
+                        Mark (Node (Elmt));
+                     end if;
                      Next_Elmt (Elmt);
                   end if;
 
