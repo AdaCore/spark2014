@@ -1,0 +1,7 @@
+aggregate_choices.adb:10:19: info: assertion proved (CVC5: 1 VC)
+aggregate_choices.adb:11:19: info: assertion proved (CVC5: 1 VC)
+aggregate_choices.adb:12:19: info: assertion proved (CVC5: 1 VC)
+case_choices.adb:1:11: warning: subprogram "Case_Choices" has no effect
+case_choices.adb:6:04: info: initialization of "D" proved
+case_choices.adb:8:19: info: assertion proved (CVC5: 1 VC)
+case_choices.adb:13:19: info: assertion proved (CVC5: 1 VC)
