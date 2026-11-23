@@ -21476,25 +21476,31 @@ package body Gnat2Why.Expr is
       if Nkind (Choice) = N_Others_Choice then
          R := Bool_True (Domain);
 
-      --  When the choice denotes a subtype with a static predicate, check the
-      --  expression against the predicate values.
-
-      elsif (Nkind (Choice) = N_Subtype_Indication
-              or else (Is_Entity_Name (Choice)
-                        and then Is_Type (Entity (Choice))))
-        and then Has_Predicates (Etype (Choice))
-        and then Has_Static_Predicate (Etype (Choice))
-      then
-         pragma Assert (Is_Discrete_Type (Etype (Choice)));
-         R := Transform_Discrete_Choices
-                (Static_Discrete_Predicate (Etype (Choice)),
-                 Choice_Type,
-                 Expr,
-                 Domain,
-                 Params);
-
       elsif Is_Range then
          R := Range_Expr (Choice, Expr, Domain, Params);
+
+         --  A static predicate restricts the values in the range. Its value
+         --  list need not include the choice's range constraint, so retain
+         --  both conditions.
+
+         if (Nkind (Choice) = N_Subtype_Indication
+             or else
+               (Is_Entity_Name (Choice) and then Is_Type (Entity (Choice))))
+           and then Has_Predicates (Etype (Choice))
+           and then Has_Static_Predicate (Etype (Choice))
+         then
+            pragma Assert (Is_Discrete_Type (Etype (Choice)));
+            R :=
+              New_And_Expr
+                (R,
+                 Transform_Discrete_Choices
+                   (Static_Discrete_Predicate (Etype (Choice)),
+                    Choice_Type,
+                    Expr,
+                    Domain,
+                    Params),
+                 Domain);
+         end if;
 
          --  In programs, we generate a check that the range_constraint of a
          --  subtype_indication is compatible with the given subtype.
