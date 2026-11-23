@@ -1,4 +1,4 @@
-tag_check.adb:12:09: medium: tag check might fail
+tag_check.adb:12:09: medium: tag check might fail (e.g. when Y = (X => 0))
 tag_check.adb:13:07: medium: assertion might fail
 tag_check.adb:33:04: warning: analyzing unreferenced procedure "Use_Two" [unreferenced-procedure]
 tag_check.adb:33:14: warning: subprogram "Use_Two" has no effect

@@ -1,6 +1,6 @@
 large: True
 replay: manifest
 session_opt:
-  level: 2
+  level: 3
 prove_all:
   opt: []

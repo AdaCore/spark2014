@@ -3,10 +3,11 @@ version = 1
 
 [[rule]]
 path = "Resize"
-provers = ["z3"]
+provers = ["cvc5"]
 steps = 100
 
 [[rule]]
 path = "Resize.Resize"
-provers = ["z3", "cvc5", "alt-ergo"]
-steps = 55000
+provers = ["cvc5", "alt-ergo"]
+steps = 260000
+timeout = 20
