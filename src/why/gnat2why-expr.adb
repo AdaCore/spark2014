@@ -13479,9 +13479,7 @@ package body Gnat2Why.Expr is
                end if;
             else
                --  Get the expression from the association and set
-               --  In_Iterated_Assoc. Discard assumptions from the binding so
-               --  an empty iteration range cannot make subsequent checks
-               --  vacuous.
+               --  In_Iterated_Assoc.
 
                case Nkind (Expr_Or_Association) is
                   when N_Iterated_Component_Association =>
@@ -14136,7 +14134,9 @@ package body Gnat2Why.Expr is
 
                --  For iterated component associations, bind the name of the
                --  index parameter and restore the Checks sequence. Also reset
-               --  In_Iterated_Assoc.
+               --  In_Iterated_Assoc. Discard assumptions from the binding so
+               --  an empty iteration range cannot make subsequent checks
+               --  vacuous.
 
                if Nkind (Association) = N_Iterated_Component_Association then
                   if Present (Loop_Actions (Association)) then

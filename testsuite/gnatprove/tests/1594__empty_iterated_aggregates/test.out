@@ -1,34 +1,34 @@
-empty_iterated.adb:5:04: warning: analyzing unreferenced procedure "Empty_Range" [unreferenced-procedure]
+empty_iterated.adb:5:04: warning: analyzing unreferenced procedure "Empty_Range"
 empty_iterated.adb:5:14: high: all paths in "Empty_Range" raise exceptions or do not terminate normally
 empty_iterated.adb:5:14: warning: subprogram "Empty_Range" has no effect
 empty_iterated.adb:8:22: info: assertion proved (CVC5: 1 VC)
-empty_iterated.adb:9:07: high: assertion might fail
-empty_iterated.adb:12:04: warning: analyzing unreferenced procedure "Dynamic_Range" [unreferenced-procedure]
+empty_iterated.adb:9:07: medium: assertion might fail
+empty_iterated.adb:12:04: warning: analyzing unreferenced procedure "Dynamic_Range"
 empty_iterated.adb:12:14: warning: subprogram "Dynamic_Range" has no effect
 empty_iterated.adb:13:30: info: range check proved (CVC5: 2 VC)
 empty_iterated.adb:13:42: info: range check proved (CVC5: 2 VC)
 empty_iterated.adb:15:22: info: assertion proved (CVC5: 1 VC)
 empty_iterated.adb:15:23: info: range check proved (CVC5: 2 VC)
-empty_iterated.adb:17:22: high: assertion might fail (e.g. when Last = 1) [possible fix: subprogram at line 12 should mention Last in a precondition]
-empty_iterated.adb:20:04: warning: analyzing unreferenced procedure "Empty_Outer" [unreferenced-procedure]
+empty_iterated.adb:17:22: medium: assertion might fail [possible fix: subprogram at line 12 should mention Last in a precondition]
+empty_iterated.adb:20:04: warning: analyzing unreferenced procedure "Empty_Outer"
 empty_iterated.adb:20:14: high: all paths in "Empty_Outer" raise exceptions or do not terminate normally
 empty_iterated.adb:20:14: warning: subprogram "Empty_Outer" has no effect
 empty_iterated.adb:22:51: info: overflow check proved (CVC5: 2 VC)
 empty_iterated.adb:24:22: info: assertion proved (CVC5: 1 VC)
 empty_iterated.adb:25:07: medium: assertion might fail
-empty_iterated.adb:28:04: warning: analyzing unreferenced procedure "Empty_Inner" [unreferenced-procedure]
+empty_iterated.adb:28:04: warning: analyzing unreferenced procedure "Empty_Inner"
 empty_iterated.adb:28:14: high: all paths in "Empty_Inner" raise exceptions or do not terminate normally
 empty_iterated.adb:28:14: warning: subprogram "Empty_Inner" has no effect
 empty_iterated.adb:30:51: info: overflow check proved (CVC5: 2 VC)
 empty_iterated.adb:32:22: info: assertion proved (CVC5: 1 VC)
 empty_iterated.adb:33:22: info: assertion proved (CVC5: 1 VC)
 empty_iterated.adb:34:07: medium: assertion might fail
-empty_iterated.adb:37:04: warning: analyzing unreferenced procedure "Unsafe_Sibling" [unreferenced-procedure]
+empty_iterated.adb:37:04: warning: analyzing unreferenced procedure "Unsafe_Sibling"
 empty_iterated.adb:37:14: warning: subprogram "Unsafe_Sibling" has no effect
 empty_iterated.adb:42:34: info: overflow check proved (CVC5: 2 VC)
 empty_iterated.adb:44:12: info: index check proved (CVC5: 2 VC)
 empty_iterated.adb:44:34: medium: divide by zero might fail [possible fix: subprogram at line 37 should mention Divisor in a precondition]
-empty_iterated.adb:49:04: warning: analyzing unreferenced procedure "Nonempty" [unreferenced-procedure]
+empty_iterated.adb:49:04: warning: analyzing unreferenced procedure "Nonempty"
 empty_iterated.adb:49:14: warning: subprogram "Nonempty" has no effect
 empty_iterated.adb:51:52: info: division check proved (CVC5: 1 VC)
 empty_iterated.adb:51:57: info: overflow check proved (CVC5: 2 VC)
