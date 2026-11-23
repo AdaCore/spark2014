@@ -18,7 +18,7 @@ with SPARK.Pointers.Poisoned.Views.Array_Operations;
 --  rejects those outright, which stops the run before proof and would hide
 --  everything here.
 
-package Bad_Params with SPARK_Mode is -- @PRECONDITION:FAIL
+package Bad_Params with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
 
    --  A designated object that owns a cell
@@ -64,7 +64,7 @@ package Bad_Params with SPARK_Mode is -- @PRECONDITION:FAIL
    is (O)
    with Pre => O.F > 0;
 
-   package Copy_Ops is new Plain_Pointers.Copy_Operations (Copy_With_Pre);
+   package Copy_Ops is new Plain_Pointers.Copy_Operations (Copy_With_Pre); -- @PRECONDITION:FAIL
 
    -----------------------------------------------------------------
    --  Assignment_Checks: assignment shall preserve the object.    --

@@ -69,6 +69,7 @@ os.chdir(TESTDIR)
 is_msg = re.compile(
     r"([\w-]*\.ad.?):(\d*):\d*: (info|warning|low|medium|high)?(: )?([^(,[]*)(.*)?$"
 )
+is_instantiation = re.compile(r", in instantiation at ([\w-]*\.ad.?):(\d+)")
 is_mark = re.compile(r"@(\w*):(\w*)")
 
 
@@ -1061,6 +1062,9 @@ def check_marks(strlist, cwd=None, logger=None):
     with underscores. A tag denotes a line where some result is expected
     (typically this marker will be put in comments).
 
+    A result matches marks at its primary location and at any location in its
+    instantiation chain.
+
     TAG is either:
     - a check (RANGE_CHECK, DIVISION_CHECK, etc), or
     - a flow message (UNINIT, DEPENDS, etc).
@@ -1326,7 +1330,12 @@ def check_marks(strlist, cwd=None, logger=None):
             tag = get_tag(text)
             if tag:
                 res = get_result(qual, text, is_flow_tag(tag))
-                results.setdefault((f, line), set()).add((tag, res))
+                locations = [(f, line)] + [
+                    (inst_file, int(inst_line))
+                    for inst_file, inst_line in is_instantiation.findall(m.group(6))
+                ]
+                for location in locations:
+                    results.setdefault(location, set()).add((tag, res))
 
     # check that marks in source code have a matching actual result
     for f in files:
