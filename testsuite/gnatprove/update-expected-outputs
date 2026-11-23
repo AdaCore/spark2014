@@ -47,7 +47,12 @@ def parse_options():
         help="Specify the Gitlab merge request or pipeline id to read outputs from",
     )
     parser.add_argument(
-        "--compute-time", default=False, action=argparse.BooleanOptionalAction
+        "--compute-time",
+        default=False,
+        action=argparse.BooleanOptionalAction,
+        help="Also update test.yaml large markers from recorded test run times. "
+        "Only effective with --output-dir or --from-gaia; "
+        "disabled by default",
     )
     args = parser.parse_args()
     if (
