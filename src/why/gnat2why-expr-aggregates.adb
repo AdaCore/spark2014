@@ -7132,17 +7132,26 @@ package body Gnat2Why.Expr.Aggregates is
                                 Return_Type => Get_Typ (Idx_Id),
                                 Labels      => Symbol_Sets.Empty_Set);
                         begin
+                           --  Keep the index constraints local to these
+                           --  checks. Nested paths can restrict enclosing
+                           --  indices differently, so their assumptions must
+                           --  not affect sibling checks or subsequent code.
+
                            Append
                              (Access_Checks,
-                              New_Binding
-                                (Name    => Idx_Id,
-                                 Def     => Old_Def,
-                                 Context => +Content_Acc));
+                              New_Ignore
+                                (Prog =>
+                                   New_Binding
+                                     (Name    => Idx_Id,
+                                      Def     => Old_Def,
+                                      Context => +Content_Acc)));
                            Prepend
-                             (New_Binding
-                                (Name    => Idx_Id,
-                                 Def     => New_Def,
-                                 Context => +Content_Pred),
+                             (New_Ignore
+                                (Prog =>
+                                   New_Binding
+                                     (Name    => Idx_Id,
+                                      Def     => New_Def,
+                                      Context => +Content_Pred)),
                               Pred_Checks);
                         end;
                      end;
