@@ -23,21 +23,21 @@ test_deep_delta.adb:89:34: info: index check proved
 test_deep_delta.adb:90:27: info: index check proved
 test_deep_delta.adb:90:34: info: index check proved
 test_deep_delta.adb:91:27: info: index check proved
-test_deep_delta.adb:95:16: info: index check proved
-test_deep_delta.adb:96:16: info: index check proved
+test_deep_delta.adb:95:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in 1 .. C) to subprogram at line 78]
+test_deep_delta.adb:96:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in 1 .. C) to subprogram at line 78]
 test_deep_delta.adb:96:23: info: index check proved
-test_deep_delta.adb:97:16: info: index check proved
+test_deep_delta.adb:97:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (L in 1 .. C) to subprogram at line 78]
 test_deep_delta.adb:97:23: info: index check proved
-test_deep_delta.adb:98:16: info: index check proved
+test_deep_delta.adb:98:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (N in 1 .. C) to subprogram at line 78]
 test_deep_delta.adb:98:23: info: index check proved
-test_deep_delta.adb:99:16: info: index check proved
-test_deep_delta.adb:101:25: info: assertion proved
-test_deep_delta.adb:101:54: info: index check proved
+test_deep_delta.adb:99:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Q in 1 .. C) to subprogram at line 78]
+test_deep_delta.adb:101:48: medium: assertion might fail, cannot prove Y.H1 (B).G1 = Z.H1 (B).G1
+test_deep_delta.adb:101:54: medium: array index check might fail [reason for check: value must be a valid index into the array]
 test_deep_delta.adb:101:68: info: index check proved
-test_deep_delta.adb:102:25: info: assertion proved
-test_deep_delta.adb:102:54: info: index check proved
-test_deep_delta.adb:102:65: info: index check proved
-test_deep_delta.adb:103:25: info: assertion proved
+test_deep_delta.adb:102:48: medium: assertion might fail, cannot prove Y.H1 (B) = Z.H1 (B)
+test_deep_delta.adb:102:54: medium: array index check might fail [reason for check: value must be a valid index into the array]
+test_deep_delta.adb:102:65: medium: array index check might fail [reason for check: value must be a valid index into the array]
+test_deep_delta.adb:103:25: medium: assertion might fail
 test_deep_delta.adb:104:25: medium: assertion might fail
 test_deep_delta.adb:110:09: info: data dependencies proved
 test_deep_delta.adb:115:19: info: length check proved
@@ -49,19 +49,19 @@ test_deep_delta.adb:120:34: info: index check proved
 test_deep_delta.adb:121:27: info: index check proved
 test_deep_delta.adb:121:34: info: index check proved
 test_deep_delta.adb:122:27: info: index check proved
-test_deep_delta.adb:126:16: info: index check proved
-test_deep_delta.adb:127:16: info: index check proved
+test_deep_delta.adb:126:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Q in 1 .. C) to subprogram at line 109]
+test_deep_delta.adb:127:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (N in 1 .. C) to subprogram at line 109]
 test_deep_delta.adb:127:23: info: index check proved
-test_deep_delta.adb:128:16: info: index check proved
+test_deep_delta.adb:128:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (L in 1 .. C) to subprogram at line 109]
 test_deep_delta.adb:128:23: info: index check proved
-test_deep_delta.adb:129:16: info: index check proved
+test_deep_delta.adb:129:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in 1 .. C) to subprogram at line 109]
 test_deep_delta.adb:129:23: info: index check proved
-test_deep_delta.adb:130:16: info: index check proved
-test_deep_delta.adb:132:25: info: assertion proved
-test_deep_delta.adb:132:54: info: index check proved
+test_deep_delta.adb:130:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in 1 .. C) to subprogram at line 109]
+test_deep_delta.adb:132:48: medium: assertion might fail, cannot prove Y.H1 (B).G1 = Z.H1 (B).G1
+test_deep_delta.adb:132:54: medium: array index check might fail [reason for check: value must be a valid index into the array]
 test_deep_delta.adb:132:68: info: index check proved
-test_deep_delta.adb:133:25: info: assertion proved
-test_deep_delta.adb:133:54: info: index check proved
+test_deep_delta.adb:133:48: medium: assertion might fail, cannot prove Y.H1 (B) = Z.H1 (B)
+test_deep_delta.adb:133:54: medium: array index check might fail [reason for check: value must be a valid index into the array]
 test_deep_delta.adb:133:65: info: index check proved
-test_deep_delta.adb:134:25: info: assertion proved
+test_deep_delta.adb:134:25: medium: assertion might fail
 test_deep_delta.adb:135:25: medium: assertion might fail
