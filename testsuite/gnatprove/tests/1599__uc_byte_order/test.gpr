@@ -1,0 +1,6 @@
+project Test is
+   package Builder is
+      for Global_Compilation_Switches ("Ada") use
+        ("-gnateT=" & Test'Project_Dir & "target.atp");
+   end Builder;
+end Test;
