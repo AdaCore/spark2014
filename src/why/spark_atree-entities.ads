@@ -471,7 +471,7 @@ package SPARK_Atree.Entities is
    --  Base_Retysp.
 
    function Max_Size_Of_Img_Attr (Typ : Scalar_Kind_Id) return Uint;
-   --  Return the maximal size of 'Image for type Typ
+   --  Return an upper bound on the length of 'Image for type Typ
 
    function Type_High_Bound (Typ : Scalar_Kind_Id) return Opt_N_Subexpr_Id;
 

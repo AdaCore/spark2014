@@ -621,9 +621,10 @@ package body SPARK_Atree.Entities is
 
    function Max_Size_Of_Img_Attr (Typ : Scalar_Kind_Id) return Uint is
       function Max_Size_Of_Integer (Size : Uint) return Int
-      is (UI_Image (Uint_2 ** Size, Decimal)'Length + 2);
-      --  Maximal size of integer values (positive values are prefixed by a
-      --  space).
+      is (UI_Image (Uint_2 ** Size, Decimal)'Length + 1);
+      --  Bound the number of decimal digits using the representation size,
+      --  since the type bounds need not be static. Add one character for the
+      --  minus sign or leading space. UI_Image omits the latter.
 
    begin
       return
