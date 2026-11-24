@@ -1,0 +1,2 @@
+repro.ads:7:48: info: all elements shall fit in index type for sequence aggregates at spark-containers-functional-infinite_sequences.ads:84, in instantiation at repro.ads:3
+repro.ads:7:48: info: precondition proved (Trivial: 1 VC)
