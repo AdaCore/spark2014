@@ -1,0 +1,13 @@
+array_predicate.adb:10:04: error: "View" is not allowed in SPARK (due to mutable overlay of a subcomponent of an object with a predicate)
+array_predicate.adb:10:04: error: violation of aspect SPARK_Mode at line 3
+array_predicate.adb:10:45: error: mutable overlay of a subcomponent of an object with a predicate is not yet supported
+inherited_predicate.adb:13:04: error: "View" is not allowed in SPARK (due to mutable overlay of a subcomponent of an object with a predicate)
+inherited_predicate.adb:13:04: error: violation of aspect SPARK_Mode at line 3
+inherited_predicate.adb:13:45: error: mutable overlay of a subcomponent of an object with a predicate is not yet supported
+nested_predicate.adb:15:04: error: "View" is not allowed in SPARK (due to mutable overlay of a subcomponent of an object with a predicate)
+nested_predicate.adb:15:04: error: violation of aspect SPARK_Mode at line 3
+nested_predicate.adb:15:51: error: mutable overlay of a subcomponent of an object with a predicate is not yet supported
+predicate_control.adb:12:04: error: "View" is not allowed in SPARK (due to mutable overlay of a subcomponent of an object with a predicate)
+predicate_control.adb:12:04: error: violation of aspect SPARK_Mode at line 3
+predicate_control.adb:12:45: error: mutable overlay of a subcomponent of an object with a predicate is not yet supported
+gnatprove: error during flow analysis and proof
