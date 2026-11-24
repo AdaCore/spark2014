@@ -47,7 +47,7 @@ p.adb:57:14: warning: subprogram "Test_Object_Size_Check_On_Source_5" has no eff
 p.adb:59:07: high: object is unsuitable for aliasing via address clause [possible explanation: type "Character" has 256 values but object "X" has size 16, which allows 16#1000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
 p.adb:59:07: info: address in address clause is compatible with object alignment (Trivial)
 p.adb:59:07: info: type is suitable as source for unchecked conversion (Trivial)
-p.adb:59:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
+p.adb:59:07: warning: imprecise handling of overlay (object "X" has size 16, but type "Character" has Size 8) [imprecise-overlay]
 p.adb:59:57: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:59:57: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:59:57: info: types of aliased objects have the same size (Trivial)
@@ -56,7 +56,7 @@ p.adb:64:14: warning: subprogram "Test_Object_Size_Check_On_Source_6" has no eff
 p.adb:66:07: high: object is unsuitable for aliasing via address clause [possible explanation: type "Boolean" has 2 values but object "X" has size 8, which allows 256 possible values; aliased object could have invalid values [SPARK RM 13.7]]
 p.adb:66:07: info: address in address clause is compatible with object alignment (Trivial)
 p.adb:66:07: info: type is suitable as source for unchecked conversion (Trivial)
-p.adb:66:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
+p.adb:66:07: warning: imprecise handling of overlay (object "X" has size 8, but type "Boolean" has Size 1) [imprecise-overlay]
 p.adb:66:54: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:66:54: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:66:54: info: types of aliased objects have the same size (Trivial)

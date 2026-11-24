@@ -3364,6 +3364,66 @@ The relevant subprograms for the handling of constant values are:
  * Gnat2why.Expr.Assume_Value_Of_Constants for the insertion of assumptions for
    constants
 
+Overlays
+^^^^^^^^
+
+Objects with address clauses are either precisely or imprecisely supported.
+Precisely supported clauses define overlays, whose relationships to the
+overlaid objects are modeled as described below. Imprecisely supported clauses
+are mostly ignored by the analysis and are subject to the assumptions
+documented in the User's Guide's "Complete List of Assumptions"
+(:file:`docs/ug/en/source/how_to_use_gnatprove_in_a_team.rst`), which also
+defines precisely supported address specifications. The SPARK Reference Manual
+(section 13.7) defines the rules for overlays.
+
+``Overlaid_Entity`` in GNAT's ``Sem_Util`` recognizes precisely supported
+address clauses and identifies the overlaid object. ``Mark_Address`` in
+:file:`src/spark/spark_definition.adb` checks overlays and emits warnings about
+the assumptions made for imprecisely supported clauses.
+
+SPARK generally excludes aliasing. Mutable overlays are accommodated without
+introducing aliases into the proof model: it keeps a single object, the
+ultimate overlaid object. The overlaying objects have no independent state.
+Reading through one of them is represented by a conversion of the overlaid
+object's value to the requested view. Writing through an overlay modifies that
+same object, using the conversion to relate its new value to the assigned
+value. This ensures that a modification through any view is visible through
+all the others.
+
+For a write, the translation havocs the ultimate overlaid object, then assumes
+that converting its new value to the overlay's view yields the assigned value.
+Properties that cannot be recovered from this relation are forgotten.
+``Transform_Identifier`` translates reads through the views, and
+``New_Overlay_Assignment`` handles writes, both in
+:file:`src/why/gnat2why-expr.adb`.
+
+Reads and writes through overlays use the conversion model described in
+:ref:`Unchecked Conversions` when the alias relationship and object
+representations permit it. ``Is_Overlay_Handled_As_UC`` in
+:file:`src/why/gnat2why-unchecked_conversion.adb` makes this decision.
+Otherwise a mutable overlay uses an uninterpreted view function. The same
+object is still read and modified, but there is no conversion definition or
+inversion axiom to recover its value from a write through the view.
+
+Constant overlays do not introduce aliasing and do not need this shared-state
+model. Each constant is modeled as a value obtained by converting the overlaid
+constant or subcomponent when a UC can be used. Otherwise the constant has no
+definition, retaining only its dynamic invariant. The constant can have the
+``Potentially_Invalid`` aspect because it cannot write invalid values back
+through another view.
+When a conversion is used, it supplies validity information as well as the
+value. Mutable overlays require stronger
+validity guarantees in both directions. ``Object_Suitable_For_UC_Source`` and
+``Suitable_For_UC_Target_Overlay_Wrap`` in
+:file:`src/why/gnat2why-unchecked_conversion.adb` check suitability using the
+objects' representations.
+
+Scalar conversion depends on the storage width, which determines, for example,
+the sign bit. An overlay must therefore distinguish object sizes from the type
+sizes used by ordinary unchecked conversions. ``Is_Overlay_Handled_As_UC``
+requires matching scalar object and type sizes, so that assumptions about one
+representation do not constrain another.
+
 Scalar Objects
 ^^^^^^^^^^^^^^
 For some Ada types, expressions, and in particular objects, can be either in a
@@ -5635,6 +5695,49 @@ the end of the borrow of borrowers and borrowed expressions:
 
 Conversions
 ^^^^^^^^^^^
+
+Unchecked Conversions
+"""""""""""""""""""""
+
+An instance of ``Ada.Unchecked_Conversion`` reinterprets a representation,
+rather than performing an Ada value conversion. The Why3 translation must
+therefore account for representation details that ordinary expressions can
+ignore: storage widths, component positions, padding, and bit patterns that
+do not represent valid target values. The model and its representation checks
+are implemented in :file:`src/why/gnat2why-unchecked_conversion.adb`.
+
+Ada instances with the same source and target types and validity treatment
+share a logic function, so equal source values give equal results across
+instances. ``Create_Module_For_UC_If_Needed`` constructs this shared model.
+``Translate_Function_Spec`` in
+:file:`src/why/gnat2why-subprograms.adb` connects each instance to this model.
+
+Suitability for unchecked conversion is defined by the SPARK Reference Manual
+(section 13.9). These rules justify the assumptions made about a conversion.
+``Suitable_For_UC_Source`` and
+``Suitable_For_UC_Target`` implement the RM suitability checks.
+
+When a precise definition is available, it describes the interpretation of the
+source representation as a target value. Otherwise, an uninterpreted function
+preserves determinism without asserting a particular relationship between the
+values. ``Is_UC_With_Precise_Definition`` determines which representations
+support precise reasoning; the definition is built by
+``Create_Module_For_UC_If_Needed``.
+
+For a potentially invalid UC, a precise conversion determines validity from
+the decoded representation; an abstract conversion leaves validity unknown.
+
+Inversion axioms allow a conversion followed by its reverse to recover the
+original value, even without a precise definition of either conversion. This
+requires suitable representations and valid intermediate values; it is not a
+property of arbitrary conversion pairs. ``Inversion_Axiom_OK`` and
+``Generate_Inversion_Axiom`` in ``Create_Module_For_UC_If_Needed`` specify the
+conditions and the resulting relationship.
+
+The conversion model is also used for :ref:`Overlays`, where object
+representations can require different assumptions from ordinary type-based
+unchecked conversions.
+
 Access-To-Subprogram Conversions
 """"""""""""""""""""""""""""""""
 
