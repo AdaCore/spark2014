@@ -1936,6 +1936,10 @@ package body Gnat2Why.Expr.Aggregates is
       -- Local subprograms --
       -----------------------
 
+      function Can_Embed_Component (Value : Node_Id) return Boolean;
+      --  Return whether Value can be embedded in the defining proposition
+      --  without evaluating an argument to check its component subtype.
+
       function Should_Use_Function_Translation return Boolean;
       --  Detect whether we should use a function-based translation. The
       --  presence of contextual elements (like 'Old, 'Loop_Entry, target name,
@@ -2035,6 +2039,30 @@ package body Gnat2Why.Expr.Aggregates is
       --  Transform a value of the aggregate. Value can be either a component
       --  value or an index value.
 
+      -------------------------
+      -- Can_Embed_Component --
+      -------------------------
+
+      function Can_Embed_Component (Value : Node_Id) return Boolean is
+      begin
+         --  Static evaluation cannot fail, and the explicit bounds comparison
+         --  establishes membership in the component subtype. Predicates can
+         --  require additional checks even when the bounds are static.
+
+         return
+           Nkind (Value)
+           not in N_Component_Association | N_Iterated_Component_Association
+           and then Value /= Update_Prefix
+           and then Is_Discrete_Type (Comp_Type)
+           and then Is_OK_Static_Expression (Value)
+           and then Has_OK_Static_Scalar_Subtype (Comp_Type)
+           and then not Has_Predicates (Comp_Type)
+           and then
+             Expr_Value (Type_Low_Bound (Comp_Type)) <= Expr_Value (Value)
+           and then
+             Expr_Value (Value) <= Expr_Value (Type_High_Bound (Comp_Type));
+      end Can_Embed_Component;
+
       --------------------------
       -- Complete_Translation --
       --------------------------
@@ -2102,14 +2130,20 @@ package body Gnat2Why.Expr.Aggregates is
                   Args (1) := New_Temp_For_Expr (Args (1));
                end if;
 
-               --  Compute the call
+               --  Compute the call. A program function needs an argument so
+               --  that its postcondition is assumed at the call.
 
                R :=
                  New_Call
                    (Ada_Node => Expr,
                     Domain   => Domain,
                     Name     => Func,
-                    Args     => Args & Bnd_Args & Var_Args,
+                    Args     =>
+                      (if Args'Length = 0
+                         and then Bnd_Args'Length = 0
+                         and then Var_Args'Length = 0
+                       then (1 => +Void)
+                       else Args & Bnd_Args & Var_Args),
                     Typ      => Ret_Type);
 
                --  Insert checks for the choices of the aggregate, binding
@@ -2290,6 +2324,18 @@ package body Gnat2Why.Expr.Aggregates is
          Var_Args   : constant W_Expr_Array :=
            Get_Args_From_Binders (Var_Params, Ref_Allowed => False);
 
+         --  Use the same parameters for the logic and program functions,
+         --  adding a unit parameter when no other parameters remain.
+
+         Needs_Unit  : constant Boolean :=
+           Values.Length = 0
+           and then Bnd_Params'Length = 0
+           and then Var_Params'Length = 0;
+         Unit_Params : constant Binder_Array :=
+           (if Needs_Unit then (1 => Unit_Param) else (1 .. 0 => <>));
+         Unit_Args   : constant W_Expr_Array :=
+           (if Needs_Unit then (1 => +Void) else (1 .. 0 => <>));
+
          --  Counter
 
          Cnt : Positive;
@@ -2395,7 +2441,7 @@ package body Gnat2Why.Expr.Aggregates is
            New_Call
              (Ada_Node => Expr,
               Name     => Func,
-              Args     => Call_Args & Bounds & Var_Args,
+              Args     => Call_Args & Bounds & Var_Args & Unit_Args,
               Typ      => Ret_Type);
 
          Def_Pred :=
@@ -2441,7 +2487,8 @@ package body Gnat2Why.Expr.Aggregates is
                Name        => To_Local (Func),
                Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
-               Binders     => Call_Params & Bnd_Params & Var_Params,
+               Binders     =>
+                 Call_Params & Bnd_Params & Var_Params & Unit_Params,
                Return_Type => Ret_Type));
 
          Close_Theory (Th, Kind => Definition_Theory);
@@ -2497,7 +2544,8 @@ package body Gnat2Why.Expr.Aggregates is
                Name        => To_Local (Func),
                Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
-               Binders     => Call_Params & Bnd_Params & Var_Params,
+               Binders     =>
+                 Call_Params & Bnd_Params & Var_Params & Unit_Params,
                Return_Type => Ret_Type,
                Post        => Post));
 
@@ -2780,7 +2828,9 @@ package body Gnat2Why.Expr.Aggregates is
                       (Dim = Nb_Dim
                        or else (In_Delta_Aggregate and then Dim = 1));
 
-                  if not In_Iterated_Assoc then
+                  if not In_Iterated_Assoc
+                    and then not Can_Embed_Component (Value_Expr)
+                  then
                      Add_Element
                        (Aggregate_Element'
                           (Value => Value_Expr, Typ => Comp_Type));
@@ -3933,35 +3983,33 @@ package body Gnat2Why.Expr.Aggregates is
             Read    : W_Term_Id;
             Arg_Val : W_Term_Id;
          begin
-            --  Whenever possible, take advantage of the why3 construct
-            --  for range constants. This improves counterexamples.
+            --  Components which need no checks are embedded directly instead
+            --  of being passed as parameters. Whenever possible, take
+            --  advantage of the why3 construct for range constants. This
+            --  improves counterexamples.
 
-            if Nkind (Subexpr)
-               not in N_Component_Association
-                    | N_Iterated_Component_Association
-              and then Is_Range_Type_In_Why (Comp_Type)
-              and then Compile_Time_Known_Value (Subexpr)
-            then
+            if Can_Embed_Component (Subexpr) then
+               Read :=
+                 New_Array_Access
+                   (Ada_Node => Subexpr, Ar => Arr, Index => Indexes);
+               Arg_Val :=
+                 (if Is_Range_Type_In_Why (Comp_Type)
+                  then
+                    New_Range_Constant
+                      (Value => Expr_Value (Subexpr),
+                       Typ   => EW_Abstract (Comp_Type))
+                  else
+                    New_Discrete_Constant
+                      (Value => Expr_Value (Subexpr),
+                       Typ   => Base_Why_Type (Comp_Type)));
+
                return
                  New_Comparison
                    (Symbol => Why_Eq,
-                    Left   =>
-                      New_Array_Access
-                        (Ada_Node => Subexpr, Ar => Arr, Index => Indexes),
+                    Left   => Read,
                     Right  =>
-                      (if Has_Relaxed_Init (Comp_Type) or else Relaxed_Init
-                       then
-                         Insert_Simple_Conversion
-                           (Expr =>
-                              New_Range_Constant
-                                (Value => Expr_Value (Subexpr),
-                                 Typ   => EW_Abstract (Comp_Type)),
-                            To   =>
-                              EW_Abstract (Comp_Type, Relaxed_Init => True))
-                       else
-                         New_Range_Constant
-                           (Value => Expr_Value (Subexpr),
-                            Typ   => EW_Abstract (Comp_Type))));
+                      Insert_Simple_Conversion
+                        (Expr => Arg_Val, To => Get_Type (+Read)));
             end if;
 
             --  Create array access and comparison
