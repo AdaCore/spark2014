@@ -1,0 +1,30 @@
+accepted_views.adb:14:28: info: predicate check proved (CVC5: 1 VC)
+accepted_views.adb:15:04: info: address in address clause is compatible with object alignment (Trivial)
+accepted_views.adb:15:04: info: object is suitable for aliasing via address clause (Trivial)
+accepted_views.adb:15:58: info: object is suitable for aliasing via address clause (Trivial)
+accepted_views.adb:15:58: info: type is suitable as source for unchecked conversion (Trivial)
+accepted_views.adb:15:58: info: types of aliased objects have the same size (Trivial)
+accepted_views.adb:15:63: warning: alignment of object is not precisely known [imprecise-align]
+accepted_views.adb:20:04: info: address in address clause is compatible with object alignment (Trivial)
+accepted_views.adb:20:04: info: object is suitable for aliasing via address clause (Trivial)
+accepted_views.adb:20:04: info: type is suitable as source for unchecked conversion (Trivial)
+accepted_views.adb:20:04: warning: imprecise handling of overlay (mutable overlay of a subcomponent of an object) [imprecise-overlay]
+accepted_views.adb:20:48: info: object is suitable for aliasing via address clause (Trivial)
+accepted_views.adb:20:48: info: type is suitable as source for unchecked conversion (Trivial)
+accepted_views.adb:20:48: info: types of aliased objects have the same size (Trivial)
+accepted_views.adb:20:53: warning: alignment of object is not precisely known [imprecise-align]
+accepted_views.adb:22:19: info: assertion proved (CVC5: 1 VC)
+accepted_views.adb:24:19: info: assertion proved (CVC5: 1 VC)
+array_predicate.adb:10:04: error: "View" is not allowed in SPARK (due to mutable overlay of a subcomponent of an object with a predicate)
+array_predicate.adb:10:04: error: violation of aspect SPARK_Mode at line 3
+array_predicate.adb:10:45: error: mutable overlay of a subcomponent of an object with a predicate is not yet supported
+inherited_predicate.adb:13:04: error: "View" is not allowed in SPARK (due to mutable overlay of a subcomponent of an object with a predicate)
+inherited_predicate.adb:13:04: error: violation of aspect SPARK_Mode at line 3
+inherited_predicate.adb:13:45: error: mutable overlay of a subcomponent of an object with a predicate is not yet supported
+nested_predicate.adb:15:04: error: "View" is not allowed in SPARK (due to mutable overlay of a subcomponent of an object with a predicate)
+nested_predicate.adb:15:04: error: violation of aspect SPARK_Mode at line 3
+nested_predicate.adb:15:51: error: mutable overlay of a subcomponent of an object with a predicate is not yet supported
+predicate_control.adb:12:04: error: "View" is not allowed in SPARK (due to mutable overlay of a subcomponent of an object with a predicate)
+predicate_control.adb:12:04: error: violation of aspect SPARK_Mode at line 3
+predicate_control.adb:12:45: error: mutable overlay of a subcomponent of an object with a predicate is not yet supported
+gnatprove: error during flow analysis and proof

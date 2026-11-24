@@ -794,6 +794,7 @@ package VC_Kinds is
       Lim_Overlay_Uninitialized,
       Lim_Overlay_With_Deep_Object,
       Lim_Overlay_With_Package,
+      Lim_Overlay_Within_Predicate,
       Lim_Overriding_With_Precondition_Discrepancy_Hiding,
       Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy,
       Lim_Deep_Object_Declaration_Outside_Block,
@@ -1280,6 +1281,8 @@ package VC_Kinds is
            "overlay with an object of an ownership type",
          when Lim_Overlay_With_Package                                    =>
            "overlay without Import in a declarative part containing a package",
+         when Lim_Overlay_Within_Predicate                                =>
+           "mutable overlay of a subcomponent of an object with a predicate",
          when Lim_Deep_Object_Declaration_Outside_Block                   =>
            "declaration of an object of an ownership type outside a block "
            & "for declarations",
