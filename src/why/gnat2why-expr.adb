@@ -1855,9 +1855,8 @@ package body Gnat2Why.Expr is
 
       elsif Is_Constant_In_SPARK (Lvalue)
         and then Present (Overlaid_Entity (Lvalue))
+        and then Is_Overlay_Handled_As_UC (Lvalue).Ok
       then
-         pragma Assert (Is_Overlay_Handled_As_UC (Lvalue).Ok);
-
          declare
             Pref    : constant Node_Id := Prefix (Get_Address_Expr (N));
             Pref_Ty : constant Type_Kind_Id := Type_Of_Node (Pref);

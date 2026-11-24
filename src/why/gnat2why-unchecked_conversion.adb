@@ -231,39 +231,99 @@ package body Gnat2Why.Unchecked_Conversion is
    ------------------------------
 
    function Is_Overlay_Handled_As_UC
-     (Obj : Object_Kind_Id) return True_Or_Explain is
+     (Obj : Object_Kind_Id) return True_Or_Explain
+   is
+      Source : Node_Id;
+      Result : True_Or_Explain := (Ok => True);
+
+      procedure Check_Size (Item : Node_Id);
+      --  Check that a scalar object's size matches its type's Size
+
+      ----------------
+      -- Check_Size --
+      ----------------
+
+      procedure Check_Size (Item : Node_Id) is
+         Typ                    : constant Type_Kind_Id := Type_Of_Node (Item);
+         Type_Size              : constant Uint :=
+           Get_Attribute_Value (Typ, Attribute_Size);
+         Size                   : Uint;
+         Explanation            : Unbounded_String;
+         Size_Str               : Unbounded_String;
+         Size_Check_Explanation : Unbounded_String;
+
+      begin
+         if not Is_Scalar_Type (Typ) then
+            return;
+         end if;
+
+         Check_Known_Size_For_Object
+           (Item, Size, Size_Check_Explanation, Size_Str);
+
+         if No (Size) or else No (Type_Size) then
+            pragma
+              Annotate
+                (Xcov,
+                 Exempt_On,
+                 "No known case of unknown scalar size in an overlay");
+            Explanation :=
+              To_Unbounded_String
+                ("size of scalar object or its type is unknown");
+            pragma Annotate (Xcov, Exempt_Off);
+
+         elsif Size /= Type_Size then
+            Explanation :=
+              Size_Str
+              & " "
+              & UI_Image (Size)
+              & ", but "
+              & Pretty_Source_Name (Typ)
+              & " has Size "
+              & UI_Image (Type_Size);
+         else
+            return;
+         end if;
+
+         if Result.Ok then
+            Result := False_With_Explain (To_String (Explanation));
+         else
+            Append (Result.Explanation, "; " & Explanation);
+         end if;
+      end Check_Size;
 
    begin
-      --  Constant objects are always translated using UC
+      --  Constants can overlay a subcomponent. Mutable overlays use the
+      --  ultimate overlaid object and require whole-object address clauses.
 
       if Is_Constant_In_SPARK (Obj) then
-         return (Ok => True);
+         Source := Prefix (Get_Address_Expr (Enclosing_Declaration (Obj)));
+      else
+         declare
+            Current : Object_Kind_Id := Obj;
+         begin
+            while Present (Overlaid_Entity (Current)) loop
+               declare
+                  Decl    : constant Node_Id :=
+                    Enclosing_Declaration (Current);
+                  Address : constant Node_Id := Get_Address_Expr (Decl);
+               begin
+                  if Nkind (Prefix (Address)) in N_Identifier | N_Expanded_Name
+                  then
+                     Current := Entity (Prefix (Address));
+                  else
+                     return
+                       False_With_Explain
+                         ("mutable overlay of a subcomponent of an object");
+                  end if;
+               end;
+            end loop;
+            Source := Current;
+         end;
       end if;
 
-      --  Variable objects are only translated using UC if they overlay the
-      --  whole object for now.
-
-      declare
-         Current : Object_Kind_Id := Obj;
-      begin
-         while Present (Overlaid_Entity (Current)) loop
-            declare
-               Decl    : constant Node_Id := Enclosing_Declaration (Current);
-               Address : constant Node_Id := Get_Address_Expr (Decl);
-            begin
-               if Nkind (Prefix (Address)) in N_Identifier | N_Expanded_Name
-               then
-                  Current := Entity (Prefix (Address));
-               else
-                  return
-                    False_With_Explain
-                      ("mutable overlay of a subcomponent of an object");
-               end if;
-            end;
-         end loop;
-      end;
-
-      return (Ok => True);
+      Check_Size (Source);
+      Check_Size (Obj);
+      return Result;
    end Is_Overlay_Handled_As_UC;
 
    -----------------------------------
