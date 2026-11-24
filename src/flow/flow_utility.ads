@@ -53,9 +53,11 @@ package Flow_Utility is
    with
      Pre  => Present (N),
      Post => Function_Calls'Old.Is_Subset (Of_Set => Function_Calls);
-   --  For an expression N collect its called functions, proof dependencies and
-   --  update the set of protected objects that are read-locked when evaluating
-   --  these functions.
+   --  For an expression N collect its called subprograms, proof dependencies
+   --  and update the set of protected objects that are read-locked when
+   --  evaluating its function calls. Function_Calls also includes implicit
+   --  calls to procedures from container aggregates; their call-site nodes
+   --  are aggregates, not subprogram calls.
    --
    --  When Generating_Globals is set, then the implicit calls to predicate
    --  functions appear in the set of subprograms called. This is what we
@@ -231,8 +233,9 @@ package Flow_Utility is
    function Get_Functions
      (N : Node_Id; Include_Predicates : Boolean) return Node_Sets.Set
    with Pre => Nkind (N) in N_Subexpr;
-   --  Collect functions called in an expression N. If Include_Predicates is
-   --  True, then also include implicit calls to predicate functions.
+   --  Collect subprograms called in an expression N, including implicit calls
+   --  to procedures from container aggregates. If Include_Predicates is True,
+   --  then also include implicit calls to predicate functions.
 
    function Get_Variables
      (N                       : Node_Id;

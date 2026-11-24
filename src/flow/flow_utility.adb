@@ -278,8 +278,8 @@ package body Flow_Utility is
       Generating_Globals : Boolean)
    is
       function Proc (N : Node_Id) return Traverse_Result;
-      --  If the node being processed is an N_Function_Call, store a
-      --  corresponding Entity_Id; for protected functions store the
+      --  Collect explicit and implicit subprogram calls, including procedures
+      --  called by container aggregates; for protected functions store the
       --  read-locked protected object.
 
       procedure Process_Constant_Expression (E : Entity_Id)
@@ -702,8 +702,8 @@ package body Flow_Utility is
          Constants_Seen     => Constants_Seen,
          Generating_Globals => True);
 
-      --  Direct function calls in expressions are also treated
-      --  as proof dependencies.
+      --  Subprogram calls in expressions, including implicit calls from
+      --  container aggregates, are also treated as proof dependencies.
 
       for Call of Funcalls loop
 

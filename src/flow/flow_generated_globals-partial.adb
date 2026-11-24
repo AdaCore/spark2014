@@ -263,9 +263,10 @@ package body Flow_Generated_Globals.Partial is
      Pre  => Ekind (E) in Entry_Kind | E_Function | E_Procedure,
      Post =>
        (for all Call of Function_Calls =>
-          Ekind (Call) in E_Function | E_Subprogram_Type);
-   --  Return function calls, proof dependencies and indirect calls in
-   --  the contract of E, i.e. in its Pre, Post and Contract_Cases.
+          Ekind (Call) in E_Function | E_Subprogram_Type | E_Procedure);
+   --  Return subprogram calls, proof dependencies and indirect calls in
+   --  the contract of E, i.e. in its Pre, Post and Contract_Cases. Calls
+   --  include implicit calls to procedures from container aggregates.
 
    function Contract_Globals
      (E : Entity_Id; Refined : Boolean) return Global_Nodes;
@@ -712,9 +713,10 @@ package body Flow_Generated_Globals.Partial is
                   if Ekind (Call) = E_Subprogram_Type then
                      Contr.Calls_Via_Access := True;
 
-                  --  Likewise, ignore calls to abstract functions (since
-                  --  procedures or entries cannot be called in contracts),
-                  --  because we assume abstract subprograms to be pure.
+                  --  Likewise, ignore calls to abstract functions, because we
+                  --  assume abstract subprograms to be pure. Procedures can
+                  --  also occur here as implicit calls from container
+                  --  aggregates.
 
                   elsif Ekind (Call) = E_Function
                     and then Is_Abstract_Subprogram (Call)
@@ -1212,7 +1214,7 @@ package body Flow_Generated_Globals.Partial is
    is
 
       procedure Collect_Calls (Expr : Node_Id);
-      --  Collects function calls, proof dependencies and indirect calls in
+      --  Collect subprogram calls, proof dependencies and indirect calls in
       --  expression Expr and add them to Function_Calls, Proof_Dependencies
       --  and Indirect_Calls.
 
