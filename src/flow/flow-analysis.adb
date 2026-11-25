@@ -760,7 +760,7 @@ package body Flow.Analysis is
      (FA : in out Flow_Analysis_Graphs; Sane : out Boolean)
    is
       type Sanity_Check is
-        access procedure
+        not null access procedure
           (FA : in out Flow_Analysis_Graphs; Sane : out Boolean);
 
       type Sanity_Checks_T is array (Positive range <>) of Sanity_Check;
@@ -783,18 +783,9 @@ package body Flow.Analysis is
    ---------------------------
 
    procedure Contract_Sanity_Check (E : Entity_Id) is
-      type Contract_Sanity_Check is access procedure (E : Entity_Id);
-
-      type Contract_Sanity_Checks_T is
-        array (Positive range <>) of Contract_Sanity_Check;
-
-      Contract_Sanity_Checks : constant Contract_Sanity_Checks_T :=
-        [Contract_Sanity.Check_User_Defined_Equality_Globals'Access,
-         Contract_Sanity.Check_Inputs_Of_Contract_Expressions'Access];
    begin
-      for C of Contract_Sanity_Checks loop
-         C (E);
-      end loop;
+      Contract_Sanity.Check_User_Defined_Equality_Globals (E);
+      Contract_Sanity.Check_Inputs_Of_Contract_Expressions (E);
    end Contract_Sanity_Check;
 
    ----------------------------
