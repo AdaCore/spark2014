@@ -1,0 +1,24 @@
+flow_predicates.adb:1:11: warning: subprogram "Flow_Predicates" has no effect
+flow_predicates.adb:8:13: info: implicit aspect Always_Terminates on "Matches" has been proved, subprogram will terminate
+flow_predicates.adb:15:26: info: initialization of "Result" proved
+flow_predicates.adb:16:06: info: data dependencies proved
+flow_predicates.adb:17:06: info: flow dependencies proved
+flow_predicates.adb:20:31: info: index check proved (CVC5: 2 VC)
+flow_predicates.adb:23:27: info: initialization of "Result" proved
+flow_predicates.adb:24:06: info: data dependencies proved
+flow_predicates.adb:25:06: info: flow dependencies proved
+flow_predicates.adb:28:27: info: index check proved (CVC5: 2 VC)
+flow_predicates.adb:28:42: info: predicate check proved (CVC5: 1 VC)
+flow_predicates.adb:28:47: info: predicate check proved (CVC5: 1 VC)
+flow_predicates.adb:31:25: info: initialization of "Result" proved
+flow_predicates.adb:32:06: info: data dependencies proved
+flow_predicates.adb:33:18: medium: missing dependency "Result => Selected"
+flow_predicates.adb:33:42: medium: incorrect dependency "null => Selected"
+flow_predicates.adb:36:31: info: index check proved (CVC5: 2 VC)
+flow_predicates.adb:39:26: info: initialization of "Result" proved
+flow_predicates.adb:40:06: info: data dependencies proved
+flow_predicates.adb:41:18: medium: missing dependency "Result => Selected"
+flow_predicates.adb:41:42: medium: incorrect dependency "null => Selected"
+flow_predicates.adb:44:27: info: index check proved (CVC5: 2 VC)
+flow_predicates.adb:44:40: info: predicate check proved (CVC5: 1 VC)
+flow_predicates.adb:44:45: info: predicate check proved (CVC5: 1 VC)

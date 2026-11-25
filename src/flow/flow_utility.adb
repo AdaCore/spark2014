@@ -385,6 +385,50 @@ package body Flow_Utility is
                   end if;
                end;
 
+            when N_Component_Association                    =>
+               if Nkind (Parent (N)) = N_Delta_Aggregate
+                 or else
+                   (Nkind (Parent (N)) = N_Aggregate
+                    and then Is_Attribute_Update (Parent (Parent (N))))
+               then
+                  declare
+                     Choice : Node_Id := First (Choices (N));
+                  begin
+                     while Present (Choice) loop
+                        if Nkind (Choice) = N_Subtype_Indication
+                          or else
+                            (Is_Entity_Name (Choice)
+                             and then Is_Type (Entity (Choice)))
+                        then
+                           --  Record both proof dependencies and executable
+                           --  calls of the predicate, as for membership.
+                           --  Both are needed because the predicate selects
+                           --  updated indices. Mere references to objects of
+                           --  a predicated type need only proof dependencies.
+
+                           declare
+                              Typ : constant Type_Kind_Id :=
+                                (if Nkind (Choice) = N_Subtype_Indication
+                                 then Entity (Subtype_Mark (Choice))
+                                 else Entity (Choice));
+                           begin
+                              if Has_Predicates (Typ) then
+                                 Process_Type_Contracts_Internal
+                                   (Typ                => Typ,
+                                    Scop               => Scop,
+                                    Include_Invariant  => False,
+                                    Proof_Dependencies => Proof_Dependencies,
+                                    Type_Contracts     => Type_Contracts,
+                                    Constants_Seen     => Constants_Seen);
+                                 Process_Predicates (Get_Type (Typ, Scop));
+                              end if;
+                           end;
+                        end if;
+                        Next (Choice);
+                     end loop;
+                  end;
+               end if;
+
             when N_Membership_Test                          =>
                if Present (Right_Opnd (N)) then
                   --  x in t
@@ -3073,6 +3117,11 @@ package body Flow_Utility is
       with Pre => Present (N);
       --  Helper function to recurse on N
 
+      function Predicate_Variables
+        (Typ : Type_Kind_Id) return Flow_Id_Sets.Set;
+      --  Collect predicate inputs, excluding the current instance. Call and
+      --  proof dependency collection is handled by Pick_Generated_Info.
+
       function Untangle_Record_Fields
         (N                       : Node_Id;
          Scope                   : Flow_Scope;
@@ -3873,6 +3922,10 @@ package body Flow_Utility is
                                     Variables.Union (Recurse (Low_Bound (R)));
                                     Variables.Union (Recurse (High_Bound (R)));
                                  end;
+                                 Variables.Union
+                                   (Predicate_Variables
+                                      (Get_Type
+                                         (Subtype_Mark (Choice), Ctx.Scope)));
 
                               --  "(A_Subtype => ...)"
 
@@ -3885,6 +3938,9 @@ package body Flow_Utility is
                                  Variables.Union
                                    (Recurse
                                       (Type_High_Bound (Entity (Choice))));
+                                 Variables.Union
+                                   (Predicate_Variables
+                                      (Get_Type (Etype (Choice), Ctx.Scope)));
 
                               --  "(1 => ...)" or "(X + Y => ...)", etc.
 
@@ -5031,6 +5087,45 @@ package body Flow_Utility is
       --     * a loop parameter
       --     * a constant
 
+      -------------------------
+      -- Predicate_Variables --
+      -------------------------
+
+      function Predicate_Variables (Typ : Type_Kind_Id) return Flow_Id_Sets.Set
+      is
+         Result : Flow_Id_Sets.Set;
+
+         procedure Process_Predicate_Expression
+           (Type_Instance : Formal_Kind_Id; Pred_Expression : Node_Id);
+
+         ----------------------------------
+         -- Process_Predicate_Expression --
+         ----------------------------------
+
+         procedure Process_Predicate_Expression
+           (Type_Instance : Formal_Kind_Id; Pred_Expression : Node_Id) is
+         begin
+            --  The predicate parameter is only visible within its expression,
+            --  similarly to the parameter of a quantified expression.
+
+            for V of Recurse (Pred_Expression) loop
+               if V.Kind in Direct_Mapping | Record_Field
+                 and then V.Node = Type_Instance
+               then
+                  null;
+               else
+                  Result.Include (V);
+               end if;
+            end loop;
+         end Process_Predicate_Expression;
+
+         procedure Process_Predicates is new
+           Iterate_Applicable_Predicates (Process_Predicate_Expression);
+      begin
+         Process_Predicates (Typ);
+         return Result;
+      end Predicate_Variables;
+
       ----------
       -- Proc --
       ----------
@@ -5389,6 +5484,12 @@ package body Flow_Utility is
                            Variables.Union (Recurse (High_Bound (R)));
                         end;
 
+                        if Nkind (Parent (N)) = N_Delta_Aggregate then
+                           Variables.Union
+                             (Predicate_Variables
+                                (Get_Type (Subtype_Mark (Choice), Ctx.Scope)));
+                        end if;
+
                      --  "(A_Subtype => ...)"
 
                      elsif Is_Entity_Name (Choice)
@@ -5398,6 +5499,11 @@ package body Flow_Utility is
                           (Recurse (Type_Low_Bound (Entity (Choice))));
                         Variables.Union
                           (Recurse (Type_High_Bound (Entity (Choice))));
+                        if Nkind (Parent (N)) = N_Delta_Aggregate then
+                           Variables.Union
+                             (Predicate_Variables
+                                (Get_Type (Etype (Choice), Ctx.Scope)));
+                        end if;
 
                      --  "(others => ...)"
 
@@ -5437,43 +5543,10 @@ package body Flow_Utility is
                --  predicate flow into the variable set returned.
 
                declare
-                  procedure Process_Predicate_Expression
-                    (Type_Instance   : Formal_Kind_Id;
-                     Pred_Expression : Node_Id);
-                  --  Merge predicate function for the given type
-
                   procedure Process_Type (E : Entity_Id);
                   --  Handle what Ada RM 4.5.2 describes as "membership_choice
                   --  is a subtype_mark" and what GNAT implements in routine
                   --  Exp_Ch4.Expand_N_In.
-
-                  procedure Process_Predicates is new
-                    Iterate_Applicable_Predicates
-                      (Process_Predicate_Expression);
-
-                  ----------------------------------
-                  -- Process_Predicate_Expression --
-                  ----------------------------------
-
-                  procedure Process_Predicate_Expression
-                    (Type_Instance : Formal_Kind_Id; Pred_Expression : Node_Id)
-                  is
-                  begin
-                     --  Filter predicate function parameter from variables
-                     --  referenced in the predicate, because the parameter is
-                     --  only visible within that expression (similar to what
-                     --  we do for quantified expression).
-
-                     for V of Recurse (Pred_Expression) loop
-                        if V.Kind in Direct_Mapping | Record_Field
-                          and then V.Node = Type_Instance
-                        then
-                           null;
-                        else
-                           Variables.Include (V);
-                        end if;
-                     end loop;
-                  end Process_Predicate_Expression;
 
                   ------------------
                   -- Process_Type --
@@ -5524,7 +5597,7 @@ package body Flow_Utility is
 
                      --  Recurse on the predicate expressions, if any
 
-                     Process_Predicates (Typ);
+                     Variables.Union (Predicate_Variables (Typ));
 
                   end Process_Type;
 
