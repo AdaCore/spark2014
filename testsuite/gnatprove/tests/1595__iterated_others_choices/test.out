@@ -1,0 +1,65 @@
+others_choices.adb:5:04: warning: analyzing unreferenced procedure "Named" [unreferenced-procedure]
+others_choices.adb:5:14: warning: subprogram "Named" has no effect
+others_choices.adb:7:40: info: division check proved (CVC5: 1 VC)
+others_choices.adb:9:22: info: assertion proved (CVC5: 3 VC)
+others_choices.adb:12:04: warning: analyzing unreferenced procedure "Ranges" [unreferenced-procedure]
+others_choices.adb:12:14: warning: subprogram "Ranges" has no effect
+others_choices.adb:14:49: info: division check proved (CVC5: 1 VC)
+others_choices.adb:16:22: info: assertion proved (CVC5: 3 VC)
+others_choices.adb:19:04: warning: analyzing unreferenced procedure "Positional" [unreferenced-procedure]
+others_choices.adb:19:14: warning: subprogram "Positional" has no effect
+others_choices.adb:21:13: info: range check proved (CVC5: 1 VC)
+others_choices.adb:21:38: info: division check proved (CVC5: 1 VC)
+others_choices.adb:23:22: info: assertion proved (CVC5: 2 VC)
+others_choices.adb:26:04: warning: analyzing unreferenced procedure "Modular_Positional" [unreferenced-procedure]
+others_choices.adb:26:14: warning: subprogram "Modular_Positional" has no effect
+others_choices.adb:30:13: info: range check proved (CVC5: 2 VC)
+others_choices.adb:30:38: info: division check proved (CVC5: 1 VC)
+others_choices.adb:32:22: info: assertion proved (CVC5: 2 VC)
+others_choices.adb:35:04: warning: analyzing unreferenced procedure "Nested" [unreferenced-procedure]
+others_choices.adb:35:14: warning: subprogram "Nested" has no effect
+others_choices.adb:38:42: info: division check proved (CVC5: 1 VC)
+others_choices.adb:40:22: info: assertion proved (CVC5: 2 VC)
+others_choices.adb:43:14: warning: subprogram "Dynamic_Positional" has no effect
+others_choices.adb:46:07: info: range check proved (CVC5: 2 VC)
+others_choices.adb:46:43: info: overflow check proved (CVC5: 2 VC)
+others_choices.adb:47:09: info: length check proved (CVC5: 3 VC)
+others_choices.adb:47:10: info: range check proved (CVC5: 1 VC)
+others_choices.adb:47:35: info: division check proved (CVC5: 1 VC)
+others_choices.adb:49:22: info: assertion proved (CVC5: 1 VC)
+others_choices.adb:49:31: info: index check proved (CVC5: 2 VC)
+others_choices.adb:49:31: info: overflow check proved (CVC5: 2 VC)
+others_choices.adb:52:14: warning: subprogram "Dynamic_Nested" has no effect
+others_choices.adb:55:07: info: range check proved (CVC5: 2 VC)
+others_choices.adb:55:51: info: overflow check proved (CVC5: 2 VC)
+others_choices.adb:56:09: info: length check proved (CVC5: 6 VC)
+others_choices.adb:57:12: info: range check proved (CVC5: 2 VC)
+others_choices.adb:57:13: info: range check proved (CVC5: 1 VC)
+others_choices.adb:57:37: info: division check proved (CVC5: 1 VC)
+others_choices.adb:59:22: info: assertion proved (CVC5: 1 VC)
+others_choices.adb:59:34: info: index check proved (CVC5: 2 VC)
+others_choices.adb:59:34: info: overflow check proved (CVC5: 2 VC)
+others_choices.adb:62:14: warning: subprogram "Shared_Bounds" has no effect
+others_choices.adb:65:07: info: range check proved (CVC5: 2 VC)
+others_choices.adb:65:51: info: overflow check proved (CVC5: 2 VC)
+others_choices.adb:66:09: info: length check proved (CVC5: 6 VC)
+others_choices.adb:66:10: info: range check proved (CVC5: 2 VC)
+others_choices.adb:66:11: info: range check proved (CVC5: 1 VC)
+others_choices.adb:66:36: info: division check proved (CVC5: 1 VC)
+others_choices.adb:67:14: info: range check proved (CVC5: 1 VC)
+others_choices.adb:67:39: info: division check proved (CVC5: 1 VC)
+others_choices.adb:68:17: info: range check proved (CVC5: 1 VC)
+others_choices.adb:68:42: info: division check proved (CVC5: 1 VC)
+others_choices.adb:68:55: info: overflow check proved (CVC5: 2 VC)
+others_choices.adb:70:22: info: assertion proved (CVC5: 1 VC)
+others_choices.adb:70:34: info: index check proved (CVC5: 2 VC)
+others_choices.adb:70:34: info: overflow check proved (CVC5: 2 VC)
+others_choices.adb:71:22: info: assertion proved (CVC5: 1 VC)
+others_choices.adb:71:34: info: index check proved (CVC5: 2 VC)
+others_choices.adb:71:34: info: overflow check proved (CVC5: 2 VC)
+others_choices.adb:72:22: info: assertion proved (Z3: 1 VC)
+others_choices.adb:72:34: info: index check proved (CVC5: 2 VC)
+others_choices.adb:72:34: info: overflow check proved (CVC5: 2 VC)
+others_choices.adb:75:04: warning: analyzing unreferenced procedure "Unsafe" [unreferenced-procedure]
+others_choices.adb:75:14: warning: subprogram "Unsafe" has no effect
+others_choices.adb:77:40: medium: divide by zero might fail

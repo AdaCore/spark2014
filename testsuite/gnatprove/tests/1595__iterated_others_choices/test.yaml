@@ -1,0 +1,3 @@
+# Counterexample replay does not yet handle iterated others choices.
+prove_all:
+  counterexample: false
