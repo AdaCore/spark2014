@@ -56,8 +56,8 @@ def cmd_line_or_ide_mode(opt=None):
     clean()
 
     print("")
-    print("Do not issue all compilation warnings, " "issue flow warnings and continue:")
-    print("----------------------------------" "--------------------------------------")
+    print("Do not issue all compilation warnings, issue flow warnings and continue:")
+    print("------------------------------------------------------------------------")
     prove_all(opt=opt + ["--warnings=continue"], exit_status=0)
     clean()
 
