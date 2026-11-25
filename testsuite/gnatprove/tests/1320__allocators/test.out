@@ -349,9 +349,9 @@ allocator-base.adb:232:69: info: range check proved (CVC5: 2 VC), in call inline
 allocator-base.adb:232:69: info: range check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
 allocator-base.adb:235:18: info: loop invariant initialization proved (Z3: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
 allocator-base.adb:235:18: info: loop invariant initialization proved (Z3: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
+allocator-base.adb:235:18: info: loop invariant preservation proved (Z3: 1 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
 allocator-base.adb:235:18: info: precondition proved (CVC5: 2 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
 allocator-base.adb:235:18: info: precondition proved (CVC5: 2 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
-allocator-base.adb:235:18: medium: loop invariant might not be preserved by an arbitrary iteration, in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
 allocator-base.adb:235:18: medium: loop invariant might not be preserved by an arbitrary iteration, in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62
 allocator-base.adb:235:28: info: range check proved (CVC5: 4 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:37
 allocator-base.adb:235:28: info: range check proved (CVC5: 4 VC), in call inlined at allocator-base.adb:223, in instantiation at test_base.ads:62

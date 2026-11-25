@@ -5289,8 +5289,12 @@ Array aggregates are translated in two parts. First we generate a logic
 symbol for the aggregate and we give its definition in an axiom, then we
 call this symbol at the place of use and add the necessary checks.
 Since the values of the aggregate might depend on local symbols, we give them
-as parameters to the logic function. For example, let us consider the two
-aggregates below:
+as parameters to the logic function. Static discrete component values are
+embedded directly when their evaluation cannot fail, their value lies within
+the static component bounds, and the component subtype has no predicates.
+Such components need neither parameters nor evaluation checks. Other component
+values remain arguments so that their evaluation and subtype checks are
+preserved. For example, let us consider the two aggregates below:
 
 .. code-block:: ada
 
@@ -5334,18 +5338,17 @@ is necessary for the axiom to be sound when the parameters are of the base Why3
 type (like here).
 
 The logic function generated for the aggregate used as the initial value of
-``Y`` has only one parameter. It stands for the value of the ``others`` case. As
-this value is a statically known integer value of a statically constrained
-subtype, its type is translated as a range type in Why and we can give its value
-directly using a literal. In this case we do not need the guard as the axiom
-cannot be unsound.
+``Y`` has no component parameter. The value of the ``others`` case is static
+and satisfies the criterion above, so it is embedded directly. Its type is
+translated as a range type in Why, allowing us to use a range literal without
+a guard.
 
 .. code-block:: whyml
 
    module Test_aggregates__y__aggregate_def
      use  Array__Int__Standard__integer
 
-     val function test_aggregates__y__aggregate_def (v: int) : map
+     val function test_aggregates__y__aggregate_def () : map
    end
 
    module Test_aggregates__y__aggregate_def___axiom
@@ -5353,28 +5356,24 @@ cannot be unsound.
      use  Test_aggregates__y__aggregate_def
 
      axiom def_axiom:
-       forall v : int.
-         let result = test_aggregates__y__aggregate_def v in
-           forall i : int.
-                get result i = 0
+       let result = test_aggregates__y__aggregate_def () in
+         forall i : int.
+              get result i = 0
    end
 
 Note that when the aggregate has an ``others`` case, the supplied value is used
 as a default value in Why3. In particular, we also give the definition for
-indexes out of the array bound. Also note that, even if the value ``v`` is not
-used in the axiom, we still give it as a parameter to the logic function. This
-is probably not needed since there should be no checks necessary for static
-values of statically constrained integer types.
+indexes out of the array bound.
 
-The logic functions above are used to intialize the Why3 objects introduced
-for ``X`` and ``Y`` (see ``Complete_Translation``):
+The program counterparts of these functions are used to initialize the Why3
+objects introduced for ``X`` and ``Y`` (see ``Complete_Translation``):
 
 .. code-block:: whyml
 
     (let test_aggregates__x__assume =
           test_aggregates__x__aggregate_def (f 0) (f 1) in
        x.map__content <- test_aggregates__x__assume);
-    (let test_aggregates__y__assume = test_aggregates__y__aggregate_def 0 in
+    (let test_aggregates__y__assume = test_aggregates__y__aggregate_def () in
        y.map__content <- test_aggregates__y__assume);
 
 Run-time checks for aggregate values are introduced automatically as the
@@ -5405,7 +5404,7 @@ The necessary range check is emitted at the point of use as follows:
                      requires { 2 >= Small_pos.first /\ 15  <= Small_pos.last }
                      ensures  { true } in
             _f);
-	  test_aggregates__z__aggregate_def 0 in
+	  test_aggregates__z__aggregate_def () in
         z.map__content <- test_aggregates__z__assume)
 
 As opposed to component values, the choice values can in general be used
@@ -5425,7 +5424,7 @@ Here is the logic function generated for the initial value of ``W``:
    module Test_aggregates__w__aggregate_def
      use  Test_aggregates__T15b
 
-     val function test_aggregates__w__aggregate_def (v: int) (v_first: int) (v_last: int) : t15b
+     val function test_aggregates__w__aggregate_def (v_first: int) (v_last: int) : t15b
    end
 
 As the bounds of the aggregate are not static, they are given
@@ -5440,8 +5439,8 @@ dynamic property of the array.
       use  Test_aggregates__w__aggregate_def
 
       axiom def_axiom:
-        forall v : int, v_first : int, v_last : int.
-          let result = test_aggregates__w__aggregate_def v first last in
+        forall v_first : int, v_last : int.
+          let result = test_aggregates__w__aggregate_def v_first v_last in
               (if dynamic_property Positive.first Positive.last v_first v_last
 	       then
                  first result = v_first /\
@@ -5466,9 +5465,10 @@ the point of call. For example, let's consider the following aggregate:
    V : Int_Array := (X with delta 2 .. 4 => 2, F (3) => 3);
 
 Its logic function has a parameter for the expression of the aggregate, here
-``X``, for its component values ``2`` and ``3`` and for values occurring in
-its choices, here ``2``, ``4``, and ``F (3)``. We do not need parameters for the
-bounds as they are retrieved from the parameter for ``X``:
+``X``, and for values occurring in its choices, here ``2``, ``4``, and ``F (3)``.
+The static component values ``2`` and ``3`` are embedded directly. We do not
+need parameters for the bounds as they are retrieved from the parameter for
+``X``:
 
 .. code-block:: whyml
 
@@ -5476,7 +5476,7 @@ bounds as they are retrieved from the parameter for ``X``:
      use  Test_aggregates__int_array
 
      val function test_aggregates__v__aggregate_def (arr: int_array)
-       (v_1: int) (v_2: int) (v_3: int) (v_4: int) (v_5: int) : int_array
+       (v_1: int) (v_2: int) (v_3: int) : int_array
    end
 
    module Test_aggregates__v__aggregate_def___axiom
@@ -5484,15 +5484,15 @@ bounds as they are retrieved from the parameter for ``X``:
 
      axiom def_axiom:
        forall arr : int_array.
-       forall v_1 v_2 v_3 v_4 v_5 : int.
+       forall v_1 v_2 v_3 : int.
          let result =
-	    test_aggregates__v__aggregate_def arr v_1 v_2 v_3 v_4 v_5 in
+	    test_aggregates__v__aggregate_def arr v_1 v_2 v_3 in
                first result = first arr /\
                last result = last arr /\
                (forall i : int.
-                   if i = v_4 then
+                   if i = v_3 then
                       get (to_array result) i = 3
-                   else if v_2 <= i <= v_3 then
+                   else if v_1 <= i <= v_2 then
                       get (to_array result) i = 2
                    else
                       get (to_array result) i = get (to_array arr) i)

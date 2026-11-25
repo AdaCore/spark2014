@@ -76,7 +76,7 @@ decadriver.adb:355:23: high: call to potentially blocking subprogram "dw1000.bsp
 decadriver.adb:360:13: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Configure"
 decadriver.adb:364:36: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:377:35: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
-decadriver.adb:382:46: info: range check proved (Z3: 2 VC)
+decadriver.adb:382:46: info: range check proved (CVC5: 2 VC)
 decadriver.adb:401:26: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Configure"
 decadriver.adb:407:29: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:408:29: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
