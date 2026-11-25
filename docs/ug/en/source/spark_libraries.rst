@@ -434,7 +434,7 @@ correct usage in client code as per the restrictions of |SPARK| (in particular
 
 The formal containers are a variation of the standard containers with API
 changes that allow adding suitable contracts, so that |GNATprove| can prove
-that client code manipulates containers correctly. There are 14 formal
+that client code manipulates containers correctly. There are 15 formal
 containers, which are part of the |SPARK| library.
 
 Among them, 7 are bounded and definite:
@@ -447,7 +447,7 @@ Among them, 7 are bounded and definite:
 * ``SPARK.Containers.Formal.Ordered_Maps``
 * ``SPARK.Containers.Formal.Trees``
 
-The 7 others are unbounded and indefinite, and are controlled:
+Another 7 are unbounded and indefinite, and are controlled:
 
 * ``SPARK.Containers.Formal.Unbounded_Vectors``
 * ``SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists``
@@ -466,6 +466,16 @@ Unbounded indefinite formal containers can contain indefinite objects. They use
 dynamic allocation both to allocate memory for their elements, and to expand
 their internal block of memory when it is full.
 
+``SPARK.Containers.Formal.Indefinite_Holders`` contains either no element or
+one element of a possibly indefinite type, such as unconstrained arrays or
+class-wide types.
+It allocates its element dynamically and uses controlled storage: assignment
+copies the element and finalization reclaims it. ``Move`` transfers ownership
+without copying the element, while ``Swap`` exchanges the contents of two
+holders. ``Constant_Reference`` and ``Reference`` provide access to the stored
+element without copying it. The holder's contracts describe its contents using
+``Is_Empty`` and ``Element``.
+
 Unlike the standard Ada containers, the |SPARK| library also offers an n-ary
 tree container, in the bounded definite variant
 ``SPARK.Containers.Formal.Trees`` and the unbounded indefinite variant
@@ -483,8 +493,8 @@ sequence of children rather than one child per way.
 
     The capacity of unbounded containers is not set using a
     discriminant. Instead, it is implicitly set to its maximum value. All the
-    required memory is not reserved at declaration. As all the formal
-    containers are internally indexed by ``Count_Type``, their maximum size is
+    required memory is not reserved at declaration. These unbounded formal
+    containers are internally indexed by ``Count_Type``, so their maximum size is
     ``Count_Type'Last``.
 
 Modified API of Formal Containers
