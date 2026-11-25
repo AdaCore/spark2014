@@ -1,6 +1,5 @@
 from test_support import prove_all
 
-
 print("---- expect warning related to recursion -------")
 prove_all()
 # detection of incorrect warning name

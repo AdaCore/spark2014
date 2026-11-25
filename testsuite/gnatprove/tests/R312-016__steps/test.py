@@ -1,7 +1,6 @@
 from test_support import prove_all, sleep
 import shutil
 
-
 print("correct variant")
 shutil.copyfile("ethernet_dissector.var2", "ethernet_dissector.adb")
 # most VCs should be proved here

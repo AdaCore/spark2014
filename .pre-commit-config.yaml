@@ -4,7 +4,7 @@ default_install_hook_types:
 default_stages: [pre-commit]
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
     -   id: check-json
         exclude: ^\.vscode/
@@ -35,7 +35,7 @@ repos:
     -   id: check-testsuite-markers
     -   id: check-doc-src-refs
   - repo: https://github.com/pycqa/flake8
-    rev: 7.1.1
+    rev: 7.5.0
     hooks:
     - id: flake8
       additional_dependencies:

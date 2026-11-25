@@ -809,7 +809,7 @@ def verify_counterexamples(cwd=None, logger=None):
     have_populated_dict = False
 
     def compute_results_dict():
-        nonlocal results, have_populated_dict
+        nonlocal have_populated_dict
         if have_populated_dict:
             return
         have_populated_dict = True

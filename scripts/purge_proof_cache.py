@@ -30,7 +30,6 @@ import tempfile
 from dataclasses import dataclass
 from typing import BinaryIO, Iterator, Optional
 
-
 MAX_RESPONSE_LINE = 64 * 1024
 MAX_BATCH_SIZE = 1024
 DEFAULT_PREVIEW_BYTES = 160

@@ -1,6 +1,5 @@
 from test_support import default_refiners_no_sort, gnatprove, prove_all
 
-
 common = {
     "prover": ["altergo"],
     "steps": 1,

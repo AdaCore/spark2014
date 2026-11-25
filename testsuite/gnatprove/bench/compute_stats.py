@@ -89,7 +89,6 @@ stats_tests_provers = {}
 
 
 def process_item(elt):
-    global stats_tests_provers, stats_provers_all, stats_all_vcs
     status = elt["status"]
     filename = os.path.basename(elt["filename"])
     time = elt["time"] if "time" in elt else 0
