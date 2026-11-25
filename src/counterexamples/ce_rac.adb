@@ -1562,18 +1562,21 @@ package body CE_RAC is
          declare
             Fst, Lst : Big_Integer;
             Other    : Value_Access;
-            U_Fst    : Uint;
-            U_Lst    : Uint;
+            Index    : constant Node_Id := First_Index (Rep_Ty);
 
          begin
-            --  Use static array type bounds or index type bounds as default
-
-            Find_First_Static_Range (First_Index (Rep_Ty), U_Fst, U_Lst);
-            Fst := From_String (UI_Image (U_Fst, Decimal));
-            Lst := From_String (UI_Image (U_Lst, Decimal));
-
-            if not Is_Constrained (Rep_Ty) then
-               Lst := Fst;
+            if Is_Constrained (Rep_Ty) then
+               Get_Bounds (Get_Range (Index), Fst, Lst);
+            else
+               --  Use a one-element array starting at the static lower bound
+               --  of the index as the default for an unconstrained array.
+               declare
+                  U_Fst, U_Lst : Uint;
+               begin
+                  Find_First_Static_Range (Index, U_Fst, U_Lst);
+                  Fst := From_String (UI_Image (U_Fst, Decimal));
+                  Lst := Fst;
+               end;
             end if;
 
             if Has_Default_Aspect (Rep_Ty) then

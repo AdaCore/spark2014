@@ -243,6 +243,18 @@ procedure Main with SPARK_Mode is
       end;
    end Assignments;
 
+   procedure Dynamic_Array_Bounds (First, Last : Arr_Ix) is
+      type Arr is array (Arr_Ix range <>) of Integer;
+
+      A : Arr (First .. Last);
+   begin
+      pragma Assert (A'First = First and then A'Last = Last);
+      for J in A'Range loop
+         Put_Line (Arr_Ix'Image (J));
+      end loop;
+      Put_Line ("Length: " & Integer'Image (A'Length));
+   end Dynamic_Array_Bounds;
+
    procedure Control is
       I : Integer := 0;
    begin
@@ -300,6 +312,9 @@ begin
    Aggretates;
    Put_Line ("Assignments");
    Assignments;
+   Put_Line ("Dynamic array bounds");
+   Dynamic_Array_Bounds (2, 3);
+   Dynamic_Array_Bounds (3, 2);
    Put_Line ("Control");
    Control;
    Put_Line ("Ghost");
