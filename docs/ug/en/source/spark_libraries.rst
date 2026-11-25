@@ -863,7 +863,7 @@ at library level, as they take the ``'Access`` attribute of a subprogram
 declared in their private part.
 
 Statically Allocated Objects
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The generic unit ``SPARK.Pointers.Static_Allocation`` provides a pointer ``P``
 to an object without using an allocator for that object. Its parameters are

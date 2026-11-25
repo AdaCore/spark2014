@@ -29,7 +29,7 @@
 --> buffers.adb:21:21
 
  info: flow dependencies proved, in instantiation at buffers.adb:5
---> spark-pointers-static_allocation.ads:30:05
+--> spark-pointers-static_allocation.ads:29:05
 
  info: initialization of "P" proved, in instantiation at buffers.adb:5
---> spark-pointers-static_allocation.ads:47:04
+--> spark-pointers-static_allocation.ads:46:04
