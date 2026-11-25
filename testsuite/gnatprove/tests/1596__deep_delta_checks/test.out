@@ -1,0 +1,33 @@
+deep_leak.adb:12:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+deep_leak.adb:14:16: info: absence of resource or memory leak proved (CVC5: 1 VC)
+deep_leak.adb:16:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+deep_leak.adb:18:13: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:18:19: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:19:13: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:19:16: medium: resource or memory leak might occur
+deep_leak.adb:19:19: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:21:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+deep_leak.adb:21:27: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:21:30: info: absence of resource or memory leak proved (CVC5: 1 VC)
+deep_leak.adb:21:33: info: index check proved (CVC5: 2 VC)
+deep_leak.adb:22:22: info: assertion proved (CVC5: 1 VC)
+deep_leak.adb:23:22: info: assertion proved (CVC5: 1 VC)
+deep_paths.adb:3:11: warning: subprogram "Deep_Paths" has no effect
+deep_paths.adb:11:21: info: index check proved (CVC5: 2 VC)
+deep_paths.adb:11:27: info: index check proved (CVC5: 2 VC)
+deep_paths.adb:11:37: info: index check proved (CVC5: 2 VC)
+deep_paths.adb:11:43: info: index check proved (CVC5: 2 VC)
+deep_paths.adb:13:19: info: assertion proved (CVC5: 1 VC)
+deep_paths.adb:14:19: info: assertion proved (CVC5: 1 VC)
+deep_paths.adb:15:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention D in a precondition]
+deep_predicate.adb:13:43: info: predicate check proved (CVC5: 1 VC)
+deep_predicate.adb:18:21: info: index check proved (CVC5: 2 VC)
+deep_predicate.adb:18:23: medium: predicate check might fail
+deep_predicate.adb:18:36: info: index check proved (CVC5: 2 VC)
+deep_predicate.adb:18:42: info: index check proved (CVC5: 2 VC)
+deep_single.adb:3:11: warning: subprogram "Deep_Single" has no effect
+deep_single.adb:10:41: info: index check proved (CVC5: 2 VC)
+deep_single.adb:10:47: info: index check proved (CVC5: 2 VC)
+deep_single.adb:12:19: info: assertion proved (CVC5: 1 VC)
+deep_single.adb:13:19: info: assertion proved (CVC5: 1 VC)
+deep_single.adb:14:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention D in a precondition]

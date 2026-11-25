@@ -1,0 +1,3 @@
+# Counterexample replay crashes on the nested array updates.
+prove_all:
+  counterexample: false
