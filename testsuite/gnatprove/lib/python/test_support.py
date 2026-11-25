@@ -67,7 +67,7 @@ os.chdir(TESTDIR)
 #  variable name coincides with some substrings that are searched in text.
 
 is_msg = re.compile(
-    r"([\w-]*\.ad.?):(\d*):\d*:" r" (info|warning|low|medium|high)?(: )?([^(,[]*)(.*)?$"
+    r"([\w-]*\.ad.?):(\d*):\d*: (info|warning|low|medium|high)?(: )?([^(,[]*)(.*)?$"
 )
 is_mark = re.compile(r"@(\w*):(\w*)")
 

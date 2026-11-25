@@ -31,7 +31,7 @@ def process(fn, rewrite):
         return
     if "def replay" not in tmp:
         bad_files.append(
-            "%s: warning uses --replay but has no replay " "instructions" % test_name
+            "%s: warning uses --replay but has no replay instructions" % test_name
         )
         return
 
