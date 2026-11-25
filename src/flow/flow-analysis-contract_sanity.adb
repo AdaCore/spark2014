@@ -63,8 +63,7 @@ package body Flow.Analysis.Contract_Sanity is
                Error_Msg_Flow
                  (E          => E,
                   Msg        =>
-                    "user-defined equality shall "
-                    & "have a Global aspect of null",
+                    "user-defined equality shall have a Global aspect of null",
                   SRM_Ref    => "6.6(1)",
                   N          => E,
                   Severity   => Error_Kind,
