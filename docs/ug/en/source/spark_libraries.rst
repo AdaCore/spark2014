@@ -778,6 +778,11 @@ library (see :ref:`SPARK Library`), provides generic units lifting these
 restrictions while still allowing |GNATprove| to verify their usage. Programs
 which do not need them should use regular access types.
 
+The unit ``SPARK.Pointers.Static_Allocation`` supplies storage for an object
+accessed through a regular access type, without using an allocator for that
+object. Its pointers follow the usual ownership policy (see :ref:`Statically
+Allocated Objects`).
+
 There are 5 generic units providing pointers with aliasing:
 
 * ``SPARK.Pointers.Explicit_Reclamation.Global_Memory``
@@ -856,6 +861,31 @@ extensions using ``pragma Extensions_Allowed (On)``. In the light runtime, the
 ``Handle_Operations`` generic packages of these units can only be instantiated
 at library level, as they take the ``'Access`` attribute of a subprogram
 declared in their private part.
+
+Statically Allocated Objects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The generic unit ``SPARK.Pointers.Static_Allocation`` provides a pointer ``P``
+to an object without using an allocator for that object. Its parameters are
+the designated type ``Object``, which can be indefinite, and a parameterless
+function ``Create_Object`` that supplies the initial value.
+
+The designated object lives as long as the instance. Ordinary accessibility
+and ownership rules prevent dangling references and uncontrolled aliasing.
+The pointer can be moved, borrowed, and observed like any other owning access
+value. General access types cannot be deallocated in |SPARK|.
+
+The following example moves and borrows a pointer to a string. It can be
+compiled with the restriction ``No_Allocators``:
+
+.. literalinclude:: /examples/ug__pointers_static_allocation/buffers.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves all checks on this example:
+
+.. literalinclude:: /examples/ug__pointers_static_allocation/test.out
+   :language: none
 
 Pointers with Explicit Reclamation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

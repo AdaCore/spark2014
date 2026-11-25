@@ -1,0 +1,35 @@
+ info: implicit aspect Always_Terminates on "Create_Object" has been proved, subprogram will terminate
+--> buffers.adb:3:11
+
+ info: implicit aspect Always_Terminates on "Create_Object" has been proved, subprogram will terminate
+--> buffers.adb:4:13
+
+ info: assertion proved
+--> buffers.adb:11:19
+
+ info: pointer dereference check proved
+--> buffers.adb:11:50
+
+ info: pointer dereference check proved
+--> buffers.adb:16:07
+
+ info: index check proved
+--> buffers.adb:16:10
+
+ info: assertion proved
+--> buffers.adb:18:19
+
+ info: pointer dereference check proved
+--> buffers.adb:18:26
+
+ info: assertion proved
+--> buffers.adb:21:19
+
+ info: pointer dereference check proved
+--> buffers.adb:21:21
+
+ info: flow dependencies proved, in instantiation at buffers.adb:5
+--> spark-pointers-static_allocation.ads:30:05
+
+ info: initialization of "P" proved, in instantiation at buffers.adb:5
+--> spark-pointers-static_allocation.ads:47:04
