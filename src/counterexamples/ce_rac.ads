@@ -110,7 +110,10 @@ package CE_RAC is
    --  Get all input values used by the RAC instance
 
    function All_Located_Values return Node_To_Node_To_Value.Map;
-   --  Get all intermediate values used by the RAC instance
+   --  Get all intermediate values used by the RAC instance.
+   --
+   --  Note: The values in the returned maps are on heap. They are valid until
+   --  the next RAC execution. At that point they will be reclaimed.
 
    procedure Get_Integer_Type_Bounds
      (Ty : Entity_Id; Fst, Lst : out Big_Integer)

@@ -28,6 +28,7 @@ with Ada.Containers.Indefinite_Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Environment_Variables;
 with Ada.Text_IO;            use Ada.Text_IO;
+with Ada.Unchecked_Deallocation;
 with CE_Fuzzer;              use CE_Fuzzer;
 with CE_Parsing;             use CE_Parsing;
 with CE_Utils;               use CE_Utils;
@@ -357,8 +358,8 @@ package body CE_RAC is
    end record;
    --  A scope is a flat mapping of variable (defining identifiers) to bindings
    --  and a mapping of old and loop entry values of expressions.
-   --  Located_Values is used to store mapping from a statement to a map of
-   --  counterexample values that should be displayed.
+   --  Located_Values maps statements to intermediate values for counterexample
+   --  display. Its values own the heap objects allocated by Copy.
 
    function To_String (S : Scopes) return String;
 
@@ -408,6 +409,21 @@ package body CE_RAC is
 
    Ctx : Context;
    --  Lo and behold! The global execution context
+
+   procedure Clear_Located_Values (Scope : in out Scopes);
+   --  Release all intermediate values owned by Scope
+
+   procedure Free_Values (Values : in out Node_To_Value.Map);
+   --  Release the heap objects reachable from Values, leaving the map entries
+   --  in place. Each object must have exactly one reference from within
+   --  Values and no references from outside it.
+
+   procedure Pop_Scope;
+   --  Release the current scope's intermediate values and remove the scope
+
+   procedure Save_Located_Values
+     (N : Node_Id; Values : in out Node_To_Value.Map);
+   --  Transfer the ownership of Values to the trace entry for N
 
    procedure Evaluate_Attribute_Prefix_Values
      (Attr_Id : Attribute_Id; Prefixes : Node_Sets.Set)
@@ -632,6 +648,131 @@ package body CE_RAC is
          end loop;
       end return;
    end All_Located_Values;
+
+   -----------------
+   -- Free_Values --
+   -----------------
+
+   procedure Free_Values (Values : in out Node_To_Value.Map) is
+      procedure Free (V : in out Value_Type);
+
+      procedure Free is new
+        Ada.Unchecked_Deallocation (Scalar_Value_Type, Scalar_Value_Access);
+
+      procedure Free (Child : in out Value_Access);
+
+      ----------
+      -- Free --
+      ----------
+
+      procedure Free (Child : in out Value_Access) is
+         procedure Deallocate is new
+           Ada.Unchecked_Deallocation (Value_Type, Value_Access);
+      begin
+         if Child /= null then
+            Free (Child.all);
+            Deallocate (Child);
+         end if;
+      end Free;
+
+      ----------
+      -- Free --
+      ----------
+
+      procedure Free (V : in out Value_Type) is
+         procedure Free (Elements : in out Big_Integer_To_Value_Maps.Map);
+         procedure Free (Fields : in out Entity_To_Value_Maps.Map);
+         --  Iterate through separate formals because the maps in V depend on
+         --  its discriminant.
+
+         ----------
+         -- Free --
+         ----------
+
+         procedure Free (Elements : in out Big_Integer_To_Value_Maps.Map) is
+         begin
+            for Element of Elements loop
+               Free (Element);
+            end loop;
+         end Free;
+
+         ----------
+         -- Free --
+         ----------
+
+         procedure Free (Fields : in out Entity_To_Value_Maps.Map) is
+         begin
+            for Field of Fields loop
+               Free (Field);
+            end loop;
+         end Free;
+
+      begin
+         case V.K is
+            when Scalar_K   =>
+               Free (V.Scalar_Content);
+
+            when Record_K   =>
+               Free (V.Record_Fields);
+
+            when Array_K    =>
+               Free (V.Array_Values);
+               Free (V.Array_Others);
+
+            when Multidim_K =>
+               null;
+
+            when Access_K   =>
+               Free (V.Designated_Value);
+         end case;
+      end Free;
+
+   begin
+      for V of Values loop
+         Free (V);
+      end loop;
+   end Free_Values;
+
+   --------------------------
+   -- Clear_Located_Values --
+   --------------------------
+
+   procedure Clear_Located_Values (Scope : in out Scopes) is
+   begin
+      for Values of Scope.Located_Values loop
+         Free_Values (Values);
+      end loop;
+      Scope.Located_Values.Clear;
+   end Clear_Located_Values;
+
+   ---------------
+   -- Pop_Scope --
+   ---------------
+
+   procedure Pop_Scope is
+   begin
+      Clear_Located_Values (Ctx.Env (Ctx.Env.First));
+      Ctx.Env.Delete_First;
+   end Pop_Scope;
+
+   -------------------------
+   -- Save_Located_Values --
+   -------------------------
+
+   procedure Save_Located_Values
+     (N : Node_Id; Values : in out Node_To_Value.Map)
+   is
+      Located  : Node_To_Node_To_Value.Map renames
+        Ctx.Env (Ctx.Env.First).Located_Values;
+      Position : Node_To_Node_To_Value.Cursor;
+      Inserted : Boolean;
+   begin
+      Located.Insert (N, Node_To_Value.Empty_Map, Position, Inserted);
+      if not Inserted then
+         Free_Values (Located (Position));
+      end if;
+      Located (Position).Move (Values);
+   end Save_Located_Values;
 
    -------------------
    -- Boolean_Value --
@@ -2646,8 +2787,8 @@ package body CE_RAC is
          Ctx.Env (Ctx.Env.First).Bindings.Delete (E);
       end if;
 
-      Sc := Ctx.Env (Ctx.Env.First);
-      Ctx.Env.Delete_First;
+      Sc.Bindings := Ctx.Env (Ctx.Env.First).Bindings;
+      Pop_Scope;
       if not Is_Main and then Present (N) then
          Copy_Out_Parameters (N, Sc);
 
@@ -2717,7 +2858,7 @@ package body CE_RAC is
                   end if;
                end;
             end loop;
-            Ctx.Env (Ctx.Env.First).Located_Values.Include (N, Ctx_Values);
+            Save_Located_Values (N, Ctx_Values);
          end;
       end if;
 
@@ -2856,8 +2997,7 @@ package body CE_RAC is
                   Ctx_Values : Node_To_Value.Map;
                begin
                   Ctx_Values.Insert (Defining_Identifier (Decl), Copy (V));
-                  Ctx.Env (Ctx.Env.First).Located_Values.Include
-                    (Decl, Ctx_Values);
+                  Save_Located_Values (Decl, Ctx_Values);
                end;
             end;
 
@@ -3003,6 +3143,16 @@ package body CE_RAC is
       end Init_Global_Scope;
 
    begin
+      --  Intermediate values are normally released in Pop_Scope on scope exit.
+      --  When the RAC execution stops early, the active scopes can still hold
+      --  values for counterexample display. Also package elaboration can leave
+      --  intermediate values in the global scope. Free the remaining
+      --  intermediate values from the previous execution before replacing Ctx.
+
+      for Scope of Ctx.Env loop
+         Clear_Located_Values (Scope);
+      end loop;
+
       Ctx :=
         (Env              => Empty_Global_Env,
          Cntexmp          => Cntexmp,
@@ -3152,7 +3302,7 @@ package body CE_RAC is
                Next (Choice);
             end loop;
 
-            Ctx.Env.Delete_First;
+            Pop_Scope;
          end Iterated_Component;
 
          --  Local variables
@@ -5482,8 +5632,7 @@ package body CE_RAC is
                     Find_Binding (Lhs_Root).all;
                begin
                   Ctx_Values.Insert (Lhs_Root, Copy (Lhs_Value));
-                  Ctx.Env (Ctx.Env.First).Located_Values.Include
-                    (N, Ctx_Values);
+                  Save_Located_Values (N, Ctx_Values);
                end;
             end;
 
@@ -5527,7 +5676,7 @@ package body CE_RAC is
                   --  Clear counterexample values at each iteration to avoid
                   --  mixing them up.
 
-                  Ctx.Env (Ctx.Env.First).Located_Values.Clear;
+                  Clear_Located_Values (Ctx.Env (Ctx.Env.First));
                end Iteration;
 
                First_Iter_Save  : constant Boolean := Ctx.First_Loop_Iter;
@@ -5606,7 +5755,7 @@ package body CE_RAC is
                end if;
 
                Ctx.First_Loop_Iter := First_Iter_Save;
-               Ctx.Env.Delete_First;
+               Pop_Scope;
             end;
 
          when N_Exit_Statement                                   =>
@@ -5624,7 +5773,7 @@ package body CE_RAC is
             Ctx.Env.Prepend (Scopes'(others => <>));
             RAC_Decls (Declarations (N));
             RAC_Node (Handled_Statement_Sequence (N));
-            Ctx.Env.Delete_First;
+            Pop_Scope;
 
          when N_Case_Statement                                   =>
             declare
