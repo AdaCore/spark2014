@@ -1,0 +1,27 @@
+byte_order.adb:4:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+byte_order.adb:4:13: info: types in unchecked conversion have the same size (Trivial)
+byte_order.adb:4:53: info: type is suitable as source for unchecked conversion (Trivial)
+byte_order.adb:4:59: info: type is suitable for unchecked conversion (Trivial)
+byte_order.adb:5:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+byte_order.adb:5:13: info: types in unchecked conversion have the same size (Trivial)
+byte_order.adb:5:53: info: type is suitable as source for unchecked conversion (Trivial)
+byte_order.adb:5:59: info: type is suitable for unchecked conversion (Trivial)
+byte_order.adb:9:22: info: assertion proved (CVC5: 1 VC)
+byte_order.adb:14:22: medium: assertion might fail
+byte_order.adb:19:22: info: assertion proved (CVC5: 1 VC)
+byte_order.adb:26:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+byte_order.adb:26:16: info: types in unchecked conversion have the same size (Trivial)
+byte_order.adb:26:64: info: type is suitable as source for unchecked conversion (Trivial)
+byte_order.adb:26:73: info: type is suitable for unchecked conversion (Trivial)
+byte_order.adb:31:22: info: assertion proved (CVC5: 1 VC)
+byte_order.adb:42:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+byte_order.adb:42:16: info: types in unchecked conversion have the same size (Trivial)
+byte_order.adb:42:16: warning: imprecise handling of Unchecked_Conversion (size is not a multiple of the storage unit on this target) [imprecise-unchecked-conversion]
+byte_order.adb:42:56: info: type is suitable as source for unchecked conversion (Trivial)
+byte_order.adb:42:65: info: type is suitable for unchecked conversion (Trivial)
+byte_order.ads:7:13: info: implicit aspect Always_Terminates on "First_Word" has been proved, subprogram will terminate
+byte_order.ads:8:14: warning: subprogram "Check" has no effect
+byte_order.ads:9:14: warning: subprogram "Check_Reversed" has no effect
+byte_order.ads:10:14: warning: subprogram "Check_Encode" has no effect
+byte_order.ads:11:14: warning: subprogram "Check_Packed_Nibbles" has no effect
+byte_order.ads:12:14: warning: subprogram "Check_Partial_Storage_Unit" has no effect

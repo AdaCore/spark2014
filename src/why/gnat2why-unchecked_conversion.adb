@@ -33,6 +33,7 @@ with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Gnat2Why.Util;               use Gnat2Why.Util;
 with Namet;                       use Namet;
+with Set_Targ;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
 with SPARK_Definition;            use SPARK_Definition;
@@ -314,9 +315,37 @@ package body Gnat2Why.Unchecked_Conversion is
       --  available bitvector types with conversions from other bitvector
       --  sizes.
 
-      if Get_Attribute_Value (Source_Type, Attribute_Size) > 128 then
-         return False_With_Explain ("type size larger than 128 bits");
-      end if;
+      declare
+         Size : constant Uint :=
+           Get_Attribute_Value (Source_Type, Attribute_Size);
+      begin
+         if Size > 128 then
+            return False_With_Explain ("type size larger than 128 bits");
+         end if;
+
+         if not (Is_Scalar_Type (Source_Type)
+                 and then Is_Scalar_Type (Target_Type))
+         then
+            --  The layout encoding assumes a single order for the whole bit
+            --  pattern. On big-endian targets, also avoid partial storage
+            --  units, where the compiler may justify scalar and composite
+            --  bits differently.
+
+            if Size > Ttypes.System_Word_Size
+              and then Ttypes.Bytes_Big_Endian /= (Set_Targ.Words_BE /= 0)
+            then
+               return
+                 False_With_Explain ("target has mixed byte and word order");
+            elsif Ttypes.Bytes_Big_Endian
+              and then Size mod Ttypes.System_Storage_Unit /= Uint_0
+            then
+               return
+                 False_With_Explain
+                   ("size is not a multiple of the storage unit on this"
+                    & " target");
+            end if;
+         end if;
+      end;
 
       --  Only generate a definition for UC between integer types, and
       --  composites of integer types.
@@ -480,7 +509,16 @@ package body Gnat2Why.Unchecked_Conversion is
          Valid_Flag : W_Term_Id;
       end record;
 
+      Target_Size : constant Uint :=
+        Get_Attribute_Value (Target_Type, Attribute_Size);
+
       --  Local subprograms
+
+      function Bitvector_Offset (Offset, Size : Uint) return Uint;
+      --  Convert an offset in native storage order to a shift from the least
+      --  significant bit. Use the Ada representation size, which may be
+      --  smaller than the Why3 bitvector used to hold it. The offset of an
+      --  empty component is unused.
 
       function Contribute_Value
         (Base   : W_Type_Id;
@@ -534,6 +572,15 @@ package body Gnat2Why.Unchecked_Conversion is
       --  Given the representation Bits of modular type Base for
       --  the complete object, reconstruct the element of type Typ
       --  of a given Size at a given Offset.
+
+      ----------------------
+      -- Bitvector_Offset --
+      ----------------------
+
+      function Bitvector_Offset (Offset, Size : Uint) return Uint
+      is (if Ttypes.Bytes_Big_Endian and then Size /= Uint_0
+          then Target_Size - Offset - Size
+          else Offset);
 
       ----------------------
       -- Contribute_Value --
@@ -898,7 +945,8 @@ package body Gnat2Why.Unchecked_Conversion is
          if Is_Scalar_Type (Typ) then
             declare
                Result : Target_Value :=
-                 Extract_Value (Base, Bits, Offset, Size, Typ);
+                 Extract_Value
+                   (Base, Bits, Bitvector_Offset (Offset, Size), Size, Typ);
             begin
                --  Newly reconstructed scalar components are initialized.
 
@@ -1073,8 +1121,6 @@ package body Gnat2Why.Unchecked_Conversion is
 
       Conv         : W_Term_Id;
       Source_Elems : List;
-      Target_Size  : constant Uint :=
-        Get_Attribute_Value (Target_Type, Attribute_Size);
       Base         : constant W_Type_Id :=
         (if Target_Size <= Uint_8
          then EW_BitVector_8_Type
@@ -1123,7 +1169,7 @@ package body Gnat2Why.Unchecked_Conversion is
                       Contribute_Value
                         (Base   => Base,
                          Expr   => +Elem.Expr,
-                         Offset => Elem.Offset,
+                         Offset => Bitvector_Offset (Elem.Offset, Elem.Size),
                          Size   => Elem.Size,
                          Typ    => Elem.Typ)));
          end loop;
@@ -1157,8 +1203,7 @@ package body Gnat2Why.Unchecked_Conversion is
                 (Base         => Base,
                  Bits         => +Conv,
                  Offset       => Uint_0,
-                 Size         =>
-                   Get_Attribute_Value (Target_Type, Attribute_Size),
+                 Size         => Target_Size,
                  Typ          => Target_Type,
                  Relaxed_Init => UC_Has_Relaxed_Init (Target_Type));
          begin

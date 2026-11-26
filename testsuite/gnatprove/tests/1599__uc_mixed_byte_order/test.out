@@ -1,0 +1,12 @@
+mixed_order.adb:8:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+mixed_order.adb:8:16: info: types in unchecked conversion have the same size (Trivial)
+mixed_order.adb:8:56: info: type is suitable as source for unchecked conversion (Trivial)
+mixed_order.adb:8:64: info: type is suitable for unchecked conversion (Trivial)
+mixed_order.adb:10:22: info: assertion proved (CVC5: 1 VC)
+mixed_order.adb:20:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+mixed_order.adb:20:16: info: types in unchecked conversion have the same size (Trivial)
+mixed_order.adb:20:16: warning: imprecise handling of Unchecked_Conversion (target has mixed byte and word order) [imprecise-unchecked-conversion]
+mixed_order.adb:20:56: info: type is suitable as source for unchecked conversion (Trivial)
+mixed_order.adb:20:63: info: type is suitable for unchecked conversion (Trivial)
+mixed_order.ads:2:14: warning: subprogram "Check_One_Word" has no effect
+mixed_order.ads:3:14: warning: subprogram "Check_Two_Words" has no effect
