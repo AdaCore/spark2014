@@ -39,7 +39,7 @@ counterexample expected for check at case_stmt.adb:27
   trace at case_stmt.ads:40 --> K = 1
 counterexample expected for check at case_stmt.adb:28
   trace at case_stmt.adb:28 --> J = 4
-  trace at case_stmt.ads:40 --> K = 5
+  trace at case_stmt.ads:40 --> K = 9
 counterexample expected for check at case_stmt.adb:40
   trace at case_stmt.adb:40 --> A = Work
   trace at case_stmt.ads:43 --> D = Mon
