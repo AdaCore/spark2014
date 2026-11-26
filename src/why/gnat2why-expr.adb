@@ -21175,6 +21175,14 @@ package body Gnat2Why.Expr is
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
       Is_Range  : constant Boolean := Discrete_Choice_Is_Range (Choice);
+      Pred_Typ  : constant Opt_Type_Kind_Id :=
+        (if Nkind (Choice) = N_Subtype_Indication
+         then Entity (Subtype_Mark (Choice))
+         elsif Is_Entity_Name (Choice) and then Is_Type (Entity (Choice))
+         then Entity (Choice)
+         else Empty);
+      --  Use the subtype mark for predicates: Etype of a subtype indication
+      --  can be the type of its range, without the subtype's predicates.
 
       R : W_Expr_Id;
    begin
@@ -21187,23 +21195,26 @@ package body Gnat2Why.Expr is
          --  A static predicate restricts the values in the range. Its value
          --  list need not include the choice's range constraint, so retain
          --  both conditions.
+         --  Delta aggregate choices can also have dynamic predicates, which
+         --  are translated as in membership tests.
 
-         if (Nkind (Choice) = N_Subtype_Indication
-             or else
-               (Is_Entity_Name (Choice) and then Is_Type (Entity (Choice))))
-           and then Has_Predicates (Etype (Choice))
-           and then Has_Static_Predicate (Etype (Choice))
-         then
-            pragma Assert (Is_Discrete_Type (Etype (Choice)));
+         if Present (Pred_Typ) and then Has_Predicates (Pred_Typ) then
+            pragma Assert (Is_Discrete_Type (Pred_Typ));
             R :=
               New_And_Expr
                 (R,
-                 Transform_Discrete_Choices
-                   (Static_Discrete_Predicate (Etype (Choice)),
-                    Choice_Type,
-                    Expr,
-                    Domain,
-                    Params),
+                 (if Has_Static_Predicate (Pred_Typ)
+                  then
+                    Transform_Discrete_Choices
+                      (Static_Discrete_Predicate (Pred_Typ),
+                       Choice_Type,
+                       Expr,
+                       Domain,
+                       Params)
+                  else
+                    Boolean_Expr_Of_Pred
+                      (Compute_Dynamic_Predicate (+Expr, Pred_Typ, Params),
+                       Domain)),
                  Domain);
          end if;
 
