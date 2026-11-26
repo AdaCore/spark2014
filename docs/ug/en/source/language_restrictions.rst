@@ -163,6 +163,11 @@ also :ref:`Sizes of Objects`). Similarly, for object declarations with an
 Address clause or aspect that refers to the ``'Address`` of another object,
 |SPARK| checks that both objects have the same known ``Object_Size``.
 
+These checks do not establish that accesses through different types are safe
+under the compiler's strict-aliasing optimizations. Address overlays also need
+to satisfy the :ref:`strict-aliasing assumption <SPARK_STRICT_ALIASING>`, even
+when their address specifications are precisely supported by |GNATprove|.
+
 As calls to instances of ``Unchecked_Conversion`` are handled as function calls
 by |GNATprove|, it is necessary to ensure that they will never return
 different results when given the same input. This is enforced by checking that

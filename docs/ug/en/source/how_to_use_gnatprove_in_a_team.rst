@@ -734,6 +734,23 @@ of a program:
   same between compilation and analysis. This is in particular the case for
   :ref:`Overflow Modes`.
 
+.. _SPARK_STRICT_ALIASING:
+
+* [SPARK_STRICT_ALIASING]
+  When the same storage is accessed through different types, the program should
+  not rely on aliases that the compiler's strict-aliasing optimizations assume
+  cannot occur. This applies to address overlays, including precisely supported
+  overlays, and to :ref:`Conversions Between Access Types`. For example, an
+  overlay can be passed as an aliased parameter and accessed through a pointer
+  obtained from that parameter's ``Access`` attribute.
+
+  To prevent such optimizations, use ``Universal_Aliasing`` on the type given to
+  any view obtained from reinterpreted storage, with the annotation visible
+  wherever that type is used, or compile with ``-fno-strict-aliasing``. |GNATprove| does not
+  check this requirement: all checks can be proved even though the optimized executable
+  behaves differently. See "Optimization and Strict Aliasing" in the GNAT
+  User's Guide for details.
+
 * [SPARK_ITERABLE]
   When a type is annotated with an ``Iterable`` aspect:
 
