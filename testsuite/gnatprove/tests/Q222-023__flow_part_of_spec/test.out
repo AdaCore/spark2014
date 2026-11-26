@@ -3,3 +3,4 @@ main.adb:5:19: medium: "p.state" might not be initialized after elaboration of m
 main.adb:5:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention P.Secret and P.State in a precondition]
 p.ads:1:46: warning: no subprogram exists that can initialize abstract state "P.State"
 proxy.ads:1:10: warning: Global contract expected for "Proxy"
+proxy.ads:1:10: warning: Global contract expected for "Proxy"
