@@ -285,89 +285,90 @@ package body Gnat2Why.Decls is
             end if;
          end;
 
-      --  Constant overlays are always imported. Use a UC function to compute
-      --  their value.
+      --  Constant overlays are always imported. Define their value using a
+      --  UC when the object representations permit it.
 
       elsif Present (Overlaid_Entity (E)) then
          declare
-            Obj_Ty  : constant Type_Kind_Id := Type_Of_Node (E);
-            Pref    : constant Node_Id := Prefix (Get_Address_Expr (Decl));
-            Pref_Ty : constant Type_Kind_Id := Type_Of_Node (Pref);
-            Params  : constant Transformation_Params :=
+            Obj_Ty          : constant Type_Kind_Id := Type_Of_Node (E);
+            Pref            : constant Node_Id :=
+              Prefix (Get_Address_Expr (Decl));
+            Pref_Ty         : constant Type_Kind_Id := Type_Of_Node (Pref);
+            Params          : constant Transformation_Params :=
               (Logic_Params with delta Ref_Allowed => True);
-            W_Pref  : constant W_Term_Id :=
+            W_Pref          : constant W_Term_Id :=
               Transform_Term (Pref, Type_Of_Node (Pref_Ty), Params);
+            Precise_Overlay : True_Or_Explain := Is_Overlay_Handled_As_UC (E);
 
          begin
-            pragma Assert (Is_Overlay_Handled_As_UC (E).Ok);
+            if Precise_Overlay.Ok then
 
-            --  Generate UC modules for the translation of E and emit the
-            --  defining axiom.
+               --  Generate UC modules for the translation of E and emit the
+               --  defining axiom.
 
-            Create_Module_For_UC_If_Needed
-              (Pref_Ty, Obj_Ty, Is_Potentially_Invalid (E));
+               Create_Module_For_UC_If_Needed
+                 (Pref_Ty, Obj_Ty, Is_Potentially_Invalid (E));
 
-            --  Emit an axiom for the definition of E if W_Pref does not
-            --  contain any dereferences.
+               --  Emit an axiom for the definition of E if W_Pref does not
+               --  contain any dereferences.
 
-            if not Has_Dereference_Or_Any_Or_Self (W_Pref) then
-               declare
-                  B     : constant Item_Type :=
-                    Ada_Ent_To_Why.Element (Symbol_Table, E);
-                  UC_Id : constant W_Identifier_Id :=
-                    Get_UC_Function
-                      (Pref_Ty,
-                       Obj_Ty,
-                       Potentially_Invalid => B.Valid.Present);
-                  Def   : W_Term_Id :=
-                    New_Call
-                      (Name => UC_Id,
-                       Args => (1 => +W_Pref),
-                       Typ  => Get_Typ (UC_Id));
+               if not Has_Dereference_Or_Any_Or_Self (W_Pref) then
+                  declare
+                     B     : constant Item_Type :=
+                       Ada_Ent_To_Why.Element (Symbol_Table, E);
+                     UC_Id : constant W_Identifier_Id :=
+                       Get_UC_Function
+                         (Pref_Ty,
+                          Obj_Ty,
+                          Potentially_Invalid => B.Valid.Present);
+                     Def   : W_Term_Id :=
+                       New_Call
+                         (Name => UC_Id,
+                          Args => (1 => +W_Pref),
+                          Typ  => Get_Typ (UC_Id));
 
-               begin
-                  if B.Valid.Present then
+                  begin
+                     if B.Valid.Present then
+                        Emit
+                          (Th,
+                           New_Defining_Axiom
+                             (Ada_Node => E,
+                              Name     => B.Valid.Id,
+                              Binders  => (1 .. 0 => <>),
+                              Def      =>
+                                +New_Function_Valid_Flag_Access
+                                   (Obj_Ty, +Def)));
+                        Def :=
+                          +New_Function_Valid_Value_Access
+                             (Ty => Obj_Ty, Name => +Def);
+                     end if;
+
                      Emit
                        (Th,
                         New_Defining_Axiom
                           (Ada_Node => E,
-                           Name     => B.Valid.Id,
+                           Name     => B.Main.B_Name,
                            Binders  => (1 .. 0 => <>),
-                           Def      =>
-                             +New_Function_Valid_Flag_Access (Obj_Ty, +Def)));
-                     Def :=
-                       +New_Function_Valid_Value_Access
-                          (Ty => Obj_Ty, Name => +Def);
-                  end if;
+                           Def      => Def));
+                  end;
+               end if;
 
-                  Emit
-                    (Th,
-                     New_Defining_Axiom
-                       (Ada_Node => E,
-                        Name     => B.Main.B_Name,
-                        Binders  => (1 .. 0 => <>),
-                        Def      => Def));
-               end;
+               Precise_Overlay :=
+                 Is_UC_With_Precise_Definition
+                   (Pref_Ty, Obj_Ty, Is_Potentially_Invalid (E));
             end if;
 
             --  Output information on reason for imprecise handling of overlay
 
-            declare
-               Precise_Overlay : constant True_Or_Explain :=
-                 Is_UC_With_Precise_Definition
-                   (Pref_Ty, Obj_Ty, Is_Potentially_Invalid (E));
-
-            begin
-               if not Precise_Overlay.Ok then
-                  Warning_Msg_N
-                    (Warn_Imprecise_Overlay,
-                     E,
-                     Msg =>
-                       Create_N
-                         (Warn_Imprecise_Overlay,
-                          Names => [To_String (Precise_Overlay.Explanation)]));
-               end if;
-            end;
+            if not Precise_Overlay.Ok then
+               Warning_Msg_N
+                 (Warn_Imprecise_Overlay,
+                  E,
+                  Msg =>
+                    Create_N
+                      (Warn_Imprecise_Overlay,
+                       Names => [To_String (Precise_Overlay.Explanation)]));
+            end if;
          end;
       end if;
 

@@ -42,7 +42,8 @@ package Gnat2Why.Unchecked_Conversion is
    function Is_Overlay_Handled_As_UC
      (Obj : Object_Kind_Id) return True_Or_Explain;
    --  Return whether an overlay object is translated using an unchecked
-   --  conversion module.
+   --  conversion module. Scalar object sizes must match their type sizes,
+   --  and mutable overlays must refer to whole objects throughout the chain.
 
    procedure Suitable_For_UC
      (Typ         : Type_Kind_Id;
