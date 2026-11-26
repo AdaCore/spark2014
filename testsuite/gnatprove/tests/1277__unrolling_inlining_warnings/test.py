@@ -1,6 +1,5 @@
 from test_support import prove_all
 
-
 print("---- default -------")
 prove_all()
 

@@ -67,7 +67,7 @@ os.chdir(TESTDIR)
 #  variable name coincides with some substrings that are searched in text.
 
 is_msg = re.compile(
-    r"([\w-]*\.ad.?):(\d*):\d*:" r" (info|warning|low|medium|high)?(: )?([^(,[]*)(.*)?$"
+    r"([\w-]*\.ad.?):(\d*):\d*: (info|warning|low|medium|high)?(: )?([^(,[]*)(.*)?$"
 )
 is_mark = re.compile(r"@(\w*):(\w*)")
 
@@ -809,7 +809,7 @@ def verify_counterexamples(cwd=None, logger=None):
     have_populated_dict = False
 
     def compute_results_dict():
-        nonlocal results, have_populated_dict
+        nonlocal have_populated_dict
         if have_populated_dict:
             return
         have_populated_dict = True

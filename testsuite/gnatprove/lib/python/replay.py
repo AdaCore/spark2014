@@ -87,7 +87,6 @@ class PythonGenerator(SessionGenerator):
 
 class YamlGenerator(SessionGenerator):
     def __init__(self, yaml):
-        global cmdline_args
         if "prove_all" not in yaml:
             self.args = {}
         self.args = yaml["prove_all"]
