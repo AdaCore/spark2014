@@ -40,8 +40,6 @@ bad_eq.ads:48:04: warning: references between entities introduce a cycle in proo
 bad_eq.ads:48:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 bad_eq.ads:48:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 bad_eq.ads:48:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
-bad_params.ads:21:09: high: precondition might fail (e.g. when O = (F => 0))
-bad_params.ads:21:09: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
 bad_params.ads:57:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
 bad_params.ads:63:13: info: implicit aspect Always_Terminates on "Copy_With_Pre" has been proved, subprogram will terminate
 bad_params.ads:79:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
@@ -402,6 +400,8 @@ spark-pointers-explicit_reclamation-global_memory.ads:163:29: info: data depende
 spark-pointers-explicit_reclamation-global_memory.ads:165:16: info: implicit aspect Always_Terminates on "Deallocates" has been proved, subprogram will terminate, in instantiation at bad_params.ads:60
 spark-pointers-explicit_reclamation-global_memory.ads:171:29: info: data dependencies proved, in instantiation at bad_params.ads:60
 spark-pointers-explicit_reclamation-global_memory.ads:185:04: info: initialization of "Memory" proved, in instantiation at bad_params.ads:60
+spark-pointers-explicit_reclamation-global_memory.ads:195:18: high: precondition might fail, in instantiation at bad_params.ads:67 (e.g. when O = (F => 0))
+spark-pointers-explicit_reclamation-global_memory.ads:195:18: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate, in instantiation at bad_params.ads:67
 spark-pointers-explicit_reclamation-global_memory.ads:236:37: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:67
 spark-pointers-explicit_reclamation-global_memory.ads:276:37: info: precondition proved (CVC5: 1 VC), in instantiation at bad_params.ads:60
 spark-pointers-explicit_reclamation-global_memory.ads:302:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at bad_params.ads:60

@@ -1,5 +1,3 @@
-test_auto_reclaimed_mutable.adb:11:11: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
-test_auto_reclaimed_mutable.adb:11:11: info: implicit aspect Always_Terminates on "Create_Object" has been proved, subprogram will terminate
 test_auto_reclaimed_mutable.adb:43:14: info: aspect Always_Terminates on "Reclaim" has been proved, subprogram will terminate
 test_auto_reclaimed_mutable.adb:44:09: info: data dependencies proved
 test_auto_reclaimed_mutable.adb:44:52: info: postcondition proved (CVC5: 1 VC)

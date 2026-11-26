@@ -1,4 +1,3 @@
-union_find_global.adb:22:11: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
 union_find_global.adb:30:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
 union_find_global.adb:31:26: info: data dependencies proved
 union_find_global.adb:46:13: info: implicit aspect Always_Terminates on "Cell_Parent" has been proved, subprogram will terminate
@@ -191,7 +190,6 @@ union_find_global.adb:362:19: info: precondition proved (CVC5: 4 VC)
 union_find_global.adb:363:17: info: precondition proved (CVC5: 4 VC)
 union_find_global.adb:363:47: info: precondition proved (CVC5: 4 VC)
 union_find_global.adb:366:07: info: precondition proved (CVC5: 6 VC; Trivial: 1 VC)
-union_find_separate.adb:17:11: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
 union_find_separate.adb:35:13: info: implicit aspect Always_Terminates on "Cell_Parent" has been proved, subprogram will terminate
 union_find_separate.adb:36:40: info: precondition proved (CVC5: 1 VC)
 union_find_separate.adb:37:26: info: data dependencies proved

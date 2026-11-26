@@ -1,4 +1,3 @@
-test_poisoned.adb:11:11: info: implicit aspect Always_Terminates on "Create_Object" has been proved, subprogram will terminate
 test_poisoned.adb:26:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
 test_poisoned.adb:34:13: info: implicit aspect Always_Terminates on "Make" has been proved, subprogram will terminate
 test_poisoned.adb:45:25: info: postcondition proved (CVC5: 1 VC)

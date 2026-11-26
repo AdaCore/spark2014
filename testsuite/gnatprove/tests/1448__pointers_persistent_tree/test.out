@@ -1,4 +1,3 @@
-persistent_tree.adb:20:11: info: implicit aspect Always_Terminates on "Create_Object" has been proved, subprogram will terminate
 persistent_tree.adb:40:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 persistent_tree.adb:40:61: info: data dependencies proved
 persistent_tree.adb:43:13: info: implicit aspect Always_Terminates on "Child_Of" has been proved, subprogram will terminate

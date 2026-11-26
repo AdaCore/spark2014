@@ -1,4 +1,3 @@
-example_recursive.adb:12:11: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
 example_recursive.adb:35:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
 example_recursive.adb:37:20: info: precondition proved
 example_recursive.adb:41:13: info: implicit aspect Always_Terminates on "Valid_Memory" has been proved, subprogram will terminate
