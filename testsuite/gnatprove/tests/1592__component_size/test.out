@@ -1,0 +1,3 @@
+widths.adb:4:22: info: assertion proved (Trivial: 1 VC)
+widths.adb:5:22: info: assertion proved (Trivial: 1 VC)
+widths.ads:8:14: warning: subprogram "Check" has no effect
