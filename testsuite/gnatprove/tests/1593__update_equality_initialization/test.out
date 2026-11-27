@@ -1,0 +1,26 @@
+update_equality.ads:6:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:6:14: medium: initialization check might fail
+update_equality.ads:6:23: medium: initialization check might fail [possible fix: subprogram at line 5 should mention X in a precondition]
+update_equality.ads:9:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:9:14: medium: initialization check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
+update_equality.ads:9:42: medium: initialization check might fail
+update_equality.ads:12:27: warning: unused initial value of "X"
+update_equality.ads:13:14: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:13:14: medium: postcondition might fail
+update_equality.ads:13:23: medium: initialization check might fail
+update_equality.ads:17:14: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:17:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:17:23: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:20:27: warning: unused initial value of "X"
+update_equality.ads:21:14: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:21:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:21:23: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:26:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:26:14: medium: initialization check might fail
+update_equality.ads:26:23: medium: initialization check might fail [possible fix: subprogram at line 24 should mention X'Initialized in a precondition]
+update_equality.ads:31:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+update_equality.ads:31:18: warning: unused variable "L"
+update_equality.ads:31:21: warning: unused variable "B"
+update_equality.ads:36:14: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:36:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+update_equality.ads:36:23: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
