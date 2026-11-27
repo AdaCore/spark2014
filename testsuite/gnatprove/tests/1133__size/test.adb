@@ -111,7 +111,7 @@ procedure Test with SPARK_Mode is
    procedure Test_Array_Comp is
       type V is record
          F, G : Integer;
-      end record with Object_Size => 128;
+      end record with Object_Size => 128, Size => 64;
       type A_Array is array (Integer range <>) of V with Pack;
       X : A_Array := (1 .. 5 => (others => 1));
 
@@ -119,7 +119,7 @@ procedure Test with SPARK_Mode is
         Pre => 2 in X'Range;
       procedure P (X : A_Array) is
       begin
-         pragma Assert (X (2)'Size = V'Object_Size); -- @ASSERT:FAIL
+         pragma Assert (X (2)'Size = V'Object_Size); --@ASSERT:FAIL
       end P;
 
    begin

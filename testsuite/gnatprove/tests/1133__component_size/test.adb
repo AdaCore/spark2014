@@ -29,7 +29,7 @@ procedure Test with SPARK_Mode is
         Pre => 2 in X'Range;
       procedure P (X : A_Array) is
       begin
-         pragma Assert (X'Component_Size = V'Size); -- @ASSERT:PASS
+         pragma Assert (X'Component_Size = 128); -- @ASSERT:PASS
       end P;
 
    begin
