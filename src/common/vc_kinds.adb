@@ -802,6 +802,8 @@ package body VC_Kinds is
          when Lim_Overlay_With_Package =>
            "an overlay without Import in the same declarative part as a "
           & "package declaration or body",
+         when Lim_Overlay_Within_Predicate =>
+           "a mutable overlay of a subcomponent of an object with a predicate",
          when Lim_Deep_Object_Declaration_Outside_Block =>
            "a declaration of an object of an ownership type outside a block "
           & "for declarations",

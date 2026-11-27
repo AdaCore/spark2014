@@ -4362,6 +4362,40 @@ package body SPARK_Definition is
                Mark_Unsupported (Lim_Overlay_With_Deep_Object, Address);
             end if;
 
+            --  A write through an overlay must preserve predicates on
+            --  enclosing objects. We cannot check this with the current
+            --  model of subcomponent overlays, so reject mutable views of
+            --  such components. Constant views cannot invalidate predicates.
+
+            if not Violation_Detected and then not E_Is_Constant then
+               declare
+                  Obj : Node_Id := Prefix (Address_Expr);
+
+               begin
+                  loop
+                     case Nkind (Obj) is
+                        when N_Identifier | N_Expanded_Name =>
+                           exit;
+
+                        when N_Selected_Component
+                           | N_Indexed_Component
+                           | N_Slice
+                           | N_Explicit_Dereference =>
+                           Obj := Prefix (Obj);
+
+                           if Has_Predicates (Retysp (Etype (Obj))) then
+                              Mark_Unsupported
+                                (Lim_Overlay_Within_Predicate, Address_Expr);
+                              exit;
+                           end if;
+
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                  end loop;
+               end;
+            end if;
+
             --  If the address expression is a reference to the address of
             --  (a part of) another object, check that either both are
             --  mutable or both are constant for SPARK.
