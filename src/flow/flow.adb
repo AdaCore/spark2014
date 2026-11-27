@@ -111,8 +111,8 @@ package body Flow is
    --  6.1.6.
    --  * global contracts do not use constants without variable input as per
    --  SRM 6.1.4(16)
-   --  We do this for requested subprograms from the current unit whose spec
-   --  has SPARK_Mode => On, regardless of the SPARK_Mode on their bodies.
+   --  Check all translated declarations, including dependencies and entities
+   --  without an explicit SPARK_Mode, regardless of their bodies' SPARK_Mode.
 
    function Hash_Protected_Prefix (Pref : Node_Id) return Unsigned_32;
    --  Recursively hash prefix of a protected call. This is the same algoritm
@@ -1657,24 +1657,19 @@ package body Flow is
    -----------------------------------
 
    procedure Check_Specification_Contracts is
-      procedure Check_Contracts (E : Entity_Id);
-      --  Check contracts for a given program unit and its nested units
-
-      ---------------------
-      -- Check_Contracts --
-      ---------------------
-
-      procedure Check_Contracts (E : Entity_Id) is
-      begin
-         for Child of Scope_Map (E) loop
-            Check_Contracts (Child);
-         end loop;
+   begin
+      for E of Entities_To_Translate loop
+         --  Type-checking helpers do not have subprogram Global contracts.
+         --  Their expressions are checked as part of the corresponding type.
 
          if Ekind (E) in Entry_Kind | E_Function | E_Procedure | E_Task_Type
            and then
-             SPARK_Util.Subprograms.Analysis_Requested
-               (E, With_Inlined => True)
-           and then Entity_Spec_In_SPARK (E)
+             (if Ekind (E) = E_Procedure
+              then
+                not Is_DIC_Procedure (E)
+                and then not Is_Invariant_Procedure (E)
+              elsif Ekind (E) = E_Function
+              then not Is_Predicate_Function (E))
          then
             --  We emit similar check messages if we analyse a body, so to
             --  avoid duplication don't emit them here.
@@ -1693,12 +1688,7 @@ package body Flow is
                Check_Classwide_Contracts (E);
             end if;
          end if;
-      end Check_Contracts;
-
-   begin
-      if Present (Root_Entity) then
-         Check_Contracts (Root_Entity);
-      end if;
+      end loop;
    end Check_Specification_Contracts;
 
    ------------------------
