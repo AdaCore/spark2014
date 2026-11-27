@@ -1,3 +1,7 @@
+a-coinho.ads:56:13: error: "memory accessed through objects of access type" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "=" at a-finali.ads:59 (SPARK RM 6.1.6), in instantiation at p.ads:4
 a-coinho.ads:56:13: error: user-defined equality shall have a Global aspect of null (SPARK RM 6.6(1)), in instantiation at p.ads:4
-compilation abandoned due to previous error
+a-coinho.ads:145:25: error: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Input of overridden subprogram "Adjust" at a-finali.ads:47 (SPARK RM 6.1.6), in instantiation at p.ads:4
+a-coinho.ads:145:25: error: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "Adjust" at a-finali.ads:47 (SPARK RM 6.1.6), in instantiation at p.ads:4
+a-coinho.ads:146:25: error: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Input of overridden subprogram "Finalize" at a-finali.ads:48 (SPARK RM 6.1.6), in instantiation at p.ads:4
+a-coinho.ads:146:25: error: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "Finalize" at a-finali.ads:48 (SPARK RM 6.1.6), in instantiation at p.ads:4
 gnatprove: error during flow analysis and proof
