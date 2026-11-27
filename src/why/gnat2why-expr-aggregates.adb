@@ -2672,6 +2672,25 @@ package body Gnat2Why.Expr.Aggregates is
                                 (Value => Choice, Typ => Index_Types (Dim)));
                         end if;
                   end case;
+
+                  --  Choice predicates are used in the defining axiom, so
+                  --  pass their dependencies to the aggregate function.
+
+                  declare
+                     Pred_Typ : constant Opt_Type_Kind_Id :=
+                       (if Nkind (Choice) = N_Subtype_Indication
+                        then Entity (Subtype_Mark (Choice))
+                        elsif Is_Entity_Name (Choice)
+                          and then Is_Type (Entity (Choice))
+                        then Entity (Choice)
+                        else Empty);
+                  begin
+                     if Present (Pred_Typ) and then Has_Predicates (Pred_Typ)
+                     then
+                        Variables_In_Dynamic_Predicate (Pred_Typ, Variables);
+                     end if;
+                  end;
+
                   Next (Choice);
                end loop;
             end if;
@@ -4190,6 +4209,32 @@ package body Gnat2Why.Expr.Aggregates is
                                 Right  => Lookup_Value (Choice));
                         end if;
                   end case;
+
+                  --  Include any predicate restriction on a subtype choice.
+                  --  Its range and range checks are already handled using
+                  --  the bound arguments, so do not translate them again.
+
+                  declare
+                     Pred_Typ : constant Opt_Type_Kind_Id :=
+                       (if Nkind (Choice) = N_Subtype_Indication
+                        then Entity (Subtype_Mark (Choice))
+                        elsif Is_Entity_Name (Choice)
+                          and then Is_Type (Entity (Choice))
+                        then Entity (Choice)
+                        else Empty);
+                  begin
+                     if Present (Pred_Typ) and then Has_Predicates (Pred_Typ)
+                     then
+                        Rng_Expr :=
+                          New_And_Pred
+                            (Left  => Rng_Expr,
+                             Right =>
+                               Compute_Dynamic_Predicate
+                                 (Expr   => +Indexes (Integer (Dim)),
+                                  Ty     => Pred_Typ,
+                                  Params => Params));
+                     end if;
+                  end;
 
                --  The choices are not arguments, proceed with standard
                --  transformation of discrete choice.

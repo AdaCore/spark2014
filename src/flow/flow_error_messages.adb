@@ -2387,7 +2387,7 @@ package body Flow_Error_Messages is
 
          function Is_Choice_Of_Aggr (N : Node_Id) return Boolean;
          --  A choice in a component association is not really an expression
-         --  (except when used as an index of an array component association).
+         --  (except a value used as an index of an array association).
          --  Detect these nodes to exclude them.
 
          -----------------------
@@ -2423,6 +2423,7 @@ package body Flow_Error_Messages is
               and then List_Containing (Par) = Choices (Parent (Par))
               and then
                 (not Is_Array_Type (Etype (Parent (Parent (Par))))
+                 or else (Is_Entity_Name (Par) and then Is_Type (Entity (Par)))
                  or else Is_Deep_Choice (Par, Etype (Parent (Parent (Par)))));
          end Is_Choice_Of_Aggr;
 
