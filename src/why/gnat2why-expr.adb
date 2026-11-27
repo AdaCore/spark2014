@@ -14134,7 +14134,9 @@ package body Gnat2Why.Expr is
 
                --  For iterated component associations, bind the name of the
                --  index parameter and restore the Checks sequence. Also reset
-               --  In_Iterated_Assoc.
+               --  In_Iterated_Assoc. Discard assumptions from the binding so
+               --  an empty iteration range cannot make subsequent checks
+               --  vacuous.
 
                if Nkind (Association) = N_Iterated_Component_Association then
                   if Present (Loop_Actions (Association)) then
@@ -14148,11 +14150,13 @@ package body Gnat2Why.Expr is
 
                   Append
                     (Save_Checks,
-                     New_Binding
-                       (Name    => Idx,
-                        Def     => Binding,
-                        Context => +Comp_Checks,
-                        Typ     => EW_Unit_Type));
+                     New_Ignore
+                       (Prog =>
+                          New_Binding
+                            (Name    => Idx,
+                             Def     => Binding,
+                             Context => +Comp_Checks,
+                             Typ     => EW_Unit_Type)));
                   Comp_Checks := Save_Checks;
 
                   In_Iterated_Assoc := Save_In_Iter;
