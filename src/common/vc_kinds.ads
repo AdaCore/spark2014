@@ -461,6 +461,7 @@ package VC_Kinds is
       Lim_Op_Incompatible_Fixed,
       Lim_Overlay_With_Deep_Object,
       Lim_Overlay_With_Package,
+      Lim_Overlay_Within_Predicate,
       Lim_Package_Before_Inv,
       Lim_Predicate_With_Different_SPARK_Mode,
       Lim_Primitive_Call_In_DIC,
@@ -676,6 +677,8 @@ package VC_Kinds is
            "overlay with an object of an ownership type",
          when Lim_Overlay_With_Package =>
            "overlay without Import in a declarative part containing a package",
+         when Lim_Overlay_Within_Predicate =>
+           "mutable overlay of a subcomponent of an object with a predicate",
          when Lim_Non_Static_Attribute =>
            "non-static attribute """ & Standard_Ada_Case (Name) & """",
          when Lim_Image_With_Custom_Put_Image =>

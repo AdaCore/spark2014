@@ -761,6 +761,8 @@ package body VC_Kinds is
          when Lim_Overlay_With_Package =>
            "an overlay without Import in the same declarative part as a "
           & "package declaration or body",
+         when Lim_Overlay_Within_Predicate =>
+           "a mutable overlay of a subcomponent of an object with a predicate",
          when Lim_Package_Before_Inv =>
            "a package declaration occurring in a loop before the loop "
           & "invariant",
