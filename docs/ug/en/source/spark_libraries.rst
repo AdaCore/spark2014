@@ -1341,6 +1341,12 @@ designated object as an object of the target type, much like an
 rules (see :ref:`Data Validity`): on an instantiation, |GNATprove| emits the
 checks that ensure the reinterpretation is safe.
 
+The target object type must have ``Universal_Aliasing`` so that accesses through
+the converted view can alias the source storage under optimization. This
+requirement addresses the :ref:`strict-aliasing assumption
+<SPARK_STRICT_ALIASING>`; it is separate from the checks on the validity and
+representation of the reinterpreted data.
+
 The unit provides four generic packages, each parameterized by a source and a
 target object type:
 
