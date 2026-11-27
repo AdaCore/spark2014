@@ -44,10 +44,6 @@ bad_params.ads:57:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" 
 bad_params.ads:63:13: info: implicit aspect Always_Terminates on "Copy_With_Pre" has been proved, subprogram will terminate
 bad_params.ads:79:13: info: implicit aspect Always_Terminates on "Is_Reclaimed" has been proved, subprogram will terminate
 bad_params.ads:97:36: info: index check proved (CVC5: 2 VC)
-bad_params.ads:103:04: warning: in instantiation at spark-pointers-poisoned-views-array_operations.ads:31
-bad_params.ads:103:04: warning: the value of attribute Component_Size is handled in an imprecise way [imprecise-component-size]
-bad_params.ads:107:04: warning: in instantiation at spark-pointers-poisoned-views-array_operations.ads:31
-bad_params.ads:107:04: warning: the value of attribute Component_Size is handled in an imprecise way [imprecise-component-size]
 spark-containers-functional-infinite_sequences.ads:32:16: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:42
 spark-containers-functional-infinite_sequences.ads:39:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:42
 spark-containers-functional-infinite_sequences.ads:42:16: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at bad_eq.ads:42

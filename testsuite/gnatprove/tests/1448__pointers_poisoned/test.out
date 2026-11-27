@@ -19,8 +19,6 @@ test_poisoned.adb:100:24: info: index check proved (CVC5: 2 VC)
 test_poisoned.adb:101:07: info: precondition proved (CVC5: 5 VC)
 test_poisoned.adb:102:07: info: precondition proved (CVC5: 2 VC)
 test_poisoned.adb:102:22: info: index check proved (CVC5: 2 VC)
-test_poisoned.adb:116:04: warning: in instantiation at spark-pointers-poisoned-views-array_operations.ads:31
-test_poisoned.adb:116:04: warning: the value of attribute Component_Size is handled in an imprecise way [imprecise-component-size]
 test_poisoned.adb:128:11: info: postcondition proved (CVC5: 3 VC)
 test_poisoned.adb:129:39: info: index check proved (CVC5: 2 VC)
 test_poisoned.adb:129:69: info: index check proved (CVC5: 2 VC)
