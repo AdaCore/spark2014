@@ -1,0 +1,16 @@
+bwt.adb:12:13: info: implicit aspect Always_Terminates on "Initial_Rows" has been proved, subprogram will terminate
+bwt.adb:14:06: info: data dependencies proved
+bwt.adb:18:45: info: range check proved (CVC5: 2 VC)
+bwt.adb:20:20: medium: postcondition might fail, cannot prove Initial_Rows'Result (I) = (1, S'Length, I - 1)
+bwt.adb:20:41: info: index check proved (CVC5: 2 VC)
+bwt.adb:20:51: info: range check proved (CVC5: 2 VC)
+bwt.adb:20:62: info: overflow check proved (CVC5: 2 VC)
+bwt.adb:20:62: info: range check proved (CVC5: 2 VC)
+bwt.adb:23:07: info: initialization of "Rows" proved
+bwt.adb:23:07: info: range check proved (CVC5: 2 VC)
+bwt.adb:23:36: info: range check proved (CVC5: 2 VC)
+bwt.adb:25:27: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
+bwt.adb:26:16: info: index check proved (CVC5: 2 VC)
+bwt.adb:26:46: info: range check proved (CVC5: 2 VC)
+bwt.adb:28:14: info: range check proved (CVC5: 1 VC)
+bwt.ads:17:13: info: implicit aspect Always_Terminates on "Supported" has been proved, subprogram will terminate
