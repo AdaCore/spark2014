@@ -39,10 +39,12 @@ with Sem_Aux;
 with Sem_Ch12;                       use Sem_Ch12;
 with Sem_Eval;                       use Sem_Eval;
 with Sem_Prag;                       use Sem_Prag;
+with Set_Targ;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
 with SPARK_Util.Types;               use SPARK_Util.Types;
 with Stand;                          use Stand;
+with Ttypes;
 
 package body SPARK_Util.Subprograms is
 
@@ -1783,9 +1785,37 @@ package body SPARK_Util.Subprograms is
       --  available bitvector types with conversions from other bitvector
       --  sizes.
 
-      if Get_Attribute_Value (Source_Type, Attribute_Size) > 128 then
-         return False_With_Explain ("type size larger than 128 bits");
-      end if;
+      declare
+         Size : constant Uint :=
+           Get_Attribute_Value (Source_Type, Attribute_Size);
+      begin
+         if Size > 128 then
+            return False_With_Explain ("type size larger than 128 bits");
+         end if;
+
+         if not (Is_Scalar_Type (Source_Type)
+                 and then Is_Scalar_Type (Target_Type))
+         then
+            --  The layout encoding assumes a single order for the whole bit
+            --  pattern. On big-endian targets, also avoid partial storage
+            --  units, where the compiler may justify scalar and composite
+            --  bits differently.
+
+            if Size > Ttypes.System_Word_Size
+              and then Ttypes.Bytes_Big_Endian /= (Set_Targ.Words_BE /= 0)
+            then
+               return
+                 False_With_Explain ("target has mixed byte and word order");
+            elsif Ttypes.Bytes_Big_Endian
+              and then Size mod Ttypes.System_Storage_Unit /= Uint_0
+            then
+               return
+                 False_With_Explain
+                   ("size is not a multiple of the storage unit on this"
+                    & " target");
+            end if;
+         end if;
+      end;
 
       --  Only generate a definition for UC between integer types, and
       --  composites of integer types.

@@ -51,6 +51,7 @@ with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Util.Types;               use SPARK_Util.Types;
 with Stand;                          use Stand;
+with Ttypes;
 with Uintp;                          use Uintp;
 with VC_Kinds;                       use VC_Kinds;
 with Why;                            use Why;
@@ -2776,7 +2777,16 @@ package body Gnat2Why.Subprograms is
                     Ada.Containers.Doubly_Linked_Lists (Source_Element);
                   use Source_Elements;
 
+                  Target_Size : constant Uint :=
+                    Get_Attribute_Value (Target_Type, Attribute_Size);
+
                   --  Local subprograms
+
+                  function Bitvector_Offset (Offset, Size : Uint) return Uint;
+                  --  Convert an offset in native storage order to a shift from
+                  --  the least significant bit. Use the Ada representation
+                  --  size, which may be smaller than the Why3 bitvector used
+                  --  to hold it. The offset of an empty component is unused.
 
                   function Contribute_Value
                     (Base   : W_Type_Id;
@@ -2829,6 +2839,15 @@ package body Gnat2Why.Subprograms is
                   --  Given the representation Bits of modular type Base for
                   --  the complete object, reconstruct the element of type Typ
                   --  of a given Size at a given Offset.
+
+                  ----------------------
+                  -- Bitvector_Offset --
+                  ----------------------
+
+                  function Bitvector_Offset (Offset, Size : Uint) return Uint
+                  is (if Ttypes.Bytes_Big_Endian and then Size /= Uint_0
+                      then Target_Size - Offset - Size
+                      else Offset);
 
                   ----------------------
                   -- Contribute_Value --
@@ -3139,7 +3158,7 @@ package body Gnat2Why.Subprograms is
                         return Extract_Value
                           (Base   => Base,
                            Bits   => Bits,
-                           Offset => Offset,
+                           Offset => Bitvector_Offset (Offset, Size),
                            Size   => Size,
                            Typ    => Typ);
 
@@ -3227,8 +3246,6 @@ package body Gnat2Why.Subprograms is
 
                   Conv         : W_Term_Id;
                   Source_Elems : List;
-                  Target_Size  : constant Uint :=
-                    Get_Attribute_Value (Target_Type, Attribute_Size);
                   Base         : constant W_Type_Id :=
                     (if    Target_Size <=   Uint_8 then EW_BitVector_8_Type
                      elsif Target_Size <=  Uint_16 then EW_BitVector_16_Type
@@ -3273,7 +3290,8 @@ package body Gnat2Why.Subprograms is
                                 2 => Contribute_Value
                                   (Base   => Base,
                                    Expr   => +Elem.Expr,
-                                   Offset => Elem.Offset,
+                                   Offset =>
+                                     Bitvector_Offset (Elem.Offset, Elem.Size),
                                    Size   => Elem.Size,
                                    Typ    => Elem.Typ)));
                      end loop;
